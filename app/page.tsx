@@ -60,7 +60,7 @@ const equipmentCards = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f4f6f8] px-3 py-6 text-slate-900 md:px-5">
+    <section className="min-h-screen bg-[#f4f6f8] px-3 py-6 text-slate-900 md:px-5">
       <div className="mx-auto max-w-[1600px] space-y-6">
         <header className="flex items-center justify-between">
           <h1 className="text-4xl font-bold tracking-tight">Manutenção</h1>
@@ -130,7 +130,7 @@ export default function Home() {
           ))}
         </section>
       </div>
-    </main>
+    </section>
   );
 }
 
