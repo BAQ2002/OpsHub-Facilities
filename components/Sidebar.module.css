@@ -1,0 +1,77 @@
+.sidebar {
+  width: 264px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e3e8ef;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebarHeader {
+  height: 142px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  border-bottom: 1px solid #e3e8ef;
+}
+
+.collapseButton {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #dbe3ee;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.collapseButton:hover {
+  background: #f8fafc;
+}
+
+.nav {
+  padding: 8px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.navItem {
+  min-height: 39px;
+  padding: 0 15px;
+  border-radius: 12px;
+  color: #111827;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.navItem:hover {
+  background: #eef8fb;
+}
+
+.active {
+  background: #10b7d1;
+  color: #06151a;
+}
+
+.navIcon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navText {
+  white-space: nowrap;
+}
