@@ -23,8 +23,8 @@ const equipmentCards = [
     total: 21,
   },
   {
-    title: "Empilhadeira de Vazio",
-    code: "EV",
+    title: "Refrigeração e Climatização",
+    code: "EAV",
     accent: "text-emerald-500",
     ring: "border-emerald-300",
     iconBg: "bg-emerald-50",
@@ -63,7 +63,7 @@ export default function Home() {
     <section className="min-h-screen bg-[#f4f6f8] px-3 py-6 text-slate-900 md:px-5">
       <div className="mx-auto max-w-[1600px] space-y-6">
         <header className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold tracking-tight">Manutenção</h1>
+          <h1 className="text-4xl font-bold tracking-tight">Facilties</h1>
           <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-300 bg-white text-xl">
             🌙
           </button>
@@ -90,14 +90,16 @@ export default function Home() {
         </section>
 
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-3xl font-semibold">Disponibilidade de Equipamentos</h2>
-          <p className="mt-1 text-lg text-slate-500">Painel de controle de manutenção — CCM • atualizado em 26/05/2026 às 20:49:27</p>
+          <h2 className="text-3xl font-semibold">Atividades programadas 28/05/2026</h2>
+          <p className="mt-1 text-lg text-slate-500">Painel de controle de atividades de Facilities • atualizado em 26/05/2026 às 20:49:27</p>
 
-          <div className="mt-6 grid gap-3 lg:grid-cols-4">
-            <SummaryCard value="127" label="Disponíveis" bg="bg-emerald-50" color="text-emerald-600" />
-            <SummaryCard value="13" label="Em Manutenção" bg="bg-amber-50" color="text-amber-600" />
-            <SummaryCard value="13" label="Parados" bg="bg-rose-50" color="text-rose-700" />
-            <SummaryCard value="90.7%" label="Disp. Geral" bg="bg-indigo-50" color="text-indigo-600" />
+          <div className="mt-6 grid gap-3 lg:grid-cols-6">
+            <SummaryCard value="4" label="Refrigeração e PMOC" bg="bg-emerald-50" color="text-emerald-600" />
+            <SummaryCard value="2" label="Civil" bg="bg-amber-50" color="text-amber-600" />
+            <SummaryCard value="6" label="Hidraulica" bg="bg-rose-50" color="text-rose-700" />
+            <SummaryCard value="5" label="Elétrica" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="5" label="Artífice" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="3" label="Pintura" bg="bg-indigo-50" color="text-indigo-600" />
           </div>
         </section>
 
