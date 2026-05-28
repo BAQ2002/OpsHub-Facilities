@@ -1,6 +1,6 @@
 const equipmentCards = [
   {
-    title: "Artifice",
+    title: "Artífice",
     code: "EC",
     accent: "text-cyan-600",
     ring: "border-cyan-500",
@@ -11,7 +11,7 @@ const equipmentCards = [
     total: 10,
     footer: "2 equipamentos parados",
   },
- {
+  {
     title: "Civil",
     code: "MCA",
     accent: "text-violet-500",
@@ -33,9 +33,8 @@ const equipmentCards = [
     maintenance: 4,
     total: 10,
   },
-   
   {
-    title: "Hidraulica",
+    title: "Hidráulica",
     code: "EE",
     accent: "text-amber-500",
     ring: "border-amber-500",
@@ -57,13 +56,12 @@ const equipmentCards = [
     total: 10,
     footer: "1 equipamento parado",
   },
- 
   {
     title: "Pintura",
     code: "PP",
-    accent: "text-red-500",
-    ring: "border-red-500",
-    iconBg: "bg-red-50",
+    accent: "text-orange-500",
+    ring: "border-orange-500",
+    iconBg: "bg-orange-50",
     percentage: 100,
     available: 6,
     maintenance: 4,
@@ -71,10 +69,10 @@ const equipmentCards = [
   },
   {
     title: "Elétrica",
-    code: "PP",
-    accent: "text-red-500",
-    ring: "border-red-500",
-    iconBg: "bg-red-50",
+    code: "EL",
+    accent: "text-blue-500",
+    ring: "border-blue-500",
+    iconBg: "bg-blue-50",
     percentage: 100,
     available: 6,
     maintenance: 4,
@@ -82,92 +80,114 @@ const equipmentCards = [
   },
   {
     title: "Limpeza",
-    code: "PP",
-    accent: "text-red-500",
-    ring: "border-red-500",
-    iconBg: "bg-red-50",
+    code: "LP",
+    accent: "text-teal-500",
+    ring: "border-teal-500",
+    iconBg: "bg-teal-50",
     percentage: 100,
     available: 4,
     maintenance: 6,
     total: 10,
   },
-
-
-  
 ];
+
+const totals = equipmentCards.reduce(
+  (acc, card) => ({
+    available: acc.available + card.available,
+    maintenance: acc.maintenance + card.maintenance,
+    total: acc.total + card.total,
+  }),
+  { available: 0, maintenance: 0, total: 0 },
+);
+
+const availability = Math.round((totals.available / totals.total) * 1000) / 10;
 
 export default function Home() {
   return (
-    <section className="min-h-screen bg-[#f4f6f8] px-3 py-6 text-slate-900 md:px-5">
-      <div className="mx-auto max-w-[1600px] space-y-6">
-        <header className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold tracking-tight">Facilties</h1>
-          <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-300 bg-white text-xl">
-            🌙
-          </button>
+    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
+      <div className="mx-auto max-w-[1620px]">
+        <header className="mb-[18px] grid grid-cols-[1fr_auto] items-end gap-4">
+          <h1 className="text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
+            Facilities
+          </h1>
+
+          <div className="flex flex-col items-end gap-5">
+            <button
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-base shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              type="button"
+              aria-label="Alternar tema"
+            >
+              🌙
+            </button>
+            <div className="flex items-center gap-3 text-sm text-slate-600">
+              <button className="text-xl leading-none text-slate-500" type="button" aria-label="Atualizar">
+                ↻
+              </button>
+              <button
+                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+                type="button"
+              >
+                5 min⌄
+              </button>
+            </div>
+          </div>
         </header>
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-            <div>
-              <h2 className="text-3xl font-semibold">Gate — Agendamentos</h2>
-              <p className="mt-2 text-lg text-slate-500">
-                Capacidade, Agendados e Atendidos • Todas as fainas • 26/05/2026 • atualizado em 26/05/2026 • atualizado em 26/05/2026 às 20:53:47
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-3 text-slate-700">
-              <button className="rounded-xl border border-slate-300 px-4 py-2">◀</button>
-              <span>De</span>
-              <button className="rounded-2xl border border-slate-300 px-5 py-2">26/05/2026 📅</button>
-              <button className="rounded-xl border border-slate-300 px-4 py-2">▶</button>
-              <button className="rounded-2xl border border-slate-300 px-5 py-2">Hoje</button>
-              <button className="rounded-xl border border-slate-300 px-4 py-2">↻</button>
-              <button className="rounded-2xl border border-slate-300 px-5 py-2">5 min ▾</button>
-            </div>
+        <section className="mb-5 rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+          <div className="mb-[18px]">
+            <h2 className="text-base font-bold leading-tight text-slate-950">
+              Atividades programadas 28/05/2026
+            </h2>
+            <p className="mt-1 text-[11px] leading-tight text-slate-500">
+              Painel de controle de atividades de Facilities • atualizado em 26/05/2026 às 20:49:27
+            </p>
+          </div>
+
+          <div className="grid gap-3 lg:grid-cols-4">
+            <SummaryCard value={String(totals.available)} label="Atividades" bg="bg-emerald-50" color="text-emerald-600" />
+            <SummaryCard value={String(totals.maintenance)} label="Disponíveis" bg="bg-amber-50" color="text-amber-600" />
+            <SummaryCard value={String(totals.total - totals.available)} label="Pendentes" bg="bg-rose-100" color="text-slate-950" raised />
+            <SummaryCard value={`${availability}%`} label="Disp. Geral" bg="bg-blue-50" color="text-blue-600" />
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-3xl font-semibold">Atividades programadas 28/05/2026</h2>
-          <p className="mt-1 text-lg text-slate-500">Painel de controle de atividades de Facilities • atualizado em 26/05/2026 às 20:49:27</p>
-
-          <div className="mt-6 grid gap-3 lg:grid-cols-8">
-            <SummaryCard value="8" label="Artífice" bg="bg-emerald-50" color="text-emerald-600" />
-            <SummaryCard value="4" label="Civil" bg="bg-amber-50" color="text-amber-600" />
-            <SummaryCard value="6" label="Copa e Café" bg="bg-rose-50" color="text-rose-700" />
-            <SummaryCard value="6" label="Elétrica" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="4" label="Hidraulica" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="7" label="Refrigeração" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="6" label="Pintura" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="4" label="Limpeza" bg="bg-indigo-50" color="text-indigo-600" />
-          </div>
-        </section>
-
-        <section className="grid gap-4 lg:grid-cols-4">
+        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {equipmentCards.map((card) => (
-            <article key={card.title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-start justify-between gap-3">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${card.iconBg}`}>
-                  <span className={`text-xl ${card.accent}`}>⚙</span>
+            <article
+              key={card.title}
+              className="min-h-[194px] rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+            >
+              <div className="grid grid-cols-[36px_1fr_auto] items-start gap-3">
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${card.iconBg}`}>
+                  <span className={`text-lg ${card.accent}`}>⚙</span>
                 </div>
-                <span className="text-xl text-emerald-600">◉</span>
+
+                <div className="min-w-0">
+                  <h3 className="truncate text-base font-bold leading-tight text-slate-950">
+                    {card.title}
+                  </h3>
+                  <p className="mt-0.5 text-xs leading-tight text-slate-500">{card.code}</p>
+                </div>
+
+                <span className="pt-1 text-base leading-none text-emerald-500">⊙</span>
               </div>
 
-              <h3 className="mt-3 text-4xl font-semibold leading-tight">{card.title}</h3>
-              <p className="text-xl text-slate-500">{card.code}</p>
-
-              <div className="mt-4 grid grid-cols-[auto,1fr] gap-4">
-                <div className={`flex h-20 w-20 items-center justify-center rounded-full border-4 ${card.ring} text-2xl font-bold ${card.accent}`}>
+              <div className="mt-4 grid grid-cols-[80px_1fr] items-center gap-4">
+                <div
+                  className={`flex h-[70px] w-[70px] items-center justify-center rounded-full border-[5px] ${card.ring} text-sm font-bold ${card.accent}`}
+                >
                   {card.percentage}%
                 </div>
-                <dl className="space-y-2 text-lg">
-                  <div className="flex justify-between"><dt className="text-slate-500">Atividades</dt><dd className="font-semibold text-emerald-600">{card.available}</dd></div>
-                  <div className="flex justify-between"><dt className="text-slate-500">Disponível</dt><dd className="font-semibold text-orange-500">{card.maintenance}</dd></div>
-                  <div className="flex justify-between border-t border-slate-100 pt-2"><dt className="text-slate-500">Total</dt><dd className="font-semibold">{card.total}</dd></div>
+                <dl className="space-y-2 text-xs">
+                  <Metric label="Atividades" value={card.available} valueClass="text-emerald-600" />
+                  <Metric label="Disponível" value={card.maintenance} valueClass="text-orange-500" />
+                  <Metric label="Total" value={card.total} bordered />
                 </dl>
               </div>
 
-              {card.footer && <p className="mt-4 text-base text-slate-700">⌄ {card.footer}</p>}
+              {card.footer && (
+                <p className="mt-4 text-xs font-semibold text-slate-950">⌄ {card.footer}</p>
+              )}
             </article>
           ))}
         </section>
@@ -181,16 +201,37 @@ function SummaryCard({
   label,
   bg,
   color,
+  raised = false,
 }: {
   value: string;
   label: string;
   bg: string;
   color: string;
+  raised?: boolean;
 }) {
   return (
-    <div className={`rounded-2xl ${bg} p-6 text-center`}>
-      <p className={`text-5xl font-bold ${color}`}>{value}</p>
-      <p className="mt-1 text-lg text-slate-500">{label}</p>
+    <div className={`rounded-xl ${bg} px-6 py-4 text-center ${raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""}`}>
+      <p className={`text-[25px] font-bold leading-none ${color}`}>{value}</p>
+      <p className="mt-2 text-[11px] leading-none text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function Metric({
+  label,
+  value,
+  valueClass = "text-slate-950",
+  bordered = false,
+}: {
+  label: string;
+  value: number;
+  valueClass?: string;
+  bordered?: boolean;
+}) {
+  return (
+    <div className={`flex justify-between gap-3 ${bordered ? "border-t border-slate-100 pt-2" : ""}`}>
+      <dt className="text-slate-500">{label}</dt>
+      <dd className={`font-bold ${valueClass}`}>{value}</dd>
     </div>
   );
 }
