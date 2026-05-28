@@ -1,26 +1,49 @@
 const equipmentCards = [
   {
-    title: "Empilhadeira de Cheio",
+    title: "Artifice",
     code: "EC",
     accent: "text-cyan-600",
     ring: "border-cyan-500",
     iconBg: "bg-cyan-50",
     percentage: 78,
-    available: 7,
+    available: 8,
     maintenance: 2,
-    total: 9,
+    total: 10,
     footer: "2 equipamentos parados",
   },
+ {
+    title: "Civil",
+    code: "MCA",
+    accent: "text-violet-500",
+    ring: "border-violet-500",
+    iconBg: "bg-violet-50",
+    percentage: 100,
+    available: 4,
+    maintenance: 6,
+    total: 10,
+  },
   {
-    title: "Empilhadeira Elétrica",
+    title: "Copa e Café",
+    code: "PP",
+    accent: "text-red-500",
+    ring: "border-red-500",
+    iconBg: "bg-red-50",
+    percentage: 100,
+    available: 6,
+    maintenance: 4,
+    total: 10,
+  },
+   
+  {
+    title: "Hidraulica",
     code: "EE",
     accent: "text-amber-500",
     ring: "border-amber-500",
     iconBg: "bg-amber-50",
     percentage: 100,
-    available: 21,
-    maintenance: 0,
-    total: 21,
+    available: 4,
+    maintenance: 6,
+    total: 10,
   },
   {
     title: "Refrigeração e Climatização",
@@ -29,33 +52,48 @@ const equipmentCards = [
     ring: "border-emerald-300",
     iconBg: "bg-emerald-50",
     percentage: 0,
-    available: 0,
-    maintenance: 1,
-    total: 1,
+    available: 7,
+    maintenance: 3,
+    total: 10,
     footer: "1 equipamento parado",
   },
+ 
   {
-    title: "Escavadeira",
-    code: "MCA",
-    accent: "text-violet-500",
-    ring: "border-violet-500",
-    iconBg: "bg-violet-50",
-    percentage: 100,
-    available: 1,
-    maintenance: 0,
-    total: 1,
-  },
-  {
-    title: "Portainer",
+    title: "Pintura",
     code: "PP",
     accent: "text-red-500",
     ring: "border-red-500",
     iconBg: "bg-red-50",
     percentage: 100,
-    available: 8,
-    maintenance: 0,
-    total: 8,
+    available: 6,
+    maintenance: 4,
+    total: 10,
   },
+  {
+    title: "Elétrica",
+    code: "PP",
+    accent: "text-red-500",
+    ring: "border-red-500",
+    iconBg: "bg-red-50",
+    percentage: 100,
+    available: 6,
+    maintenance: 4,
+    total: 10,
+  },
+  {
+    title: "Limpeza",
+    code: "PP",
+    accent: "text-red-500",
+    ring: "border-red-500",
+    iconBg: "bg-red-50",
+    percentage: 100,
+    available: 4,
+    maintenance: 6,
+    total: 10,
+  },
+
+
+  
 ];
 
 export default function Home() {
@@ -93,17 +131,19 @@ export default function Home() {
           <h2 className="text-3xl font-semibold">Atividades programadas 28/05/2026</h2>
           <p className="mt-1 text-lg text-slate-500">Painel de controle de atividades de Facilities • atualizado em 26/05/2026 às 20:49:27</p>
 
-          <div className="mt-6 grid gap-3 lg:grid-cols-6">
-            <SummaryCard value="4" label="Refrigeração e PMOC" bg="bg-emerald-50" color="text-emerald-600" />
-            <SummaryCard value="2" label="Civil" bg="bg-amber-50" color="text-amber-600" />
-            <SummaryCard value="6" label="Hidraulica" bg="bg-rose-50" color="text-rose-700" />
-            <SummaryCard value="5" label="Elétrica" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="5" label="Artífice" bg="bg-indigo-50" color="text-indigo-600" />
-            <SummaryCard value="3" label="Pintura" bg="bg-indigo-50" color="text-indigo-600" />
+          <div className="mt-6 grid gap-3 lg:grid-cols-8">
+            <SummaryCard value="8" label="Artífice" bg="bg-emerald-50" color="text-emerald-600" />
+            <SummaryCard value="4" label="Civil" bg="bg-amber-50" color="text-amber-600" />
+            <SummaryCard value="6" label="Copa e Café" bg="bg-rose-50" color="text-rose-700" />
+            <SummaryCard value="6" label="Elétrica" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="4" label="Hidraulica" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="7" label="Refrigeração" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="6" label="Pintura" bg="bg-indigo-50" color="text-indigo-600" />
+            <SummaryCard value="4" label="Limpeza" bg="bg-indigo-50" color="text-indigo-600" />
           </div>
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-5">
+        <section className="grid gap-4 lg:grid-cols-4">
           {equipmentCards.map((card) => (
             <article key={card.title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-start justify-between gap-3">
@@ -121,8 +161,8 @@ export default function Home() {
                   {card.percentage}%
                 </div>
                 <dl className="space-y-2 text-lg">
-                  <div className="flex justify-between"><dt className="text-slate-500">Disponíveis</dt><dd className="font-semibold text-emerald-600">{card.available}</dd></div>
-                  <div className="flex justify-between"><dt className="text-slate-500">Manutenção</dt><dd className="font-semibold text-orange-500">{card.maintenance}</dd></div>
+                  <div className="flex justify-between"><dt className="text-slate-500">Atividades</dt><dd className="font-semibold text-emerald-600">{card.available}</dd></div>
+                  <div className="flex justify-between"><dt className="text-slate-500">Disponível</dt><dd className="font-semibold text-orange-500">{card.maintenance}</dd></div>
                   <div className="flex justify-between border-t border-slate-100 pt-2"><dt className="text-slate-500">Total</dt><dd className="font-semibold">{card.total}</dd></div>
                 </dl>
               </div>
