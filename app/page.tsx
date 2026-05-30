@@ -104,12 +104,12 @@ export default function Home() {
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
       <div className="mx-auto max-w-[1620px]">
-        <header className="mb-[18px] grid grid-cols-[1fr_auto] items-end gap-4">
-          <h1 className="text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
+        <header className="mb-[18px] grid grid-cols-[1fr_auto] items-start gap-4 pt-2">
+          <h1 className="mt-[57px] text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
             Facilities
           </h1>
 
-          <div className="flex flex-col items-end gap-5">
+          <div className="flex flex-col items-end gap-[22px]">
             <button
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-base shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
               type="button"
@@ -117,28 +117,54 @@ export default function Home() {
             >
               🌙
             </button>
-            <div className="flex items-center gap-3 text-sm text-slate-600">
-              <button className="text-xl leading-none text-slate-500" type="button" aria-label="Atualizar">
+            <div className="flex items-center gap-2 text-sm text-slate-600">
+              <button className="flex h-8 w-8 items-center justify-center text-lg leading-none text-slate-500" type="button" aria-label="Atualizar">
                 ↻
               </button>
-              <button
-                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
+              <select
+                className="h-8 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+                aria-label="Intervalo de atualização"
+                defaultValue="5 min"
               >
-                5 min⌄
-              </button>
+                <option>5 min</option>
+              </select>
             </div>
           </div>
         </header>
 
-        <section className="mb-5 rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-          <div className="mb-[18px]">
-            <h2 className="text-base font-bold leading-tight text-slate-950">
-              Atividades programadas 28/05/2026
+        <section className="mb-5 rounded-[20px] border border-slate-200 bg-white px-5 pb-5 pt-[15px] shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+          <div className="mb-[30px] flex flex-wrap items-center gap-2">
+            <h2 className="mr-1 text-base font-bold leading-tight text-slate-950">
+              Atividades programadas
             </h2>
-            <p className="mt-1 text-[11px] leading-tight text-slate-500">
-              Painel de controle de atividades de Facilities • atualizado em 26/05/2026 às 20:49:27
-            </p>
+            <button
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              type="button"
+              aria-label="Dia anterior"
+            >
+              <ChevronLeftIcon />
+            </button>
+            <button
+              className="flex h-[30px] items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              type="button"
+              aria-label="Selecionar data"
+            >
+              <span>29/05/2026</span>
+              <CalendarIcon />
+            </button>
+            <button
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              type="button"
+              aria-label="Próximo dia"
+            >
+              <ChevronRightIcon />
+            </button>
+            <button
+              className="h-[30px] rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              type="button"
+            >
+              Hoje
+            </button>
           </div>
 
           <div className="grid gap-3 lg:grid-cols-4">
@@ -182,10 +208,6 @@ export default function Home() {
                   <Metric label="Total" value={card.total} bordered />
                 </dl>
               </div>
-
-              {card.footer && (
-                <p className="mt-4 text-xs font-semibold text-slate-950">⌄ {card.footer}</p>
-              )}
             </article>
           ))}
         </section>
@@ -231,5 +253,59 @@ function Metric({
       <dt className="text-slate-500">{label}</dt>
       <dd className={`font-bold ${valueClass}`}>{value}</dd>
     </div>
+  );
+}
+function ChevronLeftIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M8 3v4M16 3v4M4 10h16" />
+    </svg>
   );
 }
