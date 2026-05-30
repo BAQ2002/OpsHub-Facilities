@@ -9,7 +9,6 @@ const equipmentCards = [
     available: 8,
     maintenance: 2,
     total: 10,
-    footer: "2 equipamentos parados",
   },
   {
     title: "Civil",
@@ -54,7 +53,6 @@ const equipmentCards = [
     available: 7,
     maintenance: 3,
     total: 10,
-    footer: "1 equipamento parado",
   },
   {
     title: "Pintura",
