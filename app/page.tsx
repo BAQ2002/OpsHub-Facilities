@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const equipmentCards = [
   {
     title: "Artífice",
@@ -165,12 +167,12 @@ export default function Home() {
             >
               Hoje
             </button>
-            <button
-              className="h-[30px]  place-content-end rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              type="button"
+            <Link
+              className="flex h-[30px] place-content-end items-center rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              href="/solicitar-atividade"
             >
               Solicitar Atividade
-            </button>
+            </Link>
           </div>
 
           <div className="grid gap-3 lg:grid-cols-4">
