@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const requestCards = [
   {
     title: "Solicitar Atividade no Pátio",
@@ -5,6 +7,7 @@ const requestCards = [
       "Realize uma solicitação de atividade no pátio operacional para o setor de Facilities.",
     iconBg: "bg-blue-50",
     iconColor: "text-blue-500",
+    href: "/solicitar-atividade/patio",
   },
   {
     title: "Solicitar Atividade de Chamado",
@@ -12,6 +15,7 @@ const requestCards = [
       "Realize uma solicitação de atividade no prédio administrativo para o setor de Facilities.",
     iconBg: "bg-cyan-50",
     iconColor: "text-cyan-600",
+    href: "/solicitar-atividade/chamado",
   },
 ];
 
@@ -23,9 +27,10 @@ export default function SolicitarAtividadePage() {
 
         <div className="grid gap-4 md:grid-cols-2">
           {requestCards.map((card) => (
-            <article
+            <Link
               key={card.title}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+              className="block rounded-2xl border border-slate-200 bg-white p-5 no-underline shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+              href={card.href}
             >
               <div
                 className={`mb-6 flex h-[52px] w-[52px] items-center justify-center rounded-lg ${card.iconBg}`}
@@ -41,14 +46,13 @@ export default function SolicitarAtividadePage() {
                 {card.description}
               </p>
 
-              <button
+              <span
                 className={`mt-3 inline-flex items-center gap-2 text-xs font-bold ${card.iconColor}`}
-                type="button"
               >
                 Solicitar
                 <span aria-hidden="true">→</span>
-              </button>
-            </article>
+              </span>
+            </Link>
           ))}
         </div>
       </div>
