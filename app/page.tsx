@@ -5,9 +5,7 @@ const equipmentCards = [
     title: "Artífice",
     code: "EC",
     accent: "text-cyan-600",
-    ring: "border-cyan-500",
     iconBg: "bg-cyan-50",
-    percentage: 78,
     available: 8,
     maintenance: 2,
     total: 10,
@@ -16,9 +14,7 @@ const equipmentCards = [
     title: "Civil",
     code: "MCA",
     accent: "text-violet-500",
-    ring: "border-violet-500",
     iconBg: "bg-violet-50",
-    percentage: 100,
     available: 4,
     maintenance: 6,
     total: 10,
@@ -27,9 +23,7 @@ const equipmentCards = [
     title: "Copa e Café",
     code: "PP",
     accent: "text-red-500",
-    ring: "border-red-500",
     iconBg: "bg-red-50",
-    percentage: 100,
     available: 6,
     maintenance: 4,
     total: 10,
@@ -38,9 +32,7 @@ const equipmentCards = [
     title: "Hidráulica",
     code: "EE",
     accent: "text-amber-500",
-    ring: "border-amber-500",
     iconBg: "bg-amber-50",
-    percentage: 100,
     available: 4,
     maintenance: 6,
     total: 10,
@@ -49,9 +41,7 @@ const equipmentCards = [
     title: "Refrigeração e Climatização",
     code: "EAV",
     accent: "text-emerald-500",
-    ring: "border-emerald-300",
     iconBg: "bg-emerald-50",
-    percentage: 0,
     available: 7,
     maintenance: 3,
     total: 10,
@@ -60,9 +50,7 @@ const equipmentCards = [
     title: "Pintura",
     code: "PP",
     accent: "text-orange-500",
-    ring: "border-orange-500",
     iconBg: "bg-orange-50",
-    percentage: 100,
     available: 6,
     maintenance: 4,
     total: 10,
@@ -71,9 +59,7 @@ const equipmentCards = [
     title: "Elétrica",
     code: "EL",
     accent: "text-blue-500",
-    ring: "border-blue-500",
     iconBg: "bg-blue-50",
-    percentage: 100,
     available: 6,
     maintenance: 4,
     total: 10,
@@ -82,9 +68,7 @@ const equipmentCards = [
     title: "Limpeza",
     code: "LP",
     accent: "text-teal-500",
-    ring: "border-teal-500",
     iconBg: "bg-teal-50",
-    percentage: 100,
     available: 4,
     maintenance: 6,
     total: 10,
@@ -183,14 +167,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <section className="grid grid-cols-8 gap-2">
           {equipmentCards.map((card) => (
             <article
               key={card.title}
-              className="min-h-[194px] rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
-              <div className="grid grid-cols-[36px_1fr_auto] items-start gap-3">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${card.iconBg}`}>
+              <div className="grid grid-cols-[32px_1fr_auto] items-start gap-2">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}>
                   <span className={`text-lg ${card.accent}`}>⚙</span>
                 </div>
 
@@ -204,12 +188,7 @@ export default function Home() {
                 <span className="pt-1 text-base leading-none text-emerald-500">⊙</span>
               </div>
 
-              <div className="mt-4 grid grid-cols-[80px_1fr] items-center gap-4">
-                <div
-                  className={`flex h-[70px] w-[70px] items-center justify-center rounded-full border-[5px] ${card.ring} text-sm font-bold ${card.accent}`}
-                >
-                  {card.percentage}%
-                </div>
+              <div className="mt-3">
                 <dl className="space-y-2 text-xs">
                   <Metric label="Atividades" value={card.available} valueClass="text-emerald-600" />
                   <Metric label="Disponível" value={card.maintenance} valueClass="text-orange-500" />
