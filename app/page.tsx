@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const equipmentCards = [
@@ -167,7 +168,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid grid-cols-8 gap-2">
+        <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
           {equipmentCards.map((card) => (
             <article
               key={card.title}
@@ -197,6 +198,22 @@ export default function Home() {
               </div>
             </article>
           ))}
+        </section>
+
+        <section className="mt-4 rounded-[20px] border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-labelledby="map-title">
+          <h2 id="map-title" className="mb-2 px-1 text-sm font-bold leading-tight text-slate-950">
+            Mapa AIS — posições atuais
+          </h2>
+          <div className="relative min-h-[360px] overflow-hidden rounded-xl border border-slate-200 bg-sky-50 md:min-h-[420px] lg:min-h-[528px]">
+            <Image
+              src="/facilities-map.svg"
+              alt="Mapa AIS com posições atuais das atividades de facilities"
+              fill
+              className="object-cover"
+              priority
+              sizes="(min-width: 1024px) 1544px, 100vw"
+            />
+          </div>
         </section>
       </div>
     </section>
