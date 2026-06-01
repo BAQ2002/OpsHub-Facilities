@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1544 528" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa AIS com posições atuais</title>
+  <desc id="desc">Mapa mundi ilustrativo com marcadores de atividades operacionais.</desc>
+  <defs>
+    <linearGradient id="ocean" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#b9e0eb"/>
+      <stop offset="1" stop-color="#9ed0dc"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.4" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+    <style>
+      .land{fill:#f8f5ef;stroke:#e5e7eb;stroke-width:1.2;}
+      .grid{stroke:#ffffff;stroke-width:1;opacity:.8;}
+      .marker{stroke:#ffffff;stroke-width:2.2;filter:url(#shadow);}
+      .label{font:12px Arial, Helvetica, sans-serif;fill:#334155;}
+    </style>
+  </defs>
+
+  <rect width="1544" height="528" rx="10" fill="url(#ocean)"/>
+
+  <g opacity="0.95">
+    <path class="land" d="M70 58 C140 34 219 42 286 75 C333 98 366 139 361 181 C354 234 286 235 249 276 C216 311 235 363 189 388 C144 412 89 390 57 350 C22 306 27 244 40 195 C52 150 25 88 70 58Z"/>
+    <path class="land" d="M285 389 C332 360 398 369 437 410 C474 449 455 502 402 514 C347 526 295 488 285 389Z"/>
+    <path class="land" d="M520 43 C597 10 706 37 756 98 C807 160 797 254 737 300 C682 342 575 327 526 276 C481 228 458 71 520 43Z"/>
+    <path class="land" d="M703 318 C748 326 792 363 796 414 C800 470 752 511 705 496 C669 484 652 433 663 389 C670 360 681 335 703 318Z"/>
+    <path class="land" d="M843 64 C904 32 992 36 1047 82 C1102 129 1112 216 1056 269 C1012 311 939 303 888 279 C837 254 794 200 803 145 C808 110 814 80 843 64Z"/>
+    <path class="land" d="M992 292 C1050 307 1097 360 1096 426 C1094 494 1026 523 975 490 C927 459 918 376 939 333 C950 312 966 296 992 292Z"/>
+    <path class="land" d="M1128 76 C1196 42 1290 45 1345 96 C1397 144 1392 221 1344 263 C1294 307 1205 300 1151 262 C1098 224 1067 107 1128 76Z"/>
+    <path class="land" d="M1304 360 C1357 332 1432 353 1471 405 C1506 451 1478 507 1422 514 C1365 522 1309 487 1292 435 C1283 407 1285 375 1304 360Z"/>
+  </g>
+
+  <g>
+    <path class="grid" d="M57 0v528M340 0v528M623 0v528M906 0v528M1189 0v528M1472 0v528"/>
+    <path class="grid" d="M0 265h1544"/>
+  </g>
+
+  <g transform="translate(12 12)">
+    <rect x="0" y="0" width="36" height="68" rx="4" fill="#ffffff" stroke="#9ca3af"/>
+    <path d="M9 18h18M18 9v18M9 52h18" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+    <path d="M0 34h36" stroke="#cbd5e1"/>
+  </g>
+
+  <g>
+    <circle class="marker" cx="884" cy="151" r="8" fill="#15a6a6"/>
+    <circle class="marker" cx="896" cy="145" r="7" fill="#24b7b5"/>
+    <circle class="marker" cx="784" cy="205" r="6" fill="#f59e0b"/>
+    <circle class="marker" cx="813" cy="273" r="6" fill="#ef4444"/>
+    <circle class="marker" cx="880" cy="304" r="10" fill="#0ea5a3"/>
+    <circle class="marker" cx="862" cy="351" r="11" fill="#a7ddeb"/>
+    <circle class="marker" cx="833" cy="389" r="12" fill="#a7ddeb"/>
+  </g>
+
+  <g transform="translate(1362 510)">
+    <rect width="13" height="7" fill="#facc15"/>
+    <rect y="7" width="13" height="3" fill="#3b82f6"/>
+    <text class="label" x="17" y="9">Leaflet | © OpenStreetMap</text>
+  </g>
+</svg>
