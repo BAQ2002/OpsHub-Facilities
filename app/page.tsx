@@ -30,37 +30,37 @@ const equipmentCards = [
     total: 10,
   },
   {
-    title: "Hidráulica",
-    code: "EE",
-    accent: "text-amber-500",
-    iconBg: "bg-amber-50",
-    available: 4,
-    maintenance: 6,
-    total: 10,
-  },
-  {
-    title: "Refrigeração e Climatização",
-    code: "EAV",
-    accent: "text-emerald-500",
-    iconBg: "bg-emerald-50",
-    available: 7,
-    maintenance: 3,
-    total: 10,
-  },
-  {
-    title: "Pintura",
-    code: "PP",
-    accent: "text-orange-500",
-    iconBg: "bg-orange-50",
+    title: "Elétrica",
+    code: "EL",
+    accent: "text-yellow-500",
+    iconBg: "bg-yellow-50",
     available: 6,
     maintenance: 4,
     total: 10,
   },
   {
-    title: "Elétrica",
-    code: "EL",
+    title: "Hidráulica",
+    code: "HD",
     accent: "text-blue-500",
     iconBg: "bg-blue-50",
+    available: 5,
+    maintenance: 5,
+    total: 10,
+  },
+  {
+    title: "Jardinagem",
+    code: "JD",
+    accent: "text-green-500",
+    iconBg: "bg-green-50",
+    available: 7,
+    maintenance: 3,
+    total: 10,
+  },
+  {
+    title: "Refrigeração",
+    code: "MN",
+    accent: "text-orange-500",
+    iconBg: "bg-orange-50",
     available: 6,
     maintenance: 4,
     total: 10,
@@ -87,6 +87,13 @@ const totals = equipmentCards.reduce(
 
 const availability = Math.round((totals.available / totals.total) * 1000) / 10;
 
+const mapImage = {
+  src: "/facilities-map.png",
+  width: 1544,
+  height: 908,
+  alt: "Mapa AIS com posições atuais das atividades de facilities",
+};
+
 export default function Home() {
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
@@ -104,56 +111,58 @@ export default function Home() {
             >
               🌙
             </button>
+
             <div className="flex items-center gap-2 text-sm text-slate-600">
-              <button className="flex h-8 w-8 items-center justify-center text-lg leading-none text-slate-500" type="button" aria-label="Atualizar">
+              <button
+                className="flex h-8 w-8 items-center justify-center text-lg leading-none text-slate-500"
+                type="button"
+                aria-label="Atualizar"
+              >
                 ↻
               </button>
+
               <select
                 className="h-8 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
                 aria-label="Intervalo de atualização"
                 defaultValue="5 min"
               >
-                <option>5 min</option>
+                <option value="5 min">5 min</option>
+                <option value="10 min">10 min</option>
+                <option value="30 min">30 min</option>
               </select>
             </div>
           </div>
         </header>
 
-        <section className="mb-5 rounded-[20px] border border-slate-200 bg-white px-5 pb-5 pt-[15px] shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-          <div className="mb-[30px] flex flex-wrap items-center gap-2">
-            <h2 className="mr-1 text-base font-bold leading-tight text-slate-950">
-              Atividades programadas
-            </h2>
-            <button
-              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              type="button"
-              aria-label="Dia anterior"
-            >
-              <ChevronLeftIcon />
-            </button>
-            <button
-              className="flex h-[30px] items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              type="button"
-              aria-label="Selecionar data"
-            >
-              <span>29/05/2026</span>
-              <CalendarIcon />
-            </button>
-            <button
-              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              type="button"
-              aria-label="Próximo dia"
-            >
-              <ChevronRightIcon />
-            </button>
-            <button
-              className="h-[30px] rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              type="button"
-            >
-              Hoje
-            </button>
+        <section className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <button
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+                type="button"
+                aria-label="Dia anterior"
+              >
+                <ChevronLeftIcon />
+              </button>
+
+              <button
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+                type="button"
+                aria-label="Próximo dia"
+              >
+                <ChevronRightIcon />
+              </button>
+
+              <button
+                className="h-[30px] rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+                type="button"
+              >
+                Hoje
+              </button>
+            </div>
+
             <Link
-              className="flex h-[30px] place-content-end items-center rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              className="flex h-[30px] items-center rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
               href="/solicitar-atividade"
             >
               Solicitar Atividade
@@ -161,10 +170,31 @@ export default function Home() {
           </div>
 
           <div className="grid gap-3 lg:grid-cols-4">
-            <SummaryCard value={String(totals.available)} label="Atividades" bg="bg-emerald-50" color="text-emerald-600" />
-            <SummaryCard value={String(totals.maintenance)} label="Disponíveis" bg="bg-amber-50" color="text-amber-600" />
-            <SummaryCard value={String(totals.total - totals.available)} label="Pendentes" bg="bg-rose-100" color="text-slate-950" raised />
-            <SummaryCard value={`${availability}%`} label="Disp. Geral" bg="bg-blue-50" color="text-blue-600" />
+            <SummaryCard
+              value={String(totals.available)}
+              label="Atividades"
+              bg="bg-emerald-50"
+              color="text-emerald-600"
+            />
+            <SummaryCard
+              value={String(totals.maintenance)}
+              label="Disponíveis"
+              bg="bg-amber-50"
+              color="text-amber-600"
+            />
+            <SummaryCard
+              value={String(totals.total - totals.available)}
+              label="Pendentes"
+              bg="bg-rose-100"
+              color="text-slate-950"
+              raised
+            />
+            <SummaryCard
+              value={`${availability}%`}
+              label="Disp. Geral"
+              bg="bg-blue-50"
+              color="text-blue-600"
+            />
           </div>
         </section>
 
@@ -175,7 +205,9 @@ export default function Home() {
               className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
               <div className="grid grid-cols-[32px_1fr_auto] items-start gap-2">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}>
+                <div
+                  className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
+                >
                   <span className={`text-lg ${card.accent}`}>⚙</span>
                 </div>
 
@@ -183,16 +215,28 @@ export default function Home() {
                   <h3 className="truncate text-base font-bold leading-tight text-slate-950">
                     {card.title}
                   </h3>
-                  <p className="mt-0.5 text-xs leading-tight text-slate-500">{card.code}</p>
+                  <p className="mt-0.5 text-xs leading-tight text-slate-500">
+                    {card.code}
+                  </p>
                 </div>
 
-                <span className="pt-1 text-base leading-none text-emerald-500">⊙</span>
+                <span className="pt-1 text-base leading-none text-emerald-500">
+                  ⊙
+                </span>
               </div>
 
               <div className="mt-3">
                 <dl className="space-y-2 text-xs">
-                  <Metric label="Atividades" value={card.available} valueClass="text-emerald-600" />
-                  <Metric label="Disponível" value={card.maintenance} valueClass="text-orange-500" />
+                  <Metric
+                    label="Atividades"
+                    value={card.available}
+                    valueClass="text-emerald-600"
+                  />
+                  <Metric
+                    label="Disponível"
+                    value={card.maintenance}
+                    valueClass="text-orange-500"
+                  />
                   <Metric label="Total" value={card.total} bordered />
                 </dl>
               </div>
@@ -200,18 +244,29 @@ export default function Home() {
           ))}
         </section>
 
-        <section className="mt-4 rounded-[20px] border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-labelledby="map-title">
-          <h2 id="map-title" className="mb-2 px-1 text-sm font-bold leading-tight text-slate-950">
-            Mapa AIS — posições atuais
+        <section
+          className="mt-4 rounded-[20px] border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
+          aria-labelledby="map-title"
+        >
+          <h2
+            id="map-title"
+            className="mb-2 px-1 text-sm font-bold leading-tight text-slate-950"
+          >
+            TECON Salvador - Atividades Facilities
           </h2>
-          <div className="relative min-h-[360px] overflow-hidden rounded-xl border border-slate-200 bg-sky-50 md:min-h-[420px] lg:min-h-[528px]">
+
+          <div
+            className="overflow-hidden rounded-xl border border-slate-200 bg-sky-50"
+            style={{ aspectRatio: `${mapImage.width} / ${mapImage.height}` }}
+          >
             <Image
-              src="/facilities-map.svg"
-              alt="Mapa AIS com posições atuais das atividades de facilities"
-              fill
-              className="object-cover"
+              src={mapImage.src}
+              alt={mapImage.alt}
+              width={mapImage.width}
+              height={mapImage.height}
+              className="h-full w-full object-contain"
               priority
-              sizes="(min-width: 1024px) 1544px, 100vw"
+              sizes="(min-width: 1680px) 1544px, calc(100vw - 96px)"
             />
           </div>
         </section>
@@ -234,7 +289,11 @@ function SummaryCard({
   raised?: boolean;
 }) {
   return (
-    <div className={`rounded-xl ${bg} px-6 py-4 text-center ${raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""}`}>
+    <div
+      className={`rounded-xl ${bg} px-6 py-4 text-center ${
+        raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""
+      }`}
+    >
       <p className={`text-[25px] font-bold leading-none ${color}`}>{value}</p>
       <p className="mt-2 text-[11px] leading-none text-slate-500">{label}</p>
     </div>
@@ -253,26 +312,32 @@ function Metric({
   bordered?: boolean;
 }) {
   return (
-    <div className={`flex justify-between gap-3 ${bordered ? "border-t border-slate-100 pt-2" : ""}`}>
+    <div
+      className={`flex items-center justify-between ${
+        bordered ? "border-t border-slate-100 pt-2" : ""
+      }`}
+    >
       <dt className="text-slate-500">{label}</dt>
-      <dd className={`font-bold ${valueClass}`}>{value}</dd>
+      <dd className={`font-semibold ${valueClass}`}>{value}</dd>
     </div>
   );
 }
+
 function ChevronLeftIcon() {
   return (
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       aria-hidden="true"
+      className="h-3.5 w-3.5"
+      fill="none"
+      viewBox="0 0 16 16"
     >
-      <path d="M15 18l-6-6 6-6" />
+      <path
+        d="M10 3.5 5.5 8l4.5 4.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
     </svg>
   );
 }
@@ -280,36 +345,18 @@ function ChevronLeftIcon() {
 function ChevronRightIcon() {
   return (
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       aria-hidden="true"
-    >
-      <path d="M9 18l6-6-6-6" />
-    </svg>
-  );
-}
-
-function CalendarIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
+      className="h-3.5 w-3.5"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
+      viewBox="0 0 16 16"
     >
-      <rect x="4" y="5" width="16" height="15" rx="2" />
-      <path d="M8 3v4M16 3v4M4 10h16" />
+      <path
+        d="M6 3.5 10.5 8 6 12.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
     </svg>
   );
 }
