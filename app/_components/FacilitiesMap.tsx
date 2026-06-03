@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import type { WheelEvent } from "react";
 
 type FacilitiesMapProps = {
   image: {
@@ -15,58 +16,64 @@ type FacilitiesMapProps = {
 const zoomLevels = [100, 125, 150, 175, 200];
 
 export default function FacilitiesMap({ image }: FacilitiesMapProps) {
+  const viewportRef = useRef<HTMLDivElement>(null);
   const [zoomIndex, setZoomIndex] = useState(0);
   const zoom = zoomLevels[zoomIndex];
-  const canZoomOut = zoomIndex > 0;
-  const canZoomIn = zoomIndex < zoomLevels.length - 1;
 
   const imageStyle = useMemo(
     () => ({ width: `${zoom}%`, maxWidth: "none" }),
     [zoom],
   );
 
-  return (
-    <div className="rounded-xl border border-slate-200 bg-sky-50">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-3 py-2">
-        <p className="text-xs font-medium text-slate-500">
-          Zoom do mapa: <span className="text-slate-950">{zoom}%</span>
-        </p>
+  const handleWheel = useCallback((event: WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
 
-        <div className="flex items-center gap-2" aria-label="Controles de zoom do mapa">
-          <button
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-base font-bold text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
-            type="button"
-            aria-label="Reduzir zoom do mapa"
-            onClick={() => setZoomIndex((current) => Math.max(current - 1, 0))}
-            disabled={!canZoomOut}
-          >
-            −
-          </button>
-          <button
-            className="h-8 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:bg-slate-50"
-            type="button"
-            onClick={() => setZoomIndex(0)}
-          >
-            Ajustar
-          </button>
-          <button
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-base font-bold text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
-            type="button"
-            aria-label="Ampliar zoom do mapa"
-            onClick={() =>
-              setZoomIndex((current) =>
-                Math.min(current + 1, zoomLevels.length - 1),
-              )
-            }
-            disabled={!canZoomIn}
-          >
-            +
-          </button>
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+
+    const bounds = viewport.getBoundingClientRect();
+    const cursorX = event.clientX - bounds.left;
+    const cursorY = event.clientY - bounds.top;
+    const scrollRatioX = (viewport.scrollLeft + cursorX) / viewport.scrollWidth;
+    const scrollRatioY = (viewport.scrollTop + cursorY) / viewport.scrollHeight;
+
+    setZoomIndex((current) => {
+      const next = event.deltaY < 0 ? current + 1 : current - 1;
+      const nextIndex = Math.min(Math.max(next, 0), zoomLevels.length - 1);
+
+      if (nextIndex === current) {
+        return current;
+      }
+
+      requestAnimationFrame(() => {
+        viewport.scrollLeft = scrollRatioX * viewport.scrollWidth - cursorX;
+        viewport.scrollTop = scrollRatioY * viewport.scrollHeight - cursorY;
+      });
+
+      return nextIndex;
+    });
+  }, []);
+
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-sky-50">
+      <div
+        className="pointer-events-none absolute left-3 top-3 z-10 overflow-hidden rounded border border-slate-300 bg-white text-slate-950 shadow-[0_1px_4px_rgba(15,23,42,0.20)]"
+        aria-hidden="true"
+      >
+        <div className="flex h-8 w-8 items-center justify-center border-b border-slate-300 text-2xl font-semibold leading-none">
+          +
+        </div>
+        <div className="flex h-8 w-8 items-center justify-center text-2xl font-light leading-none">
+          −
         </div>
       </div>
 
       <div
+        ref={viewportRef}
         className="overflow-auto"
+        onWheel={handleWheel}
         style={{ aspectRatio: `${image.width} / ${image.height}` }}
       >
         <Image
