@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import FacilitiesMap from "./_components/FacilitiesMap";
 
 const equipmentCards = [
   {
@@ -93,6 +93,209 @@ const mapImage = {
   height: 908,
   alt: "Mapa AIS com posições atuais das atividades de facilities",
 };
+
+const activityRecords = [
+  {
+    id: "ATV-001",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 1",
+    category: "—",
+    serviceType: "Manutenção",
+    location: "Fila: G-11",
+    plannedAt: "2026-06-03 08:30",
+    description: "Reparo preventivo em iluminação do pátio.",
+  },
+  {
+    id: "ATV-002",
+    activityType: "Chamado",
+    businessUnit: "Unidade 2",
+    category: "Predial",
+    serviceType: "Limpeza",
+    location: "Bloco administrativo, 2º andar",
+    plannedAt: "2026-06-03 09:00",
+    description: "Higienização emergencial da sala de reunião.",
+  },
+  {
+    id: "ATV-003",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 3",
+    category: "—",
+    serviceType: "Apoio operacional",
+    location: "Fila: B-04",
+    plannedAt: "2026-06-03 09:45",
+    description: "Apoio para isolamento de área operacional.",
+  },
+  {
+    id: "ATV-004",
+    activityType: "Chamado",
+    businessUnit: "Unidade 1",
+    category: "Administrativo",
+    serviceType: "Copa e café",
+    location: "Recepção principal",
+    plannedAt: "2026-06-03 10:15",
+    description: "Reposição de insumos de copa para visita técnica.",
+  },
+  {
+    id: "ATV-005",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 2",
+    category: "—",
+    serviceType: "Limpeza",
+    location: "Fila: D-18",
+    plannedAt: "2026-06-03 11:00",
+    description: "Limpeza de resíduos próximos à faixa de circulação.",
+  },
+  {
+    id: "ATV-006",
+    activityType: "Chamado",
+    businessUnit: "Unidade 3",
+    category: "Suporte",
+    serviceType: "Manutenção",
+    location: "Sala de controle operacional",
+    plannedAt: "2026-06-03 11:30",
+    description: "Verificação de tomada sem energização.",
+  },
+  {
+    id: "ATV-007",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 1",
+    category: "—",
+    serviceType: "Outro",
+    location: "Fila: H-07",
+    plannedAt: "2026-06-03 13:00",
+    description: "Sinalização temporária para manutenção de piso.",
+  },
+  {
+    id: "ATV-008",
+    activityType: "Chamado",
+    businessUnit: "Unidade 2",
+    category: "Outro",
+    serviceType: "Outro",
+    location: "Portaria de acesso interno",
+    plannedAt: "2026-06-03 13:45",
+    description: "Ajuste em mobiliário da área de espera.",
+  },
+  {
+    id: "ATV-009",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 3",
+    category: "—",
+    serviceType: "Manutenção",
+    location: "Fila: A-22",
+    plannedAt: "2026-06-03 14:10",
+    description: "Inspeção em proteção metálica próxima aos lotes.",
+  },
+  {
+    id: "ATV-010",
+    activityType: "Chamado",
+    businessUnit: "Unidade 1",
+    category: "Predial",
+    serviceType: "Limpeza",
+    location: "Corredor térreo do administrativo",
+    plannedAt: "2026-06-03 14:40",
+    description: "Remoção de marcas no piso e revisão de lixeiras.",
+  },
+  {
+    id: "ATV-011",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 2",
+    category: "—",
+    serviceType: "Apoio operacional",
+    location: "Fila: C-15",
+    plannedAt: "2026-06-03 15:20",
+    description: "Apoio de equipe para reorganização de materiais.",
+  },
+  {
+    id: "ATV-012",
+    activityType: "Chamado",
+    businessUnit: "Unidade 3",
+    category: "Administrativo",
+    serviceType: "Copa e café",
+    location: "Auditório",
+    plannedAt: "2026-06-03 16:00",
+    description: "Preparação de copa para treinamento interno.",
+  },
+  {
+    id: "ATV-013",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 1",
+    category: "—",
+    serviceType: "Limpeza",
+    location: "Fila: F-09",
+    plannedAt: "2026-06-03 16:30",
+    description: "Coleta de materiais soltos no pátio.",
+  },
+  {
+    id: "ATV-014",
+    activityType: "Chamado",
+    businessUnit: "Unidade 2",
+    category: "Suporte",
+    serviceType: "Manutenção",
+    location: "Sala de TI",
+    plannedAt: "2026-06-03 17:00",
+    description: "Correção de ponto de iluminação intermitente.",
+  },
+  {
+    id: "ATV-015",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 3",
+    category: "—",
+    serviceType: "Outro",
+    location: "Fila: E-13",
+    plannedAt: "2026-06-04 08:00",
+    description: "Avaliação de necessidade de pintura de demarcação.",
+  },
+  {
+    id: "ATV-016",
+    activityType: "Chamado",
+    businessUnit: "Unidade 1",
+    category: "Outro",
+    serviceType: "Outro",
+    location: "Área externa do administrativo",
+    plannedAt: "2026-06-04 08:40",
+    description: "Verificação de banco com fixação irregular.",
+  },
+  {
+    id: "ATV-017",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 2",
+    category: "—",
+    serviceType: "Manutenção",
+    location: "Fila: I-02",
+    plannedAt: "2026-06-04 09:20",
+    description: "Revisão de ponto hidráulico de apoio operacional.",
+  },
+  {
+    id: "ATV-018",
+    activityType: "Chamado",
+    businessUnit: "Unidade 3",
+    category: "Predial",
+    serviceType: "Limpeza",
+    location: "Vestiário operacional",
+    plannedAt: "2026-06-04 10:00",
+    description: "Limpeza programada após intervenção predial.",
+  },
+  {
+    id: "ATV-019",
+    activityType: "Atividade no Pátio",
+    businessUnit: "Unidade 1",
+    category: "—",
+    serviceType: "Apoio operacional",
+    location: "Fila: J-06",
+    plannedAt: "2026-06-04 10:45",
+    description: "Organização de área para chegada de equipamentos.",
+  },
+  {
+    id: "ATV-020",
+    activityType: "Chamado",
+    businessUnit: "Unidade 2",
+    category: "Administrativo",
+    serviceType: "Manutenção",
+    location: "Sala da gerência",
+    plannedAt: "2026-06-04 11:15",
+    description: "Ajuste de fechadura e revisão de dobradiças.",
+  },
+];
 
 export default function Home() {
   return (
@@ -255,19 +458,84 @@ export default function Home() {
             TECON Salvador - Atividades Facilities
           </h2>
 
-          <div
-            className="overflow-hidden rounded-xl border border-slate-200 bg-sky-50"
-            style={{ aspectRatio: `${mapImage.width} / ${mapImage.height}` }}
-          >
-            <Image
-              src={mapImage.src}
-              alt={mapImage.alt}
-              width={mapImage.width}
-              height={mapImage.height}
-              className="h-full w-full object-contain"
-              priority
-              sizes="(min-width: 1680px) 1544px, calc(100vw - 96px)"
-            />
+          <FacilitiesMap image={mapImage} />
+
+          <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
+              <div>
+                <h3 className="text-sm font-bold leading-tight text-slate-950">
+                  Solicitações planejadas
+                </h3>
+                <p className="mt-1 text-xs text-slate-500">
+                  20 registros distribuídos entre Atividade no Pátio e Chamado
+                </p>
+              </div>
+              <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
+                {activityRecords.length} atividades
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="min-w-[1180px] w-full border-collapse text-left text-xs">
+                <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
+                  <tr>
+                    <th className="px-4 py-3">ID</th>
+                    <th className="px-4 py-3">Tipo de atividade</th>
+                    <th className="px-4 py-3">Unidade de Negócio</th>
+                    <th className="px-4 py-3">Categoria</th>
+                    <th className="px-4 py-3">Tipo de Serviço</th>
+                    <th className="px-4 py-3">Local</th>
+                    <th className="px-4 py-3">Data e hora planejada</th>
+                    <th className="px-4 py-3">Descrição</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 text-slate-700">
+                  {activityRecords.map((record) => (
+                    <tr
+                      key={record.id}
+                      className={
+                        record.activityType === "Atividade no Pátio"
+                          ? "bg-teal-50/30"
+                          : "bg-white"
+                      }
+                    >
+                      <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-950">
+                        {record.id}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
+                        <span
+                          className={
+                            record.activityType === "Atividade no Pátio"
+                              ? "rounded-full bg-emerald-100 px-2 py-1 text-[11px] font-semibold text-emerald-700"
+                              : "rounded-full bg-blue-100 px-2 py-1 text-[11px] font-semibold text-blue-700"
+                          }
+                        >
+                          {record.activityType}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
+                        {record.businessUnit}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
+                        {record.category}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
+                        {record.serviceType}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-950">
+                        {record.location}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3 text-slate-500">
+                        {record.plannedAt}
+                      </td>
+                      <td className="min-w-[280px] px-4 py-3">
+                        {record.description}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
       </div>
