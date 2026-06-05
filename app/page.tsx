@@ -339,7 +339,7 @@ export default function Home() {
 
         <section className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
                 type="button"
@@ -347,6 +347,26 @@ export default function Home() {
               >
                 <ChevronLeftIcon />
               </button>
+
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                <span>De</span>
+                <input
+                  aria-label="Data inicial"
+                  className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
+                  defaultValue="2026-06-05"
+                  type="date"
+                />
+              </label>
+
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                <span>Até</span>
+                <input
+                  aria-label="Data final"
+                  className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
+                  defaultValue="2026-06-05"
+                  type="date"
+                />
+              </label>
 
               <button
                 className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
