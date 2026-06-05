@@ -85,8 +85,6 @@ const totals = equipmentCards.reduce(
   { available: 0, maintenance: 0, total: 0 },
 );
 
-const availability = Math.round((totals.available / totals.total) * 1000) / 10;
-
 const mapImage = {
   src: "/facilities-map.png",
   width: 1544,
@@ -297,6 +295,17 @@ const activityRecords = [
   },
 ];
 
+const slaSamplesInMinutes = [
+  95, 120, 135, 150, 165, 180, 105, 125, 140, 155,
+];
+
+const averageSlaInMinutes = Math.round(
+  slaSamplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) /
+    slaSamplesInMinutes.length,
+);
+
+const averageSla = formatDuration(averageSlaInMinutes);
+
 export default function Home() {
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
@@ -383,41 +392,34 @@ export default function Home() {
                 Hoje
               </button>
             </div>
-
-            <Link
-              className="flex h-[30px] items-center rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              href="/solicitar-atividade"
-            >
-              Solicitar Atividade
-            </Link>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-4">
-            <SummaryCard
-              value={String(totals.available)}
-              label="Atividades"
-              bg="bg-emerald-50"
-              color="text-emerald-600"
-            />
-            <SummaryCard
-              value={String(totals.maintenance)}
-              label="Disponíveis"
-              bg="bg-amber-50"
-              color="text-amber-600"
-            />
-            <SummaryCard
-              value={String(totals.total - totals.available)}
-              label="Pendentes"
-              bg="bg-rose-100"
-              color="text-slate-950"
-              raised
-            />
-            <SummaryCard
-              value={`${availability}%`}
-              label="Disp. Geral"
-              bg="bg-blue-50"
-              color="text-blue-600"
-            />
+          <div className="grid gap-3 lg:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <SummaryCard
+                value={String(totals.available)}
+                label="Atividades"
+                bg="bg-emerald-50"
+                color="text-emerald-600"
+              />
+              <SummaryCard
+                value={averageSla}
+                label="SLA Médio"
+                bg="bg-blue-50"
+                color="text-blue-600"
+              />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <ActionCard
+                href="/solicitar-atividade"
+                label="Solicitar Atividade"
+              />
+              <ActionCard
+                href="#minhas-solicitacoes"
+                label="Minhas solicitações"
+              />
+            </div>
           </div>
         </section>
 
@@ -481,7 +483,10 @@ export default function Home() {
           <FacilitiesMap image={mapImage} />
 
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
+            <div
+              id="minhas-solicitacoes"
+              className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3"
+            >
               <div>
                 <h3 className="text-sm font-bold leading-tight text-slate-950">
                   Solicitações planejadas
@@ -578,7 +583,7 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`rounded-xl ${bg} px-6 py-4 text-center ${
+      className={`min-h-[76px] rounded-xl ${bg} px-6 py-4 text-center ${
         raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""
       }`}
     >
@@ -586,6 +591,24 @@ function SummaryCard({
       <p className="mt-2 text-[11px] leading-none text-slate-500">{label}</p>
     </div>
   );
+}
+
+function ActionCard({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      className="flex min-h-[76px] items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-4 text-center text-sm font-bold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:border-slate-300 hover:bg-slate-50"
+      href={href}
+    >
+      {label}
+    </Link>
+  );
+}
+
+function formatDuration(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours}h ${minutes}min`;
 }
 
 function Metric({
