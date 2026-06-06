@@ -279,9 +279,7 @@ const activityRecords = [
   },
 ];
 
-const slaSamplesInMinutes = [
-  95, 120, 135, 150, 165, 180, 105, 125, 140, 155,
-];
+const slaSamplesInMinutes = [53];
 
 const averageSlaInMinutes = Math.round(
   slaSamplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) /
@@ -291,13 +289,13 @@ const averageSlaInMinutes = Math.round(
 const averageSlaClock = formatClockDuration(averageSlaInMinutes);
 
 const sevenSegmentPaths = [
-  { id: "a", points: "8,1 27,1 31,5 27,9 8,9 4,5" },
-  { id: "b", points: "29,7 33,11 33,26 29,30 25,26 25,11" },
-  { id: "c", points: "29,32 33,36 33,51 29,55 25,51 25,36" },
-  { id: "d", points: "8,49 27,49 31,53 27,57 8,57 4,53" },
-  { id: "e", points: "5,32 9,36 9,51 5,55 1,51 1,36" },
-  { id: "f", points: "5,7 9,11 9,26 5,30 1,26 1,11" },
-  { id: "g", points: "8,25 27,25 31,29 27,33 8,33 4,29" },
+  { id: "a", x: 5, y: 0, width: 18, height: 4 },
+  { id: "b", x: 24, y: 4, width: 4, height: 19 },
+  { id: "c", x: 24, y: 27, width: 4, height: 19 },
+  { id: "d", x: 5, y: 46, width: 18, height: 4 },
+  { id: "e", x: 0, y: 27, width: 4, height: 19 },
+  { id: "f", x: 0, y: 4, width: 4, height: 19 },
+  { id: "g", x: 5, y: 23, width: 18, height: 4 },
 ] as const;
 
 const sevenSegmentMap: Record<
@@ -593,15 +591,18 @@ function SlaDisplay({
       </h2>
 
       <div
-        className="flex h-[78px] items-center justify-center rounded-[16px] bg-[#0b0f16] px-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(15,23,42,0.14)]"
+        className="flex h-[78px] w-[196px] items-center justify-center rounded-[17px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
         aria-label={`SLA médio ${caption}`}
         role="img"
       >
-        <SevenSegmentDigit value={hours[0]} />
-        <SevenSegmentDigit value={hours[1]} />
-        <BlinkingColon />
-        <SevenSegmentDigit value={minutes[0]} />
-        <SevenSegmentDigit value={minutes[1]} />
+        <div className="flex items-center gap-[5px]">
+          <SevenSegmentDigit value={hours[0]} />
+          <SevenSegmentDigit value={hours[1]} />
+        </div>
+        <div className="ml-[29px] flex items-center gap-[5px]">
+          <SevenSegmentDigit value={minutes[0]} />
+          <SevenSegmentDigit value={minutes[1]} />
+        </div>
       </div>
 
       <p className="mt-2 text-sm font-semibold leading-none text-[#45628a]">
@@ -611,37 +612,27 @@ function SlaDisplay({
   );
 }
 
-function BlinkingColon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="mx-2 h-[54px] w-[10px] animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
-      fill="currentColor"
-      viewBox="0 0 10 54"
-    >
-      <circle cx="5" cy="19" r="3.2" />
-      <circle cx="5" cy="35" r="3.2" />
-    </svg>
-  );
-}
-
 function SevenSegmentDigit({ value }: { value: string }) {
   const activeSegments = sevenSegmentMap[value] ?? sevenSegmentMap["0"];
 
   return (
     <svg
       aria-hidden="true"
-      className="h-[58px] w-[34px] shrink-0"
-      viewBox="0 0 34 58"
+      className="h-[50px] w-[28px] shrink-0"
+      viewBox="0 0 28 50"
     >
       {sevenSegmentPaths.map((segment) => (
-        <polygon
+        <rect
           key={segment.id}
-          points={segment.points}
+          x={segment.x}
+          y={segment.y}
+          width={segment.width}
+          height={segment.height}
+          rx="1"
           className={
             activeSegments.includes(segment.id)
-              ? "fill-[#08c6e8] drop-shadow-[0_0_5px_rgba(8,198,232,0.75)]"
-              : "fill-[#123342] opacity-70"
+              ? "fill-[#08c6e8]"
+              : "fill-transparent"
           }
         />
       ))}
