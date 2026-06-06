@@ -4,85 +4,69 @@ import FacilitiesMap from "./_components/FacilitiesMap";
 const equipmentCards = [
   {
     title: "Artífice",
-    code: "EC",
     accent: "text-cyan-600",
     iconBg: "bg-cyan-50",
-    available: 8,
-    maintenance: 2,
-    total: 10,
+    Planned: 8,
+    InProgress: 2,
   },
   {
     title: "Civil",
-    code: "MCA",
     accent: "text-violet-500",
     iconBg: "bg-violet-50",
-    available: 4,
-    maintenance: 6,
-    total: 10,
+    Planned: 4,
+    InProgress: 6,
   },
   {
     title: "Copa e Café",
-    code: "PP",
     accent: "text-red-500",
     iconBg: "bg-red-50",
-    available: 6,
-    maintenance: 4,
-    total: 10,
+    Planned: 6,
+    InProgress: 4,
   },
   {
     title: "Elétrica",
-    code: "EL",
     accent: "text-yellow-500",
     iconBg: "bg-yellow-50",
-    available: 6,
-    maintenance: 4,
-    total: 10,
+    Planned: 6,
+    InProgress: 4,
   },
   {
     title: "Hidráulica",
-    code: "HD",
     accent: "text-blue-500",
     iconBg: "bg-blue-50",
-    available: 5,
-    maintenance: 5,
+    Planned: 5,
+    InProgress: 5,
     total: 10,
   },
   {
     title: "Jardinagem",
-    code: "JD",
     accent: "text-green-500",
     iconBg: "bg-green-50",
-    available: 7,
-    maintenance: 3,
-    total: 10,
+    Planned: 7,
+    InProgress: 3,
   },
   {
     title: "Refrigeração",
-    code: "MN",
     accent: "text-orange-500",
     iconBg: "bg-orange-50",
-    available: 6,
-    maintenance: 4,
-    total: 10,
+    Planned: 6,
+    InProgress: 4,
   },
   {
     title: "Limpeza",
-    code: "LP",
     accent: "text-teal-500",
     iconBg: "bg-teal-50",
-    available: 4,
-    maintenance: 6,
-    total: 10,
+    Planned: 4,
+    InProgress: 6,
   },
 ];
 
 const totals = equipmentCards.reduce(
   (acc, card) => ({
-    available: acc.available + card.available,
-    maintenance: acc.maintenance + card.maintenance,
-    total: acc.total + card.total,
+    Planned: acc.Planned + card.Planned,
+    InProgress: acc.InProgress + card.InProgress,
   }),
-  { available: 0, maintenance: 0, total: 0 },
+  { Planned: 0, InProgress: 0 },
 );
 
 const mapImage = {
@@ -398,7 +382,7 @@ export default function Home() {
             <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
               <div className="grid gap-3 sm:grid-cols-2">
                 <SummaryCard
-                  value={String(totals.available)}
+                  value={String(totals.Planned)}
                   label="Atividades"
                   bg="bg-emerald-50"
                   color="text-emerald-600"
@@ -433,40 +417,31 @@ export default function Home() {
               key={card.title}
               className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
-              <div className="grid grid-cols-[32px_1fr_auto] items-start gap-2">
+              <div className="flex items-center justify-start gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
                 >
-                  <span className={`text-lg ${card.accent}`}>⚙</span>
+
                 </div>
 
-                <div className="min-w-0">
-                  <h3 className="truncate text-base font-bold leading-tight text-slate-950">
+                  <h3 className="flex items-center justify-start truncate text-base font-bold text-slate-950">
                     {card.title}
                   </h3>
-                  <p className="mt-0.5 text-xs leading-tight text-slate-500">
-                    {card.code}
-                  </p>
-                </div>
-
-                <span className="pt-1 text-base leading-none text-emerald-500">
-                  ⊙
-                </span>
+        
               </div>
 
               <div className="mt-3">
                 <dl className="space-y-2 text-xs">
                   <Metric
-                    label="Atividades"
-                    value={card.available}
+                    label="Programadas"
+                    value={card.Planned}
                     valueClass="text-emerald-600"
                   />
                   <Metric
-                    label="Disponível"
-                    value={card.maintenance}
-                    valueClass="text-orange-500"
+                    label="Em andamento"
+                    value={card.InProgress}
+                    valueClass="text-yellow-500"
                   />
-                  <Metric label="Total" value={card.total} bordered />
                 </dl>
               </div>
             </article>
