@@ -402,14 +402,20 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-2">
-            <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-              <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 lg:grid-cols-3">
+            <div className="lg:col-span-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+              <div className="grid gap-3 sm:grid-cols-3">
                 <SummaryCard
                   value={String(totals.Planned)}
-                  label="Atividades"
+                  label="Programadas"
                   bg="bg-emerald-50"
                   color="text-emerald-600"
+                />
+                <SummaryCard
+                  value={String(totals.Planned)}
+                  label="Em andamento"
+                  bg="bg-amber-50"
+                  color="text-yellow-500"
                 />
                 <SlaDisplay
                   displayValue={averageSlaClock.display}
@@ -418,8 +424,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-              <div className="grid gap-3 sm:grid-cols-2">
+            <div className="lg:col-span-1 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+              <div className="grid gap-3 sm:grid-cols-1">
                 <ActionCard
                   href="/solicitar-atividade"
                   label="Solicitar Atividade"
@@ -453,7 +459,7 @@ export default function Home() {
               </div>
 
               <div className="mt-3">
-                <dl className="space-y-2 text-xs">
+                <dl className="space-y-2 text-sm">
                   <Metric
                     label="Programadas"
                     value={card.Planned}
