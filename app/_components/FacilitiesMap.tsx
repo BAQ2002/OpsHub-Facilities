@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useMemo, useRef, useState } from "react";
-import type { PointerEvent, WheelEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { PointerEvent } from "react";
 
 type FacilitiesMapProps = {
   image: {
@@ -58,7 +58,7 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
     [view.scale, view.x, view.y],
   );
 
-  const handleWheel = useCallback((event: WheelEvent<HTMLDivElement>) => {
+  const handleWheel = useCallback((event: WheelEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -96,6 +96,19 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
       );
     });
   }, []);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      viewport.removeEventListener("wheel", handleWheel);
+    };
+  }, [handleWheel]);
 
   const handlePointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) {
@@ -178,8 +191,10 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={stopDragging}
-        onWheel={handleWheel}
-        style={{ aspectRatio: `${image.width} / ${image.height}` }}
+        style={{
+          aspectRatio: `${image.width} / ${image.height}`,
+          overscrollBehavior: "contain",
+        }}
       >
         <div className="h-full w-full will-change-transform" style={mapStyle}>
           <Image
