@@ -599,7 +599,8 @@ function SlaDisplay({
           <SevenSegmentDigit value={hours[0]} />
           <SevenSegmentDigit value={hours[1]} />
         </div>
-        <div className="ml-[29px] flex items-center gap-[5px]">
+        <BlinkingColon />
+        <div className="flex items-center gap-[5px]">
           <SevenSegmentDigit value={minutes[0]} />
           <SevenSegmentDigit value={minutes[1]} />
         </div>
@@ -609,6 +610,20 @@ function SlaDisplay({
         {caption}
       </p>
     </section>
+  );
+}
+
+function BlinkingColon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="mx-[10px] h-[50px] w-[10px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
+      fill="currentColor"
+      viewBox="0 0 10 50"
+    >
+      <circle cx="5" cy="16" r="3" />
+      <circle cx="5" cy="30" r="3" />
+    </svg>
   );
 }
 
@@ -632,7 +647,7 @@ function SevenSegmentDigit({ value }: { value: string }) {
           className={
             activeSegments.includes(segment.id)
               ? "fill-[#08c6e8]"
-              : "fill-transparent"
+              : "fill-[#0b2938] opacity-80"
           }
         />
       ))}
