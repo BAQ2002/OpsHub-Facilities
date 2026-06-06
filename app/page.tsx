@@ -346,8 +346,8 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <section className="mb-4 space-y-3">
+          <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
             <div className="flex flex-wrap items-center gap-2">
               <button
                 className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
@@ -395,30 +395,34 @@ export default function Home() {
           </div>
 
           <div className="grid gap-3 lg:grid-cols-2">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <SummaryCard
-                value={String(totals.available)}
-                label="Atividades"
-                bg="bg-emerald-50"
-                color="text-emerald-600"
-              />
-              <SummaryCard
-                value={averageSla}
-                label="SLA Médio"
-                bg="bg-blue-50"
-                color="text-blue-600"
-              />
+            <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <SummaryCard
+                  value={String(totals.available)}
+                  label="Atividades"
+                  bg="bg-emerald-50"
+                  color="text-emerald-600"
+                />
+                <SummaryCard
+                  value={averageSla}
+                  label="SLA Médio"
+                  bg="bg-blue-50"
+                  color="text-blue-600"
+                />
+              </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <ActionCard
-                href="/solicitar-atividade"
-                label="Solicitar Atividade"
-              />
-              <ActionCard
-                href="#minhas-solicitacoes"
-                label="Minhas solicitações"
-              />
+            <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <ActionCard
+                  href="/solicitar-atividade"
+                  label="Solicitar Atividade"
+                />
+                <ActionCard
+                  href="#minhas-solicitacoes"
+                  label="Minhas solicitações"
+                />
+              </div>
             </div>
           </div>
         </section>
