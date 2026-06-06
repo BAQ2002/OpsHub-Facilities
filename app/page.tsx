@@ -404,18 +404,20 @@ export default function Home() {
 
           <div className="grid gap-3 lg:grid-cols-3">
             <div className="lg:col-span-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid items-stretch gap-3 md:grid-cols-[minmax(120px,0.9fr)_minmax(120px,0.9fr)_minmax(190px,1.1fr)]">
                 <SummaryCard
                   value={String(totals.Planned)}
                   label="Programadas"
                   bg="bg-emerald-50"
+                  border="border-emerald-100"
                   color="text-emerald-600"
                 />
                 <SummaryCard
-                  value={String(totals.Planned)}
+                  value={String(totals.InProgress)}
                   label="Em andamento"
                   bg="bg-amber-50"
-                  color="text-yellow-500"
+                  border="border-amber-100"
+                  color="text-amber-500"
                 />
                 <SlaDisplay
                   displayValue={averageSlaClock.display}
@@ -586,18 +588,18 @@ function SlaDisplay({
 
   return (
     <section
-      className="flex min-h-[118px] flex-col items-center justify-center rounded-xl bg-white px-3 py-2 text-center"
+      className="flex min-h-[124px] flex-col items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
       aria-labelledby="sla-display-title"
     >
       <h2
         id="sla-display-title"
-        className="mb-2 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#45628a]"
+        className="mb-3 text-[12px] font-semibold leading-tight text-slate-600"
       >
         Tempo médio de atendimento
       </h2>
 
       <div
-        className="flex h-[70px] w-[178px] items-center justify-center rounded-[15px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+        className="flex h-[60px] w-[158px] items-center justify-center rounded-[13px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_6px_14px_rgba(15,23,42,0.10)]"
         aria-label={`SLA médio ${caption}`}
         role="img"
       >
@@ -612,7 +614,7 @@ function SlaDisplay({
         </div>
       </div>
 
-      <p className="mt-2 text-sm font-semibold leading-none text-[#45628a]">
+      <p className="mt-2 text-sm font-semibold leading-none text-slate-600">
         {caption}
       </p>
     </section>
@@ -623,7 +625,7 @@ function BlinkingColon() {
   return (
     <svg
       aria-hidden="true"
-      className="mx-[9px] h-[45px] w-[9px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
+      className="mx-[8px] h-[38px] w-[8px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
       fill="currentColor"
       viewBox="0 0 10 50"
     >
@@ -639,7 +641,7 @@ function SevenSegmentDigit({ value }: { value: string }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-[45px] w-[25.5px] shrink-0"
+      className="h-[38px] w-[21.5px] shrink-0"
       viewBox="0 0 28 50"
     >
       {sevenSegmentPaths.map((segment) => (
@@ -665,23 +667,23 @@ function SummaryCard({
   value,
   label,
   bg,
+  border,
   color,
-  raised = false,
 }: {
   value: string;
   label: string;
   bg: string;
+  border: string;
   color: string;
-  raised?: boolean;
 }) {
   return (
     <div
-      className={`min-h-[76px] rounded-xl ${bg} px-6 py-4 text-center ${
-        raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""
-      }`}
+      className={`flex min-h-[124px] flex-col items-center justify-center rounded-xl border ${border} ${bg} px-4 py-4 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)]`}
     >
-      <p className={`text-[25px] font-bold leading-none ${color}`}>{value}</p>
-      <p className="mt-2 text-[11px] leading-none text-slate-500">{label}</p>
+      <p className={`text-[34px] font-bold leading-none ${color}`}>{value}</p>
+      <p className="mt-3 text-[12px] font-semibold leading-tight text-slate-600">
+        {label}
+      </p>
     </div>
   );
 }
