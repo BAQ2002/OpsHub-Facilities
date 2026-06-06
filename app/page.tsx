@@ -288,7 +288,33 @@ const averageSlaInMinutes = Math.round(
     slaSamplesInMinutes.length,
 );
 
-const averageSla = formatDuration(averageSlaInMinutes);
+const averageSlaClock = formatClockDuration(averageSlaInMinutes);
+
+const sevenSegmentPaths = [
+  { id: "a", points: "8,1 27,1 31,5 27,9 8,9 4,5" },
+  { id: "b", points: "29,7 33,11 33,26 29,30 25,26 25,11" },
+  { id: "c", points: "29,32 33,36 33,51 29,55 25,51 25,36" },
+  { id: "d", points: "8,49 27,49 31,53 27,57 8,57 4,53" },
+  { id: "e", points: "5,32 9,36 9,51 5,55 1,51 1,36" },
+  { id: "f", points: "5,7 9,11 9,26 5,30 1,26 1,11" },
+  { id: "g", points: "8,25 27,25 31,29 27,33 8,33 4,29" },
+] as const;
+
+const sevenSegmentMap: Record<
+  string,
+  (typeof sevenSegmentPaths)[number]["id"][]
+> = {
+  "0": ["a", "b", "c", "d", "e", "f"],
+  "1": ["b", "c"],
+  "2": ["a", "b", "d", "e", "g"],
+  "3": ["a", "b", "c", "d", "g"],
+  "4": ["b", "c", "f", "g"],
+  "5": ["a", "c", "d", "f", "g"],
+  "6": ["a", "c", "d", "e", "f", "g"],
+  "7": ["a", "b", "c"],
+  "8": ["a", "b", "c", "d", "e", "f", "g"],
+  "9": ["a", "b", "c", "d", "f", "g"],
+};
 
 export default function Home() {
   return (
@@ -387,11 +413,9 @@ export default function Home() {
                   bg="bg-emerald-50"
                   color="text-emerald-600"
                 />
-                <SummaryCard
-                  value={averageSla}
-                  label="SLA Médio"
-                  bg="bg-blue-50"
-                  color="text-blue-600"
+                <SlaDisplay
+                  displayValue={averageSlaClock.display}
+                  caption={averageSlaClock.caption}
                 />
               </div>
             </div>
@@ -547,6 +571,84 @@ export default function Home() {
   );
 }
 
+function SlaDisplay({
+  displayValue,
+  caption,
+}: {
+  displayValue: string;
+  caption: string;
+}) {
+  const [hours, minutes] = displayValue.split(":");
+
+  return (
+    <section
+      className="flex min-h-[118px] flex-col items-center justify-center rounded-xl bg-white px-3 py-2 text-center"
+      aria-labelledby="sla-display-title"
+    >
+      <h2
+        id="sla-display-title"
+        className="mb-2 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#45628a]"
+      >
+        Tempo médio de atendimento
+      </h2>
+
+      <div
+        className="flex h-[78px] items-center justify-center rounded-[16px] bg-[#0b0f16] px-4 shadow-[inset_0_-1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(15,23,42,0.14)]"
+        aria-label={`SLA médio ${caption}`}
+        role="img"
+      >
+        <SevenSegmentDigit value={hours[0]} />
+        <SevenSegmentDigit value={hours[1]} />
+        <BlinkingColon />
+        <SevenSegmentDigit value={minutes[0]} />
+        <SevenSegmentDigit value={minutes[1]} />
+      </div>
+
+      <p className="mt-2 text-sm font-semibold leading-none text-[#45628a]">
+        {caption}
+      </p>
+    </section>
+  );
+}
+
+function BlinkingColon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="mx-2 h-[54px] w-[10px] animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
+      fill="currentColor"
+      viewBox="0 0 10 54"
+    >
+      <circle cx="5" cy="19" r="3.2" />
+      <circle cx="5" cy="35" r="3.2" />
+    </svg>
+  );
+}
+
+function SevenSegmentDigit({ value }: { value: string }) {
+  const activeSegments = sevenSegmentMap[value] ?? sevenSegmentMap["0"];
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-[58px] w-[34px] shrink-0"
+      viewBox="0 0 34 58"
+    >
+      {sevenSegmentPaths.map((segment) => (
+        <polygon
+          key={segment.id}
+          points={segment.points}
+          className={
+            activeSegments.includes(segment.id)
+              ? "fill-[#08c6e8] drop-shadow-[0_0_5px_rgba(8,198,232,0.75)]"
+              : "fill-[#123342] opacity-70"
+          }
+        />
+      ))}
+    </svg>
+  );
+}
+
 function SummaryCard({
   value,
   label,
@@ -583,11 +685,14 @@ function ActionCard({ href, label }: { href: string; label: string }) {
   );
 }
 
-function formatDuration(totalMinutes: number) {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+function formatClockDuration(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60).toString().padStart(2, "0");
+  const minutes = (totalMinutes % 60).toString().padStart(2, "0");
 
-  return `${hours}h ${minutes}min`;
+  return {
+    display: `${hours}:${minutes}`,
+    caption: `${hours}h${minutes}min`,
+  };
 }
 
 function Metric({
