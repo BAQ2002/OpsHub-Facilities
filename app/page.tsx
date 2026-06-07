@@ -597,16 +597,16 @@ function SlaDisplay({
       </h2>
 
       <div
-        className="flex h-[78px] w-[196px] items-center justify-center rounded-[17px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+        className="flex h-[70px] w-[178px] items-center justify-center rounded-[15px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
         aria-label={`SLA médio ${caption}`}
         role="img"
       >
-        <div className="flex items-center gap-[5px]">
+        <div className="flex items-center gap-[4.5px]">
           <SevenSegmentDigit value={hours[0]} />
           <SevenSegmentDigit value={hours[1]} />
         </div>
         <BlinkingColon />
-        <div className="flex items-center gap-[5px]">
+        <div className="flex items-center gap-[4.5px]">
           <SevenSegmentDigit value={minutes[0]} />
           <SevenSegmentDigit value={minutes[1]} />
         </div>
@@ -623,7 +623,7 @@ function BlinkingColon() {
   return (
     <svg
       aria-hidden="true"
-      className="mx-[10px] h-[50px] w-[10px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
+      className="mx-[9px] h-[45px] w-[9px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
       fill="currentColor"
       viewBox="0 0 10 50"
     >
@@ -639,7 +639,7 @@ function SevenSegmentDigit({ value }: { value: string }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-[50px] w-[28px] shrink-0"
+      className="h-[45px] w-[25.5px] shrink-0"
       viewBox="0 0 28 50"
     >
       {sevenSegmentPaths.map((segment) => (
