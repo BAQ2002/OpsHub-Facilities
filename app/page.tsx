@@ -100,7 +100,7 @@ const activityRecords = [
   {
     id: "ATV-001",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: G-11",
@@ -111,7 +111,7 @@ const activityRecords = [
   {
     id: "ATV-002",
     activityType: "Chamado",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Bloco administrativo, 2º andar",
@@ -122,7 +122,7 @@ const activityRecords = [
   {
     id: "ATV-003",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Artífice" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: B-04",
@@ -133,7 +133,7 @@ const activityRecords = [
   {
     id: "ATV-004",
     activityType: "Chamado",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Copa e Café" as ActivityCategory,
     serviceType: "Copa e café",
     location: "Recepção principal",
@@ -144,7 +144,7 @@ const activityRecords = [
   {
     id: "ATV-005",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Fila: D-18",
@@ -155,7 +155,7 @@ const activityRecords = [
   {
     id: "ATV-006",
     activityType: "Chamado",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala de controle operacional",
@@ -166,7 +166,7 @@ const activityRecords = [
   {
     id: "ATV-007",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Civil" as ActivityCategory,
     serviceType: "Outro",
     location: "Fila: H-07",
@@ -177,7 +177,7 @@ const activityRecords = [
   {
     id: "ATV-008",
     activityType: "Chamado",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Artífice" as ActivityCategory,
     serviceType: "Outro",
     location: "Portaria de acesso interno",
@@ -188,7 +188,7 @@ const activityRecords = [
   {
     id: "ATV-009",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Civil" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: A-22",
@@ -199,7 +199,7 @@ const activityRecords = [
   {
     id: "ATV-010",
     activityType: "Chamado",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Corredor térreo do administrativo",
@@ -210,7 +210,7 @@ const activityRecords = [
   {
     id: "ATV-011",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Jardinagem" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: C-15",
@@ -221,7 +221,7 @@ const activityRecords = [
   {
     id: "ATV-012",
     activityType: "Chamado",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Copa e Café" as ActivityCategory,
     serviceType: "Copa e café",
     location: "Auditório",
@@ -232,7 +232,7 @@ const activityRecords = [
   {
     id: "ATV-013",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Fila: F-09",
@@ -243,7 +243,7 @@ const activityRecords = [
   {
     id: "ATV-014",
     activityType: "Chamado",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala de TI",
@@ -254,7 +254,7 @@ const activityRecords = [
   {
     id: "ATV-015",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Civil" as ActivityCategory,
     serviceType: "Outro",
     location: "Fila: E-13",
@@ -265,7 +265,7 @@ const activityRecords = [
   {
     id: "ATV-016",
     activityType: "Chamado",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Jardinagem" as ActivityCategory,
     serviceType: "Outro",
     location: "Área externa do administrativo",
@@ -276,7 +276,7 @@ const activityRecords = [
   {
     id: "ATV-017",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Hidráulica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: I-02",
@@ -287,7 +287,7 @@ const activityRecords = [
   {
     id: "ATV-018",
     activityType: "Chamado",
-    businessUnit: "Unidade 3",
+    businessUnit: "TECON",
     category: "Refrigeração" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Vestiário operacional",
@@ -298,7 +298,7 @@ const activityRecords = [
   {
     id: "ATV-019",
     activityType: "Atividade no Pátio",
-    businessUnit: "Unidade 1",
+    businessUnit: "TECON",
     category: "Refrigeração" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: J-06",
@@ -309,7 +309,7 @@ const activityRecords = [
   {
     id: "ATV-020",
     activityType: "Chamado",
-    businessUnit: "Unidade 2",
+    businessUnit: "CLS",
     category: "Artífice" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala da gerência",
@@ -326,6 +326,23 @@ const activityMarkers = activityRecords.map((record) => ({
   x: record.mapPosition.x,
   y: record.mapPosition.y,
 }));
+
+const businessUnitFilters = ["TECON", "CLS"] as const;
+
+const plannedRequestFilterOptions = [
+  ...businessUnitFilters.map((businessUnit) => ({
+    label: businessUnit,
+    count: activityRecords.filter(
+      (record) => record.businessUnit === businessUnit,
+    ).length,
+    isActive: false,
+  })),
+  {
+    label: "Todos",
+    count: activityRecords.length,
+    isActive: true,
+  },
+];
 
 const slaSamplesInMinutes = [53];
 
@@ -533,6 +550,27 @@ export default function Home() {
           </h2>
 
           <FacilitiesMap image={mapImage} markers={activityMarkers} />
+
+          <div
+            className="mt-4 flex flex-wrap items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+            aria-label="Filtros de unidade de negócio das solicitações planejadas"
+          >
+            <span className="mr-1 text-xs font-medium text-slate-500">
+              Mostrar:
+            </span>
+            {plannedRequestFilterOptions.map((option) => (
+              <span
+                key={option.label}
+                className={
+                  option.isActive
+                    ? "rounded-full border border-cyan-300 bg-cyan-50 px-3 py-1.5 text-xs font-semibold text-cyan-700"
+                    : "rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600"
+                }
+              >
+                {option.label} ({option.count})
+              </span>
+            ))}
+          </div>
 
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
             <div
