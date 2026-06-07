@@ -61,6 +61,19 @@ const equipmentCards = [
   },
 ];
 
+const categoryColorMap = {
+  Artífice: "#0891b2",
+  Civil: "#8b5cf6",
+  "Copa e Café": "#ef4444",
+  Elétrica: "#eab308",
+  Hidráulica: "#3b82f6",
+  Jardinagem: "#22c55e",
+  Refrigeração: "#f97316",
+  Limpeza: "#14b8a6",
+} as const;
+
+type ActivityCategory = keyof typeof categoryColorMap;
+
 const totals = equipmentCards.reduce(
   (acc, card) => ({
     Planned: acc.Planned + card.Planned,
@@ -81,203 +94,231 @@ const activityRecords = [
     id: "ATV-001",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 1",
-    category: "—",
+    category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: G-11",
     plannedAt: "2026-06-03 08:30",
     description: "Reparo preventivo em iluminação do pátio.",
+    mapPosition: { x: 71, y: 28 },
   },
   {
     id: "ATV-002",
     activityType: "Chamado",
     businessUnit: "Unidade 2",
-    category: "Predial",
+    category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Bloco administrativo, 2º andar",
     plannedAt: "2026-06-03 09:00",
     description: "Higienização emergencial da sala de reunião.",
+    mapPosition: { x: 55, y: 36 },
   },
   {
     id: "ATV-003",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 3",
-    category: "—",
+    category: "Artífice" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: B-04",
     plannedAt: "2026-06-03 09:45",
     description: "Apoio para isolamento de área operacional.",
+    mapPosition: { x: 43, y: 27 },
   },
   {
     id: "ATV-004",
     activityType: "Chamado",
     businessUnit: "Unidade 1",
-    category: "Administrativo",
+    category: "Copa e Café" as ActivityCategory,
     serviceType: "Copa e café",
     location: "Recepção principal",
     plannedAt: "2026-06-03 10:15",
     description: "Reposição de insumos de copa para visita técnica.",
+    mapPosition: { x: 50, y: 44 },
   },
   {
     id: "ATV-005",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 2",
-    category: "—",
+    category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Fila: D-18",
     plannedAt: "2026-06-03 11:00",
     description: "Limpeza de resíduos próximos à faixa de circulação.",
+    mapPosition: { x: 64, y: 52 },
   },
   {
     id: "ATV-006",
     activityType: "Chamado",
     businessUnit: "Unidade 3",
-    category: "Suporte",
+    category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala de controle operacional",
     plannedAt: "2026-06-03 11:30",
     description: "Verificação de tomada sem energização.",
+    mapPosition: { x: 35, y: 58 },
   },
   {
     id: "ATV-007",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 1",
-    category: "—",
+    category: "Civil" as ActivityCategory,
     serviceType: "Outro",
     location: "Fila: H-07",
     plannedAt: "2026-06-03 13:00",
     description: "Sinalização temporária para manutenção de piso.",
+    mapPosition: { x: 73, y: 48 },
   },
   {
     id: "ATV-008",
     activityType: "Chamado",
     businessUnit: "Unidade 2",
-    category: "Outro",
+    category: "Artífice" as ActivityCategory,
     serviceType: "Outro",
     location: "Portaria de acesso interno",
     plannedAt: "2026-06-03 13:45",
     description: "Ajuste em mobiliário da área de espera.",
+    mapPosition: { x: 28, y: 43 },
   },
   {
     id: "ATV-009",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 3",
-    category: "—",
+    category: "Civil" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: A-22",
     plannedAt: "2026-06-03 14:10",
     description: "Inspeção em proteção metálica próxima aos lotes.",
+    mapPosition: { x: 38, y: 33 },
   },
   {
     id: "ATV-010",
     activityType: "Chamado",
     businessUnit: "Unidade 1",
-    category: "Predial",
+    category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Corredor térreo do administrativo",
     plannedAt: "2026-06-03 14:40",
     description: "Remoção de marcas no piso e revisão de lixeiras.",
+    mapPosition: { x: 47, y: 62 },
   },
   {
     id: "ATV-011",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 2",
-    category: "—",
+    category: "Jardinagem" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: C-15",
     plannedAt: "2026-06-03 15:20",
     description: "Apoio de equipe para reorganização de materiais.",
+    mapPosition: { x: 59, y: 68 },
   },
   {
     id: "ATV-012",
     activityType: "Chamado",
     businessUnit: "Unidade 3",
-    category: "Administrativo",
+    category: "Copa e Café" as ActivityCategory,
     serviceType: "Copa e café",
     location: "Auditório",
     plannedAt: "2026-06-03 16:00",
     description: "Preparação de copa para treinamento interno.",
+    mapPosition: { x: 31, y: 71 },
   },
   {
     id: "ATV-013",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 1",
-    category: "—",
+    category: "Limpeza" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Fila: F-09",
     plannedAt: "2026-06-03 16:30",
     description: "Coleta de materiais soltos no pátio.",
+    mapPosition: { x: 70, y: 63 },
   },
   {
     id: "ATV-014",
     activityType: "Chamado",
     businessUnit: "Unidade 2",
-    category: "Suporte",
+    category: "Elétrica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala de TI",
     plannedAt: "2026-06-03 17:00",
     description: "Correção de ponto de iluminação intermitente.",
+    mapPosition: { x: 78, y: 39 },
   },
   {
     id: "ATV-015",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 3",
-    category: "—",
+    category: "Civil" as ActivityCategory,
     serviceType: "Outro",
     location: "Fila: E-13",
     plannedAt: "2026-06-04 08:00",
     description: "Avaliação de necessidade de pintura de demarcação.",
+    mapPosition: { x: 54, y: 73 },
   },
   {
     id: "ATV-016",
     activityType: "Chamado",
     businessUnit: "Unidade 1",
-    category: "Outro",
+    category: "Jardinagem" as ActivityCategory,
     serviceType: "Outro",
     location: "Área externa do administrativo",
     plannedAt: "2026-06-04 08:40",
     description: "Verificação de banco com fixação irregular.",
+    mapPosition: { x: 24, y: 60 },
   },
   {
     id: "ATV-017",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 2",
-    category: "—",
+    category: "Hidráulica" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Fila: I-02",
     plannedAt: "2026-06-04 09:20",
     description: "Revisão de ponto hidráulico de apoio operacional.",
+    mapPosition: { x: 81, y: 56 },
   },
   {
     id: "ATV-018",
     activityType: "Chamado",
     businessUnit: "Unidade 3",
-    category: "Predial",
+    category: "Refrigeração" as ActivityCategory,
     serviceType: "Limpeza",
     location: "Vestiário operacional",
     plannedAt: "2026-06-04 10:00",
     description: "Limpeza programada após intervenção predial.",
+    mapPosition: { x: 40, y: 76 },
   },
   {
     id: "ATV-019",
     activityType: "Atividade no Pátio",
     businessUnit: "Unidade 1",
-    category: "—",
+    category: "Refrigeração" as ActivityCategory,
     serviceType: "Apoio operacional",
     location: "Fila: J-06",
     plannedAt: "2026-06-04 10:45",
     description: "Organização de área para chegada de equipamentos.",
+    mapPosition: { x: 67, y: 79 },
   },
   {
     id: "ATV-020",
     activityType: "Chamado",
     businessUnit: "Unidade 2",
-    category: "Administrativo",
+    category: "Artífice" as ActivityCategory,
     serviceType: "Manutenção",
     location: "Sala da gerência",
     plannedAt: "2026-06-04 11:15",
     description: "Ajuste de fechadura e revisão de dobradiças.",
+    mapPosition: { x: 46, y: 49 },
   },
 ];
+
+const activityMarkers = activityRecords.map((record) => ({
+  id: record.id,
+  label: `${record.id} · ${record.category} · ${record.location}`,
+  color: categoryColorMap[record.category],
+  x: record.mapPosition.x,
+  y: record.mapPosition.y,
+}));
 
 const slaSamplesInMinutes = [53];
 
@@ -448,14 +489,11 @@ export default function Home() {
               <div className="flex items-center justify-start gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
-                >
+                ></div>
 
-                </div>
-
-                  <h3 className="flex items-center justify-start truncate text-base font-bold text-slate-950">
-                    {card.title}
-                  </h3>
-        
+                <h3 className="flex items-center justify-start truncate text-base font-bold text-slate-950">
+                  {card.title}
+                </h3>
               </div>
 
               <div className="mt-3">
@@ -487,7 +525,7 @@ export default function Home() {
             TECON Salvador - Atividades Facilities
           </h2>
 
-          <FacilitiesMap image={mapImage} />
+          <FacilitiesMap image={mapImage} markers={activityMarkers} />
 
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
             <div
@@ -549,7 +587,17 @@ export default function Home() {
                         {record.businessUnit}
                       </td>
                       <td className="whitespace-nowrap px-4 py-3">
-                        {record.category}
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 ring-1 ring-slate-200">
+                          <span
+                            className="h-2 w-2 rounded-full"
+                            style={{
+                              backgroundColor:
+                                categoryColorMap[record.category],
+                            }}
+                            aria-hidden="true"
+                          />
+                          {record.category}
+                        </span>
                       </td>
                       <td className="whitespace-nowrap px-4 py-3">
                         {record.serviceType}
@@ -698,7 +746,9 @@ function ActionCard({ href, label }: { href: string; label: string }) {
 }
 
 function formatClockDuration(totalMinutes: number) {
-  const hours = Math.floor(totalMinutes / 60).toString().padStart(2, "0");
+  const hours = Math.floor(totalMinutes / 60)
+    .toString()
+    .padStart(2, "0");
   const minutes = (totalMinutes % 60).toString().padStart(2, "0");
 
   return {
