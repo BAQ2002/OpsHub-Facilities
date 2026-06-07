@@ -431,7 +431,7 @@ export default function Home() {
                   label="Solicitar Atividade"
                 />
                 <ActionCard
-                  href="#minhas-solicitacoes"
+                  href="/minhas-solicitacoes"
                   label="Minhas solicitações"
                 />
               </div>
