@@ -5,7 +5,7 @@ const patioFields = [
     label: "Unidade de Negócio",
     name: "unidade-negocio",
     type: "select" as const,
-    options: ["Unidade 1", "Unidade 2", "Unidade 3"],
+    options: ["TECON", "CLS"],
   },
   {
     label: "Local",
