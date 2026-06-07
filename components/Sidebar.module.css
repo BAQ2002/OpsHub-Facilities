@@ -36,42 +36,107 @@
 
 .nav {
   padding: 8px 9px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   overflow-y: auto;
 }
 
-.navItem {
+.moduleGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.moduleHeader {
   min-height: 39px;
-  padding: 0 15px;
+  padding: 0 13px;
   border-radius: 12px;
+  background: #f3f5f7;
   color: #111827;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
-.navItem:hover {
-  background: #eef8fb;
+.moduleHeader:hover,
+.moduleHeaderActive {
+  background: #eaf7fb;
 }
 
-.active {
-  background: #10b7d1;
-  color: #06151a;
-}
-
-.navIcon {
+.moduleIcon {
   width: 20px;
   height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.navText {
+.moduleText {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.moduleChevron {
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subNav {
+  position: relative;
+  margin-left: 17px;
+  padding: 5px 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.subNav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 0;
+  width: 1px;
+  background: #dbe3ee;
+}
+
+.subNavItem {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: #111827;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.subNavItem:hover {
+  background: #eef8fb;
+}
+
+.subNavItemActive {
+  background: #10b7d1;
+  color: #06151a;
+}
+
+.subNavIcon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subNavText {
   white-space: nowrap;
 }
