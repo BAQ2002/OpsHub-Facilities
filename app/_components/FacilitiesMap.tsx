@@ -47,16 +47,38 @@ function clampMapView(view: MapView, width: number, height: number): MapView {
 export default function FacilitiesMap({ image }: FacilitiesMapProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStateRef = useRef<DragState | null>(null);
+  const zoomFeedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentViewRef = useRef<MapView>({ scale: minZoom, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isZooming, setIsZooming] = useState(false);
   const [view, setView] = useState<MapView>({ scale: minZoom, x: 0, y: 0 });
 
   const mapStyle = useMemo(
     () => ({
       transform: `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.scale})`,
-      transformOrigin: "top left",
     }),
     [view.scale, view.x, view.y],
   );
+
+  const mapLayerClassName = [
+    "facilities-map-layer h-full w-full",
+    isDragging ? "facilities-map-layer--dragging" : "",
+    isZooming ? "facilities-map-layer--zooming" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const showZoomFeedback = useCallback(() => {
+    if (zoomFeedbackTimeoutRef.current) {
+      clearTimeout(zoomFeedbackTimeoutRef.current);
+    }
+
+    setIsZooming(true);
+    zoomFeedbackTimeoutRef.current = setTimeout(() => {
+      setIsZooming(false);
+      zoomFeedbackTimeoutRef.current = null;
+    }, 180);
+  }, []);
 
   const handleWheel = useCallback((event: WheelEvent) => {
     event.preventDefault();
@@ -70,32 +92,33 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
     const bounds = viewport.getBoundingClientRect();
     const cursorX = event.clientX - bounds.left;
     const cursorY = event.clientY - bounds.top;
+    const currentView = currentViewRef.current;
+    const nextScale = clamp(
+      currentView.scale + (event.deltaY < 0 ? zoomStep : -zoomStep),
+      minZoom,
+      maxZoom,
+    );
 
-    setView((current) => {
-      const nextScale = clamp(
-        current.scale + (event.deltaY < 0 ? zoomStep : -zoomStep),
-        minZoom,
-        maxZoom,
-      );
+    if (nextScale === currentView.scale) {
+      return;
+    }
 
-      if (nextScale === current.scale) {
-        return current;
-      }
+    const mapPointX = (cursorX - currentView.x) / currentView.scale;
+    const mapPointY = (cursorY - currentView.y) / currentView.scale;
+    const nextView = clampMapView(
+      {
+        scale: nextScale,
+        x: cursorX - mapPointX * nextScale,
+        y: cursorY - mapPointY * nextScale,
+      },
+      bounds.width,
+      bounds.height,
+    );
 
-      const mapPointX = (cursorX - current.x) / current.scale;
-      const mapPointY = (cursorY - current.y) / current.scale;
-
-      return clampMapView(
-        {
-          scale: nextScale,
-          x: cursorX - mapPointX * nextScale,
-          y: cursorY - mapPointY * nextScale,
-        },
-        bounds.width,
-        bounds.height,
-      );
-    });
-  }, []);
+    currentViewRef.current = nextView;
+    showZoomFeedback();
+    setView(nextView);
+  }, [showZoomFeedback]);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -109,6 +132,14 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
       viewport.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
+
+  useEffect(() => {
+    return () => {
+      if (zoomFeedbackTimeoutRef.current) {
+        clearTimeout(zoomFeedbackTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handlePointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) {
@@ -144,17 +175,19 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
     };
 
     const bounds = viewport.getBoundingClientRect();
-    setView((current) =>
-      clampMapView(
-        {
-          ...current,
-          x: current.x + deltaX,
-          y: current.y + deltaY,
-        },
-        bounds.width,
-        bounds.height,
-      ),
+    const currentView = currentViewRef.current;
+    const nextView = clampMapView(
+      {
+        ...currentView,
+        x: currentView.x + deltaX,
+        y: currentView.y + deltaY,
+      },
+      bounds.width,
+      bounds.height,
     );
+
+    currentViewRef.current = nextView;
+    setView(nextView);
   }, []);
 
   const stopDragging = useCallback((event: PointerEvent<HTMLDivElement>) => {
@@ -196,7 +229,7 @@ export default function FacilitiesMap({ image }: FacilitiesMapProps) {
           overscrollBehavior: "contain",
         }}
       >
-        <div className="h-full w-full will-change-transform" style={mapStyle}>
+        <div className={mapLayerClassName} style={mapStyle}>
           <Image
             src={image.src}
             alt={image.alt}
