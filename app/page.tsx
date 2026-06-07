@@ -676,7 +676,7 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`min-h-[76px] rounded-xl ${bg} px-6 py-4 text-center ${
+      className={`flex min-h-[76px] flex-col items-center justify-center rounded-xl ${bg} px-6 py-4 text-center ${
         raised ? "shadow-[0_2px_12px_rgba(225,29,72,0.16)]" : ""
       }`}
     >
@@ -689,7 +689,7 @@ function SummaryCard({
 function ActionCard({ href, label }: { href: string; label: string }) {
   return (
     <Link
-      className="flex min-h-[76px] items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-4 text-center text-sm font-bold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:border-slate-300 hover:bg-slate-50"
+      className="flex min-h-[53px] items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-center text-sm font-bold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:border-slate-300 hover:bg-slate-50"
       href={href}
     >
       {label}
