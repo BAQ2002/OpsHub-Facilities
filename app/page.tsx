@@ -59,6 +59,13 @@ const equipmentCards = [
     Planned: 4,
     InProgress: 6,
   },
+  {
+    title: "Pintura",
+    accent: "text-pink-500",
+    iconBg: "bg-pink-50",
+    Planned: 5,
+    InProgress: 5,
+  },
 ];
 
 const totals = equipmentCards.reduce(
@@ -439,7 +446,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+        <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9">
           {equipmentCards.map((card) => (
             <article
               key={card.title}
