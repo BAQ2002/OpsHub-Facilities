@@ -687,7 +687,7 @@ function SlaDisplay({
         id="sla-display-title"
         className="mb-2 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#45628a]"
       >
-        Tempo médio de atendimento
+        Tempo médio de SLA
       </h2>
 
       <div
