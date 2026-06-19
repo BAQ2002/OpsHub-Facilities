@@ -1,0 +1,339 @@
+import "server-only";
+
+import type {
+  ActivityCategory,
+  ActivityRecord,
+  EquipmentCard,
+  MapImage,
+} from "@/src/domain/entities/activity";
+
+const equipmentCards: EquipmentCard[] = [
+  {
+    title: "Artífice",
+    accent: "text-cyan-600",
+    iconBg: "bg-cyan-50",
+    Planned: 8,
+    InProgress: 2,
+  },
+  {
+    title: "Civil",
+    accent: "text-violet-500",
+    iconBg: "bg-violet-50",
+    Planned: 4,
+    InProgress: 6,
+  },
+  {
+    title: "Copa e Café",
+    accent: "text-red-500",
+    iconBg: "bg-red-50",
+    Planned: 6,
+    InProgress: 4,
+  },
+  {
+    title: "Elétrica",
+    accent: "text-yellow-500",
+    iconBg: "bg-yellow-50",
+    Planned: 6,
+    InProgress: 4,
+  },
+  {
+    title: "Hidráulica",
+    accent: "text-blue-500",
+    iconBg: "bg-blue-50",
+    Planned: 5,
+    InProgress: 5,
+    total: 10,
+  },
+  {
+    title: "Jardinagem",
+    accent: "text-green-500",
+    iconBg: "bg-green-50",
+    Planned: 7,
+    InProgress: 3,
+  },
+  {
+    title: "Refrigeração",
+    accent: "text-orange-500",
+    iconBg: "bg-orange-50",
+    Planned: 6,
+    InProgress: 4,
+  },
+  {
+    title: "Limpeza",
+    accent: "text-teal-500",
+    iconBg: "bg-teal-50",
+    Planned: 4,
+    InProgress: 6,
+  },
+  {
+    title: "Pintura",
+    accent: "text-pink-500",
+    iconBg: "bg-pink-50",
+    Planned: 5,
+    InProgress: 5,
+  },
+];
+
+const categoryColorMap: Record<ActivityCategory, string> = {
+  Artífice: "#0891b2",
+  Civil: "#8b5cf6",
+  "Copa e Café": "#ef4444",
+  Elétrica: "#eab308",
+  Hidráulica: "#3b82f6",
+  Jardinagem: "#22c55e",
+  Refrigeração: "#f97316",
+  Limpeza: "#14b8a6",
+} as const;
+
+const mapImage: MapImage = {
+  src: "/facilities-map.png",
+  width: 1544,
+  height: 908,
+  alt: "Mapa AIS com posições atuais das atividades de facilities",
+};
+
+const activityRecords: ActivityRecord[] = [
+  {
+    id: "ATV-001",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Elétrica" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Fila: G-11",
+    plannedAt: "2026-06-03 08:30",
+    description: "Reparo preventivo em iluminação do pátio.",
+    mapPosition: { x: 71, y: 28 },
+  },
+  {
+    id: "ATV-002",
+    activityType: "Chamado",
+    businessUnit: "CLS",
+    category: "Limpeza" as ActivityCategory,
+    serviceType: "Limpeza",
+    location: "Bloco administrativo, 2º andar",
+    plannedAt: "2026-06-03 09:00",
+    description: "Higienização emergencial da sala de reunião.",
+    mapPosition: { x: 55, y: 36 },
+  },
+  {
+    id: "ATV-003",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Artífice" as ActivityCategory,
+    serviceType: "Apoio operacional",
+    location: "Fila: B-04",
+    plannedAt: "2026-06-03 09:45",
+    description: "Apoio para isolamento de área operacional.",
+    mapPosition: { x: 43, y: 27 },
+  },
+  {
+    id: "ATV-004",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Copa e Café" as ActivityCategory,
+    serviceType: "Copa e café",
+    location: "Recepção principal",
+    plannedAt: "2026-06-03 10:15",
+    description: "Reposição de insumos de copa para visita técnica.",
+    mapPosition: { x: 50, y: 44 },
+  },
+  {
+    id: "ATV-005",
+    activityType: "Atividade no Pátio",
+    businessUnit: "CLS",
+    category: "Limpeza" as ActivityCategory,
+    serviceType: "Limpeza",
+    location: "Fila: D-18",
+    plannedAt: "2026-06-03 11:00",
+    description: "Limpeza de resíduos próximos à faixa de circulação.",
+    mapPosition: { x: 64, y: 52 },
+  },
+  {
+    id: "ATV-006",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Elétrica" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Sala de controle operacional",
+    plannedAt: "2026-06-03 11:30",
+    description: "Verificação de tomada sem energização.",
+    mapPosition: { x: 35, y: 58 },
+  },
+  {
+    id: "ATV-007",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Civil" as ActivityCategory,
+    serviceType: "Outro",
+    location: "Fila: H-07",
+    plannedAt: "2026-06-03 13:00",
+    description: "Sinalização temporária para manutenção de piso.",
+    mapPosition: { x: 73, y: 48 },
+  },
+  {
+    id: "ATV-008",
+    activityType: "Chamado",
+    businessUnit: "CLS",
+    category: "Artífice" as ActivityCategory,
+    serviceType: "Outro",
+    location: "Portaria de acesso interno",
+    plannedAt: "2026-06-03 13:45",
+    description: "Ajuste em mobiliário da área de espera.",
+    mapPosition: { x: 28, y: 43 },
+  },
+  {
+    id: "ATV-009",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Civil" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Fila: A-22",
+    plannedAt: "2026-06-03 14:10",
+    description: "Inspeção em proteção metálica próxima aos lotes.",
+    mapPosition: { x: 38, y: 33 },
+  },
+  {
+    id: "ATV-010",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Limpeza" as ActivityCategory,
+    serviceType: "Limpeza",
+    location: "Corredor térreo do administrativo",
+    plannedAt: "2026-06-03 14:40",
+    description: "Remoção de marcas no piso e revisão de lixeiras.",
+    mapPosition: { x: 47, y: 62 },
+  },
+  {
+    id: "ATV-011",
+    activityType: "Atividade no Pátio",
+    businessUnit: "CLS",
+    category: "Jardinagem" as ActivityCategory,
+    serviceType: "Apoio operacional",
+    location: "Fila: C-15",
+    plannedAt: "2026-06-03 15:20",
+    description: "Apoio de equipe para reorganização de materiais.",
+    mapPosition: { x: 59, y: 68 },
+  },
+  {
+    id: "ATV-012",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Copa e Café" as ActivityCategory,
+    serviceType: "Copa e café",
+    location: "Auditório",
+    plannedAt: "2026-06-03 16:00",
+    description: "Preparação de copa para treinamento interno.",
+    mapPosition: { x: 31, y: 71 },
+  },
+  {
+    id: "ATV-013",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Limpeza" as ActivityCategory,
+    serviceType: "Limpeza",
+    location: "Fila: F-09",
+    plannedAt: "2026-06-03 16:30",
+    description: "Coleta de materiais soltos no pátio.",
+    mapPosition: { x: 70, y: 63 },
+  },
+  {
+    id: "ATV-014",
+    activityType: "Chamado",
+    businessUnit: "CLS",
+    category: "Elétrica" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Sala de TI",
+    plannedAt: "2026-06-03 17:00",
+    description: "Correção de ponto de iluminação intermitente.",
+    mapPosition: { x: 78, y: 39 },
+  },
+  {
+    id: "ATV-015",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Civil" as ActivityCategory,
+    serviceType: "Outro",
+    location: "Fila: E-13",
+    plannedAt: "2026-06-04 08:00",
+    description: "Avaliação de necessidade de pintura de demarcação.",
+    mapPosition: { x: 54, y: 73 },
+  },
+  {
+    id: "ATV-016",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Jardinagem" as ActivityCategory,
+    serviceType: "Outro",
+    location: "Área externa do administrativo",
+    plannedAt: "2026-06-04 08:40",
+    description: "Verificação de banco com fixação irregular.",
+    mapPosition: { x: 24, y: 60 },
+  },
+  {
+    id: "ATV-017",
+    activityType: "Atividade no Pátio",
+    businessUnit: "CLS",
+    category: "Hidráulica" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Fila: I-02",
+    plannedAt: "2026-06-04 09:20",
+    description: "Revisão de ponto hidráulico de apoio operacional.",
+    mapPosition: { x: 81, y: 56 },
+  },
+  {
+    id: "ATV-018",
+    activityType: "Chamado",
+    businessUnit: "TECON",
+    category: "Refrigeração" as ActivityCategory,
+    serviceType: "Limpeza",
+    location: "Vestiário operacional",
+    plannedAt: "2026-06-04 10:00",
+    description: "Limpeza programada após intervenção predial.",
+    mapPosition: { x: 40, y: 76 },
+  },
+  {
+    id: "ATV-019",
+    activityType: "Atividade no Pátio",
+    businessUnit: "TECON",
+    category: "Refrigeração" as ActivityCategory,
+    serviceType: "Apoio operacional",
+    location: "Fila: J-06",
+    plannedAt: "2026-06-04 10:45",
+    description: "Organização de área para chegada de equipamentos.",
+    mapPosition: { x: 67, y: 79 },
+  },
+  {
+    id: "ATV-020",
+    activityType: "Chamado",
+    businessUnit: "CLS",
+    category: "Artífice" as ActivityCategory,
+    serviceType: "Manutenção",
+    location: "Sala da gerência",
+    plannedAt: "2026-06-04 11:15",
+    description: "Ajuste de fechadura e revisão de dobradiças.",
+    mapPosition: { x: 46, y: 49 },
+  },
+];
+
+const slaSamplesInMinutes = [53];
+
+
+export async function findEquipmentCards(): Promise<EquipmentCard[]> {
+  return equipmentCards;
+}
+
+export async function findActivityRecords(): Promise<ActivityRecord[]> {
+  return activityRecords;
+}
+
+export async function findCategoryColorMap(): Promise<Record<ActivityCategory, string>> {
+  return categoryColorMap;
+}
+
+export async function findMapImage(): Promise<MapImage> {
+  return mapImage;
+}
+
+export async function findSlaSamplesInMinutes(): Promise<number[]> {
+  return slaSamplesInMinutes;
+}

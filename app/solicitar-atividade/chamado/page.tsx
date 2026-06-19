@@ -1,3 +1,4 @@
+import { createActivityRequestAction } from "../actions";
 import ActivityRequestForm from "../_components/ActivityRequestForm";
 
 const chamadoFields = [
@@ -52,6 +53,7 @@ export default function ChamadoRequestPage() {
       subtitle="Atividade no prédio administrativo"
       sectionTitle="Dados do chamado"
       fields={chamadoFields}
+      action={createActivityRequestAction}
     />
   );
 }

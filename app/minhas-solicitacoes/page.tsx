@@ -1,69 +1,9 @@
-type RequestStatus = "Aberto" | "Fechado";
+import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
+import { getMyRequestsPageData } from "@/src/server/services/request-service";
 
-type Request = {
-  id: number;
-  title: string;
-  createdAt: string;
-  status: RequestStatus;
-  hasUnreadMessage?: boolean;
-};
+export default async function MyRequestsPage() {
+  const { openRequests, closedRequests } = await getMyRequestsPageData();
 
-const requests: Request[] = [
-  {
-    id: 212,
-    title: "Teste10",
-    createdAt: "29/04/2026 10:38",
-    status: "Aberto" as const,
-  },
-  {
-    id: 213,
-    title: "Reparos em móveis",
-    createdAt: "29/04/2026 11:35",
-    status: "Aberto" as const,
-  },
-  {
-    id: 214,
-    title: "Pintura de segurança/operacional/predial/metálica",
-    createdAt: "29/04/2026 11:38",
-    status: "Aberto" as const,
-  },
-  {
-    id: 215,
-    title: "Reparos em móveis",
-    createdAt: "29/04/2026 11:39",
-    status: "Aberto" as const,
-  },
-  {
-    id: 218,
-    title: "Outros",
-    createdAt: "29/04/2026 13:25",
-    status: "Aberto" as const,
-    hasUnreadMessage: true,
-  },
-  {
-    id: 219,
-    title: "Pintura de segurança/operacional/predial/metálica",
-    createdAt: "29/04/2026 13:28",
-    status: "Aberto" as const,
-  },
-  {
-    id: 17,
-    title: "Interruptor ou Tomada com defeito/quebrado",
-    createdAt: "12/03/2026 10:28",
-    status: "Fechado" as const,
-  },
-  {
-    id: 217,
-    title: "Outros",
-    createdAt: "29/04/2026 13:15",
-    status: "Fechado" as const,
-  },
-];
-
-const openRequests = requests.filter((request) => request.status === "Aberto");
-const closedRequests = requests.filter((request) => request.status === "Fechado");
-
-export default function MyRequestsPage() {
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div className="mx-auto w-full max-w-[980px]">
@@ -119,7 +59,7 @@ function RequestGroup({
   className = "",
 }: {
   title: string;
-  requests: Request[];
+  requests: RequestViewModel[];
   className?: string;
 }) {
   return (
@@ -142,7 +82,7 @@ function RequestGroup({
   );
 }
 
-function RequestCard({ request }: { request: Request }) {
+function RequestCard({ request }: { request: RequestViewModel }) {
   const isOpen = request.status === "Aberto";
 
   return (

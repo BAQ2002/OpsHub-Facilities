@@ -16,6 +16,7 @@ type ActivityRequestFormProps = {
   subtitle: string;
   sectionTitle: string;
   fields: Field[];
+  action?: (formData: FormData) => Promise<void>;
 };
 
 export default function ActivityRequestForm({
@@ -23,6 +24,7 @@ export default function ActivityRequestForm({
   subtitle,
   sectionTitle,
   fields,
+  action,
 }: ActivityRequestFormProps) {
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
@@ -61,7 +63,10 @@ export default function ActivityRequestForm({
           </div>
         </header>
 
-        <form className="rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]">
+        <form
+          action={action}
+          className="rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]"
+        >
           <h2 className="mb-6 text-base font-bold leading-tight text-slate-950">
             {sectionTitle}
           </h2>
