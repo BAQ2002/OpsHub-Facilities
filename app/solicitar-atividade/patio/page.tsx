@@ -1,3 +1,4 @@
+import { createActivityRequestAction } from "../actions";
 import ActivityRequestForm from "../_components/ActivityRequestForm";
 
 const patioFields = [
@@ -58,6 +59,7 @@ export default function PatioRequestPage() {
       subtitle="Atividade no pátio operacional"
       sectionTitle="Dados da atividade no pátio"
       fields={patioFields}
+      action={createActivityRequestAction}
     />
   );
 }
