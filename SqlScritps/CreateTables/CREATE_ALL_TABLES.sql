@@ -219,11 +219,13 @@ CREATE TABLE requests (
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
+
     CONSTRAINT fk_requests_status
-        FOREIGN KEY (id_status)
-        REFERENCES status (id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
+    FOREIGN KEY (id_status)
+    REFERENCES REQUEST_STATUS (id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+
 );
 
 CREATE TABLE service_fields_values (
