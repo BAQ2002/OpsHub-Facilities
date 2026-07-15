@@ -1,5 +1,5 @@
 
-INSERT INTO requests_types (name) VALUES
+INSERT INTO REQUEST_TYPE (name) VALUES
     ('Chamado'),
     ('Atividade de Pátio')
 ON CONFLICT (name) DO NOTHING;

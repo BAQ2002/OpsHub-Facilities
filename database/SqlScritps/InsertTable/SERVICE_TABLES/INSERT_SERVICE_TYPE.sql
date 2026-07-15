@@ -4,16 +4,16 @@
 
 -----Categoria Artifice----
 INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (1, 1, 'Reparos em móveis');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (5, 1, 'Fixação de Placas/Quadros');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (8, 1, 'Substituição de tampa de vaso sanitário');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (10, 1, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (16, 1, 'Regulagem de porta');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (38, 1, 'Outros');
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (13, 1, 'Substituição de fitas de demarcação lisa/antiderrapante');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (2, 1, 'Fixação de Placas/Quadros');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (3, 1, 'Substituição de tampa de vaso sanitário');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (4, 1, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (5, 1, 'Regulagem de porta');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (6, 1, 'Outros');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (7, 1, 'Substituição de fitas de demarcação lisa/antiderrapante');
 INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (23, 1, 'Troca de fechadura/miolo');
 
 -----Categoria INSTALAÇÕES ELÉTRICAS----
-INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (9, 7, 'Interruptor ou Tomada com defeito/quebrado');
+INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (5, 7, 'Interruptor ou Tomada com defeito/quebrado');
 INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (17, 7, 'Regularização de extensões/plugs/equipamentos');
 INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (18, 7, 'Lâmpadas queimadas');
 INSERT INTO SERVICE_TYPE (ID, SERVICE_CATEGORY_ID, NAME) VALUES (19, 7, 'Substituição de biruta');
