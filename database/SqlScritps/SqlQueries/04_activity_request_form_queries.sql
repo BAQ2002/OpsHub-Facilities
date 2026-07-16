@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Solicitar atividade form queries/mutations
--- Base schema: SqlScritps/Create_Tables.sql
+-- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: alimentar combos e persistir novas solicitações.
 -- ============================================================
 
@@ -37,117 +37,115 @@ ORDER BY sc.name, st.name;
 SELECT
     l.id,
     l.name,
-    l.description,
     l.location_x,
     l.location_y,
     rg.id AS region_id,
     rg.name AS region_name,
     b.id AS business_id,
     b.name AS business_name
-FROM locations l
-JOIN regions rg
+FROM location l
+JOIN region rg
     ON rg.id = l.id_region
 JOIN business b
     ON b.id = rg.id_business
 WHERE (:business_id IS NULL OR b.id = :business_id)
 ORDER BY b.name, rg.name, l.name;
 
--- 5) Setores para identificar solicitante/responsável.
+-- 5) Setores para identificar perfis/áreas vinculadas ao usuário.
 SELECT
     id,
-    name
+    name,
+    access_levels
 FROM sector
 ORDER BY name;
 
 -- 6) Inserção de solicitação do tipo Chamado.
 -- Parâmetros esperados:
--- :requester_sector_id INTEGER
--- :responsible_sector_id INTEGER
--- :location_id INTEGER
+-- :requester_member_id INTEGER
+-- :responder_member_id INTEGER       -- opcional; NULL quando ainda não houver responsável
+-- :location_id INTEGER               -- opcional
 -- :service_type_id INTEGER
--- :status_id INTEGER              -- normalmente status 'Aberto'
--- :planned_datetime TIMESTAMP
--- :images_endpoint VARCHAR(200)
--- :description VARCHAR(100)
-INSERT INTO requests (
-    id_sector_requester,
-    id_sector_responsible,
+-- :status_id INTEGER                 -- normalmente status 'Aberto'
+-- :planned_datetime TIMESTAMP        -- gravado em agreed_date conforme schema atual
+-- :description VARCHAR(200)
+INSERT INTO request (
+    id_member_requester,
+    id_member_responder,
     id_location,
     id_request_type,
     id_service_type,
-    id_status,
-    ocurrence_datetime,
-    planned_datetime,
-    images_endpoint,
+    id_request_status,
+    created_date,
+    agreed_date,
     description
 )
 SELECT
-    :requester_sector_id,
-    :responsible_sector_id,
+    :requester_member_id,
+    :responder_member_id,
     :location_id,
     rt.id,
     :service_type_id,
     :status_id,
     NOW(),
     :planned_datetime,
-    :images_endpoint,
     :description
-FROM requests_types rt
+FROM request_type rt
 WHERE rt.name = 'Chamado'
 RETURNING id;
 
 -- 7) Inserção de solicitação do tipo Atividade de Pátio.
--- Usa a mesma tabela requests, variando id_request_type.
-INSERT INTO requests (
-    id_sector_requester,
-    id_sector_responsible,
+-- Usa a mesma tabela request, variando id_request_type.
+INSERT INTO request (
+    id_member_requester,
+    id_member_responder,
     id_location,
     id_request_type,
     id_service_type,
-    id_status,
-    ocurrence_datetime,
-    planned_datetime,
-    images_endpoint,
+    id_request_status,
+    created_date,
+    agreed_date,
     description
 )
 SELECT
-    :requester_sector_id,
-    :responsible_sector_id,
+    :requester_member_id,
+    :responder_member_id,
     :location_id,
     rt.id,
     :service_type_id,
     :status_id,
     NOW(),
     :planned_datetime,
-    :images_endpoint,
     :description
-FROM requests_types rt
+FROM request_type rt
 WHERE rt.name = 'Atividade de Pátio'
 RETURNING id;
 
--- 8) Aprovação/programação de uma solicitação, quando a operação do pátio
--- precisar registrar lote/local e equipe responsável no fluxo request_aprove.
+-- 8) Registro de proposta/programação de atendimento.
+-- O schema atual não possui request_aprove; o fluxo equivalente deve ser
+-- registrado em request_transaction.
 -- Parâmetros esperados:
 -- :request_id INTEGER
--- :responsible_sector_id INTEGER
--- :batch_location_id INTEGER
--- :service_type_id INTEGER
--- :planned_datetime TIMESTAMP
--- :description VARCHAR(100)
-INSERT INTO request_aprove (
+-- :requester_member_id INTEGER
+-- :responder_member_id INTEGER
+-- :transaction_status_id INTEGER
+-- :proposed_date TIMESTAMP
+-- :description VARCHAR(200)
+INSERT INTO request_transaction (
     id_request,
-    id_sector_responsible,
-    id_batch,
-    id_service_type,
-    planned_datetime,
+    id_member_requester,
+    id_member_responder,
+    id_transaction_status,
+    requested_date,
+    proposed_date,
     description
 )
 VALUES (
     :request_id,
-    :responsible_sector_id,
-    :batch_location_id,
-    :service_type_id,
-    :planned_datetime,
+    :requester_member_id,
+    :responder_member_id,
+    :transaction_status_id,
+    NOW(),
+    :proposed_date,
     :description
 )
 RETURNING id;
