@@ -1,6 +1,6 @@
 -- =====================================================================
 -- IMPORTAÇÃO DE MEMBERSHIP E REQUESTS
--- Fonte: report-tickets-15-07-2026-223735(1).xlsx
+-- Fonte: report-tickets-15-07-2026-223735(7).xlsx
 -- Linhas do Excel: 852
 -- E-mails distintos para MEMBERSHIP: 74
 -- =====================================================================
@@ -11,8 +11,12 @@
 -- 3) MEMBERSHIP é deduplicada por LOWER(TRIM(EMAIL)), usando colunas L e N.
 -- 4) ID_MEMBER_REQUESTER é obtido pelo e-mail da coluna N.
 -- 5) ID_MEMBER_RESPONDER = NULL, pois não foi fornecida regra para responsável.
--- 6) Localização: P=BUSINESS, Q=REGIONS e R=LOCATIONS.
---    Como P/Q/R estão vazias em todas as linhas deste arquivo, ID_LOCATION=NULL.
+-- 6) ID_LOCATION é obtido a partir de todas as colunas do Excel cujo
+--    cabeçalho menciona "Local", além de "Onde será realizado?".
+--    Valores específicos recebem a LOCATION correspondente; valores que indicam
+--    apenas uma região recebem a LOCATION 'Local exato não especificado' daquela região.
+--    O valor '2° prédio ADM' é vinculado a 'Prédio ADM 1º andar'.
+--    Total de solicitações vinculadas a LOCATIONS neste script: 790.
 -- 7) SERVICE_TYPE é identificado por Categoria (B) + Chamado (E).
 -- 8) Status: Aberto=1; Andamento=3; Fechado=4; Cancelado=5.
 -- 9) G alimenta AGREED_DATE, STARTED_DATE e FINISHED_DATE.
@@ -41,7 +45,8 @@ CREATE TEMP TABLE TMP_REQUEST_IMPORT (
     DESCRIPTION_FULL TEXT,
     BUSINESS_NAME TEXT,
     REGION_NAME TEXT,
-    LOCATION_NAME TEXT
+    LOCATION_NAME TEXT,
+    ID_LOCATION INTEGER
 ) ON COMMIT DROP;
 
 INSERT INTO TMP_REQUEST_IMPORT (
@@ -903,6 +908,313 @@ INSERT INTO TMP_REQUEST_IMPORT (
     (856, E'PMOC', E'PMOC MENSAL', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Fechado', 4, TIMESTAMP '2026-07-15 16:22:00', TIMESTAMP '2026-07-15 16:37:00', NULL, NULL, NULL, NULL, NULL),
     (857, E'PMOC', E'PMOC TRIMESTRAL', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Fechado', 4, TIMESTAMP '2026-07-15 16:28:00', TIMESTAMP '2026-07-15 16:38:00', NULL, NULL, NULL, NULL, NULL);
 
+
+-- ================================================================
+-- MAPEAMENTO DE LOCALIZAÇÃO
+--
+-- O Número legado do Excel é usado somente para localizar a linha
+-- correspondente na tabela temporária e preencher ID_LOCATION.
+-- Os IDs abaixo existem em INSERT_POSITIONS_TABLES(4).sql.
+-- ================================================================
+
+-- ID_LOCATION 10: Pàtio Operacional
+-- Valores encontrados no Excel: 'Pátio Operacional' (103), 'Pátio' (5)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 10
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       16, 17, 24, 42, 54, 57, 62, 63, 69, 81, 82, 97, 98, 117, 147, 157, 164, 166, 169, 170, 171, 199,
+       206, 207, 214, 217, 218, 219, 231, 246, 248, 260, 263, 280, 307, 308, 309, 324, 404, 405, 417, 419,
+       425, 428, 429, 430, 444, 452, 465, 474, 482, 493, 500, 501, 517, 518, 519, 520, 522, 526, 528, 529,
+       531, 537, 544, 545, 561, 564, 566, 570, 571, 579, 582, 583, 589, 594, 598, 599, 600, 601, 604, 608,
+       643, 652, 653, 654, 669, 675, 676, 710, 716, 720, 725, 732, 737, 738, 745, 749, 753, 757, 766, 767,
+       779, 784, 840, 851, 852, 853
+ );
+
+-- ID_LOCATION 15: CAIS
+-- Valores encontrados no Excel: 'Cais' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 15
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       504
+ );
+
+-- ID_LOCATION 16: SUBESTAÇÕES
+-- Valores encontrados no Excel: 'Subestações' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 16
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       279
+ );
+
+-- ID_LOCATION 22: Mezanino
+-- Valores encontrados no Excel: 'Mezanino' (36)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 22
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       72, 73, 74, 184, 237, 238, 273, 291, 302, 306, 320, 344, 427, 457, 532, 539, 543, 559, 562, 565,
+       568, 611, 612, 613, 615, 630, 640, 644, 661, 701, 730, 734, 735, 740, 742, 762
+ );
+
+-- ID_LOCATION 23: Mariner
+-- Valores encontrados no Excel: 'Mariner' (23)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 23
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       27, 41, 116, 119, 201, 215, 265, 326, 327, 329, 394, 406, 423, 458, 475, 497, 576, 642, 646, 663,
+       666, 724, 825
+ );
+
+-- ID_LOCATION 24: Refeitório
+-- Valores encontrados no Excel: 'Refeitório' (20)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 24
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       223, 227, 281, 282, 312, 340, 373, 375, 551, 590, 592, 607, 648, 649, 650, 827, 828, 832, 833, 856
+ );
+
+-- ID_LOCATION 25: Scanner
+-- Valores encontrados no Excel: 'Scanner' (10)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 25
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       110, 111, 213, 241, 243, 577, 578, 581, 748, 750
+ );
+
+-- ID_LOCATION 26: TPA
+-- Valores encontrados no Excel: 'TPA' (10)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 26
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       15, 99, 268, 339, 397, 422, 619, 641, 723, 741
+ );
+
+-- ID_LOCATION 27: Estante Riffer
+-- Valores encontrados no Excel: 'Estante Riffer' (4), 'estante Riffer' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 27
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       614, 620, 621, 622, 645
+ );
+
+-- ID_LOCATION 28: Área interna (prédio)
+-- Valores encontrados no Excel: 'Área interna (prédio)' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 28
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       29
+ );
+
+-- ID_LOCATION 29: Banheiro masculino Sodexo
+-- Valores encontrados no Excel: 'Banheiro masculino sodexo' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 29
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       409
+ );
+
+-- ID_LOCATION 30: Fundo do refeitório
+-- Valores encontrados no Excel: 'Fundo do refeitório.' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 30
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       107
+ );
+
+-- ID_LOCATION 31: Tubulação do forno
+-- Valores encontrados no Excel: 'Tubulação do forno' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 31
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       396
+ );
+
+-- ID_LOCATION 32: Vivência Externa Térreo
+-- Valores encontrados no Excel: 'Vivência Externa Térreo' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 32
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       770
+ );
+
+-- ID_LOCATION 33: Vivência Masculina Climatizada
+-- Valores encontrados no Excel: 'Vivência Masculina Climatizada' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 33
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       364
+ );
+
+-- ID_LOCATION 34: Prédio ADM 1º andar
+-- Valores encontrados no Excel: 'Prédio ADM 1º andar' (11)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 34
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       795, 796, 797, 798, 799, 822, 824, 826, 831, 849, 850
+ );
+
+-- ID_LOCATION 35: Prédio ADM 2º andar
+-- Valores encontrados no Excel: 'Prédio ADM 2º andar' (10)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 35
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       781, 791, 792, 793, 794, 803, 805, 823, 837, 848
+ );
+
+-- ID_LOCATION 36: Prédio ADM 3º andar
+-- Valores encontrados no Excel: 'Prédio ADM 3º andar' (2)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 36
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       790, 846
+ );
+
+-- ID_LOCATION 37: Estação de Tratamento de Efluentes - Casa de Química
+-- Valores encontrados no Excel: 'Estação de Tratamento de Efluentes - Casa de Química' (2)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 37
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       773, 774
+ );
+
+-- ID_LOCATION 38: ETE - ao lado da Manutenção
+-- Valores encontrados no Excel: 'ETE- Estação de Tratamento de Efluente (Ao lado da Manutenção)' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 38
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       257
+ );
+
+-- ID_LOCATION 39: Hidrante - frente do Armazém
+-- Valores encontrados no Excel: 'Hidrante  - frente do armazém' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 39
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       540
+ );
+
+-- ID_LOCATION 40: Tanque/estacionamento no Prédio ADM CLS
+-- Valores encontrados no Excel: 'Vazamento de água na tubulação hidráulica no tanque Estacionamento no prédio ADM CLS' (1)
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 40
+ WHERE SOURCE_REQUEST_NUMBER IN (
+       191
+ );
+
+-- ================================================================
+-- VINCULAÇÕES GENÉRICAS PARA VALORES QUE INDICAM APENAS A REGIÃO
+-- ================================================================
+
+-- Prédio ADM / Prédio adm -> Região 1:
+-- LOCATIONS.ID = 41 ('Local exato não especificado')
+-- 417 números de origem abaixo + 1 ocorrência especial do número duplicado 665.
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 41
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER IN (
+       11, 12, 14, 21, 22, 25, 26, 28, 32, 33, 34, 35,
+       36, 37, 38, 39, 40, 45, 46, 47, 48, 49, 50, 51,
+       52, 53, 55, 56, 58, 59, 60, 61, 64, 65, 68, 70,
+       71, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
+       94, 95, 96, 101, 102, 103, 105, 106, 108, 109, 113, 114,
+       118, 120, 121, 122, 123, 124, 125, 128, 129, 130, 131, 134,
+       135, 136, 137, 140, 142, 143, 149, 150, 151, 153, 154, 155,
+       156, 158, 159, 160, 161, 162, 167, 168, 172, 173, 174, 175,
+       176, 177, 178, 179, 180, 181, 182, 183, 185, 186, 187, 188,
+       189, 192, 193, 194, 200, 202, 203, 208, 209, 210, 211, 220,
+       221, 222, 225, 226, 228, 229, 230, 232, 233, 235, 239, 240,
+       245, 247, 249, 250, 259, 261, 262, 270, 271, 275, 276, 277,
+       283, 284, 287, 288, 289, 290, 292, 293, 294, 295, 296, 297,
+       298, 299, 300, 301, 303, 304, 311, 314, 315, 316, 317, 318,
+       321, 322, 323, 325, 328, 330, 331, 332, 333, 335, 336, 338,
+       341, 342, 345, 348, 349, 350, 351, 352, 353, 354, 355, 357,
+       358, 360, 361, 362, 366, 367, 368, 369, 370, 371, 372, 374,
+       377, 378, 379, 380, 381, 382, 383, 386, 387, 388, 390, 391,
+       392, 393, 395, 398, 399, 400, 401, 408, 410, 411, 413, 414,
+       415, 416, 418, 420, 421, 424, 426, 431, 432, 435, 436, 439,
+       440, 441, 442, 443, 445, 447, 450, 451, 453, 454, 455, 459,
+       460, 461, 462, 463, 464, 466, 468, 469, 470, 471, 472, 473,
+       476, 477, 479, 481, 484, 485, 486, 487, 488, 489, 490, 491,
+       492, 494, 498, 499, 502, 503, 508, 509, 510, 511, 512, 513,
+       516, 527, 530, 535, 536, 538, 542, 546, 547, 549, 550, 553,
+       555, 558, 560, 563, 567, 569, 572, 573, 574, 575, 586, 587,
+       588, 591, 593, 596, 597, 602, 603, 605, 606, 610, 618, 623,
+       624, 625, 626, 627, 628, 629, 631, 632, 633, 634, 635, 636,
+       637, 639, 658, 659, 662, 664, 670, 673, 674, 677, 678, 679,
+       680, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692,
+       695, 696, 697, 699, 700, 703, 704, 705, 707, 709, 711, 712,
+       714, 715, 717, 718, 719, 721, 726, 727, 728, 731, 733, 747,
+       751, 752, 754, 755, 758, 759, 760, 763, 764, 769, 771, 772,
+       782, 783, 785, 800, 801, 806, 807, 810, 813, 814, 815, 816,
+       817, 819, 834, 835, 839, 841, 842, 843, 857
+ );
+
+-- Manutenção -> Região 4:
+-- LOCATIONS.ID = 44 ('Local exato não especificado')
+-- 87 números de origem abaixo + 1 ocorrência especial do número duplicado 665.
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 44
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER IN (
+       7, 8, 10, 18, 19, 20, 23, 30, 31, 43, 44, 66,
+       75, 76, 77, 78, 79, 80, 133, 138, 139, 141, 144, 145,
+       148, 152, 163, 165, 190, 197, 204, 216, 224, 236, 254, 256,
+       258, 269, 272, 286, 346, 359, 376, 389, 402, 407, 412, 437,
+       438, 483, 496, 521, 533, 548, 556, 557, 580, 616, 617, 638,
+       667, 668, 672, 694, 713, 722, 739, 761, 765, 775, 776, 777,
+       778, 787, 788, 789, 808, 809, 818, 820, 821, 829, 830, 844,
+       845, 847, 854
+ );
+
+-- O Excel possui duas solicitações diferentes com SOURCE_REQUEST_NUMBER = 665.
+-- As condições adicionais evitam que uma solicitação receba o local da outra.
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 41
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER = 665
+   AND UPPER(BTRIM(CATEGORY_NAME)) = UPPER(BTRIM(E'PMOC'))
+   AND UPPER(BTRIM(SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'PMOC BIMESTRAL'))
+   AND LOWER(BTRIM(REQUESTER_EMAIL)) = LOWER(BTRIM(E'borb@wilsonsons.com.br'));
+
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 44
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER = 665
+   AND UPPER(BTRIM(CATEGORY_NAME)) = UPPER(BTRIM(E'INSTALAÇÕES HIDRÁULICAS'))
+   AND UPPER(BTRIM(SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'Outros'))
+   AND LOWER(BTRIM(REQUESTER_EMAIL)) = LOWER(BTRIM(E'alsj@wilsonsons.com.br'));
+
+-- Almoxarifado -> Região 2:
+-- LOCATIONS.ID = 42 ('Local exato não especificado')
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 42
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER IN (
+       100, 196, 242, 244, 251, 252, 255, 264, 266, 267, 274, 278,
+       305, 319, 343, 356, 403, 446, 448, 456, 534, 729, 736, 743,
+       744, 802, 804, 811, 812, 836, 855
+ );
+
+-- Armazem -> Região 3:
+-- LOCATIONS.ID = 43 ('Local exato não especificado')
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 43
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER IN (
+       702, 708, 768, 780
+ );
+
+-- 2° prédio ADM -> 'Prédio ADM 1º andar'
+-- LOCATIONS.ID = 34
+UPDATE TMP_REQUEST_IMPORT
+   SET ID_LOCATION = 34
+ WHERE ID_LOCATION IS NULL
+   AND SOURCE_REQUEST_NUMBER IN (
+       609
+ );
+
+-- Permanecem com ID_LOCATION = NULL somente as solicitações cujo campo
+-- de localização está vazio (35) ou contém apenas '-' (27).
+
 -- ================================================================
 -- MEMBERSHIP: cria no máximo um registro novo por e-mail da origem.
 -- A ausência de UNIQUE(EMAIL) no schema impede ON CONFLICT.
@@ -990,18 +1302,14 @@ BEGIN
     SELECT COUNT(*)
       INTO V_ERROR_COUNT
       FROM TMP_REQUEST_IMPORT T
-     WHERE COALESCE(T.BUSINESS_NAME, T.REGION_NAME, T.LOCATION_NAME) IS NOT NULL
-       AND (
-           SELECT COUNT(*)
+     WHERE T.ID_LOCATION IS NOT NULL
+       AND NOT EXISTS (
+           SELECT 1
            FROM LOCATIONS L
-           JOIN REGIONS R ON R.ID = L.ID_REGION
-           JOIN BUSINESS B ON B.ID = R.ID_BUSINESS
-           WHERE UPPER(BTRIM(B.NAME)) = UPPER(BTRIM(T.BUSINESS_NAME))
-             AND UPPER(BTRIM(R.NAME)) = UPPER(BTRIM(T.REGION_NAME))
-             AND UPPER(BTRIM(L.NAME)) = UPPER(BTRIM(T.LOCATION_NAME))
-       ) <> 1;
+           WHERE L.ID = T.ID_LOCATION
+       );
     IF V_ERROR_COUNT > 0 THEN
-        RAISE EXCEPTION '% solicitações possuem localização informada, mas sem correspondência única.', V_ERROR_COUNT;
+        RAISE EXCEPTION '% solicitações referenciam ID_LOCATION inexistente.', V_ERROR_COUNT;
     END IF;
 END;
 $$;
@@ -1028,11 +1336,7 @@ WITH INSERTED_REQUESTS AS (
         1 AS ID_REQUEST_TYPE,
         M.ID AS ID_MEMBER_REQUESTER,
         NULL AS ID_MEMBER_RESPONDER,
-        CASE
-            WHEN COALESCE(T.BUSINESS_NAME, T.REGION_NAME, T.LOCATION_NAME) IS NULL
-            THEN NULL
-            ELSE L.ID
-        END AS ID_LOCATION,
+        T.ID_LOCATION AS ID_LOCATION,
         ST.ID AS ID_SERVICE_TYPE,
         T.ID_REQUEST_STATUS,
         T.CREATED_DATE,
@@ -1049,14 +1353,6 @@ WITH INSERTED_REQUESTS AS (
     JOIN SERVICE_TYPE ST
       ON ST.ID_SERVICE_CATEGORY = SC.ID
      AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(T.SERVICE_TYPE_NAME))
-    LEFT JOIN BUSINESS B
-      ON UPPER(BTRIM(B.NAME)) = UPPER(BTRIM(T.BUSINESS_NAME))
-    LEFT JOIN REGIONS R
-      ON R.ID_BUSINESS = B.ID
-     AND UPPER(BTRIM(R.NAME)) = UPPER(BTRIM(T.REGION_NAME))
-    LEFT JOIN LOCATIONS L
-      ON L.ID_REGION = R.ID
-     AND UPPER(BTRIM(L.NAME)) = UPPER(BTRIM(T.LOCATION_NAME))
     RETURNING ID
 )
 SELECT COUNT(*) AS REQUESTS_INSERTED
