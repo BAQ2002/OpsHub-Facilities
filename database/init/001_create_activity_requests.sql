@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS activity_requests (
+CREATE TABLE IF NOT EXISTS activity_request (
   id BIGSERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'Aberto' CHECK (status IN ('Aberto', 'Fechado')),
@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS activity_requests (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO activity_requests (id, title, status, has_unread_message, created_at)
+INSERT INTO activity_request (id, title, status, has_unread_message, created_at)
 VALUES
   (212, 'Teste10', 'Aberto', false, '2026-04-29 10:38:00-03'),
   (213, 'Reparos em móveis', 'Aberto', false, '2026-04-29 11:35:00-03'),
@@ -18,4 +18,4 @@ VALUES
   (217, 'Outros', 'Fechado', false, '2026-04-29 13:15:00-03')
 ON CONFLICT (id) DO NOTHING;
 
-SELECT setval('activity_requests_id_seq', COALESCE((SELECT MAX(id) FROM activity_requests), 1));
+SELECT setval('activity_request_id_seq', COALESCE((SELECT MAX(id) FROM activity_request), 1));
