@@ -13,9 +13,9 @@ CREATE TABLE request (
     Canceled_date TIMESTAMP,
     description VARCHAR(300),
 
-    CONSTRAINT fk_request_request_types
+    CONSTRAINT fk_request_request_type
         FOREIGN KEY (id_request_type)
-        REFERENCES request_types (id)
+        REFERENCES request_type (id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
@@ -31,7 +31,7 @@ CREATE TABLE request (
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    CONSTRAINT fk_request_locations
+    CONSTRAINT fk_request_location
         FOREIGN KEY (id_location)
         REFERENCES location (id)
         ON UPDATE CASCADE

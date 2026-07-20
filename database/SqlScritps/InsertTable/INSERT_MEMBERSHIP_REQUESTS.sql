@@ -1,11 +1,11 @@
 -- =====================================================================
--- IMPORTAÇÃO DE MEMBERSHIP E REQUESTS
+-- IMPORTAÇÃO DE MEMBERSHIP E REQUEST
 -- Fonte: report-tickets-15-07-2026-223735(7).xlsx
 -- Linhas do Excel: 852
 -- E-mails distintos para MEMBERSHIP: 74
 -- =====================================================================
 -- DECISÕES APLICADAS:
--- 1) REQUESTS.ID não recebe o Número legado do Excel, pois é IDENTITY.
+-- 1) REQUEST.ID não recebe o Número legado do Excel, pois é IDENTITY.
 --    O Número é mantido na tabela temporária para validação/rastreabilidade.
 -- 2) ID_REQUEST_TYPE = 1 em todas as solicitações.
 -- 3) MEMBERSHIP é deduplicada por LOWER(TRIM(EMAIL)), usando colunas L e N.
@@ -16,13 +16,13 @@
 --    Valores específicos recebem a LOCATION correspondente; valores que indicam
 --    apenas uma região recebem a LOCATION 'Local exato não especificado' daquela região.
 --    O valor '2° prédio ADM' é vinculado a 'Prédio ADM 1º andar'.
---    Total de solicitações vinculadas a LOCATIONS neste script: 790.
+--    Total de solicitações vinculadas a LOCATION neste script: 790.
 -- 7) SERVICE_TYPE é identificado por Categoria (B) + Chamado (E).
 -- 8) Status: Aberto=1; Andamento=3; Fechado=4; Cancelado=5.
 -- 9) G alimenta AGREED_DATE, STARTED_DATE e FINISHED_DATE.
 -- 10) Descrições acima de 300 caracteres são truncadas com LEFT(..., 300).
 --
--- ATENÇÃO: este script não é idempotente para REQUESTS, porque a tabela
+-- ATENÇÃO: este script não é idempotente para REQUEST, porque a tabela
 -- não possui uma coluna com o Número legado da origem. Uma segunda execução
 -- inserirá novamente as 852 solicitações.
 -- =====================================================================
@@ -1105,7 +1105,7 @@ UPDATE TMP_REQUEST_IMPORT
 -- ================================================================
 
 -- Prédio ADM / Prédio adm -> Região 1:
--- LOCATIONS.ID = 41 ('Local exato não especificado')
+-- LOCATION.ID = 41 ('Local exato não especificado')
 -- 417 números de origem abaixo + 1 ocorrência especial do número duplicado 665.
 UPDATE TMP_REQUEST_IMPORT
    SET ID_LOCATION = 41
@@ -1149,7 +1149,7 @@ UPDATE TMP_REQUEST_IMPORT
  );
 
 -- Manutenção -> Região 4:
--- LOCATIONS.ID = 44 ('Local exato não especificado')
+-- LOCATION.ID = 44 ('Local exato não especificado')
 -- 87 números de origem abaixo + 1 ocorrência especial do número duplicado 665.
 UPDATE TMP_REQUEST_IMPORT
    SET ID_LOCATION = 44
@@ -1184,7 +1184,7 @@ UPDATE TMP_REQUEST_IMPORT
    AND LOWER(BTRIM(REQUESTER_EMAIL)) = LOWER(BTRIM(E'alsj@wilsonsons.com.br'));
 
 -- Almoxarifado -> Região 2:
--- LOCATIONS.ID = 42 ('Local exato não especificado')
+-- LOCATION.ID = 42 ('Local exato não especificado')
 UPDATE TMP_REQUEST_IMPORT
    SET ID_LOCATION = 42
  WHERE ID_LOCATION IS NULL
@@ -1195,7 +1195,7 @@ UPDATE TMP_REQUEST_IMPORT
  );
 
 -- Armazem -> Região 3:
--- LOCATIONS.ID = 43 ('Local exato não especificado')
+-- LOCATION.ID = 43 ('Local exato não especificado')
 UPDATE TMP_REQUEST_IMPORT
    SET ID_LOCATION = 43
  WHERE ID_LOCATION IS NULL
@@ -1204,7 +1204,7 @@ UPDATE TMP_REQUEST_IMPORT
  );
 
 -- 2° prédio ADM -> 'Prédio ADM 1º andar'
--- LOCATIONS.ID = 34
+-- LOCATION.ID = 34
 UPDATE TMP_REQUEST_IMPORT
    SET ID_LOCATION = 34
  WHERE ID_LOCATION IS NULL
@@ -1251,15 +1251,15 @@ SELECT COUNT(*) AS MEMBERSHIP_INSERTED
 FROM INSERTED_MEMBERS;
 
 -- ================================================================
--- Validações obrigatórias antes do INSERT de REQUESTS.
+-- Validações obrigatórias antes do INSERT de REQUEST.
 -- Qualquer inconsistência interrompe a transação.
 -- ================================================================
 DO $$
 DECLARE
     V_ERROR_COUNT INTEGER;
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM REQUESTS_TYPES WHERE ID = 1) THEN
-        RAISE EXCEPTION 'REQUESTS_TYPES.ID=1 não existe.';
+    IF NOT EXISTS (SELECT 1 FROM REQUEST_TYPE WHERE ID = 1) THEN
+        RAISE EXCEPTION 'REQUEST_TYPE.ID=1 não existe.';
     END IF;
 
     SELECT COUNT(*)
@@ -1305,7 +1305,7 @@ BEGIN
      WHERE T.ID_LOCATION IS NOT NULL
        AND NOT EXISTS (
            SELECT 1
-           FROM LOCATIONS L
+           FROM LOCATION L
            WHERE L.ID = T.ID_LOCATION
        );
     IF V_ERROR_COUNT > 0 THEN
@@ -1315,10 +1315,10 @@ END;
 $$;
 
 -- ================================================================
--- REQUESTS
+-- REQUEST
 -- ================================================================
-WITH INSERTED_REQUESTS AS (
-    INSERT INTO REQUESTS (
+WITH INSERTED_REQUEST AS (
+    INSERT INTO REQUEST (
         ID_REQUEST_TYPE,
         ID_MEMBER_REQUESTER,
         ID_MEMBER_RESPONDER,
@@ -1355,15 +1355,15 @@ WITH INSERTED_REQUESTS AS (
      AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(T.SERVICE_TYPE_NAME))
     RETURNING ID
 )
-SELECT COUNT(*) AS REQUESTS_INSERTED
-FROM INSERTED_REQUESTS;
+SELECT COUNT(*) AS REQUEST_INSERTED
+FROM INSERTED_REQUEST;
 
 COMMIT;
 
 -- Recomendação de schema para futuras importações:
--- ALTER TABLE REQUESTS ADD COLUMN LEGACY_REQUEST_NUMBER INTEGER;
--- CREATE UNIQUE INDEX UQ_REQUESTS_LEGACY_NUMBER
---     ON REQUESTS (LEGACY_REQUEST_NUMBER);
+-- ALTER TABLE REQUEST ADD COLUMN LEGACY_REQUEST_NUMBER INTEGER;
+-- CREATE UNIQUE INDEX UQ_REQUEST_LEGACY_NUMBER
+--     ON REQUEST (LEGACY_REQUEST_NUMBER);
 --
 -- Recomendação para garantir a regra de um MEMBERSHIP por e-mail:
 -- CREATE UNIQUE INDEX UQ_MEMBERSHIP_EMAIL_CI
