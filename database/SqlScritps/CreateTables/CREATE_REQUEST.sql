@@ -13,25 +13,25 @@ CREATE TABLE request (
     Canceled_date TIMESTAMP,
     description VARCHAR(300),
 
-    CONSTRAINT fk_request_request_types
+    CONSTRAINT fk_request_request_type
         FOREIGN KEY (id_request_type)
-        REFERENCES request_types (id)
+        REFERENCES request_type (id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    CONSTRAINT fk_request_sector_requester
+    CONSTRAINT fk_request_member_requester
         FOREIGN KEY (id_member_requester)
         REFERENCES membership (id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    CONSTRAINT fk_request_sector_responsible
+    CONSTRAINT fk_request_member_responder
         FOREIGN KEY (id_member_responder)
         REFERENCES membership (id)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
 
-    CONSTRAINT fk_request_locations
+    CONSTRAINT fk_request_location
         FOREIGN KEY (id_location)
         REFERENCES location (id)
         ON UPDATE CASCADE
