@@ -2,7 +2,7 @@ import "server-only";
 
 import { mapRequestEntityToViewModel } from "@/src/mappers/request-mapper";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
-import { findRequestsByCurrentUser } from "@/src/server/repositories/mock/request-mock-repository";
+import { findRequestsByCurrentUser } from "@/src/server/repositories/request-repository";
 
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {
   const requests = (await findRequestsByCurrentUser()).map(mapRequestEntityToViewModel);
