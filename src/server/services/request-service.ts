@@ -2,6 +2,7 @@ import "server-only";
 
 import { mapRequestEntityToViewModel } from "@/src/mappers/request-mapper";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
+import { createActivityRequest as createFastApiActivityRequest } from "@/src/server/repositories/fastapi/request-fastapi-repository";
 import { findRequestsByCurrentUser } from "@/src/server/repositories/request-repository";
 
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {
@@ -14,6 +15,10 @@ export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> 
 }
 
 export async function createActivityRequest(formData: FormData) {
+  if (process.env.DATA_SOURCE === "fastapi") {
+    return createFastApiActivityRequest(formData);
+  }
+
   const payload = Object.fromEntries(formData.entries());
 
   return {
