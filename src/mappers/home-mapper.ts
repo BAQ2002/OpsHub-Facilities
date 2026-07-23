@@ -45,9 +45,9 @@ export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
 }
 
 export function mapSlaSamplesToClock(samplesInMinutes: number[]): SlaClockViewModel {
-  const averageInMinutes = Math.round(
-    samplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) / samplesInMinutes.length,
-  );
+  const averageInMinutes = samplesInMinutes.length > 0
+    ? Math.round(samplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) / samplesInMinutes.length)
+    : 0;
 
   const hours = Math.floor(averageInMinutes / 60);
   const minutes = averageInMinutes % 60;
