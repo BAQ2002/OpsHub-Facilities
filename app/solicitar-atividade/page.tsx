@@ -2,17 +2,17 @@ import Link from "next/link";
 
 const requestCards = [
   {
-    title: "Solicitar Atividade no Pátio",
+    title: "Nova request: Atividade de Pátio",
     description:
-      "Realize uma solicitação de atividade no pátio operacional para o setor de Facilities.",
+      "Crie um registro request com request_type Atividade de Pátio para o setor de Facilities.",
     iconBg: "bg-blue-50",
     iconColor: "text-blue-500",
     href: "/solicitar-atividade/patio",
   },
   {
-    title: "Solicitar Atividade de Chamado",
+    title: "Nova request: Chamado",
     description:
-      "Realize uma solicitação de atividade no prédio administrativo para o setor de Facilities.",
+      "Crie um registro request com request_type Chamado para o setor de Facilities.",
     iconBg: "bg-cyan-50",
     iconColor: "text-cyan-600",
     href: "/solicitar-atividade/chamado",
@@ -23,7 +23,7 @@ export default function SolicitarAtividadePage() {
   return (
     <section className="flex min-h-screen items-center justify-center bg-[#fbfcfe] px-5 py-8 text-slate-950 md:px-8 lg:px-9">
       <div className="w-full max-w-[760px]">
-        <h1 className="sr-only">Solicitar Atividade</h1>
+        <h1 className="sr-only">Nova request</h1>
 
         <div className="grid gap-4 md:grid-cols-2">
           {requestCards.map((card) => (
@@ -49,7 +49,7 @@ export default function SolicitarAtividadePage() {
               <span
                 className={`mt-3 inline-flex items-center gap-2 text-xs font-bold ${card.iconColor}`}
               >
-                Solicitar
+                Criar request
                 <span aria-hidden="true">→</span>
               </span>
             </Link>

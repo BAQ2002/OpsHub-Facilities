@@ -13,10 +13,10 @@ export default async function ActivityTrackingPage() {
               Administração
             </p>
             <h1 className="mt-2 text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
-              Acompanhamento de atividades
+              Acompanhamento de requests
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-              Monitore chamados, status de atendimento e evolução mensal das solicitações de Facilities.
+              Monitore registros da tabela request por status, service_category e evolução mensal.
             </p>
           </div>
 
@@ -35,9 +35,9 @@ export default async function ActivityTrackingPage() {
         >
           <a
             className="inline-flex h-11 items-center border-b-2 border-teal-500 px-6 text-sm font-bold text-teal-600"
-            href="#chamados"
+            href="#requests"
           >
-            Chamados
+            Requests
           </a>
           <a
             className="inline-flex h-11 items-center rounded-t-xl border border-b-0 border-slate-200 bg-white px-6 text-sm font-medium text-slate-600 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
@@ -48,14 +48,14 @@ export default async function ActivityTrackingPage() {
         </nav>
 
         <section
-          id="chamados"
+          id="requests"
           className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
-          aria-label="Filtros de chamados"
+          aria-label="Filtros de requests"
         >
           <div className="grid gap-3 lg:grid-cols-[170px_1fr_1fr_auto_auto]">
             <FilterField label="Período" value="06/06/2026 - 06/06/2026" />
-            <SelectField label="Área" value="Todas as áreas" />
-            <SelectField label="Categoria" value="Todas as categorias" />
+            <SelectField label="Business" value="Todos os business" />
+            <SelectField label="Service category" value="Todas as service_category" />
 
             <button
               className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-teal-500 bg-white px-5 text-sm font-semibold text-teal-600 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:bg-teal-50"
@@ -91,10 +91,10 @@ export default async function ActivityTrackingPage() {
         </section>
 
         <section id="dashboard" className="grid gap-4 xl:grid-cols-2">
-          <ChartCard title="Chamados por categoria">
+          <ChartCard title="Requests por service_category">
             <DonutChart data={categoryData} />
           </ChartCard>
-          <ChartCard title="Chamados por status">
+          <ChartCard title="Requests por request_status">
             <DonutChart data={statusData} />
           </ChartCard>
         </section>
@@ -103,13 +103,13 @@ export default async function ActivityTrackingPage() {
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
-                Chamados por mês
+                Requests por mês
               </h2>
-              <p className="mt-1 text-xs text-slate-500">Comparativo anual entre chamados abertos e fechados.</p>
+              <p className="mt-1 text-xs text-slate-500">Comparativo anual entre requests abertas e fechadas.</p>
             </div>
             <div className="flex gap-4 text-xs text-slate-600">
-              <LegendItem color="#f97316" label="Abertos" />
-              <LegendItem color="#84cc16" label="Fechados" />
+              <LegendItem color="#f97316" label="Abertas" />
+              <LegendItem color="#84cc16" label="Fechadas" />
             </div>
           </div>
 
@@ -182,7 +182,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   return (
     <div className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
       <div className="relative mx-auto h-[210px] w-[210px]">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} chamados`}>
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} requests`}>
           <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#eef2f7" strokeWidth="6" />
           {segments.map((item) => (
             <circle
@@ -201,7 +201,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
           <strong className="text-3xl font-bold text-slate-950">{total}</strong>
-          <span className="mt-1 text-xs font-medium text-slate-500">chamados</span>
+          <span className="mt-1 text-xs font-medium text-slate-500">requests</span>
         </div>
       </div>
 
@@ -246,12 +246,12 @@ function MonthlyBarChart({
                   <span
                     className="w-4 rounded-t-md bg-orange-500"
                     style={{ height: `${(item.open / maxMonthlyValue) * 100}%` }}
-                    title={`${item.open} chamados abertos`}
+                    title={`${item.open} requests abertos`}
                   />
                   <span
                     className="w-4 rounded-t-md bg-lime-500"
                     style={{ height: `${(item.closed / maxMonthlyValue) * 100}%` }}
-                    title={`${item.closed} chamados fechados`}
+                    title={`${item.closed} requests fechados`}
                   />
                 </div>
                 <span className="text-center text-xs font-medium text-slate-500">{item.month}</span>

@@ -43,7 +43,7 @@ export default function ActivityRequestForm({
           <Link
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl leading-none text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
             href="/solicitar-atividade"
-            aria-label="Voltar para solicitar atividade"
+            aria-label="Voltar para nova request"
           >
             ‹
           </Link>
@@ -89,7 +89,7 @@ export default function ActivityRequestForm({
               type="submit"
             >
               <SaveIcon />
-              Salvar Solicitação
+              Salvar request
             </button>
           </div>
         </form>
@@ -126,7 +126,7 @@ function renderField(field: Field, fieldId: string) {
         required
       >
         <option value="" disabled>
-          Selecione...
+          Selecione o registro...
         </option>
         {field.options?.map((option) => (
           <option key={option} value={option}>
@@ -162,7 +162,7 @@ function renderField(field: Field, fieldId: string) {
           required
         />
         <span className="mt-3 block text-xs text-slate-500">
-          Anexe uma ou mais fotos que registrem a necessidade.
+          Anexe arquivos que serão vinculados como request_attachment.
         </span>
       </div>
     );
