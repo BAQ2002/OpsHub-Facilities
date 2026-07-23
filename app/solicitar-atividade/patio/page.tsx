@@ -3,50 +3,50 @@ import ActivityRequestForm from "../_components/ActivityRequestForm";
 
 const patioFields = [
   {
-    label: "Unidade de Negócio",
-    name: "unidade-negocio",
+    label: "Business",
+    name: "business_id",
     type: "select" as const,
     options: ["Unidade 1", "Unidade 2", "Unidade 3"],
   },
   {
-    label: "Local",
-    name: "local",
+    label: "Location",
+    name: "location_id",
     type: "text" as const,
-    placeholder: "Informe o local",
+    placeholder: "Informe o local vinculado ao location_id",
   },
   {
-    label: "Fila",
-    name: "fila",
+    label: "Service field: Fila",
+    name: "service_field_fila",
     type: "text" as const,
-    placeholder: "Informe a fila",
+    placeholder: "Informe a fila para service_field_value",
   },
   {
-    label: "Lote",
-    name: "lote",
+    label: "Service field: Lote",
+    name: "service_field_lote",
     type: "text" as const,
-    placeholder: "Informe o lote",
+    placeholder: "Informe o lote para service_field_value",
   },
   {
-    label: "Tipo de Serviço",
-    name: "tipo-servico",
+    label: "Service type",
+    name: "service_type_id",
     type: "select" as const,
     options: ["Manutenção", "Limpeza", "Apoio operacional", "Outro"],
   },
   {
-    label: "Data e hora planejada",
-    name: "data-hora-planejada",
+    label: "Agreed date",
+    name: "agreed_date",
     type: "datetime-local" as const,
   },
   {
-    label: "Descrição",
-    name: "descricao",
+    label: "Description",
+    name: "description",
     type: "textarea" as const,
     placeholder: "Descreva a necessidade",
     fullWidth: true,
   },
   {
-    label: "Registro fotográfico da necessidade",
-    name: "registro-fotografico",
+    label: "Request attachment",
+    name: "request_attachment",
     type: "file" as const,
     fullWidth: true,
   },
@@ -55,9 +55,9 @@ const patioFields = [
 export default function PatioRequestPage() {
   return (
     <ActivityRequestForm
-      title="Solicitar Atividade no Pátio"
-      subtitle="Atividade no pátio operacional"
-      sectionTitle="Dados da atividade no pátio"
+      title="Nova request: Atividade de Pátio"
+      subtitle="request_type Atividade de Pátio"
+      sectionTitle="Dados da request"
       fields={patioFields}
       action={createActivityRequestAction}
     />

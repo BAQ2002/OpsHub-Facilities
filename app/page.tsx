@@ -154,11 +154,11 @@ export default async function Home() {
               <div className="grid gap-3 sm:grid-cols-1">
                 <ActionCard
                   href="/solicitar-atividade"
-                  label="Solicitar Atividade"
+                  label="Nova solicitação"
                 />
                 <ActionCard
                   href="/minhas-solicitacoes"
-                  label="Minhas solicitações"
+                  label="Minhas requests"
                 />
               </div>
             </div>
@@ -207,14 +207,14 @@ export default async function Home() {
             id="map-title"
             className="mb-2 px-1 text-sm font-bold leading-tight text-slate-950"
           >
-            TECON Salvador - Atividades Facilities
+            TECON Salvador - Solicitações Facilities
           </h2>
 
           <FacilitiesMap image={mapImage} markers={activityMarkers} />
 
           <div
             className="mt-4 flex flex-wrap items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
-            aria-label="Filtros de unidade de negócio das solicitações planejadas"
+            aria-label="Filtros de business das requests planejadas"
           >
             <span className="mr-1 text-xs font-medium text-slate-500">
               Mostrar:
@@ -240,14 +240,14 @@ export default async function Home() {
             >
               <div>
                 <h3 className="text-sm font-bold leading-tight text-slate-950">
-                  Solicitações planejadas
+                  Requests planejadas
                 </h3>
                 <p className="mt-1 text-xs text-slate-500">
-                  20 registros distribuídos entre Atividade no Pátio e Chamado
+                  Registros da tabela request distribuídos por request_type
                 </p>
               </div>
               <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-                {activityRecords.length} atividades
+                {activityRecords.length} requests
               </span>
             </div>
 
@@ -256,13 +256,13 @@ export default async function Home() {
                 <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
                   <tr>
                     <th className="px-4 py-3">ID</th>
-                    <th className="px-4 py-3">Tipo de atividade</th>
-                    <th className="px-4 py-3">Unidade de Negócio</th>
-                    <th className="px-4 py-3">Categoria</th>
-                    <th className="px-4 py-3">Tipo de Serviço</th>
-                    <th className="px-4 py-3">Local</th>
-                    <th className="px-4 py-3">Data e hora planejada</th>
-                    <th className="px-4 py-3">Descrição</th>
+                    <th className="px-4 py-3">Request type</th>
+                    <th className="px-4 py-3">Business</th>
+                    <th className="px-4 py-3">Service category</th>
+                    <th className="px-4 py-3">Service type</th>
+                    <th className="px-4 py-3">Location</th>
+                    <th className="px-4 py-3">Agreed date</th>
+                    <th className="px-4 py-3">Description</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
