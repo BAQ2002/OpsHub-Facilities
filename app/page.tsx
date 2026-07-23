@@ -29,7 +29,22 @@ const sevenSegmentMap: Record<
   "9": ["a", "b", "c", "d", "f", "g"],
 };
 
-export default async function Home() {
+type HomeSearchParams = {
+  startDate?: string;
+  endDate?: string;
+};
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Promise<HomeSearchParams>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const dateRange = {
+    startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
+    endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
+  };
+
   const {
     equipmentCards,
     totals,
@@ -39,7 +54,7 @@ export default async function Home() {
     averageSlaClock,
     activityRecords,
     categoryColorMap,
-  } = await getHomePageData();
+  } = await getHomePageData(dateRange);
 
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
@@ -96,7 +111,8 @@ export default async function Home() {
                 <input
                   aria-label="Data inicial"
                   className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
-                  defaultValue="2026-06-05"
+                  defaultValue={dateRange.startDate}
+                  name="startDate"
                   type="date"
                 />
               </label>
@@ -106,7 +122,8 @@ export default async function Home() {
                 <input
                   aria-label="Data final"
                   className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
-                  defaultValue="2026-06-05"
+                  defaultValue={dateRange.endDate}
+                  name="endDate"
                   type="date"
                 />
               </label>
