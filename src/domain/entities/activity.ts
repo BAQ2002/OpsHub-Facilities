@@ -19,6 +19,7 @@ export type EquipmentCard = {
   iconBg: string;
   Planned: number;
   InProgress: number;
+  Completed: number;
   total?: number;
 };
 

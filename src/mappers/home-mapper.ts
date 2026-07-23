@@ -38,8 +38,9 @@ export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
     (acc, card) => ({
       Planned: acc.Planned + card.Planned,
       InProgress: acc.InProgress + card.InProgress,
+      Completed: acc.Completed + card.Completed,
     }),
-    { Planned: 0, InProgress: 0 },
+    { Planned: 0, InProgress: 0, Completed: 0 },
   );
 }
 
