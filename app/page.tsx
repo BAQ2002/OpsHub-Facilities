@@ -130,18 +130,24 @@ export default async function Home() {
 
           <div className="grid gap-3 lg:grid-cols-3">
             <div className="lg:col-span-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <SummaryCard
-                  value={String(totals.Planned)}
-                  label="Programadas"
+                  value={String(totals.Completed)}
+                  label="Concluídas"
                   bg="bg-emerald-50"
                   color="text-emerald-600"
                 />
                 <SummaryCard
-                  value={String(totals.Planned)}
+                  value={String(totals.InProgress)}
                   label="Em andamento"
                   bg="bg-amber-50"
                   color="text-yellow-500"
+                />
+                <SummaryCard
+                  value={String(totals.Planned)}
+                  label="Planejadas"
+                  bg="bg-blue-50"
+                  color="text-blue-600"
                 />
                 <SlaDisplay
                   displayValue={averageSlaClock.display}
