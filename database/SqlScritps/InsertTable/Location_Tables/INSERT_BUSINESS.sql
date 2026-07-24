@@ -1,8 +1,6 @@
--- =========================
--- BUSINESS
--- =========================
-INSERT INTO BUSINESS (ID, NAME) VALUES (1, 'TECON Salvador');
-INSERT INTO BUSINESS (ID, NAME) VALUES (2, 'Centro Logístico Salvador');
+-- ======================== BUSINESS ========================= --
+INSERT INTO BUSINESS (NAME) VALUES ('TECON Salvador');
+INSERT INTO BUSINESS (NAME) VALUES ('Centro Logístico Salvador');
 
 
 

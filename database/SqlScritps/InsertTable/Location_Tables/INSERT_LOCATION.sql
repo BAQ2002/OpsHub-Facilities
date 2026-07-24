@@ -3,59 +3,78 @@
 -- Registros agrupados por ID_REGION; IDs originais preservados.
 -- =========================
 
--- Região 1 - Prédio Administrativo
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (1, 1, '2º ANDAR	FINANCEIRO');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (2, 1, '2º ANDAR	COMERCIAL');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (3, 1, '2º ANDAR	SALA ELEVADOR LACERDA');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (4, 1, '2º ANDAR	SALA SOLAR DO UNHÃO');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (5, 1, '2º ANDAR	DIRETORIA OPERACIONAL');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (6, 1, '2º ANDAR	SALA DE REUNIÃO DIRETORIA');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (7, 1, '2º ANDAR	DIRETORIA COMERCIAL');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (8, 1, '2º ANDAR	JURÍDICO');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (9, 1, 'Fila A - Lote 12');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (10, 1, 'Pàtio Operacional');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (24, 1, 'Refeitório');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (28, 1, 'Área interna (prédio)');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (29, 1, 'Banheiro masculino Sodexo');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (30, 1, 'Fundo do refeitório');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (31, 1, 'Tubulação do forno');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (32, 1, 'Vivência Externa Térreo');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (33, 1, 'Vivência Masculina Climatizada');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (34, 1, 'Prédio ADM 1º andar');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (35, 1, 'Prédio ADM 2º andar');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (36, 1, 'Prédio ADM 3º andar');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (37, 1, 'Estação de Tratamento de Efluentes - Casa de Química');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (41, 1, 'Local exato não especificado');
+-- ================================================================================================== --
+-- ============================= Região 1 - Prédio Administrativo =================================== --
+-- ================================================================================================== --
 
--- Região 2 - Almoxarifado
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (42, 2, 'Local exato não especificado');
+-- ============================= TERREO ========================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Refeitório');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Banheiro masculino Sodexo');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Fundo do refeitório');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Vivência Externa Térreo');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Vivência Masculina Climatizada');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Tubulação do forno');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Estação de Tratamento de Efluentes - Casa de Química');
 
--- Região 3 - Armazém
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (22, 3, 'Mezanino');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (23, 3, 'Mariner');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (27, 3, 'Estante Riffer');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (39, 3, 'Hidrante - frente do Armazém');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (43, 3, 'Local exato não especificado');
+-- ============================= PRIMEIRO ANDAR ======================================= --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 1º andar');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Financeiro');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Comercial');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Sala de Elevador Lacerda');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Sala Solar do Unhão');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Diretoria Operacional');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Sala de Reunião Diretoria');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Diretoria Comercial');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º Andar Jurídico');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Área interna (prédio)');
 
--- Região 4 - Manutenção
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (38, 4, 'ETE - ao lado da Manutenção');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (44, 4, 'Local exato não especificado');
+-- ============================== SEGUNDO ANDAR ===================================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 2º andar');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Prédio ADM 3º andar');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Local exato não especificado');
 
--- Região 5 - Pàtio Operacional
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (11, 5, 'POSTO DE COMBUSTÍVEL');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (12, 5, 'ETE');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (13, 5, 'GATE IN');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (14, 5, 'GATE OUT');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (15, 5, 'CAIS');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (16, 5, 'SUBESTAÇÕES ');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (17, 5, 'CANTEIROS');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (18, 5, 'CENTRAIS DE RESÍDUOS');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (19, 5, 'ESTAÇÃO ELEVATÓRIA DE ESGOTO');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (20, 5, 'CASAS DE BOMBAS');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (21, 5, 'TRIAGEM');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (25, 5, 'Scanner');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (26, 5, 'TPA');
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (45, 5, 'Local exato não especificado');
+-- ================================================================================================== --
+-- =============================== Região 2 - Almoxarifado ========================================== --
+-- ================================================================================================== --
+INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES ( 2, 'Local exato não especificado');
 
--- Região 6 - Prédio Administrativo
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES (40, 6, 'Tanque/estacionamento no Prédio ADM CLS');
+-- ================================================================================================== --
+-- ================================== Região 3 - Armazém ============================================ --
+-- ================================================================================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 3, 'Mezanino');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 3, 'Mariner');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 3, 'Estante Riffer');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 3, 'Hidrante - frente do Armazém');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 3, 'Local exato não especificado');
+
+-- ================================================================================================== --
+-- ================================== Região 4 - Manutenção ========================================= --
+-- ================================================================================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 4, 'ETE - ao lado da Manutenção');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 4, 'Local exato não especificado'); 
+
+-- ================================================================================================== --
+-- ================================== Região 5 - Pàtio Operacional ================================== --
+-- ================================================================================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'POSTO DE COMBUSTÍVEL');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'ETE');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'GATE IN');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'GATE OUT');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'CAIS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'SUBESTAÇÕES ');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'CANTEIROS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'CENTRAIS DE RESÍDUOS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'ESTAÇÃO ELEVATÓRIA DE ESGOTO');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'CASAS DE BOMBAS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'TRIAGEM');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Scanner');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'TPA');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Local exato não especificado');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Fila A - Lote 12');
+
+-- ================================================================================================== --
+-- ============================== Região 6 - CLS - Prédio Administrativo ============================ --
+-- ================================================================================================== --
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Prédio Administrativo CLS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 6, 'Tanque/estacionamento no Prédio ADM CLS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 6, 'Local exato não especificado');
