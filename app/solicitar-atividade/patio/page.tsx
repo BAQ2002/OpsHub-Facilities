@@ -6,7 +6,7 @@ const patioFields = [
     label: "Business",
     name: "business_id",
     type: "select" as const,
-    options: ["Unidade 1", "Unidade 2", "Unidade 3"],
+    options: ["Unidade 1", "Unidade 2", "Unidade 3"].map((value) => ({ label: value, value })),
   },
   {
     label: "Location",
@@ -30,7 +30,7 @@ const patioFields = [
     label: "Service type",
     name: "service_type_id",
     type: "select" as const,
-    options: ["Manutenção", "Limpeza", "Apoio operacional", "Outro"],
+    options: ["Manutenção", "Limpeza", "Apoio operacional", "Outro"].map((value) => ({ label: value, value })),
   },
   {
     label: "Agreed date",
