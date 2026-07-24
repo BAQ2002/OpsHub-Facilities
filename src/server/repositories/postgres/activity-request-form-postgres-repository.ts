@@ -4,11 +4,6 @@ import type { ActivityRequestField, FormOption } from "@/src/domain/entities/act
 import type { ActivityRequestFormData, ActivityRequestFormFilters } from "@/src/server/repositories/activity-request-form-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
-const booleanOptions: FormOption[] = [
-  { label: "Sim", value: "true" },
-  { label: "Não", value: "false" },
-];
-
 type ServiceTypeRow = {
   name: string;
 };
@@ -77,7 +72,7 @@ function mapServiceFieldTypeRowToField(row: ServiceFieldTypeRow): ActivityReques
     label: row.name,
     name: `service_field_${row.id}`,
     type,
-    options: row.type.toUpperCase() === "BOOL" ? booleanOptions : mapOptions(row.options),
+    options: mapOptions(row.options),
     required: row.required ?? false,
     fullWidth: type === "text",
   };
@@ -90,13 +85,23 @@ function mapDatabaseFieldType(type: string): ActivityRequestField["type"] {
   if (normalizedType === "MULTI_SELECT") return "multi-select";
   if (normalizedType === "NUMBER") return "number";
   if (normalizedType === "DATE") return "date";
-  if (normalizedType === "BOOL") return "select";
+  if (normalizedType === "BOOL") return "checkbox";
 
   return "text";
 }
 
 function mapOptions(options: unknown): FormOption[] | undefined {
-  if (!Array.isArray(options)) return undefined;
+  const parsedOptions = typeof options === "string" ? parseJsonOptions(options) : options;
 
-  return options.map(String).map((value) => ({ label: value, value }));
+  if (!Array.isArray(parsedOptions)) return undefined;
+
+  return parsedOptions.map(String).map((value) => ({ label: value, value }));
+}
+
+function parseJsonOptions(options: string): unknown {
+  try {
+    return JSON.parse(options);
+  } catch {
+    return undefined;
+  }
 }

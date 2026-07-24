@@ -6,6 +6,7 @@ export type FormOption = {
 export type ActivityRequestFieldType =
   | "select"
   | "multi-select"
+  | "checkbox"
   | "text"
   | "number"
   | "date"

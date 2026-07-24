@@ -151,6 +151,21 @@ function renderField(field: Field, fieldId: string) {
     );
   }
 
+  if (field.type === "checkbox") {
+    return (
+      <>
+        <input name={field.name} type="hidden" value="false" />
+        <input
+          className="h-5 w-5 rounded border-slate-300 text-teal-600 outline-none transition focus:ring-2 focus:ring-teal-100"
+          id={fieldId}
+          name={field.name}
+          type="checkbox"
+          value="true"
+        />
+      </>
+    );
+  }
+
   if (field.type === "textarea") {
     return (
       <textarea

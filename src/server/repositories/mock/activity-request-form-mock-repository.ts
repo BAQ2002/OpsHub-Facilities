@@ -9,6 +9,7 @@ const serviceTypesByCategory: Record<string, string[]> = {
     "Outros",
     "Regulagem de porta",
     "Reparos em móveis",
+    "Troca de fechadura/miolo",
   ],
 };
 
@@ -37,6 +38,18 @@ const fieldsByServiceType: Record<string, ActivityRequestField[]> = {
     { label: "Anexo da ocorrência", name: "service_field_6", type: "text", required: true },
   ],
   Outros: [{ label: "Foto da necessidade", name: "service_field_2", type: "text", required: true }],
+  "Troca de fechadura/miolo": [
+    { label: "Anexo da ocorrência", name: "service_field_14", type: "text", required: true },
+    { label: "Observações", name: "service_field_15", type: "text", required: true },
+    {
+      label: "Motivo da troca",
+      name: "service_field_16",
+      type: "select",
+      options: ["Outro", "Danificada", "Chave perdida"].map((value) => ({ label: value, value })),
+      required: true,
+    },
+    { label: "Observações da ocorrência", name: "service_field_17", type: "text", required: true },
+  ],
 };
 
 export async function getActivityRequestFormData({
