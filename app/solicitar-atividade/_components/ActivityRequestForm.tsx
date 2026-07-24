@@ -1,15 +1,6 @@
 import Link from "next/link";
 
-type FieldType = "select" | "text" | "datetime-local" | "textarea" | "file";
-
-type Field = {
-  label: string;
-  name: string;
-  type: FieldType;
-  placeholder?: string;
-  options?: string[];
-  fullWidth?: boolean;
-};
+import type { ActivityRequestField as Field } from "@/src/domain/entities/activity-request-form";
 
 type ActivityRequestFormProps = {
   title: string;
@@ -102,12 +93,17 @@ function FormField({ field }: { field: Field }) {
   const fieldId = `activity-${field.name}`;
   const wrapperClass = field.fullWidth ? "md:col-span-2" : undefined;
 
+  if (field.type === "hidden") {
+    return <input name={field.name} type="hidden" value={field.placeholder ?? ""} />;
+  }
+
   return (
     <label className={wrapperClass} htmlFor={fieldId}>
       <span className="mb-2 block text-sm font-medium text-slate-600">
-        {field.label} <span className="text-rose-500">*</span>
+        {field.label} {field.required !== false ? <span className="text-rose-500">*</span> : null}
       </span>
       {renderField(field, fieldId)}
+      {field.helpText ? <span className="mt-2 block text-xs text-slate-500">{field.helpText}</span> : null}
     </label>
   );
 }
@@ -123,14 +119,32 @@ function renderField(field: Field, fieldId: string) {
         id={fieldId}
         name={field.name}
         defaultValue=""
-        required
+        required={field.required !== false}
       >
         <option value="" disabled>
           Selecione o registro...
         </option>
         {field.options?.map((option) => (
-          <option key={option} value={option}>
-            {option}
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  if (field.type === "multi-select") {
+    return (
+      <select
+        className={`${inputClass} min-h-[116px] py-2`}
+        id={fieldId}
+        name={field.name}
+        multiple
+        required={field.required !== false}
+      >
+        {field.options?.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
@@ -144,7 +158,7 @@ function renderField(field: Field, fieldId: string) {
         id={fieldId}
         name={field.name}
         placeholder={field.placeholder}
-        required
+        required={field.required !== false}
       />
     );
   }
@@ -159,7 +173,7 @@ function renderField(field: Field, fieldId: string) {
           type="file"
           accept="image/*"
           multiple
-          required
+          required={field.required !== false}
         />
         <span className="mt-3 block text-xs text-slate-500">
           Anexe arquivos que serão vinculados como request_attachment.
@@ -175,7 +189,7 @@ function renderField(field: Field, fieldId: string) {
       name={field.name}
       type={field.type}
       placeholder={field.placeholder}
-      required
+      required={field.required !== false}
     />
   );
 }
