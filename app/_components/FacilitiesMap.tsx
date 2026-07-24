@@ -266,7 +266,7 @@ export default function FacilitiesMap({
 
           <div
             className="pointer-events-none absolute inset-0"
-            aria-label="Localização das atividades programadas"
+            aria-label="Localização das requests programadas"
           >
             {markers.map((marker) => (
               <span

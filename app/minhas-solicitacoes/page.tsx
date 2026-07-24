@@ -16,24 +16,24 @@ export default async function MyRequestsPage() {
               Acompanhamento
             </p>
             <h1 className="mt-1 text-[30px] font-bold leading-none tracking-[-0.03em] text-slate-950 md:text-[34px]">
-              Minhas solicitações
+              Minhas requests
             </h1>
           </div>
         </header>
 
         <section
           className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
-          aria-label="Busca e filtros das minhas solicitações"
+          aria-label="Busca e filtros das minhas requests"
         >
           <label className="relative block">
-            <span className="sr-only">Buscar por solicitação</span>
+            <span className="sr-only">Buscar por request</span>
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
               <SearchIcon />
             </span>
             <input
               className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
               type="search"
-              placeholder="Buscar por solicitação"
+              placeholder="Buscar por request"
             />
           </label>
 
@@ -42,12 +42,12 @@ export default async function MyRequestsPage() {
             type="button"
           >
             <FilterIcon />
-            Adicionar filtro
+            Filtrar por request_status
           </button>
         </section>
 
-        <RequestGroup title="Abertos" requests={openRequests} />
-        <RequestGroup title="Fechados" requests={closedRequests} className="mt-10" />
+        <RequestGroup title="Requests abertas" requests={openRequests} />
+        <RequestGroup title="Requests fechadas" requests={closedRequests} className="mt-10" />
       </div>
     </section>
   );
@@ -69,7 +69,7 @@ function RequestGroup({
           {title}
         </h2>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
-          {requests.length} solicitações
+          {requests.length} requests
         </span>
       </div>
 
@@ -101,7 +101,7 @@ function RequestCard({ request }: { request: RequestViewModel }) {
           <button
             className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-950 transition hover:bg-slate-100"
             type="button"
-            aria-label={`Abrir ações da solicitação ${request.id}`}
+            aria-label={`Abrir ações da request ${request.id}`}
           >
             <MoreIcon />
           </button>

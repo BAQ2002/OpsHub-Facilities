@@ -24,6 +24,7 @@ export type HomePageViewModel = {
   totals: {
     Planned: number;
     InProgress: number;
+    Completed: number;
   };
   mapImage: MapImage;
   activityMarkers: ActivityMarkerViewModel[];

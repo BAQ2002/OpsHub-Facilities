@@ -34,3 +34,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Conectar as páginas com FastAPI
+
+As páginas do Next.js leem dados no servidor, na camada `src/server`. Para usar uma API FastAPI como backend, configure o datasource e a URL da API no `.env.local`:
+
+```bash
+DATA_SOURCE=fastapi
+FASTAPI_BASE_URL=http://localhost:8000
+FASTAPI_REQUESTS_PATH=/activity-requests
+FASTAPI_CREATE_REQUEST_PATH=/activity-requests
+```
+
+Com essa configuração:
+
+- `/minhas-solicitacoes` chama `GET /activity-requests` na FastAPI e renderiza as requests retornadas.
+- Os formulários de `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` enviam o `FormData` para `POST /activity-requests`.
+
+O endpoint `GET` deve retornar uma lista JSON com campos compatíveis com este formato:
+
+```json
+[
+  {
+    "id": 212,
+    "title": "Reparos em móveis",
+    "status": "Aberto",
+    "has_unread_message": false,
+    "created_at": "2026-04-29T11:35:00-03:00"
+  }
+]
+```
+
+Também são aceitos os aliases `titulo`, `request_title`, `createdAt` e `hasUnreadMessage`. Status desconhecidos são exibidos como `Aberto`; `Fechado`, `closed` e `CLOSED` são exibidos como `Fechado`.

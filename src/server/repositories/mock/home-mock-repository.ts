@@ -14,6 +14,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-cyan-50",
     Planned: 8,
     InProgress: 2,
+    Completed: 3,
   },
   {
     title: "Civil",
@@ -21,6 +22,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-violet-50",
     Planned: 4,
     InProgress: 6,
+    Completed: 2,
   },
   {
     title: "Copa e Café",
@@ -28,6 +30,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-red-50",
     Planned: 6,
     InProgress: 4,
+    Completed: 4,
   },
   {
     title: "Elétrica",
@@ -35,6 +38,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-yellow-50",
     Planned: 6,
     InProgress: 4,
+    Completed: 5,
   },
   {
     title: "Hidráulica",
@@ -42,6 +46,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-blue-50",
     Planned: 5,
     InProgress: 5,
+    Completed: 2,
     total: 10,
   },
   {
@@ -50,6 +55,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-green-50",
     Planned: 7,
     InProgress: 3,
+    Completed: 6,
   },
   {
     title: "Refrigeração",
@@ -57,6 +63,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-orange-50",
     Planned: 6,
     InProgress: 4,
+    Completed: 3,
   },
   {
     title: "Limpeza",
@@ -64,6 +71,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-teal-50",
     Planned: 4,
     InProgress: 6,
+    Completed: 4,
   },
   {
     title: "Pintura",
@@ -71,6 +79,7 @@ const equipmentCards: EquipmentCard[] = [
     iconBg: "bg-pink-50",
     Planned: 5,
     InProgress: 5,
+    Completed: 2,
   },
 ];
 

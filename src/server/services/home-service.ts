@@ -6,7 +6,8 @@ import {
   findEquipmentCards,
   findMapImage,
   findSlaSamplesInMinutes,
-} from "@/src/server/repositories/mock/home-mock-repository";
+  type HomeDateRange,
+} from "@/src/server/repositories/home-repository";
 import {
   mapActivitiesToBusinessUnitFilters,
   mapActivityRecordToMarker,
@@ -15,13 +16,13 @@ import {
 } from "@/src/mappers/home-mapper";
 import type { HomePageViewModel } from "@/src/presentation/view-models/home-view-model";
 
-export async function getHomePageData(): Promise<HomePageViewModel> {
+export async function getHomePageData(dateRange: HomeDateRange): Promise<HomePageViewModel> {
   const [equipmentCards, activityRecords, categoryColorMap, mapImage, slaSamples] = await Promise.all([
-    findEquipmentCards(),
-    findActivityRecords(),
+    findEquipmentCards(dateRange),
+    findActivityRecords(dateRange),
     findCategoryColorMap(),
     findMapImage(),
-    findSlaSamplesInMinutes(),
+    findSlaSamplesInMinutes(dateRange),
   ]);
 
   return {
