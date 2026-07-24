@@ -12,6 +12,7 @@ export type ActivityRequestFormFilters = {
 export type ActivityRequestFormData = {
   serviceCategoryName?: string;
   serviceTypeName?: string;
+  serviceTypeOptions: { label: string; value: string }[];
   fields: ActivityRequestField[];
 };
 

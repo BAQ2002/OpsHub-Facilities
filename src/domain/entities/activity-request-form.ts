@@ -23,4 +23,5 @@ export type ActivityRequestField = {
   fullWidth?: boolean;
   required?: boolean;
   helpText?: string;
+  defaultValue?: string;
 };

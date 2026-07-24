@@ -118,7 +118,7 @@ function renderField(field: Field, fieldId: string) {
         className={inputClass}
         id={fieldId}
         name={field.name}
-        defaultValue=""
+        defaultValue={field.defaultValue ?? ""}
         required={field.required !== false}
       >
         <option value="" disabled>

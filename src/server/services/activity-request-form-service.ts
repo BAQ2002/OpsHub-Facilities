@@ -21,17 +21,36 @@ export async function getChamadoRequestFormPageData(params: {
     title: serviceTypeName ? `Nova request: ${serviceTypeName}` : "Nova request: Chamado",
     subtitle: ["request_type Chamado", serviceCategoryName, serviceTypeName].filter(Boolean).join(" · "),
     fields: [
+      {
+        label: "Business",
+        name: "business_id",
+        type: "text",
+        placeholder: "Informe a unidade de negócio",
+        required: true,
+      },
       ...(serviceCategoryName
         ? [{ label: "Service category", name: "service_category", type: "hidden" as const, required: false, placeholder: serviceCategoryName }]
         : []),
-      ...(serviceTypeName
-        ? [{ label: "Service type", name: "service_type", type: "hidden" as const, required: false, placeholder: serviceTypeName }]
-        : []),
+      {
+        label: "Service type",
+        name: "service_type",
+        type: dynamicData.serviceTypeOptions.length > 0 ? "select" : "text",
+        options: dynamicData.serviceTypeOptions,
+        defaultValue: serviceTypeName,
+        placeholder: "Informe o tipo de serviço",
+        required: true,
+      },
       {
         label: "Location",
         name: "location_id",
         type: "text",
         placeholder: "Informe o local vinculado ao location_id",
+        required: true,
+      },
+      {
+        label: "Agreed date",
+        name: "agreed_date",
+        type: "datetime-local",
         required: true,
       },
       {
@@ -43,6 +62,13 @@ export async function getChamadoRequestFormPageData(params: {
         required: true,
       },
       ...dynamicData.fields,
+      {
+        label: "Request attachment",
+        name: "request_attachment",
+        type: "file",
+        fullWidth: true,
+        required: false,
+      },
     ],
   };
 }

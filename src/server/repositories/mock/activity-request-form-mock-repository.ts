@@ -3,7 +3,19 @@ import "server-only";
 import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
 import type { ActivityRequestFormData, ActivityRequestFormFilters } from "@/src/server/repositories/activity-request-form-repository";
 
+const serviceTypesByCategory: Record<string, string[]> = {
+  "ARTÍFICE": [
+    "Fixação de Placas/Quadros",
+    "Outros",
+    "Regulagem de porta",
+    "Reparos em móveis",
+  ],
+};
+
 const fieldsByServiceType: Record<string, ActivityRequestField[]> = {
+  "Fixação de Placas/Quadros": [
+    { label: "Referência", name: "service_field_1", type: "text", required: true },
+  ],
   "Regulagem de porta": [
     { label: "Anexo da ocorrência", name: "service_field_3", type: "text", required: true },
     {
@@ -31,9 +43,13 @@ export async function getActivityRequestFormData({
   serviceCategory,
   serviceType,
 }: ActivityRequestFormFilters): Promise<ActivityRequestFormData> {
+  const serviceTypeNames = serviceCategory ? serviceTypesByCategory[serviceCategory] ?? [] : [];
+  const effectiveServiceType = serviceType ?? serviceTypeNames[0];
+
   return {
     serviceCategoryName: serviceCategory,
-    serviceTypeName: serviceType,
-    fields: serviceType ? fieldsByServiceType[serviceType] ?? [] : [],
+    serviceTypeName: effectiveServiceType,
+    serviceTypeOptions: serviceTypeNames.map((value) => ({ label: value, value })),
+    fields: effectiveServiceType ? fieldsByServiceType[effectiveServiceType] ?? [] : [],
   };
 }

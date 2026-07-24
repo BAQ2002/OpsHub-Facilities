@@ -9,6 +9,10 @@ const booleanOptions: FormOption[] = [
   { label: "Não", value: "false" },
 ];
 
+type ServiceTypeRow = {
+  name: string;
+};
+
 type ServiceFieldTypeRow = {
   id: number;
   service_category_name: string;
@@ -23,11 +27,22 @@ export async function getActivityRequestFormData({
   serviceCategory,
   serviceType,
 }: ActivityRequestFormFilters): Promise<ActivityRequestFormData> {
-  if (!serviceType) {
-    return { serviceCategoryName: serviceCategory, fields: [] };
+  const pool = await getPostgresPool();
+  const serviceTypeResult = await pool.query<ServiceTypeRow>(
+    `SELECT st.name
+       FROM service_type st
+       INNER JOIN service_category sc ON sc.id = st.id_service_category
+      WHERE ($1::text IS NULL OR sc.name = $1)
+      ORDER BY sc.name, st.name`,
+    [serviceCategory ?? null],
+  );
+  const serviceTypeOptions = serviceTypeResult.rows.map((row) => ({ label: row.name, value: row.name }));
+  const effectiveServiceType = serviceType ?? serviceTypeOptions[0]?.value;
+
+  if (!effectiveServiceType) {
+    return { serviceCategoryName: serviceCategory, serviceTypeOptions, fields: [] };
   }
 
-  const pool = await getPostgresPool();
   const result = await pool.query<ServiceFieldTypeRow>(
     `SELECT
         sft.id,
@@ -44,12 +59,13 @@ export async function getActivityRequestFormData({
         AND st.name = $1
         AND ($2::text IS NULL OR sc.name = $2)
       ORDER BY sft.display_order NULLS LAST, sft.id`,
-    [serviceType, serviceCategory ?? null],
+    [effectiveServiceType, serviceCategory ?? null],
   );
 
   return {
     serviceCategoryName: result.rows[0]?.service_category_name ?? serviceCategory,
-    serviceTypeName: result.rows[0]?.service_type_name ?? serviceType,
+    serviceTypeName: result.rows[0]?.service_type_name ?? effectiveServiceType,
+    serviceTypeOptions,
     fields: result.rows.map(mapServiceFieldTypeRowToField),
   };
 }
