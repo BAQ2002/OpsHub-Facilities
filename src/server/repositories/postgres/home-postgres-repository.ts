@@ -5,7 +5,7 @@ import { activityCategories } from "@/src/domain/entities/activity";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
-const trackedStatusNames = ["Concluída", "Programada", "Em andamento"] as const;
+const trackedStatusDescriptions = ["Concluída", "Programada", "Em andamento", "Em aberto"] as const;
 
 const categoryStyleMap: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
   Artífice: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
@@ -57,18 +57,19 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
   const result = await pool.query<CategoryCountRow>(
     `SELECT
         sc.name AS category_name,
-        COUNT(*) FILTER (WHERE rs.name = 'Programada') AS planned,
-        COUNT(*) FILTER (WHERE rs.name = 'Em andamento') AS in_progress,
-        COUNT(*) FILTER (WHERE rs.name = 'Concluída') AS completed
+        COUNT(*) FILTER (WHERE rs.description = 'Programada') AS planned,
+        COUNT(*) FILTER (WHERE rs.description = 'Em andamento') AS in_progress,
+        COUNT(*) FILTER (WHERE rs.description = 'Concluída') AS completed
        FROM request r
-       INNER JOIN request_status rs ON rs.id = r.request_status_id
-       INNER JOIN service_category sc ON sc.id = r.service_category_id
-      WHERE rs.name = ANY($1)
+       INNER JOIN request_status rs ON rs.id = r.id_request_status
+       INNER JOIN service_type st ON st.id = r.id_service_type
+       INNER JOIN service_category sc ON sc.id = st.id_service_category
+      WHERE rs.description = ANY($1)
         AND r.agreed_date >= $2::date
         AND r.agreed_date < ($3::date + INTERVAL '1 day')
       GROUP BY sc.name
       ORDER BY sc.name`,
-    [trackedStatusNames, dateRange.startDate, dateRange.endDate],
+    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
   );
 
   return result.rows.map(mapCategoryCountRowToEquipmentCard);
@@ -86,20 +87,21 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
         l.name AS location_name,
         r.agreed_date,
         r.description,
-        COALESCE(r.map_x, l.map_x) AS map_x,
-        COALESCE(r.map_y, l.map_y) AS map_y
+        l.location_x AS map_x,
+        l.location_y AS map_y
        FROM request r
-       INNER JOIN request_status rs ON rs.id = r.request_status_id
-       LEFT JOIN business b ON b.id = r.business_id
-       LEFT JOIN request_type rt ON rt.id = r.request_type_id
-       LEFT JOIN service_category sc ON sc.id = r.service_category_id
-       LEFT JOIN service_type st ON st.id = r.service_type_id
-       LEFT JOIN location l ON l.id = r.location_id
-      WHERE rs.name = ANY($1)
+       INNER JOIN request_status rs ON rs.id = r.id_request_status
+       LEFT JOIN request_type rt ON rt.id = r.id_request_type
+       LEFT JOIN service_type st ON st.id = r.id_service_type
+       LEFT JOIN service_category sc ON sc.id = st.id_service_category
+       LEFT JOIN location l ON l.id = r.id_location
+       LEFT JOIN region rg ON rg.id = l.id_region
+       LEFT JOIN business b ON b.id = rg.id_business
+      WHERE rs.description = ANY($1)
         AND r.agreed_date >= $2::date
         AND r.agreed_date < ($3::date + INTERVAL '1 day')
       ORDER BY r.agreed_date ASC, r.id ASC`,
-    [trackedStatusNames, dateRange.startDate, dateRange.endDate],
+    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
   );
 
   return result.rows.map(mapActivityRecordRowToEntity);
@@ -123,14 +125,14 @@ export async function findMapImage(): Promise<MapImage> {
 export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
   const pool = await getPostgresPool();
   const result = await pool.query<SlaSampleRow>(
-    `SELECT EXTRACT(EPOCH FROM (COALESCE(r.finished_at, NOW()) - r.created_at)) / 60 AS minutes
+    `SELECT EXTRACT(EPOCH FROM (COALESCE(r.finished_date, NOW()) - r.created_date)) / 60 AS minutes
        FROM request r
-       INNER JOIN request_status rs ON rs.id = r.request_status_id
-      WHERE rs.name = ANY($1)
+       INNER JOIN request_status rs ON rs.id = r.id_request_status
+      WHERE rs.description = ANY($1)
         AND r.agreed_date >= $2::date
         AND r.agreed_date < ($3::date + INTERVAL '1 day')
-        AND r.created_at IS NOT NULL`,
-    [trackedStatusNames, dateRange.startDate, dateRange.endDate],
+        AND r.created_date IS NOT NULL`,
+    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
   );
 
   const samples = result.rows
