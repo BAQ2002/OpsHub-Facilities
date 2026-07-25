@@ -3,18 +3,12 @@
 -- Fonte adaptada de: INSERT_MEMBERSHIP_REQUEST_SERVICE_FIELD_VALUE.sql
 -- Linhas esperadas: 852
 --
--- Esta versão:
---   1) não cria tabela temporária;
---   2) não insere registros em MEMBERSHIP;
---   3) não insere registros em SERVICE_FIELD_VALUE;
---   4) deixa REQUEST.ID ser gerado automaticamente pela coluna IDENTITY;
---   5) utiliza uma CTE VALUES apenas como fonte da instrução INSERT;
---   6) executa a carga dentro de um bloco DO atômico e desfaz o INSERT caso
---      não sejam inseridas exatamente 852 solicitações.
+-- Insert único com a fonte declarada inline em VALUES. REQUEST.ID é gerado
+-- automaticamente pela coluna IDENTITY.
 --
 -- Pré-requisitos:
---   - MEMBERSHIP já deve conter exatamente um registro por e-mail solicitante;
---   - SERVICE_CATEGORY e SERVICE_TYPE já devem estar preenchidas corretamente;
+--   - MEMBERSHIP deve conter exatamente um registro por e-mail solicitante;
+--   - SERVICE_CATEGORY e SERVICE_TYPE devem estar preenchidas corretamente;
 --   - REQUEST_TYPE.ID = 1 deve existir;
 --   - REQUEST_STATUS.ID deve conter os IDs 1, 3, 4 e 5;
 --   - os IDs de LOCATION utilizados no mapeamento devem existir.
@@ -24,31 +18,205 @@
 -- coluna de identificação legada usada para impedir duplicidades.
 -- =====================================================================
 
--- O bloco DO é atômico: qualquer erro desfaz todos os INSERTs desta execução.
-DO $request_import$
-DECLARE
-    V_INSERTED_COUNT INTEGER;
-BEGIN
-    WITH SOURCE_REQUESTS (
-        SOURCE_REQUEST_NUMBER,
-        CATEGORY_NAME,
-        SERVICE_TYPE_NAME,
-        CREATOR_NAME,
-        CREATOR_EMAIL,
-        REQUESTER_NAME,
-        REQUESTER_EMAIL,
-        SOURCE_STATUS,
-        ID_REQUEST_STATUS,
-        CREATED_DATE,
-        CLOSED_DATE,
-        CANCELED_DATE,
-        DESCRIPTION_FULL,
-        BUSINESS_NAME,
-        REGION_NAME,
-        LOCATION_NAME
-    ) AS (
-        VALUES
-(1, E'ARTÍFICE', E'Reparos em móveis', E'Gabriela Brito', E'gabriela.brito@wilsonsons.com.br', E'Gabriela Brito', E'gabriela.brito@wilsonsons.com.br', E'Cancelado', 5, NULL, NULL, TIMESTAMP '2026-04-08 17:23:00', E'-', NULL, NULL, NULL),
+INSERT INTO REQUEST (
+    ID_REQUEST_TYPE,
+    ID_MEMBER_REQUESTER,
+    ID_MEMBER_RESPONDER,
+    ID_LOCATION,
+    ID_SERVICE_TYPE,
+    ID_REQUEST_STATUS,
+    CREATED_DATE,
+    AGREED_DATE,
+    STARTED_DATE,
+    FINISHED_DATE,
+    CANCELED_DATE,
+    DESCRIPTION
+)
+SELECT
+    1 AS ID_REQUEST_TYPE,
+    M.ID AS ID_MEMBER_REQUESTER,
+    NULL AS ID_MEMBER_RESPONDER,
+    CASE
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        16, 17, 24, 42, 54, 57, 62, 63, 69, 81, 82, 97, 98, 117, 147, 157, 164, 166, 169, 170, 171, 199,
+        206, 207, 214, 217, 218, 219, 231, 246, 248, 260, 263, 280, 307, 308, 309, 324, 404, 405, 417, 419,
+        425, 428, 429, 430, 444, 452, 465, 474, 482, 493, 500, 501, 517, 518, 519, 520, 522, 526, 528, 529,
+        531, 537, 544, 545, 561, 564, 566, 570, 571, 579, 582, 583, 589, 594, 598, 599, 600, 601, 604, 608,
+        643, 652, 653, 654, 669, 675, 676, 710, 716, 720, 725, 732, 737, 738, 745, 749, 753, 757, 766, 767,
+        779, 784, 840, 851, 852, 853
+        )
+        THEN 10
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        504
+        )
+        THEN 15
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        279
+        )
+        THEN 16
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        72, 73, 74, 184, 237, 238, 273, 291, 302, 306, 320, 344, 427, 457, 532, 539, 543, 559, 562, 565,
+        568, 611, 612, 613, 615, 630, 640, 644, 661, 701, 730, 734, 735, 740, 742, 762
+        )
+        THEN 22
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        27, 41, 116, 119, 201, 215, 265, 326, 327, 329, 394, 406, 423, 458, 475, 497, 576, 642, 646, 663,
+        666, 724, 825
+        )
+        THEN 23
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        223, 227, 281, 282, 312, 340, 373, 375, 551, 590, 592, 607, 648, 649, 650, 827, 828, 832, 833, 856
+        )
+        THEN 24
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        110, 111, 213, 241, 243, 577, 578, 581, 748, 750
+        )
+        THEN 25
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        15, 99, 268, 339, 397, 422, 619, 641, 723, 741
+        )
+        THEN 26
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        614, 620, 621, 622, 645
+        )
+        THEN 27
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        29
+        )
+        THEN 28
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        409
+        )
+        THEN 29
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        107
+        )
+        THEN 30
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        396
+        )
+        THEN 31
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        770
+        )
+        THEN 32
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        364
+        )
+        THEN 33
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        795, 796, 797, 798, 799, 822, 824, 826, 831, 849, 850
+        )
+        THEN 34
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        781, 791, 792, 793, 794, 803, 805, 823, 837, 848
+        )
+        THEN 35
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        790, 846
+        )
+        THEN 36
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        773, 774
+        )
+        THEN 37
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        257
+        )
+        THEN 38
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        540
+        )
+        THEN 39
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        191
+        )
+        THEN 40
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        11, 12, 14, 21, 22, 25, 26, 28, 32, 33, 34, 35,
+        36, 37, 38, 39, 40, 45, 46, 47, 48, 49, 50, 51,
+        52, 53, 55, 56, 58, 59, 60, 61, 64, 65, 68, 70,
+        71, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
+        94, 95, 96, 101, 102, 103, 105, 106, 108, 109, 113, 114,
+        118, 120, 121, 122, 123, 124, 125, 128, 129, 130, 131, 134,
+        135, 136, 137, 140, 142, 143, 149, 150, 151, 153, 154, 155,
+        156, 158, 159, 160, 161, 162, 167, 168, 172, 173, 174, 175,
+        176, 177, 178, 179, 180, 181, 182, 183, 185, 186, 187, 188,
+        189, 192, 193, 194, 200, 202, 203, 208, 209, 210, 211, 220,
+        221, 222, 225, 226, 228, 229, 230, 232, 233, 235, 239, 240,
+        245, 247, 249, 250, 259, 261, 262, 270, 271, 275, 276, 277,
+        283, 284, 287, 288, 289, 290, 292, 293, 294, 295, 296, 297,
+        298, 299, 300, 301, 303, 304, 311, 314, 315, 316, 317, 318,
+        321, 322, 323, 325, 328, 330, 331, 332, 333, 335, 336, 338,
+        341, 342, 345, 348, 349, 350, 351, 352, 353, 354, 355, 357,
+        358, 360, 361, 362, 366, 367, 368, 369, 370, 371, 372, 374,
+        377, 378, 379, 380, 381, 382, 383, 386, 387, 388, 390, 391,
+        392, 393, 395, 398, 399, 400, 401, 408, 410, 411, 413, 414,
+        415, 416, 418, 420, 421, 424, 426, 431, 432, 435, 436, 439,
+        440, 441, 442, 443, 445, 447, 450, 451, 453, 454, 455, 459,
+        460, 461, 462, 463, 464, 466, 468, 469, 470, 471, 472, 473,
+        476, 477, 479, 481, 484, 485, 486, 487, 488, 489, 490, 491,
+        492, 494, 498, 499, 502, 503, 508, 509, 510, 511, 512, 513,
+        516, 527, 530, 535, 536, 538, 542, 546, 547, 549, 550, 553,
+        555, 558, 560, 563, 567, 569, 572, 573, 574, 575, 586, 587,
+        588, 591, 593, 596, 597, 602, 603, 605, 606, 610, 618, 623,
+        624, 625, 626, 627, 628, 629, 631, 632, 633, 634, 635, 636,
+        637, 639, 658, 659, 662, 664, 670, 673, 674, 677, 678, 679,
+        680, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692,
+        695, 696, 697, 699, 700, 703, 704, 705, 707, 709, 711, 712,
+        714, 715, 717, 718, 719, 721, 726, 727, 728, 731, 733, 747,
+        751, 752, 754, 755, 758, 759, 760, 763, 764, 769, 771, 772,
+        782, 783, 785, 800, 801, 806, 807, 810, 813, 814, 815, 816,
+        817, 819, 834, 835, 839, 841, 842, 843, 857
+        )
+        THEN 41
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        7, 8, 10, 18, 19, 20, 23, 30, 31, 43, 44, 66,
+        75, 76, 77, 78, 79, 80, 133, 138, 139, 141, 144, 145,
+        148, 152, 163, 165, 190, 197, 204, 216, 224, 236, 254, 256,
+        258, 269, 272, 286, 346, 359, 376, 389, 402, 407, 412, 437,
+        438, 483, 496, 521, 533, 548, 556, 557, 580, 616, 617, 638,
+        667, 668, 672, 694, 713, 722, 739, 761, 765, 775, 776, 777,
+        778, 787, 788, 789, 808, 809, 818, 820, 821, 829, 830, 844,
+        845, 847, 854
+        )
+        THEN 44
+    WHEN S.SOURCE_REQUEST_NUMBER = 665
+        AND UPPER(BTRIM(S.CATEGORY_NAME)) = UPPER(BTRIM(E'PMOC'))
+        AND UPPER(BTRIM(S.SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'PMOC BIMESTRAL'))
+        AND LOWER(BTRIM(S.REQUESTER_EMAIL)) = LOWER(BTRIM(E'borb@wilsonsons.com.br'))
+        THEN 41
+    WHEN S.SOURCE_REQUEST_NUMBER = 665
+        AND UPPER(BTRIM(S.CATEGORY_NAME)) = UPPER(BTRIM(E'INSTALAÇÕES HIDRÁULICAS'))
+        AND UPPER(BTRIM(S.SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'Outros'))
+        AND LOWER(BTRIM(S.REQUESTER_EMAIL)) = LOWER(BTRIM(E'alsj@wilsonsons.com.br'))
+        THEN 44
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        100, 196, 242, 244, 251, 252, 255, 264, 266, 267, 274, 278,
+        305, 319, 343, 356, 403, 446, 448, 456, 534, 729, 736, 743,
+        744, 802, 804, 811, 812, 836, 855
+        )
+        THEN 42
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        702, 708, 768, 780
+        )
+        THEN 43
+    WHEN S.SOURCE_REQUEST_NUMBER IN (
+        609
+        )
+        THEN 34
+        ELSE NULL
+    END AS ID_LOCATION,
+    ST.ID AS ID_SERVICE_TYPE,
+    S.ID_REQUEST_STATUS,
+    S.CREATED_DATE,
+    S.CLOSED_DATE AS AGREED_DATE,
+    S.CLOSED_DATE AS STARTED_DATE,
+    S.CLOSED_DATE AS FINISHED_DATE,
+    S.CANCELED_DATE,
+    LEFT(S.DESCRIPTION_FULL, 300) AS DESCRIPTION
+FROM (VALUES
+    (1, E'ARTÍFICE', E'Reparos em móveis', E'Gabriela Brito', E'gabriela.brito@wilsonsons.com.br', E'Gabriela Brito', E'gabriela.brito@wilsonsons.com.br', E'Cancelado', 5, NULL, NULL, TIMESTAMP '2026-04-08 17:23:00', E'-', NULL, NULL, NULL),
     (7, E'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA', E'TESTE Pintura', E'Teste Deskbee', E'matheus.medeiros@deskbee.co', E'Teste Deskbee', E'matheus.medeiros@deskbee.co', E'Cancelado', 5, NULL, NULL, TIMESTAMP '2026-04-17 13:47:00', NULL, NULL, NULL, NULL),
     (8, E'COPA', E'Limpeza de geladeira ou micro-ondas', E'Antonio', E'antoniobaqueirocosta@gmail.com', E'Antonio', E'antoniobaqueirocosta@gmail.com', E'Cancelado', 5, NULL, NULL, TIMESTAMP '2026-03-09 15:00:00', NULL, NULL, NULL, NULL),
     (9, E'Dúvida Aplicativo', E'Dificuldade com a reserva', E'Antonio', E'antoniobaqueirocosta@gmail.com', E'Antonio', E'antoniobaqueirocosta@gmail.com', E'Fechado', 4, TIMESTAMP '2026-01-20 11:35:00', TIMESTAMP '2026-03-09 14:58:00', NULL, NULL, NULL, NULL, NULL),
@@ -900,227 +1068,28 @@ BEGIN
     (855, E'PMOC', E'PMOC SEMESTRAL', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Fechado', 4, TIMESTAMP '2026-07-15 16:10:00', TIMESTAMP '2026-07-15 16:37:00', NULL, NULL, NULL, NULL, NULL),
     (856, E'PMOC', E'PMOC MENSAL', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Fechado', 4, TIMESTAMP '2026-07-15 16:22:00', TIMESTAMP '2026-07-15 16:37:00', NULL, NULL, NULL, NULL, NULL),
     (857, E'PMOC', E'PMOC TRIMESTRAL', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Marcelo Lima De Jesus', E'mldj@wilsonsons.com.br', E'Fechado', 4, TIMESTAMP '2026-07-15 16:28:00', TIMESTAMP '2026-07-15 16:38:00', NULL, NULL, NULL, NULL, NULL)
-    ),
-    RESOLVED_REQUESTS AS (
-        SELECT
-            S.*,
-            CASE
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                16, 17, 24, 42, 54, 57, 62, 63, 69, 81, 82, 97, 98, 117, 147, 157, 164, 166, 169, 170, 171, 199,
-                206, 207, 214, 217, 218, 219, 231, 246, 248, 260, 263, 280, 307, 308, 309, 324, 404, 405, 417, 419,
-                425, 428, 429, 430, 444, 452, 465, 474, 482, 493, 500, 501, 517, 518, 519, 520, 522, 526, 528, 529,
-                531, 537, 544, 545, 561, 564, 566, 570, 571, 579, 582, 583, 589, 594, 598, 599, 600, 601, 604, 608,
-                643, 652, 653, 654, 669, 675, 676, 710, 716, 720, 725, 732, 737, 738, 745, 749, 753, 757, 766, 767,
-                779, 784, 840, 851, 852, 853
-                )
-                THEN 10
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                504
-                )
-                THEN 15
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                279
-                )
-                THEN 16
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                72, 73, 74, 184, 237, 238, 273, 291, 302, 306, 320, 344, 427, 457, 532, 539, 543, 559, 562, 565,
-                568, 611, 612, 613, 615, 630, 640, 644, 661, 701, 730, 734, 735, 740, 742, 762
-                )
-                THEN 22
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                27, 41, 116, 119, 201, 215, 265, 326, 327, 329, 394, 406, 423, 458, 475, 497, 576, 642, 646, 663,
-                666, 724, 825
-                )
-                THEN 23
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                223, 227, 281, 282, 312, 340, 373, 375, 551, 590, 592, 607, 648, 649, 650, 827, 828, 832, 833, 856
-                )
-                THEN 24
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                110, 111, 213, 241, 243, 577, 578, 581, 748, 750
-                )
-                THEN 25
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                15, 99, 268, 339, 397, 422, 619, 641, 723, 741
-                )
-                THEN 26
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                614, 620, 621, 622, 645
-                )
-                THEN 27
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                29
-                )
-                THEN 28
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                409
-                )
-                THEN 29
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                107
-                )
-                THEN 30
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                396
-                )
-                THEN 31
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                770
-                )
-                THEN 32
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                364
-                )
-                THEN 33
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                795, 796, 797, 798, 799, 822, 824, 826, 831, 849, 850
-                )
-                THEN 34
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                781, 791, 792, 793, 794, 803, 805, 823, 837, 848
-                )
-                THEN 35
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                790, 846
-                )
-                THEN 36
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                773, 774
-                )
-                THEN 37
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                257
-                )
-                THEN 38
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                540
-                )
-                THEN 39
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                191
-                )
-                THEN 40
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                11, 12, 14, 21, 22, 25, 26, 28, 32, 33, 34, 35,
-                36, 37, 38, 39, 40, 45, 46, 47, 48, 49, 50, 51,
-                52, 53, 55, 56, 58, 59, 60, 61, 64, 65, 68, 70,
-                71, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93,
-                94, 95, 96, 101, 102, 103, 105, 106, 108, 109, 113, 114,
-                118, 120, 121, 122, 123, 124, 125, 128, 129, 130, 131, 134,
-                135, 136, 137, 140, 142, 143, 149, 150, 151, 153, 154, 155,
-                156, 158, 159, 160, 161, 162, 167, 168, 172, 173, 174, 175,
-                176, 177, 178, 179, 180, 181, 182, 183, 185, 186, 187, 188,
-                189, 192, 193, 194, 200, 202, 203, 208, 209, 210, 211, 220,
-                221, 222, 225, 226, 228, 229, 230, 232, 233, 235, 239, 240,
-                245, 247, 249, 250, 259, 261, 262, 270, 271, 275, 276, 277,
-                283, 284, 287, 288, 289, 290, 292, 293, 294, 295, 296, 297,
-                298, 299, 300, 301, 303, 304, 311, 314, 315, 316, 317, 318,
-                321, 322, 323, 325, 328, 330, 331, 332, 333, 335, 336, 338,
-                341, 342, 345, 348, 349, 350, 351, 352, 353, 354, 355, 357,
-                358, 360, 361, 362, 366, 367, 368, 369, 370, 371, 372, 374,
-                377, 378, 379, 380, 381, 382, 383, 386, 387, 388, 390, 391,
-                392, 393, 395, 398, 399, 400, 401, 408, 410, 411, 413, 414,
-                415, 416, 418, 420, 421, 424, 426, 431, 432, 435, 436, 439,
-                440, 441, 442, 443, 445, 447, 450, 451, 453, 454, 455, 459,
-                460, 461, 462, 463, 464, 466, 468, 469, 470, 471, 472, 473,
-                476, 477, 479, 481, 484, 485, 486, 487, 488, 489, 490, 491,
-                492, 494, 498, 499, 502, 503, 508, 509, 510, 511, 512, 513,
-                516, 527, 530, 535, 536, 538, 542, 546, 547, 549, 550, 553,
-                555, 558, 560, 563, 567, 569, 572, 573, 574, 575, 586, 587,
-                588, 591, 593, 596, 597, 602, 603, 605, 606, 610, 618, 623,
-                624, 625, 626, 627, 628, 629, 631, 632, 633, 634, 635, 636,
-                637, 639, 658, 659, 662, 664, 670, 673, 674, 677, 678, 679,
-                680, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692,
-                695, 696, 697, 699, 700, 703, 704, 705, 707, 709, 711, 712,
-                714, 715, 717, 718, 719, 721, 726, 727, 728, 731, 733, 747,
-                751, 752, 754, 755, 758, 759, 760, 763, 764, 769, 771, 772,
-                782, 783, 785, 800, 801, 806, 807, 810, 813, 814, 815, 816,
-                817, 819, 834, 835, 839, 841, 842, 843, 857
-                )
-                THEN 41
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                7, 8, 10, 18, 19, 20, 23, 30, 31, 43, 44, 66,
-                75, 76, 77, 78, 79, 80, 133, 138, 139, 141, 144, 145,
-                148, 152, 163, 165, 190, 197, 204, 216, 224, 236, 254, 256,
-                258, 269, 272, 286, 346, 359, 376, 389, 402, 407, 412, 437,
-                438, 483, 496, 521, 533, 548, 556, 557, 580, 616, 617, 638,
-                667, 668, 672, 694, 713, 722, 739, 761, 765, 775, 776, 777,
-                778, 787, 788, 789, 808, 809, 818, 820, 821, 829, 830, 844,
-                845, 847, 854
-                )
-                THEN 44
-            WHEN S.SOURCE_REQUEST_NUMBER = 665
-                AND UPPER(BTRIM(S.CATEGORY_NAME)) = UPPER(BTRIM(E'PMOC'))
-                AND UPPER(BTRIM(S.SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'PMOC BIMESTRAL'))
-                AND LOWER(BTRIM(S.REQUESTER_EMAIL)) = LOWER(BTRIM(E'borb@wilsonsons.com.br'))
-                THEN 41
-            WHEN S.SOURCE_REQUEST_NUMBER = 665
-                AND UPPER(BTRIM(S.CATEGORY_NAME)) = UPPER(BTRIM(E'INSTALAÇÕES HIDRÁULICAS'))
-                AND UPPER(BTRIM(S.SERVICE_TYPE_NAME)) = UPPER(BTRIM(E'Outros'))
-                AND LOWER(BTRIM(S.REQUESTER_EMAIL)) = LOWER(BTRIM(E'alsj@wilsonsons.com.br'))
-                THEN 44
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                100, 196, 242, 244, 251, 252, 255, 264, 266, 267, 274, 278,
-                305, 319, 343, 356, 403, 446, 448, 456, 534, 729, 736, 743,
-                744, 802, 804, 811, 812, 836, 855
-                )
-                THEN 42
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                702, 708, 768, 780
-                )
-                THEN 43
-            WHEN S.SOURCE_REQUEST_NUMBER IN (
-                609
-                )
-                THEN 34
-                ELSE NULL
-            END AS ID_LOCATION
-        FROM SOURCE_REQUESTS S
-    )
-    INSERT INTO REQUEST (
-        ID_REQUEST_TYPE,
-        ID_MEMBER_REQUESTER,
-        ID_MEMBER_RESPONDER,
-        ID_LOCATION,
-        ID_SERVICE_TYPE,
-        ID_REQUEST_STATUS,
-        CREATED_DATE,
-        AGREED_DATE,
-        STARTED_DATE,
-        FINISHED_DATE,
-        CANCELED_DATE,
-        DESCRIPTION
-    )
-    SELECT
-        1 AS ID_REQUEST_TYPE,
-        M.ID AS ID_MEMBER_REQUESTER,
-        NULL AS ID_MEMBER_RESPONDER,
-        R.ID_LOCATION,
-        ST.ID AS ID_SERVICE_TYPE,
-        R.ID_REQUEST_STATUS,
-        R.CREATED_DATE,
-        R.CLOSED_DATE AS AGREED_DATE,
-        R.CLOSED_DATE AS STARTED_DATE,
-        R.CLOSED_DATE AS FINISHED_DATE,
-        R.CANCELED_DATE,
-        LEFT(R.DESCRIPTION_FULL, 300) AS DESCRIPTION
-    FROM RESOLVED_REQUESTS R
-    JOIN MEMBERSHIP M
-      ON LOWER(BTRIM(M.EMAIL)) = LOWER(BTRIM(R.REQUESTER_EMAIL))
-    JOIN SERVICE_CATEGORY SC
-      ON UPPER(BTRIM(SC.NAME)) = UPPER(BTRIM(R.CATEGORY_NAME))
-    JOIN SERVICE_TYPE ST
-      ON ST.ID_SERVICE_CATEGORY = SC.ID
-     AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(R.SERVICE_TYPE_NAME));
-
-    GET DIAGNOSTICS V_INSERTED_COUNT = ROW_COUNT;
-
-    IF V_INSERTED_COUNT <> 852 THEN
-        RAISE EXCEPTION
-            'Carga de REQUEST cancelada: esperados 852 registros, mas foram inseridos %.',
-            V_INSERTED_COUNT;
-    END IF;
-
-    RAISE NOTICE '% registros inseridos em REQUEST.', V_INSERTED_COUNT;
-END;
-$request_import$;
+ ) AS S (
+    SOURCE_REQUEST_NUMBER,
+    CATEGORY_NAME,
+    SERVICE_TYPE_NAME,
+    CREATOR_NAME,
+    CREATOR_EMAIL,
+    REQUESTER_NAME,
+    REQUESTER_EMAIL,
+    SOURCE_STATUS,
+    ID_REQUEST_STATUS,
+    CREATED_DATE,
+    CLOSED_DATE,
+    CANCELED_DATE,
+    DESCRIPTION_FULL,
+    BUSINESS_NAME,
+    REGION_NAME,
+    LOCATION_NAME
+)
+JOIN MEMBERSHIP M
+  ON LOWER(BTRIM(M.EMAIL)) = LOWER(BTRIM(S.REQUESTER_EMAIL))
+JOIN SERVICE_CATEGORY SC
+  ON UPPER(BTRIM(SC.NAME)) = UPPER(BTRIM(S.CATEGORY_NAME))
+JOIN SERVICE_TYPE ST
+  ON ST.ID_SERVICE_CATEGORY = SC.ID
+ AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(S.SERVICE_TYPE_NAME));
