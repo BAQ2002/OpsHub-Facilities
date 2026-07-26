@@ -36,7 +36,7 @@ INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 1, 'Local exato não especifica
 -- ================================================================================================== --
 -- =============================== Região 2 - Almoxarifado ========================================== --
 -- ================================================================================================== --
-INSERT INTO LOCATION (ID, ID_REGION, NAME) VALUES ( 2, 'Local exato não especificado');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 2, 'Local exato não especificado');
 
 -- ================================================================================================== --
 -- ================================== Região 3 - Armazém ============================================ --
@@ -75,6 +75,6 @@ INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Fila A - Lote 12');
 -- ================================================================================================== --
 -- ============================== Região 6 - CLS - Prédio Administrativo ============================ --
 -- ================================================================================================== --
-INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 5, 'Prédio Administrativo CLS');
+INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 6, 'Prédio Administrativo CLS');
 INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 6, 'Tanque/estacionamento no Prédio ADM CLS');
 INSERT INTO LOCATION ( ID_REGION, NAME) VALUES ( 6, 'Local exato não especificado');
