@@ -1,7 +1,7 @@
 from datetime import date, datetime, time
 
 from fastapi import Depends, FastAPI, Query
-from sqlalchemy import select
+from sqlalchemy import case, select
 from sqlalchemy.orm import Session, selectinload
 
 from .database import get_session
@@ -35,6 +35,12 @@ def list_activities(
     business_unit: list[int] = Query(default=[]),
     session: Session = Depends(get_session),
 ) -> list[dict]:
+    status_date = case(
+        (RequestStatus.description == "Programada", Request.agreed_date),
+        (RequestStatus.description == "Em andamento", Request.started_date),
+        (RequestStatus.description.in_(["Concluída", "Concluida"]), Request.finished_date),
+        (RequestStatus.description == "Cancelada", Request.canceled_date),
+    )
     statement = (
         select(Request)
         .join(Request.status)
@@ -46,15 +52,15 @@ def list_activities(
             selectinload(Request.service_type).selectinload(ServiceType.category),
             selectinload(Request.location).selectinload(Location.region).selectinload(Region.business),
         )
-        .where(Request.agreed_date >= datetime.combine(start_date, time.min))
-        .where(Request.agreed_date <= datetime.combine(end_date, time.max))
+        .where(status_date >= datetime.combine(start_date, time.min))
+        .where(status_date <= datetime.combine(end_date, time.max))
     )
     if status:
         statement = statement.where(RequestStatus.description.in_(status))
     if business_unit:
         statement = statement.where(Region.id_business.in_(business_unit))
 
-    requests = session.scalars(statement.order_by(Request.agreed_date, Request.id)).all()
+    requests = session.scalars(statement.order_by(status_date, Request.id)).all()
     return [
         {
             "id": request.id,
