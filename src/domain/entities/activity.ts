@@ -13,6 +13,15 @@ export type ActivityCategory = (typeof activityCategories)[number];
 
 export type ActivityType = "Atividade no Pátio" | "Chamado";
 
+export const activityStatuses = [
+  "Programada",
+  "Em andamento",
+  "Concluída",
+  "Cancelada",
+] as const;
+
+export type ActivityStatus = (typeof activityStatuses)[number];
+
 export type EquipmentCard = {
   title: string;
   accent: string;
@@ -37,6 +46,9 @@ export type ActivityRecord = {
   category: ActivityCategory;
   serviceType: string;
   location: string;
+  status: ActivityStatus;
+  statusDate: string;
+  durationMinutes?: number;
   plannedAt: string;
   description: string;
   mapPosition: {

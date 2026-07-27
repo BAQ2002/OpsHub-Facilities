@@ -2,6 +2,7 @@ import Link from "next/link";
 import FacilitiesMap from "./_components/FacilitiesMap";
 
 import { getHomePageData } from "@/src/server/services/home-service";
+import { activityStatuses } from "@/src/domain/entities/activity";
 
 const sevenSegmentPaths = [
   { id: "a", x: 5, y: 0, width: 18, height: 4 },
@@ -32,6 +33,8 @@ const sevenSegmentMap: Record<
 type HomeSearchParams = {
   startDate?: string;
   endDate?: string;
+  status?: string | string[];
+  businessUnit?: string | string[];
 };
 
 export default async function Home({
@@ -40,9 +43,19 @@ export default async function Home({
   searchParams?: Promise<HomeSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
+  const selectedStatuses = normalizeSelection(
+    resolvedSearchParams?.status,
+    [...activityStatuses],
+  );
+  const selectedBusinessUnits = normalizeSelection(
+    resolvedSearchParams?.businessUnit,
+    ["1", "2"],
+  );
   const dateRange = {
     startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
     endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
+    statuses: selectedStatuses,
+    businessUnits: selectedBusinessUnits.map(Number),
   };
 
   const {
@@ -113,6 +126,7 @@ export default async function Home({
                   className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
                   defaultValue={dateRange.startDate}
                   name="startDate"
+                  form="activity-filters"
                   type="date"
                 />
               </label>
@@ -124,6 +138,7 @@ export default async function Home({
                   className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
                   defaultValue={dateRange.endDate}
                   name="endDate"
+                  form="activity-filters"
                   type="date"
                 />
               </label>
@@ -257,16 +272,17 @@ export default async function Home({
           </div>
           
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <form id="activity-filters" method="get" />
             <div
               id="minhas-solicitacoes"
               className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3"
             >
               <div>
                 <h3 className="text-sm font-bold leading-tight text-slate-950">
-                  Requests planejadas
+                  Atividades
                 </h3>
                 <p className="mt-1 text-xs text-slate-500">
-                  Registros da tabela request distribuídos por request_type
+                  Filtre pelo período, status da atividade e unidade de negócio
                 </p>
               </div>
               <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
@@ -280,12 +296,42 @@ export default async function Home({
                   <tr>
                     <th className="px-4 py-3">ID</th>
                     <th className="px-4 py-3">Request type</th>
-                    <th className="px-4 py-3">Business</th>
+                    <th className="px-4 py-3">
+                      <fieldset className="min-w-[120px] normal-case tracking-normal">
+                        <legend className="mb-1 uppercase tracking-[0.02em]">Unidade</legend>
+                        <div className="flex gap-3">
+                          {["1", "2"].map((unit) => (
+                            <label key={unit} className="flex items-center gap-1 font-medium text-slate-600">
+                              <input form="activity-filters" type="checkbox" name="businessUnit" value={unit} defaultChecked={selectedBusinessUnits.includes(unit)} />
+                              {unit}
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+                    </th>
+                    <th className="px-4 py-3">
+                      <fieldset className="min-w-[300px] normal-case tracking-normal">
+                        <legend className="mb-1 uppercase tracking-[0.02em]">Status</legend>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1">
+                          {activityStatuses.map((status) => (
+                            <label key={status} className="flex items-center gap-1 font-medium text-slate-600">
+                              <input form="activity-filters" type="checkbox" name="status" value={status} defaultChecked={selectedStatuses.includes(status)} />
+                              {status}
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+                    </th>
                     <th className="px-4 py-3">Service category</th>
                     <th className="px-4 py-3">Service type</th>
                     <th className="px-4 py-3">Location</th>
-                    <th className="px-4 py-3">Agreed date</th>
+                    <th className="px-4 py-3">Data do status</th>
                     <th className="px-4 py-3">Description</th>
+                    <th className="px-4 py-3 text-right">
+                      <button form="activity-filters" type="submit" className="rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-semibold normal-case tracking-normal text-white">
+                        Aplicar filtros
+                      </button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
@@ -316,6 +362,11 @@ export default async function Home({
                         {record.businessUnit}
                       </td>
                       <td className="whitespace-nowrap px-4 py-3">
+                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                          {record.status}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 ring-1 ring-slate-200">
                           <span
                             className="h-2 w-2 rounded-full"
@@ -335,11 +386,12 @@ export default async function Home({
                         {record.location}
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-500">
-                        {record.plannedAt}
+                        {record.statusDate}
                       </td>
                       <td className="min-w-[280px] px-4 py-3">
                         {record.description}
                       </td>
+                      <td aria-hidden="true" />
                     </tr>
                   ))}
                 </tbody>
@@ -350,6 +402,14 @@ export default async function Home({
       </div>
     </section>
   );
+}
+
+function normalizeSelection(
+  value: string | string[] | undefined,
+  defaults: string[],
+) {
+  if (value === undefined) return defaults;
+  return (Array.isArray(value) ? value : [value]).filter((item) => defaults.includes(item));
 }
 
 function SlaDisplay({

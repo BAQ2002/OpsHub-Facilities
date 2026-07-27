@@ -1,0 +1,1 @@
+"""OpsHub Facilities FastAPI application."""

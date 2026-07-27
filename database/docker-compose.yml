@@ -1,4 +1,18 @@
 services:
+  api:
+    image: python:3.13-slim
+    working_dir: /app
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-opshub}:${POSTGRES_PASSWORD:-opshub_dev_password}@postgres:5432/${POSTGRES_DB:-opshub_facilities}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     container_name: opshub-facilities-postgres
