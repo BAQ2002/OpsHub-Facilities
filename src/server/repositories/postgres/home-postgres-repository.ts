@@ -6,7 +6,7 @@ import { activityCategories } from "@/src/domain/entities/activity";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
-const trackedStatusDescriptions = ["Concluída", "Programada", "Em andamento", "Em aberto"] as const;
+const trackedStatusDescriptions = ["Concluída", "Concluida", "Programada", "Em andamento", "Em aberto"] as const;
 
 const categoryStyleMap: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
   Artífice: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
@@ -62,14 +62,22 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
         sc.name AS category_name,
         COUNT(*) FILTER (WHERE rs.description = 'Programada') AS planned,
         COUNT(*) FILTER (WHERE rs.description = 'Em andamento') AS in_progress,
-        COUNT(*) FILTER (WHERE rs.description = 'Concluída') AS completed
+        COUNT(*) FILTER (WHERE rs.description IN ('Concluída', 'Concluida')) AS completed
        FROM request r
        INNER JOIN request_status rs ON rs.id = r.id_request_status
        INNER JOIN service_type st ON st.id = r.id_service_type
        INNER JOIN service_category sc ON sc.id = st.id_service_category
       WHERE rs.description = ANY($1)
-        AND r.agreed_date >= $2::date
-        AND r.agreed_date < ($3::date + INTERVAL '1 day')
+        AND CASE
+          WHEN rs.description = 'Programada' THEN r.agreed_date
+          WHEN rs.description = 'Em andamento' THEN r.started_date
+          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
+        END >= $2::date
+        AND CASE
+          WHEN rs.description = 'Programada' THEN r.agreed_date
+          WHEN rs.description = 'Em andamento' THEN r.started_date
+          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
+        END < ($3::date + INTERVAL '1 day')
       GROUP BY sc.name
       ORDER BY sc.name`,
     [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
