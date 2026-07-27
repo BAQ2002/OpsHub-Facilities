@@ -21,6 +21,20 @@ export default function DateRangeFilters({
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
+  function selectToday() {
+    const today = new Date();
+    const formattedToday = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0"),
+    ].join("-");
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("startDate", formattedToday);
+    params.set("endDate", formattedToday);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
+
   return (
     <>
       <DateInput
@@ -37,6 +51,13 @@ export default function DateRangeFilters({
         value={endDate}
         onChange={updateDate}
       />
+      <button
+        className="h-[30px] rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+        type="button"
+        onClick={selectToday}
+      >
+        Hoje
+      </button>
     </>
   );
 }
@@ -60,7 +81,7 @@ function DateInput({
       <input
         aria-label={ariaLabel}
         className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
-        defaultValue={value}
+        value={value}
         name={name}
         form="activity-filters"
         type="date"
