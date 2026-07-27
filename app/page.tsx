@@ -179,9 +179,9 @@ export default async function Home({
         </section>
 
         <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9">
-          {equipmentCards.map((card) => (
+          {equipmentCards.map((card, index) => (
             <article
-              key={card.title}
+              key={`${card.title}-${index}`}
               className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
               <div className="flex items-center justify-start gap-2">
