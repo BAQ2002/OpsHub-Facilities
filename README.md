@@ -29,7 +29,22 @@ POSTGRES_POOL_MAX=10
 POSTGRES_SSL=false
 ```
 
-Quando `DATA_SOURCE` não é `postgres`, os seletores de repositório usam dados mockados, exceto em `/minhas-solicitacoes`, que também aceita `DATA_SOURCE=fastapi` para leitura por API.
+Na página principal não existe fallback para dados mockados: `DATA_SOURCE=postgres` consulta o banco diretamente e qualquer outro valor usa a FastAPI configurada em `FASTAPI_BASE_URL`.
+
+## Backend FastAPI e entidades ORM
+
+O diretório `backend/` contém um backend Python independente, pronto para acessar o mesmo PostgreSQL. Ele mapeia com SQLAlchemy 2 todas as tabelas povoadas usadas pelo domínio (`request`, `request_status`, `request_type`, `service_type`, `service_category`, `business`, `region`, `location` e `membership`), incluindo chaves estrangeiras e relacionamentos navegáveis.
+
+Para iniciar a API:
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+pip install -r backend/requirements.txt
+uvicorn backend.app.main:app --reload
+```
+
+A API lê `DATABASE_URL` (com driver `postgresql+psycopg://`) e disponibiliza `/docs`, `/health` e endpoints de listagem paginada para cada entidade, por exemplo `/requests`, `/service-categories` e `/memberships`. O parâmetro `limit` é limitado a 500 registros por chamada.
 
 ## Fluxo de dados: banco -> entidades -> view models -> páginas
 
@@ -173,7 +188,7 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 
 Os arquivos seletoras em `src/server/repositories/` definem qual implementação será usada:
 
-- `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres`, FastAPI para o datagrid quando `DATA_SOURCE=fastapi` e mock nos demais casos.
+- `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres` e FastAPI nos demais casos; nenhum dado mock abastece a home.
 - `request-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`, FastAPI com `DATA_SOURCE=fastapi` e mock nos demais casos.
 - `activity-request-form-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`; caso contrário usa mock.
 
