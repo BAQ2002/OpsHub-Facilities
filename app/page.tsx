@@ -44,15 +44,12 @@ export default async function Home({
   searchParams?: Promise<HomeSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const selectedStatuses = normalizeSelection(
-    resolvedSearchParams?.status,
-    [...activityStatuses],
-  );
+  const selectedStatus = normalizeStatus(resolvedSearchParams?.status);
   const selectedBusiness = resolvedSearchParams?.business ?? "all";
   const dateRange = {
     startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
     endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
-    statuses: selectedStatuses,
+    statuses: selectedStatus === "all" ? [...activityStatuses] : [selectedStatus],
   };
 
   const {
@@ -132,12 +129,6 @@ export default async function Home({
                 <ChevronRightIcon />
               </button>
 
-              <button
-                className="h-[30px] rounded-lg border border-slate-200 bg-white px-4 text-xs text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
-              >
-                Hoje
-              </button>
             </div>
           </div>
 
@@ -253,6 +244,35 @@ export default async function Home({
                 {option.label} ({option.count})
               </Link>
             ))}
+            <div className="ml-auto flex items-center gap-2">
+              <label
+                htmlFor="status-filter"
+                className="text-xs font-medium text-slate-500"
+              >
+                Status:
+              </label>
+              <select
+                id="status-filter"
+                form="activity-filters"
+                name="status"
+                defaultValue={selectedStatus}
+                className="h-8 min-w-40 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              >
+                <option value="all">Todos os status</option>
+                {activityStatuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+              <button
+                form="activity-filters"
+                type="submit"
+                className="h-8 rounded-lg bg-slate-900 px-3 text-xs font-semibold text-white"
+              >
+                Aplicar
+              </button>
+            </div>
           </div>
           
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -285,29 +305,12 @@ export default async function Home({
                     <th className="px-4 py-3">ID</th>
                     <th className="px-4 py-3">Request type</th>
                     <th className="px-4 py-3">Unidade</th>
-                    <th className="px-4 py-3">
-                      <fieldset className="min-w-[300px] normal-case tracking-normal">
-                        <legend className="mb-1 uppercase tracking-[0.02em]">Status</legend>
-                        <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {activityStatuses.map((status) => (
-                            <label key={status} className="flex items-center gap-1 font-medium text-slate-600">
-                              <input form="activity-filters" type="checkbox" name="status" value={status} defaultChecked={selectedStatuses.includes(status)} />
-                              {status}
-                            </label>
-                          ))}
-                        </div>
-                      </fieldset>
-                    </th>
+                    <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Service category</th>
                     <th className="px-4 py-3">Service type</th>
                     <th className="px-4 py-3">Location</th>
                     <th className="px-4 py-3">Data do status</th>
                     <th className="px-4 py-3">Description</th>
-                    <th className="px-4 py-3 text-right">
-                      <button form="activity-filters" type="submit" className="rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-semibold normal-case tracking-normal text-white">
-                        Aplicar filtros
-                      </button>
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
@@ -367,7 +370,6 @@ export default async function Home({
                       <td className="min-w-[280px] px-4 py-3">
                         {record.description}
                       </td>
-                      <td aria-hidden="true" />
                     </tr>
                   ))}
                 </tbody>
@@ -402,12 +404,10 @@ function normalizeParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value : [value];
 }
 
-function normalizeSelection(
-  value: string | string[] | undefined,
-  defaults: string[],
-) {
-  if (value === undefined) return defaults;
-  return (Array.isArray(value) ? value : [value]).filter((item) => defaults.includes(item));
+function normalizeStatus(value: string | string[] | undefined) {
+  const selectedValue = Array.isArray(value) ? value[0] : value;
+
+  return activityStatuses.find((status) => status === selectedValue) ?? "all";
 }
 
 function SlaDisplay({
