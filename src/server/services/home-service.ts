@@ -16,7 +16,10 @@ import {
 } from "@/src/mappers/home-mapper";
 import type { HomePageViewModel } from "@/src/presentation/view-models/home-view-model";
 
-export async function getHomePageData(dateRange: HomeDateRange): Promise<HomePageViewModel> {
+export async function getHomePageData(
+  dateRange: HomeDateRange,
+  selectedBusiness = "all",
+): Promise<HomePageViewModel> {
   const [equipmentCards, activityRecords, categoryColorMap, mapImage, slaSamples] = await Promise.all([
     findEquipmentCards(dateRange),
     findActivityRecords(dateRange),
@@ -30,7 +33,7 @@ export async function getHomePageData(dateRange: HomeDateRange): Promise<HomePag
     totals: mapEquipmentCardsToTotals(equipmentCards),
     mapImage,
     activityMarkers: activityRecords.map((record) => mapActivityRecordToMarker(record, categoryColorMap)),
-    plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(activityRecords),
+    plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(activityRecords, selectedBusiness),
     averageSlaClock: mapSlaSamplesToClock(slaSamples),
     activityRecords,
     categoryColorMap,
