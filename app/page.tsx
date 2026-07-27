@@ -44,12 +44,15 @@ export default async function Home({
   searchParams?: Promise<HomeSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
-  const selectedStatus = normalizeStatus(resolvedSearchParams?.status);
+  const selectedStatuses = normalizeStatuses(resolvedSearchParams?.status);
+  const effectiveStatuses = selectedStatuses.length
+    ? selectedStatuses
+    : [...activityStatuses];
   const selectedBusiness = resolvedSearchParams?.business ?? "all";
   const dateRange = {
     startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
     endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
-    statuses: selectedStatus === "all" ? [...activityStatuses] : [selectedStatus],
+    statuses: effectiveStatuses,
   };
 
   const {
@@ -245,26 +248,27 @@ export default async function Home({
               </Link>
             ))}
             <div className="ml-auto flex items-center gap-2">
-              <label
-                htmlFor="status-filter"
-                className="text-xs font-medium text-slate-500"
-              >
+              <span className="text-xs font-medium text-slate-500">
                 Status:
-              </label>
-              <select
-                id="status-filter"
-                form="activity-filters"
-                name="status"
-                defaultValue={selectedStatus}
-                className="h-8 min-w-40 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+              </span>
+              <fieldset
+                aria-label="Status"
+                className="flex min-h-8 flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
               >
-                <option value="all">Todos os status</option>
                 {activityStatuses.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
+                  <label key={status} className="flex items-center gap-1.5 whitespace-nowrap">
+                    <input
+                      form="activity-filters"
+                      name="status"
+                      type="checkbox"
+                      value={status}
+                      defaultChecked={effectiveStatuses.includes(status)}
+                      className="h-3.5 w-3.5 accent-slate-900"
+                    />
+                    <span>{status}</span>
+                  </label>
                 ))}
-              </select>
+              </fieldset>
               <button
                 form="activity-filters"
                 type="submit"
@@ -404,10 +408,10 @@ function normalizeParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value : [value];
 }
 
-function normalizeStatus(value: string | string[] | undefined) {
-  const selectedValue = Array.isArray(value) ? value[0] : value;
+function normalizeStatuses(value: string | string[] | undefined) {
+  const values = normalizeParam(value);
 
-  return activityStatuses.find((status) => status === selectedValue) ?? "all";
+  return activityStatuses.filter((status) => values.includes(status));
 }
 
 function SlaDisplay({
