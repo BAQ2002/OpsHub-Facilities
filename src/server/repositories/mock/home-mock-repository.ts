@@ -1,5 +1,6 @@
 import "server-only";
 
+import facilitiesMap from "@/public_resources/facilities-map.png";
 import type {
   ActivityCategory,
   ActivityRecord,
@@ -95,9 +96,9 @@ const categoryColorMap: Record<ActivityCategory, string> = {
 } as const;
 
 const mapImage: MapImage = {
-  src: "/facilities-map.png",
-  width: 1544,
-  height: 908,
+  src: facilitiesMap.src,
+  width: facilitiesMap.width,
+  height: facilitiesMap.height,
   alt: "Mapa AIS com posições atuais das atividades de facilities",
 };
 
