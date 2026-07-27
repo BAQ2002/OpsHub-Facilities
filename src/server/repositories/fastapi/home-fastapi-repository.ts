@@ -1,5 +1,6 @@
 import "server-only";
 
+import facilitiesMap from "@/public_resources/facilities-map.png";
 import {
   activityCategories,
   activityStatuses,
@@ -48,9 +49,9 @@ export async function findCategoryColorMap(): Promise<Record<ActivityCategory, s
 
 export async function findMapImage(): Promise<MapImage> {
   return {
-    src: process.env.FACILITIES_MAP_SRC ?? "/facilities-map.png",
-    width: Number(process.env.FACILITIES_MAP_WIDTH ?? 1544),
-    height: Number(process.env.FACILITIES_MAP_HEIGHT ?? 908),
+    src: process.env.FACILITIES_MAP_SRC ?? facilitiesMap.src,
+    width: Number(process.env.FACILITIES_MAP_WIDTH ?? facilitiesMap.width),
+    height: Number(process.env.FACILITIES_MAP_HEIGHT ?? facilitiesMap.height),
     alt: "Mapa AIS com posições atuais das atividades de facilities",
   };
 }
