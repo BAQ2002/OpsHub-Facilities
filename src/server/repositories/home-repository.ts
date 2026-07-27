@@ -15,10 +15,13 @@ import {
   findMapImage as findPostgresMapImage,
   findSlaSamplesInMinutes as findPostgresSlaSamplesInMinutes,
 } from "@/src/server/repositories/postgres/home-postgres-repository";
+import { findActivityRecords as findFastApiActivityRecords } from "@/src/server/repositories/fastapi/home-fastapi-repository";
 
 export type HomeDateRange = {
   startDate: string;
   endDate: string;
+  statuses?: string[];
+  businessUnits?: number[];
 };
 
 export async function findEquipmentCards(dateRange: HomeDateRange): Promise<EquipmentCard[]> {
@@ -30,6 +33,10 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
 }
 
 export async function findActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
+  if (process.env.DATA_SOURCE === "fastapi") {
+    return findFastApiActivityRecords(dateRange);
+  }
+
   if (process.env.DATA_SOURCE === "postgres") {
     return findPostgresActivityRecords(dateRange);
   }
