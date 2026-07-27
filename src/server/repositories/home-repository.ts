@@ -2,20 +2,19 @@ import "server-only";
 
 import type { ActivityRecord, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
 import {
-  findActivityRecords as findMockActivityRecords,
-  findCategoryColorMap as findMockCategoryColorMap,
-  findEquipmentCards as findMockEquipmentCards,
-  findMapImage as findMockMapImage,
-  findSlaSamplesInMinutes as findMockSlaSamplesInMinutes,
-} from "@/src/server/repositories/mock/home-mock-repository";
-import {
   findActivityRecords as findPostgresActivityRecords,
   findCategoryColorMap as findPostgresCategoryColorMap,
   findEquipmentCards as findPostgresEquipmentCards,
   findMapImage as findPostgresMapImage,
   findSlaSamplesInMinutes as findPostgresSlaSamplesInMinutes,
 } from "@/src/server/repositories/postgres/home-postgres-repository";
-import { findActivityRecords as findFastApiActivityRecords } from "@/src/server/repositories/fastapi/home-fastapi-repository";
+import {
+  findActivityRecords as findFastApiActivityRecords,
+  findCategoryColorMap as findFastApiCategoryColorMap,
+  findEquipmentCards as findFastApiEquipmentCards,
+  findMapImage as findFastApiMapImage,
+  findSlaSamplesInMinutes as findFastApiSlaSamplesInMinutes,
+} from "@/src/server/repositories/fastapi/home-fastapi-repository";
 
 export type HomeDateRange = {
   startDate: string;
@@ -29,7 +28,7 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
     return findPostgresEquipmentCards(dateRange);
   }
 
-  return findMockEquipmentCards();
+  return findFastApiEquipmentCards(dateRange);
 }
 
 export async function findActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
@@ -41,7 +40,7 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
     return findPostgresActivityRecords(dateRange);
   }
 
-  return findMockActivityRecords();
+  return findFastApiActivityRecords(dateRange);
 }
 
 export async function findCategoryColorMap() {
@@ -49,7 +48,7 @@ export async function findCategoryColorMap() {
     return findPostgresCategoryColorMap();
   }
 
-  return findMockCategoryColorMap();
+  return findFastApiCategoryColorMap();
 }
 
 export async function findMapImage(): Promise<MapImage> {
@@ -57,7 +56,7 @@ export async function findMapImage(): Promise<MapImage> {
     return findPostgresMapImage();
   }
 
-  return findMockMapImage();
+  return findFastApiMapImage();
 }
 
 export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
@@ -65,5 +64,5 @@ export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise
     return findPostgresSlaSamplesInMinutes(dateRange);
   }
 
-  return findMockSlaSamplesInMinutes();
+  return findFastApiSlaSamplesInMinutes(dateRange);
 }

@@ -7,13 +7,66 @@ import {
   type ActivityRecord,
   type ActivityStatus,
   type ActivityType,
+  type EquipmentCard,
+  type MapImage,
 } from "@/src/domain/entities/activity";
 import { getFastApiPath, requestFastApi } from "@/src/server/api/fastapi";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 
 type FastApiActivity = Record<string, unknown>;
 
+const categoryStyles: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
+  Artífice: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
+  Civil: { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
+  "Copa e Café": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
+  Elétrica: { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
+  Hidráulica: { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
+  Jardinagem: { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
+  Refrigeração: { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
+  Limpeza: { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
+};
+
 export async function findActivityRecords(filters: HomeDateRange): Promise<ActivityRecord[]> {
+  const rows = await fetchActivities(filters);
+  return rows.map(mapFastApiActivity);
+}
+
+export async function findEquipmentCards(filters: HomeDateRange): Promise<EquipmentCard[]> {
+  const activities = await findActivityRecords(filters);
+  return activityCategories.map((category) => {
+    const categoryActivities = activities.filter((activity) => activity.category === category);
+    const Planned = categoryActivities.filter((activity) => activity.status === "Programada").length;
+    const InProgress = categoryActivities.filter((activity) => activity.status === "Em andamento").length;
+    const Completed = categoryActivities.filter((activity) => activity.status === "Concluída").length;
+    return { title: category, ...categoryStyles[category], Planned, InProgress, Completed, total: categoryActivities.length };
+  });
+}
+
+export async function findCategoryColorMap(): Promise<Record<ActivityCategory, string>> {
+  return Object.fromEntries(activityCategories.map((category) => [category, categoryStyles[category].color])) as Record<ActivityCategory, string>;
+}
+
+export async function findMapImage(): Promise<MapImage> {
+  return {
+    src: process.env.FACILITIES_MAP_SRC ?? "/facilities-map.png",
+    width: Number(process.env.FACILITIES_MAP_WIDTH ?? 1544),
+    height: Number(process.env.FACILITIES_MAP_HEIGHT ?? 908),
+    alt: "Mapa AIS com posições atuais das atividades de facilities",
+  };
+}
+
+export async function findSlaSamplesInMinutes(filters: HomeDateRange): Promise<number[]> {
+  const rows = await fetchActivities(filters);
+  const samples = rows.map((row) => {
+    const createdAt = readString(row, "created_date", "created_at");
+    const finishedAt = readString(row, "finished_date", "finished_at") ?? new Date().toISOString();
+    if (!createdAt) return 0;
+    return (new Date(finishedAt).getTime() - new Date(createdAt).getTime()) / 60_000;
+  }).filter((minutes) => Number.isFinite(minutes) && minutes > 0);
+  return samples.length ? samples : [0];
+}
+
+async function fetchActivities(filters: HomeDateRange): Promise<FastApiActivity[]> {
   const path = getFastApiPath("FASTAPI_ACTIVITIES_PATH", "/activities");
   const params = new URLSearchParams({
     start_date: filters.startDate,
@@ -28,7 +81,7 @@ export async function findActivityRecords(filters: HomeDateRange): Promise<Activ
   );
   const rows = Array.isArray(response) ? response : response.items;
 
-  return rows.map(mapFastApiActivity);
+  return rows;
 }
 
 function mapFastApiActivity(row: FastApiActivity): ActivityRecord {
