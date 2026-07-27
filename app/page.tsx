@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FacilitiesMap from "./_components/FacilitiesMap";
+import DateRangeFilters from "./_components/DateRangeFilters";
 
 import { getHomePageData } from "@/src/server/services/home-service";
 import { activityStatuses } from "@/src/domain/entities/activity";
@@ -34,7 +35,7 @@ type HomeSearchParams = {
   startDate?: string;
   endDate?: string;
   status?: string | string[];
-  businessUnit?: string | string[];
+  business?: string;
 };
 
 export default async function Home({
@@ -47,15 +48,11 @@ export default async function Home({
     resolvedSearchParams?.status,
     [...activityStatuses],
   );
-  const selectedBusinessUnits = normalizeSelection(
-    resolvedSearchParams?.businessUnit,
-    ["1", "2"],
-  );
+  const selectedBusiness = resolvedSearchParams?.business ?? "all";
   const dateRange = {
     startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
     endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
     statuses: selectedStatuses,
-    businessUnits: selectedBusinessUnits.map(Number),
   };
 
   const {
@@ -67,7 +64,10 @@ export default async function Home({
     averageSlaClock,
     activityRecords,
     categoryColorMap,
-  } = await getHomePageData(dateRange);
+  } = await getHomePageData(dateRange, selectedBusiness);
+  const filteredActivityRecords = selectedBusiness === "all"
+    ? activityRecords
+    : activityRecords.filter((record) => record.businessUnit === selectedBusiness);
 
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
@@ -119,29 +119,10 @@ export default async function Home({
                 <ChevronLeftIcon />
               </button>
 
-              <label className="flex items-center gap-2 text-xs text-slate-500">
-                <span>De</span>
-                <input
-                  aria-label="Data inicial"
-                  className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
-                  defaultValue={dateRange.startDate}
-                  name="startDate"
-                  form="activity-filters"
-                  type="date"
-                />
-              </label>
-
-              <label className="flex items-center gap-2 text-xs text-slate-500">
-                <span>Até</span>
-                <input
-                  aria-label="Data final"
-                  className="h-[30px] w-[124px] rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)] [color-scheme:light]"
-                  defaultValue={dateRange.endDate}
-                  name="endDate"
-                  form="activity-filters"
-                  type="date"
-                />
-              </label>
+              <DateRangeFilters
+                startDate={dateRange.startDate}
+                endDate={dateRange.endDate}
+              />
 
               <button
                 className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
@@ -258,8 +239,11 @@ export default async function Home({
               Mostrar:
             </span>
             {plannedRequestFilterOptions.map((option) => (
-              <span
+              <Link
                 key={option.label}
+                href={buildBusinessFilterHref(resolvedSearchParams, option.value)}
+                scroll={false}
+                aria-current={option.isActive ? "true" : undefined}
                 className={
                   option.isActive
                     ? "rounded-full border border-cyan-300 bg-cyan-50 px-3 py-1.5 text-xs font-semibold text-cyan-700"
@@ -267,12 +251,16 @@ export default async function Home({
                 }
               >
                 {option.label} ({option.count})
-              </span>
+              </Link>
             ))}
           </div>
           
           <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
-            <form id="activity-filters" method="get" />
+            <form id="activity-filters" method="get">
+              {selectedBusiness !== "all" && (
+                <input type="hidden" name="business" value={selectedBusiness} />
+              )}
+            </form>
             <div
               id="minhas-solicitacoes"
               className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3"
@@ -286,7 +274,7 @@ export default async function Home({
                 </p>
               </div>
               <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-                {activityRecords.length} requests
+                {filteredActivityRecords.length} requests
               </span>
             </div>
 
@@ -296,19 +284,7 @@ export default async function Home({
                   <tr>
                     <th className="px-4 py-3">ID</th>
                     <th className="px-4 py-3">Request type</th>
-                    <th className="px-4 py-3">
-                      <fieldset className="min-w-[120px] normal-case tracking-normal">
-                        <legend className="mb-1 uppercase tracking-[0.02em]">Unidade</legend>
-                        <div className="flex gap-3">
-                          {["1", "2"].map((unit) => (
-                            <label key={unit} className="flex items-center gap-1 font-medium text-slate-600">
-                              <input form="activity-filters" type="checkbox" name="businessUnit" value={unit} defaultChecked={selectedBusinessUnits.includes(unit)} />
-                              {unit}
-                            </label>
-                          ))}
-                        </div>
-                      </fieldset>
-                    </th>
+                    <th className="px-4 py-3">Unidade</th>
                     <th className="px-4 py-3">
                       <fieldset className="min-w-[300px] normal-case tracking-normal">
                         <legend className="mb-1 uppercase tracking-[0.02em]">Status</legend>
@@ -335,7 +311,7 @@ export default async function Home({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
-                  {activityRecords.map((record) => (
+                  {filteredActivityRecords.map((record) => (
                     <tr
                       key={record.id}
                       className={
@@ -402,6 +378,28 @@ export default async function Home({
       </div>
     </section>
   );
+}
+
+function buildBusinessFilterHref(
+  searchParams: HomeSearchParams | undefined,
+  business: string,
+) {
+  const params = new URLSearchParams();
+
+  if (searchParams?.startDate) params.set("startDate", searchParams.startDate);
+  if (searchParams?.endDate) params.set("endDate", searchParams.endDate);
+  for (const status of normalizeParam(searchParams?.status)) {
+    params.append("status", status);
+  }
+  if (business !== "all") params.set("business", business);
+
+  const query = params.toString();
+  return query ? `/?${query}` : "/";
+}
+
+function normalizeParam(value: string | string[] | undefined) {
+  if (value === undefined) return [];
+  return Array.isArray(value) ? value : [value];
 }
 
 function normalizeSelection(
