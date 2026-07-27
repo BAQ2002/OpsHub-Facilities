@@ -79,6 +79,12 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
 
 export async function findActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
   const pool = await getPostgresPool();
+  const selectedStatuses = dateRange.statuses?.length
+    ? dateRange.statuses
+    : ["Programada", "Em andamento", "Concluída", "Cancelada"];
+  const databaseStatuses = selectedStatuses.flatMap((status) =>
+    status === "Concluída" ? [status, "Concluida"] : [status],
+  );
   const result = await pool.query<ActivityRecordRow>(
     `SELECT
         r.id,
@@ -121,7 +127,7 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
         END < ($3::date + INTERVAL '1 day')
         AND (COALESCE(array_length($4::integer[], 1), 0) = 0 OR b.id = ANY($4::integer[]))
       ORDER BY status_date ASC, r.id ASC`,
-    [dateRange.statuses?.length ? dateRange.statuses : ["Programada", "Em andamento", "Concluída", "Concluida", "Cancelada"], dateRange.startDate, dateRange.endDate, dateRange.businessUnits ?? []],
+    [databaseStatuses, dateRange.startDate, dateRange.endDate, dateRange.businessUnits ?? []],
   );
 
   return result.rows.map(mapActivityRecordRowToEntity);
