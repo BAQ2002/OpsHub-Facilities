@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ActivityCategory, ActivityRecord, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
+import type { ActivityCategory, ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
 import { activityCategories } from "@/src/domain/entities/activity";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
@@ -32,6 +32,8 @@ type ActivityRecordRow = {
   service_category_name: string | null;
   service_type_name: string | null;
   location_name: string | null;
+  status_description: string;
+  status_date: Date | string | null;
   agreed_date: Date | string | null;
   description: string | null;
   map_x: string | number | null;
@@ -85,6 +87,13 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
         sc.name AS service_category_name,
         st.name AS service_type_name,
         l.name AS location_name,
+        rs.description AS status_description,
+        CASE
+          WHEN rs.description = 'Programada' THEN r.agreed_date
+          WHEN rs.description = 'Em andamento' THEN r.started_date
+          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
+          WHEN rs.description = 'Cancelada' THEN r.canceled_date
+        END AS status_date,
         r.agreed_date,
         r.description,
         l.location_x AS map_x,
@@ -98,10 +107,21 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
        LEFT JOIN region rg ON rg.id = l.id_region
        LEFT JOIN business b ON b.id = rg.id_business
       WHERE rs.description = ANY($1)
-        AND r.agreed_date >= $2::date
-        AND r.agreed_date < ($3::date + INTERVAL '1 day')
-      ORDER BY r.agreed_date ASC, r.id ASC`,
-    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
+        AND CASE
+          WHEN rs.description = 'Programada' THEN r.agreed_date
+          WHEN rs.description = 'Em andamento' THEN r.started_date
+          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
+          WHEN rs.description = 'Cancelada' THEN r.canceled_date
+        END >= $2::date
+        AND CASE
+          WHEN rs.description = 'Programada' THEN r.agreed_date
+          WHEN rs.description = 'Em andamento' THEN r.started_date
+          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
+          WHEN rs.description = 'Cancelada' THEN r.canceled_date
+        END < ($3::date + INTERVAL '1 day')
+        AND (COALESCE(array_length($4::integer[], 1), 0) = 0 OR b.id = ANY($4::integer[]))
+      ORDER BY status_date ASC, r.id ASC`,
+    [dateRange.statuses?.length ? dateRange.statuses : ["Programada", "Em andamento", "Concluída", "Concluida", "Cancelada"], dateRange.startDate, dateRange.endDate, dateRange.businessUnits ?? []],
   );
 
   return result.rows.map(mapActivityRecordRowToEntity);
@@ -161,6 +181,7 @@ function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCar
 }
 
 function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
+  const status = normalizeActivityStatus(row.status_description);
   return {
     id: String(row.id),
     activityType: normalizeActivityType(row.request_type_name),
@@ -168,13 +189,20 @@ function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
     category: normalizeActivityCategory(row.service_category_name),
     serviceType: row.service_type_name ?? "Não informado",
     location: row.location_name ?? "Não informado",
-    plannedAt: formatDateTime(row.agreed_date),
+    status,
+    statusDate: formatDateTime(row.status_date),
+    plannedAt: formatDateTime(row.status_date),
     description: row.description ?? "Sem descrição",
     mapPosition: {
       x: Number(row.map_x ?? 50),
       y: Number(row.map_y ?? 50),
     },
   };
+}
+
+function normalizeActivityStatus(value: string): ActivityStatus {
+  if (value === "Em andamento" || value === "Cancelada" || value === "Programada") return value;
+  return "Concluída";
 }
 
 function normalizeActivityCategory(value: string | null): ActivityCategory {

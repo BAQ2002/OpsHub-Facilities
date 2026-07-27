@@ -173,7 +173,7 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 
 Os arquivos seletoras em `src/server/repositories/` definem qual implementação será usada:
 
-- `home-repository.ts`: usa PostgreSQL apenas quando `DATA_SOURCE=postgres`; caso contrário usa mock.
+- `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres`, FastAPI para o datagrid quando `DATA_SOURCE=fastapi` e mock nos demais casos.
 - `request-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`, FastAPI com `DATA_SOURCE=fastapi` e mock nos demais casos.
 - `activity-request-form-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`; caso contrário usa mock.
 
@@ -186,11 +186,13 @@ DATA_SOURCE=fastapi
 FASTAPI_BASE_URL=http://localhost:8000
 FASTAPI_REQUESTS_PATH=/activity-requests
 FASTAPI_CREATE_REQUEST_PATH=/activity-requests
+FASTAPI_ACTIVITIES_PATH=/activities
 ```
 
 Com essa configuração:
 
 - `/minhas-solicitacoes` chama `GET /activity-requests` e renderiza as requests retornadas.
+- O datagrid da home chama `GET /activities` com `start_date`, `end_date`, parâmetros repetidos `status` e parâmetros repetidos `business_unit`. A data exibida é selecionada conforme o status (`agreed_date`, `started_date`, `finished_date` ou `canceled_date`).
 - Os formulários de `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` enviam o `FormData` para `POST /activity-requests`.
 
 O endpoint `GET` deve retornar uma lista JSON compatível com:
