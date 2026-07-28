@@ -1,12 +1,14 @@
 export const activityCategories = [
-  "Artífice",
-  "Civil",
-  "Copa e Café",
-  "Elétrica",
-  "Hidráulica",
-  "Jardinagem",
-  "Refrigeração",
-  "Limpeza",
+  "ARTÍFICE",
+  "CLIMATIZAÇÃO E REFRIGERAÇÃO",
+  "COPA",
+  "INSTALAÇÕES ELÉTRICAS",
+  "INSTALAÇÕES HIDRÁULICAS",
+  "JARDINAGEM",
+  "MANUTENÇÃO CIVIL",
+  "NOVOS PROJETOS",
+  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
+  "PMOC",
 ] as const;
 
 export type ActivityCategory = (typeof activityCategories)[number];

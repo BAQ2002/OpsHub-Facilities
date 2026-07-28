@@ -9,17 +9,20 @@ import { getPostgresPool } from "@/src/server/db/postgres";
 const trackedStatusDescriptions = ["Concluída", "Concluida", "Programada", "Em andamento", "Em aberto"] as const;
 
 const categoryStyleMap: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
-  Artífice: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
-  Civil: { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
-  "Copa e Café": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
-  Elétrica: { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
-  Hidráulica: { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
-  Jardinagem: { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
-  Refrigeração: { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
-  Limpeza: { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
+  "ARTÍFICE": { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
+  "CLIMATIZAÇÃO E REFRIGERAÇÃO": { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
+  "COPA": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
+  "INSTALAÇÕES ELÉTRICAS": { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
+  "INSTALAÇÕES HIDRÁULICAS": { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
+  "JARDINAGEM": { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
+  "MANUTENÇÃO CIVIL": { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
+  "NOVOS PROJETOS": { accent: "text-indigo-500", iconBg: "bg-indigo-50", color: "#6366f1" },
+  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": { accent: "text-rose-500", iconBg: "bg-rose-50", color: "#f43f5e" },
+  "PMOC": { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
 };
 
 type CategoryCountRow = {
+  category_id: string | number;
   category_name: string;
   planned: string | number;
   in_progress: string | number;
@@ -59,28 +62,29 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
   const pool = await getPostgresPool();
   const result = await pool.query<CategoryCountRow>(
     `SELECT
+        sc.id AS category_id,
         sc.name AS category_name,
-        COUNT(*) FILTER (WHERE rs.description = 'Programada') AS planned,
-        COUNT(*) FILTER (WHERE rs.description = 'Em andamento') AS in_progress,
-        COUNT(*) FILTER (WHERE rs.description IN ('Concluída', 'Concluida')) AS completed
-       FROM request r
-       INNER JOIN request_status rs ON rs.id = r.id_request_status
-       INNER JOIN service_type st ON st.id = r.id_service_type
-       INNER JOIN service_category sc ON sc.id = st.id_service_category
-      WHERE rs.description = ANY($1)
-        AND CASE
-          WHEN rs.description = 'Programada' THEN r.agreed_date
-          WHEN rs.description = 'Em andamento' THEN r.started_date
-          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
-        END >= $2::date
-        AND CASE
-          WHEN rs.description = 'Programada' THEN r.agreed_date
-          WHEN rs.description = 'Em andamento' THEN r.started_date
-          WHEN rs.description IN ('Concluída', 'Concluida') THEN r.finished_date
-        END < ($3::date + INTERVAL '1 day')
-      GROUP BY sc.name
+        COUNT(r.id) FILTER (
+          WHERE r.id_request_status = 2
+            AND r.agreed_date >= $1::date
+            AND r.agreed_date < ($2::date + INTERVAL '1 day')
+        ) AS planned,
+        COUNT(r.id) FILTER (
+          WHERE r.id_request_status = 3
+            AND r.started_date >= $1::date
+            AND r.started_date < ($2::date + INTERVAL '1 day')
+        ) AS in_progress,
+        COUNT(r.id) FILTER (
+          WHERE r.id_request_status = 4
+            AND r.finished_date >= $1::date
+            AND r.finished_date < ($2::date + INTERVAL '1 day')
+        ) AS completed
+       FROM service_category sc
+       INNER JOIN service_type st ON st.id_service_category = sc.id
+       LEFT JOIN request r ON r.id_service_type = st.id
+      GROUP BY sc.id, sc.name
       ORDER BY sc.name`,
-    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
+    [dateRange.startDate, dateRange.endDate],
   );
 
   return result.rows.map(mapCategoryCountRowToEquipmentCard);
@@ -221,9 +225,18 @@ function normalizeActivityStatus(value: string): ActivityStatus {
 }
 
 function normalizeActivityCategory(value: string | null): ActivityCategory {
-  const category = activityCategories.find((item) => item.toLowerCase() === value?.toLowerCase());
+  const normalizedValue = value?.trim().toLocaleUpperCase("pt-BR");
+  const aliases: Partial<Record<string, ActivityCategory>> = {
+    "MANUTENÇÂO CIVIL": "MANUTENÇÃO CIVIL",
+  };
+  const category = aliases[normalizedValue ?? ""]
+    ?? activityCategories.find((item) => item === normalizedValue);
 
-  return category ?? "Artífice";
+  if (!category) {
+    throw new Error(`Categoria de serviço desconhecida: ${value ?? "não informada"}`);
+  }
+
+  return category;
 }
 
 function normalizeActivityType(value: string | null): ActivityType {
