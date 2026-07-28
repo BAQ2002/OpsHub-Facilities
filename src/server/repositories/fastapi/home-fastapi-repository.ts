@@ -17,14 +17,16 @@ import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 type FastApiActivity = Record<string, unknown>;
 
 const categoryStyles: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
-  Artífice: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
-  Civil: { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
-  "Copa e Café": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
-  Elétrica: { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
-  Hidráulica: { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
-  Jardinagem: { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
-  Refrigeração: { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
-  Limpeza: { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
+  "ARTÍFICE": { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
+  "CLIMATIZAÇÃO E REFRIGERAÇÃO": { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
+  "COPA": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
+  "INSTALAÇÕES ELÉTRICAS": { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
+  "INSTALAÇÕES HIDRÁULICAS": { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
+  "JARDINAGEM": { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
+  "MANUTENÇÃO CIVIL": { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
+  "NOVOS PROJETOS": { accent: "text-indigo-500", iconBg: "bg-indigo-50", color: "#6366f1" },
+  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": { accent: "text-rose-500", iconBg: "bg-rose-50", color: "#f43f5e" },
+  "PMOC": { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
 };
 
 export async function findActivityRecords(filters: HomeDateRange): Promise<ActivityRecord[]> {
@@ -134,7 +136,18 @@ function normalizeStatus(value?: string): ActivityStatus {
 }
 
 function normalizeCategory(value?: string): ActivityCategory {
-  return activityCategories.find((category) => category.toLocaleLowerCase("pt-BR") === value?.toLocaleLowerCase("pt-BR")) ?? "Artífice";
+  const normalizedValue = value?.trim().toLocaleUpperCase("pt-BR");
+  const aliases: Partial<Record<string, ActivityCategory>> = {
+    "MANUTENÇÂO CIVIL": "MANUTENÇÃO CIVIL",
+  };
+  const category = aliases[normalizedValue ?? ""]
+    ?? activityCategories.find((item) => item === normalizedValue);
+
+  if (!category) {
+    throw new Error(`Categoria de serviço desconhecida: ${value ?? "não informada"}`);
+  }
+
+  return category;
 }
 
 function normalizeActivityType(value?: string): ActivityType {

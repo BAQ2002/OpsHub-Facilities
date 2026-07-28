@@ -85,14 +85,16 @@ const equipmentCards: EquipmentCard[] = [
 ];
 
 const categoryColorMap: Record<ActivityCategory, string> = {
-  Artífice: "#0891b2",
-  Civil: "#8b5cf6",
-  "Copa e Café": "#ef4444",
-  Elétrica: "#eab308",
-  Hidráulica: "#3b82f6",
-  Jardinagem: "#22c55e",
-  Refrigeração: "#f97316",
-  Limpeza: "#14b8a6",
+  "ARTÍFICE": "#0891b2",
+  "CLIMATIZAÇÃO E REFRIGERAÇÃO": "#f97316",
+  "COPA": "#ef4444",
+  "INSTALAÇÕES ELÉTRICAS": "#eab308",
+  "INSTALAÇÕES HIDRÁULICAS": "#3b82f6",
+  "JARDINAGEM": "#22c55e",
+  "MANUTENÇÃO CIVIL": "#8b5cf6",
+  "NOVOS PROJETOS": "#6366f1",
+  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": "#f43f5e",
+  "PMOC": "#14b8a6",
 } as const;
 
 const mapImage: MapImage = {
