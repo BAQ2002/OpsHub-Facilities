@@ -110,6 +110,8 @@ Depois, `src/server/services/activity-request-form-service.ts` combina os campos
 
 O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que vincula no servidor o ID do tipo escolhido e chama `createChamadoRequest()` em `src/server/services/request-service.ts`. Com `DATA_SOURCE=postgres`, `activity-request-postgres-repository.ts` valida os relacionamentos e grava, na mesma transação, a `REQUEST` e um `SERVICE_FIELD_VALUE` para cada campo adicional preenchido. Novas requests usam `ID_REQUEST_TYPE = 1`, `ID_MEMBER_REQUESTER = 8`, status aberto e `CREATED_DATE = CURRENT_TIMESTAMP`.
 
+Como a carga histórica de `REQUEST` informa IDs explicitamente, o script de carga e o fluxo de criação sincronizam a sequence da coluna identity com o maior ID existente antes de depender da geração automática. Isso evita colisões com a chave primária após uma importação.
+
 ## Onde e como são feitos os filtros/consultas do banco por página
 
 ### `/` — Dashboard/Home

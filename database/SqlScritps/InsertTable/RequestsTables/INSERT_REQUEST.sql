@@ -918,3 +918,12 @@ INSERT INTO REQUEST (ID, ID_REQUEST_TYPE, ID_MEMBER_REQUESTER, ID_MEMBER_RESPOND
 INSERT INTO REQUEST (ID, ID_REQUEST_TYPE, ID_MEMBER_REQUESTER, ID_MEMBER_RESPONDER, ID_LOCATION, ID_SERVICE_TYPE, ID_REQUEST_STATUS, CREATED_DATE, AGREED_DATE, STARTED_DATE, FINISHED_DATE, CANCELED_DATE, DESCRIPTION) VALUES (918, 1, 11, NULL, 20, 12, 4, '2026-07-24 17:06:00', NULL, '2026-07-24 13:09:00', '2026-07-24 17:09:00', NULL, 'Foi realizada a instalação de novo equipamento do pré-gate (AR-02):Atividades realizadas: Fixação do suporte.Posicionamento do evaporador.Colocação de terminais nos cabos de alimentação e comunicação. (Parte interna e externa)Solda das tubulação na parte externa e interna. Procedimento de pressuriza');
 INSERT INTO REQUEST (ID, ID_REQUEST_TYPE, ID_MEMBER_REQUESTER, ID_MEMBER_RESPONDER, ID_LOCATION, ID_SERVICE_TYPE, ID_REQUEST_STATUS, CREATED_DATE, AGREED_DATE, STARTED_DATE, FINISHED_DATE, CANCELED_DATE, DESCRIPTION) VALUES (919, 1, 52, NULL, 20, 43, 4, '2026-07-25 14:49:00', NULL, '2026-07-25 10:53:00', '2026-07-25 14:53:00', NULL, '-');
 INSERT INTO REQUEST (ID, ID_REQUEST_TYPE, ID_MEMBER_REQUESTER, ID_MEMBER_RESPONDER, ID_LOCATION, ID_SERVICE_TYPE, ID_REQUEST_STATUS, CREATED_DATE, AGREED_DATE, STARTED_DATE, FINISHED_DATE, CANCELED_DATE, DESCRIPTION) VALUES (920, 1, 52, NULL, 20, 14, 3, '2026-07-25 15:02:00', NULL, '2026-07-25 15:03:00', NULL, NULL, 'Apoio a civil com remanjamento das unidades externas para a aplicação de manta asfáltica.Manutenção realizada em conjunto com Bruno Silveira, e Adriano Souza.ARPWS0030.');
+
+-- Os IDs históricos acima são explícitos e, por isso, não avançam a sequence da
+-- coluna identity. Sincronize-a para que a próxima REQUEST use MAX(ID) + 1.
+SELECT setval(
+    pg_get_serial_sequence('request', 'id'),
+    COALESCE(MAX(ID), 1),
+    MAX(ID) IS NOT NULL
+)
+FROM REQUEST;

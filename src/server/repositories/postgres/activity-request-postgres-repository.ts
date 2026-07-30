@@ -28,6 +28,7 @@ export async function insertActivityRequest(formData: FormData) {
 
   try {
     await client.query("BEGIN");
+    await synchronizeRequestIdSequence(client);
     await validateLocationHierarchy(client, input);
     const fieldDefinitions = await getFieldDefinitions(client, input.serviceTypeId);
     const values = fieldDefinitions.flatMap((field) => parseFieldValue(field, formData));
@@ -74,6 +75,21 @@ export async function insertActivityRequest(formData: FormData) {
   } finally {
     client.release();
   }
+}
+
+async function synchronizeRequestIdSequence(client: PgClient) {
+  // The legacy import populates REQUEST.ID explicitly, which does not advance the
+  // identity sequence. Locking prevents two request creations from repairing and
+  // consuming the same sequence value concurrently.
+  await client.query("LOCK TABLE request IN SHARE ROW EXCLUSIVE MODE");
+  await client.query(
+    `SELECT setval(
+       pg_get_serial_sequence('request', 'id'),
+       COALESCE(MAX(id), 1),
+       MAX(id) IS NOT NULL
+     )
+       FROM request`,
+  );
 }
 
 function parseRequestInput(formData: FormData): RequestInput {
