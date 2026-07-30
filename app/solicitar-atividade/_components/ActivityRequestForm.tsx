@@ -113,7 +113,7 @@ function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
   );
 
   return (
-    <>
+    <div className="grid gap-x-4 gap-y-5 md:col-span-2 md:grid-cols-3">
       <SelectField
         label="Unidade de Negócio"
         name="business_id"
@@ -147,7 +147,7 @@ function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
         value={locationId}
         onChange={setLocationId}
       />
-    </>
+    </div>
   );
 }
 
