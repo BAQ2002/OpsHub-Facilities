@@ -1,12 +1,19 @@
-import Link from "next/link";
+"use client";
 
-import type { ActivityRequestField as Field } from "@/src/domain/entities/activity-request-form";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+
+import type {
+  ActivityRequestField as Field,
+  LocationHierarchy,
+} from "@/src/domain/entities/activity-request-form";
 
 type ActivityRequestFormProps = {
   title: string;
   subtitle: string;
   sectionTitle: string;
   fields: Field[];
+  locationHierarchy?: LocationHierarchy;
   action?: (formData: FormData) => Promise<void>;
 };
 
@@ -15,6 +22,7 @@ export default function ActivityRequestForm({
   subtitle,
   sectionTitle,
   fields,
+  locationHierarchy,
   action,
 }: ActivityRequestFormProps) {
   return (
@@ -63,6 +71,7 @@ export default function ActivityRequestForm({
           </h2>
 
           <div className="grid gap-x-4 gap-y-5 md:grid-cols-2">
+            {locationHierarchy ? <LocationFields hierarchy={locationHierarchy} /> : null}
             {fields.map((field) => (
               <FormField key={field.name} field={field} />
             ))}
@@ -86,6 +95,105 @@ export default function ActivityRequestForm({
         </form>
       </div>
     </section>
+  );
+}
+
+function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
+  const [businessId, setBusinessId] = useState("");
+  const [regionId, setRegionId] = useState("");
+  const [locationId, setLocationId] = useState("");
+
+  const regions = useMemo(
+    () => hierarchy.regions.filter((region) => region.businessId === Number(businessId)),
+    [businessId, hierarchy.regions],
+  );
+  const locations = useMemo(
+    () => hierarchy.locations.filter((location) => location.regionId === Number(regionId)),
+    [hierarchy.locations, regionId],
+  );
+
+  return (
+    <>
+      <SelectField
+        label="Unidade de Negócio"
+        name="business_id"
+        value={businessId}
+        options={hierarchy.businesses.map((business) => ({
+          label: business.name,
+          value: business.id.toString(),
+        }))}
+        onChange={(value) => {
+          setBusinessId(value);
+          setRegionId("");
+          setLocationId("");
+        }}
+      />
+      <SelectField
+        label="Região"
+        name="region_id"
+        value={regionId}
+        options={regions.map((region) => ({ label: region.name, value: region.id.toString() }))}
+        disabled={!businessId}
+        onChange={(value) => {
+          setRegionId(value);
+          setLocationId("");
+        }}
+      />
+      <SelectField
+        label="Localização"
+        name="location_id"
+        options={locations.map((location) => ({ label: location.name, value: location.id.toString() }))}
+        disabled={!regionId}
+        value={locationId}
+        onChange={setLocationId}
+      />
+    </>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  options,
+  value,
+  disabled = false,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  options: { label: string; value: string }[];
+  value?: string;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
+}) {
+  const fieldId = `activity-${name}`;
+  const inputClass =
+    "h-[46px] w-full rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-950 outline-none transition disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100";
+
+  return (
+    <label htmlFor={fieldId}>
+      <span className="mb-2 block text-sm font-medium text-slate-600">
+        {label} <span className="text-rose-500">*</span>
+      </span>
+      <select
+        className={inputClass}
+        disabled={disabled}
+        id={fieldId}
+        name={name}
+        required
+        value={value ?? ""}
+        onChange={onChange ? (event) => onChange(event.target.value) : undefined}
+      >
+        <option value="" disabled>
+          {disabled ? "Selecione o campo anterior..." : "Selecione o registro..."}
+        </option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 

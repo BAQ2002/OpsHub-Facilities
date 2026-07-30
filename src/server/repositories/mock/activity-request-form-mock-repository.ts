@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
+import type { ActivityRequestField, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
 import type { ActivityRequestFormData, ActivityRequestFormFilters } from "@/src/server/repositories/activity-request-form-repository";
 
 const serviceTypesByCategory: Record<string, string[]> = {
@@ -12,6 +12,16 @@ const serviceTypesByCategory: Record<string, string[]> = {
     "Troca de fechadura/miolo",
   ],
 };
+
+const locationHierarchy: LocationHierarchy = {
+  businesses: [{ id: 1, name: "Unidade de Negócio" }],
+  regions: [{ id: 1, businessId: 1, name: "Região" }],
+  locations: [{ id: 1, regionId: 1, name: "Localização" }],
+};
+
+export async function getLocationHierarchy() {
+  return locationHierarchy;
+}
 
 const fieldsByServiceType: Record<string, ActivityRequestField[]> = {
   "Fixação de Placas/Quadros": [
@@ -62,6 +72,7 @@ export async function getActivityRequestFormData({
   return {
     serviceCategoryName: serviceCategory,
     serviceTypeName: effectiveServiceType,
+    serviceTypeId: effectiveServiceType ? 1 : undefined,
     serviceTypeOptions: serviceTypeNames.map((value) => ({ label: value, value })),
     fields: effectiveServiceType ? fieldsByServiceType[effectiveServiceType] ?? [] : [],
   };
