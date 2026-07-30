@@ -26,3 +26,26 @@ export type ActivityRequestField = {
   helpText?: string;
   defaultValue?: string;
 };
+
+export type BusinessOption = {
+  id: number;
+  name: string;
+};
+
+export type RegionOption = {
+  id: number;
+  businessId: number;
+  name: string;
+};
+
+export type LocationOption = {
+  id: number;
+  regionId: number;
+  name: string;
+};
+
+export type LocationHierarchy = {
+  businesses: BusinessOption[];
+  regions: RegionOption[];
+  locations: LocationOption[];
+};
