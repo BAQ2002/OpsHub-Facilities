@@ -151,7 +151,7 @@ function parseFieldValue(field: ServiceFieldDefinition, formData: FormData) {
   let value: string | number | boolean | string[] | undefined;
 
   if (type === "MULTI_SELECT") {
-    const selected = rawValues.filter(Boolean);
+    const selected = [...new Set(rawValues.filter(Boolean))];
     value = selected.length > 0 ? selected : undefined;
   } else if (type === "BOOL") {
     value = rawValues.includes("true");
