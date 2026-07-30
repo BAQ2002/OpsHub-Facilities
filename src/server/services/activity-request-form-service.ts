@@ -2,12 +2,20 @@ import "server-only";
 
 import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
 import { getActivityRequestFormData as getRepositoryActivityRequestFormData } from "@/src/server/repositories/activity-request-form-repository";
+import {
+  getServiceCatalog as getRepositoryServiceCatalog,
+  type ServiceCatalogCategory,
+} from "@/src/server/repositories/activity-request-form-repository";
 
 export type ActivityRequestFormPageData = {
   title: string;
   subtitle: string;
   fields: ActivityRequestField[];
 };
+
+export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
+  return getRepositoryServiceCatalog();
+}
 
 export async function getChamadoRequestFormPageData(params: {
   serviceCategory?: string;
