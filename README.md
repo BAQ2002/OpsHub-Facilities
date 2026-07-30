@@ -158,7 +158,7 @@ A página chama `getActivityTrackingPageData()`, mas esse serviço usa apenas `s
 
 ### `/solicitar-atividade`
 
-A tela de seleção de categorias e tipos de serviço usa o array local `serviceCategories` em `app/solicitar-atividade/page.tsx`. Não há consulta ao banco nesta tela atualmente.
+A tela consulta diretamente as tabelas `service_category` e `service_type` no PostgreSQL e agrupa cada tipo na respectiva categoria. O catálogo não usa fallback para dados mockados e a rota é renderizada dinamicamente para refletir os registros atuais do banco.
 
 ### `/solicitar-atividade/patio`
 
@@ -172,6 +172,7 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | --- | --- | --- | --- |
 | `/` | Sim | `app/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
 | `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests; também pode usar FastAPI se `DATA_SOURCE=fastapi`. |
+| `/solicitar-atividade` | Sim | `app/solicitar-atividade/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê e agrupa todas as categorias e tipos de serviço diretamente do PostgreSQL, sem mock. |
 | `/solicitar-atividade/chamado` | Sim, para montar campos | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê tipos de serviço e campos dinâmicos; o submit não insere no PostgreSQL atualmente. |
 | `/solicitar-atividade/chamado` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Só envia para FastAPI quando `DATA_SOURCE=fastapi`; caso contrário retorna payload. |
 | `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mesmo comportamento de submit do chamado. |
@@ -181,7 +182,6 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | Rota | Fonte de dados atual | Local |
 | --- | --- | --- |
 | `/acompanhamento-atividades` | Mock | `src/server/services/activity-tracking-service.ts` usa `src/server/repositories/mock/activity-tracking-mock-repository.ts`. |
-| `/solicitar-atividade` | Array local estático | `serviceCategories` em `app/solicitar-atividade/page.tsx`. |
 | `/solicitar-atividade/patio` | Array local estático para campos | `patioFields` em `app/solicitar-atividade/patio/page.tsx`. |
 
 ## Seleção de fonte de dados
@@ -190,7 +190,7 @@ Os arquivos seletoras em `src/server/repositories/` definem qual implementação
 
 - `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres` e FastAPI nos demais casos; nenhum dado mock abastece a home.
 - `request-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`, FastAPI com `DATA_SOURCE=fastapi` e mock nos demais casos.
-- `activity-request-form-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`; caso contrário usa mock.
+- `activity-request-form-repository.ts`: o catálogo de `/solicitar-atividade` sempre usa PostgreSQL; os dados do formulário de chamado usam PostgreSQL com `DATA_SOURCE=postgres` e mock nos demais casos.
 
 ## FastAPI opcional para requests
 
