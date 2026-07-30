@@ -95,6 +95,7 @@ export async function getLocationHierarchy(): Promise<LocationHierarchy> {
 export async function getActivityRequestFormData({
   serviceCategory,
   serviceType,
+  serviceTypeId,
 }: ActivityRequestFormFilters): Promise<ActivityRequestFormData> {
   const pool = await getPostgresPool();
   const serviceTypeResult = await pool.query<ServiceTypeRow>(
@@ -102,11 +103,13 @@ export async function getActivityRequestFormData({
        FROM service_type st
        INNER JOIN service_category sc ON sc.id = st.id_service_category
       WHERE ($1::text IS NULL OR sc.name = $1)
+        AND ($2::integer IS NULL OR st.id = $2)
       ORDER BY sc.name, st.name`,
-    [serviceCategory ?? null],
+    [serviceCategory ?? null, serviceTypeId ?? null],
   );
   const serviceTypeOptions = serviceTypeResult.rows.map((row) => ({ label: row.name, value: row.name }));
-  const effectiveServiceType = serviceType ?? serviceTypeOptions[0]?.value;
+  const selectedServiceType = serviceTypeResult.rows.find((row) => row.id === serviceTypeId);
+  const effectiveServiceType = selectedServiceType?.name ?? serviceType ?? serviceTypeOptions[0]?.value;
 
   if (!effectiveServiceType) {
     return { serviceCategoryName: serviceCategory, serviceTypeOptions, fields: [] };
@@ -134,7 +137,7 @@ export async function getActivityRequestFormData({
   return {
     serviceCategoryName: result.rows[0]?.service_category_name ?? serviceCategory,
     serviceTypeName: result.rows[0]?.service_type_name ?? effectiveServiceType,
-    serviceTypeId: serviceTypeResult.rows.find((row) => row.name === effectiveServiceType)?.id,
+    serviceTypeId: selectedServiceType?.id ?? serviceTypeResult.rows.find((row) => row.name === effectiveServiceType)?.id,
     serviceTypeOptions,
     fields: result.rows.map(mapServiceFieldTypeRowToField),
   };

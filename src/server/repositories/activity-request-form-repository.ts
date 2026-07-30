@@ -10,6 +10,7 @@ import { getLocationHierarchy as getPostgresLocationHierarchy } from "@/src/serv
 export type ActivityRequestFormFilters = {
   serviceCategory?: string;
   serviceType?: string;
+  serviceTypeId?: number;
 };
 
 export type ActivityRequestFormData = {
