@@ -105,6 +105,7 @@ A interpretação PostgreSQL acontece em `src/server/repositories/postgres/activ
 - `mapServiceFieldTypeRowToField()` transforma cada linha em `ActivityRequestField`, usando nomes de campo no padrão `service_field_<id>`.
 - `mapDatabaseFieldType()` traduz tipos do banco (`SINGLE_SELECT`, `MULTI_SELECT`, `NUMBER`, `DATE`, `BOOL`) para tipos de componente (`select`, `multi-select`, `number`, `date`, `checkbox`), com fallback para `text`.
 - `mapOptions()` interpreta `options` como JSON ou array e converte em `{ label, value }[]`.
+- Campos `MULTI_SELECT` são exibidos em um dropdown com checkboxes. Cada opção marcada é enviada com o mesmo nome `service_field_<id>`, permitindo selecionar mais de um valor.
 
 Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com a descrição. O componente de formulário adiciona os seletores dependentes de unidade de negócio, região e localização; a localização escolhida é enviada como `location_id`.
 
@@ -155,6 +156,7 @@ Comportamento:
 
 - `DATA_SOURCE=fastapi`: envia `FormData` para `POST` no caminho `FASTAPI_CREATE_REQUEST_PATH` ou `/activity-requests`.
 - `DATA_SOURCE=postgres`: valida os dados no servidor e grava a request no PostgreSQL em uma transação. As respostas adicionais são armazenadas como JSONB em `service_field_value`, ligadas ao ID da request e ao ID de `service_field_type`.
+- Para `MULTI_SELECT`, todas as opções escolhidas são validadas, deduplicadas e armazenadas juntas em um único array JSONB, por exemplo `["Microondas", "Geladeira"]`.
 - Outros valores mantêm o fluxo mock e retornam somente o payload.
 
 ### `/acompanhamento-atividades`
