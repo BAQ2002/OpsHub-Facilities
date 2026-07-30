@@ -7,14 +7,17 @@ type ChamadoRequestPageProps = {
   searchParams: Promise<{
     service_category?: string;
     service_type?: string;
+    service_type_id?: string;
   }>;
 };
 
 export default async function ChamadoRequestPage({ searchParams }: ChamadoRequestPageProps) {
   const params = await searchParams;
+  const serviceTypeId = Number(params.service_type_id);
   const formData = await getChamadoRequestFormPageData({
     serviceCategory: params.service_category,
     serviceType: params.service_type,
+    serviceTypeId: Number.isInteger(serviceTypeId) && serviceTypeId > 0 ? serviceTypeId : undefined,
   });
 
   if (!formData.serviceTypeId) notFound();

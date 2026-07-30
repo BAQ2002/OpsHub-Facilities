@@ -23,6 +23,7 @@ export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategor
 export async function getChamadoRequestFormPageData(params: {
   serviceCategory?: string;
   serviceType?: string;
+  serviceTypeId?: number;
 }): Promise<ActivityRequestFormPageData> {
   const [dynamicData, locationHierarchy] = await Promise.all([
     getRepositoryActivityRequestFormData(params),
