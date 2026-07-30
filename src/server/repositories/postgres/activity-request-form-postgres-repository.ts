@@ -1,11 +1,22 @@
 import "server-only";
 
 import type { ActivityRequestField, FormOption } from "@/src/domain/entities/activity-request-form";
-import type { ActivityRequestFormData, ActivityRequestFormFilters } from "@/src/server/repositories/activity-request-form-repository";
+import type {
+  ActivityRequestFormData,
+  ActivityRequestFormFilters,
+  ServiceCatalogCategory,
+} from "@/src/server/repositories/activity-request-form-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
 type ServiceTypeRow = {
   name: string;
+};
+
+type ServiceCatalogRow = {
+  service_category_id: number;
+  service_category_name: string;
+  service_type_id: number;
+  service_type_name: string;
 };
 
 type ServiceFieldTypeRow = {
@@ -17,6 +28,41 @@ type ServiceFieldTypeRow = {
   options: unknown;
   required: boolean | null;
 };
+
+export async function getServiceCatalog(): Promise<ServiceCatalogCategory[]> {
+  const pool = await getPostgresPool();
+  const result = await pool.query<ServiceCatalogRow>(
+    `SELECT
+        sc.id AS service_category_id,
+        sc.name AS service_category_name,
+        st.id AS service_type_id,
+        st.name AS service_type_name
+       FROM service_category sc
+       INNER JOIN service_type st ON st.id_service_category = sc.id
+      WHERE sc.name IS NOT NULL
+        AND st.name IS NOT NULL
+      ORDER BY sc.name, sc.id, st.name, st.id`,
+  );
+
+  const categories = new Map<number, ServiceCatalogCategory>();
+
+  for (const row of result.rows) {
+    const category = categories.get(row.service_category_id);
+
+    if (category) {
+      category.serviceTypes.push({ id: row.service_type_id, name: row.service_type_name });
+      continue;
+    }
+
+    categories.set(row.service_category_id, {
+      id: row.service_category_id,
+      name: row.service_category_name,
+      serviceTypes: [{ id: row.service_type_id, name: row.service_type_name }],
+    });
+  }
+
+  return [...categories.values()];
+}
 
 export async function getActivityRequestFormData({
   serviceCategory,
