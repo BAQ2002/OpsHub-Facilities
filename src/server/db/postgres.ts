@@ -6,6 +6,12 @@ type QueryResult<T> = {
 
 type PgPool = {
   query<T = unknown>(text: string, params?: unknown[]): Promise<QueryResult<T>>;
+  connect(): Promise<PgClient>;
+};
+
+export type PgClient = {
+  query<T = unknown>(text: string, params?: unknown[]): Promise<QueryResult<T>>;
+  release(): void;
 };
 
 type PgModule = {

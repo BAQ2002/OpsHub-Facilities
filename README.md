@@ -98,6 +98,7 @@ A página `app/solicitar-atividade/chamado/page.tsx` lê `service_category` e `s
 
 A interpretação PostgreSQL acontece em `src/server/repositories/postgres/activity-request-form-postgres-repository.ts`:
 
+- `getLocationHierarchy()` consulta unidades de negócio, regiões e localizações para os três seletores dependentes.
 - `getActivityRequestFormData({ serviceCategory, serviceType })` consulta os tipos de serviço disponíveis para a categoria recebida.
 - Se a URL não trouxer `serviceType`, o primeiro tipo retornado vira `effectiveServiceType`.
 - Uma segunda consulta busca os `service_field_type` ativos do tipo efetivo.
@@ -105,9 +106,11 @@ A interpretação PostgreSQL acontece em `src/server/repositories/postgres/activ
 - `mapDatabaseFieldType()` traduz tipos do banco (`SINGLE_SELECT`, `MULTI_SELECT`, `NUMBER`, `DATE`, `BOOL`) para tipos de componente (`select`, `multi-select`, `number`, `date`, `checkbox`), com fallback para `text`.
 - `mapOptions()` interpreta `options` como JSON ou array e converte em `{ label, value }[]`.
 
-Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com campos fixos do formulário (`business_id`, `service_category`, `service_type`, `location_id`, `agreed_date`, `description`, `request_attachment`).
+Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com a descrição. O componente de formulário adiciona os seletores dependentes de unidade de negócio, região e localização; a localização escolhida é enviada como `location_id`.
 
-O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que chama `createActivityRequest()` em `src/server/services/request-service.ts`. Hoje, a criação só é enviada para backend externo quando `DATA_SOURCE=fastapi`; nos demais casos, a função retorna `{ ok: true, payload }` sem inserir no PostgreSQL.
+O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que vincula no servidor o ID do tipo escolhido e chama `createChamadoRequest()` em `src/server/services/request-service.ts`. Com `DATA_SOURCE=postgres`, `activity-request-postgres-repository.ts` valida os relacionamentos e grava, na mesma transação, a `REQUEST` e um `SERVICE_FIELD_VALUE` para cada campo adicional preenchido. Novas requests usam `ID_REQUEST_TYPE = 1`, `ID_MEMBER_REQUESTER = 8`, status aberto e `CREATED_DATE = CURRENT_TIMESTAMP`.
+
+Como a carga histórica de `REQUEST` informa IDs explicitamente, o script de carga e o fluxo de criação sincronizam a sequence da coluna identity com o maior ID existente antes de depender da geração automática. Isso evita colisões com a chave primária após uma importação.
 
 ## Onde e como são feitos os filtros/consultas do banco por página
 
@@ -141,16 +144,18 @@ Consultas e filtros:
 
 - Primeira consulta: lista `service_type` com join em `service_category`; filtra categoria por `WHERE ($1::text IS NULL OR sc.name = $1)` e ordena por categoria e tipo.
 - Segunda consulta: lista campos dinâmicos (`service_field_type`) ativos; filtra `sft.active IS TRUE`, `st.name = $1` e categoria opcional por `($2::text IS NULL OR sc.name = $2)`.
+- As consultas de localização listam `business`, `region` e `location`; o navegador filtra regiões por `region.id_business` e localizações por `location.id_region`.
 - Os parâmetros vêm da URL: `service_category` e `service_type` em `app/solicitar-atividade/chamado/page.tsx`.
 
-### `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` — Envio do formulário
+### `/solicitar-atividade/chamado` — Envio do formulário
 
 Arquivo de envio: `app/solicitar-atividade/actions.ts`, que chama `src/server/services/request-service.ts`.
 
-Comportamento atual:
+Comportamento:
 
 - `DATA_SOURCE=fastapi`: envia `FormData` para `POST` no caminho `FASTAPI_CREATE_REQUEST_PATH` ou `/activity-requests`.
-- Outros valores de `DATA_SOURCE`: não grava no PostgreSQL; retorna o payload recebido.
+- `DATA_SOURCE=postgres`: valida os dados no servidor e grava a request no PostgreSQL em uma transação. As respostas adicionais são armazenadas como JSONB em `service_field_value`, ligadas ao ID da request e ao ID de `service_field_type`.
+- Outros valores mantêm o fluxo mock e retornam somente o payload.
 
 ### `/acompanhamento-atividades`
 
@@ -173,9 +178,9 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | `/` | Sim | `app/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
 | `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests; também pode usar FastAPI se `DATA_SOURCE=fastapi`. |
 | `/solicitar-atividade` | Sim | `app/solicitar-atividade/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê e agrupa todas as categorias e tipos de serviço diretamente do PostgreSQL, sem mock. |
-| `/solicitar-atividade/chamado` | Sim, para montar campos | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê tipos de serviço e campos dinâmicos; o submit não insere no PostgreSQL atualmente. |
-| `/solicitar-atividade/chamado` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Só envia para FastAPI quando `DATA_SOURCE=fastapi`; caso contrário retorna payload. |
-| `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mesmo comportamento de submit do chamado. |
+| `/solicitar-atividade/chamado` | Sim | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> repositórios PostgreSQL | Lê os três níveis de localização, o tipo de serviço e seus campos dinâmicos. |
+| `/solicitar-atividade/chamado` submit | Sim, com `DATA_SOURCE=postgres` | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` -> `src/server/repositories/postgres/activity-request-postgres-repository.ts` | Grava `request` e os respectivos `service_field_value` na mesma transação. |
+| `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mantém o comportamento anterior de envio à FastAPI ou retorno do payload. |
 
 ## Páginas que não conectam com o banco atualmente
 

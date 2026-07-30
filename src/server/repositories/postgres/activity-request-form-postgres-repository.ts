@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ActivityRequestField, FormOption } from "@/src/domain/entities/activity-request-form";
+import type { ActivityRequestField, FormOption, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
 import type {
   ActivityRequestFormData,
   ActivityRequestFormFilters,
@@ -9,6 +9,7 @@ import type {
 import { getPostgresPool } from "@/src/server/db/postgres";
 
 type ServiceTypeRow = {
+  id: number;
   name: string;
 };
 
@@ -64,13 +65,40 @@ export async function getServiceCatalog(): Promise<ServiceCatalogCategory[]> {
   return [...categories.values()];
 }
 
+export async function getLocationHierarchy(): Promise<LocationHierarchy> {
+  const pool = await getPostgresPool();
+  const [businesses, regions, locations] = await Promise.all([
+    pool.query<{ id: number; name: string }>(
+      `SELECT id, name FROM business WHERE name IS NOT NULL ORDER BY name, id`,
+    ),
+    pool.query<{ id: number; business_id: number; name: string }>(
+      `SELECT id, id_business AS business_id, name
+         FROM region
+        WHERE id_business IS NOT NULL AND name IS NOT NULL
+        ORDER BY name, id`,
+    ),
+    pool.query<{ id: number; region_id: number; name: string }>(
+      `SELECT id, id_region AS region_id, name
+         FROM location
+        WHERE id_region IS NOT NULL AND name IS NOT NULL
+        ORDER BY name, id`,
+    ),
+  ]);
+
+  return {
+    businesses: businesses.rows,
+    regions: regions.rows.map((row) => ({ id: row.id, businessId: row.business_id, name: row.name })),
+    locations: locations.rows.map((row) => ({ id: row.id, regionId: row.region_id, name: row.name })),
+  };
+}
+
 export async function getActivityRequestFormData({
   serviceCategory,
   serviceType,
 }: ActivityRequestFormFilters): Promise<ActivityRequestFormData> {
   const pool = await getPostgresPool();
   const serviceTypeResult = await pool.query<ServiceTypeRow>(
-    `SELECT st.name
+    `SELECT st.id, st.name
        FROM service_type st
        INNER JOIN service_category sc ON sc.id = st.id_service_category
       WHERE ($1::text IS NULL OR sc.name = $1)
@@ -106,6 +134,7 @@ export async function getActivityRequestFormData({
   return {
     serviceCategoryName: result.rows[0]?.service_category_name ?? serviceCategory,
     serviceTypeName: result.rows[0]?.service_type_name ?? effectiveServiceType,
+    serviceTypeId: serviceTypeResult.rows.find((row) => row.name === effectiveServiceType)?.id,
     serviceTypeOptions,
     fields: result.rows.map(mapServiceFieldTypeRowToField),
   };

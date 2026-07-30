@@ -1,6 +1,7 @@
-import { createActivityRequestAction } from "../actions";
+import { createChamadoRequestAction } from "../actions";
 import ActivityRequestForm from "../_components/ActivityRequestForm";
 import { getChamadoRequestFormPageData } from "@/src/server/services/activity-request-form-service";
+import { notFound } from "next/navigation";
 
 type ChamadoRequestPageProps = {
   searchParams: Promise<{
@@ -16,13 +17,18 @@ export default async function ChamadoRequestPage({ searchParams }: ChamadoReques
     serviceType: params.service_type,
   });
 
+  if (!formData.serviceTypeId) notFound();
+
+  const createRequest = createChamadoRequestAction.bind(null, formData.serviceTypeId);
+
   return (
     <ActivityRequestForm
       title={formData.title}
       subtitle={formData.subtitle}
       sectionTitle="Dados da request"
       fields={formData.fields}
-      action={createActivityRequestAction}
+      locationHierarchy={formData.locationHierarchy}
+      action={createRequest}
     />
   );
 }
