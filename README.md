@@ -29,7 +29,22 @@ POSTGRES_POOL_MAX=10
 POSTGRES_SSL=false
 ```
 
-Quando `DATA_SOURCE` não é `postgres`, os seletores de repositório usam dados mockados, exceto em `/minhas-solicitacoes`, que também aceita `DATA_SOURCE=fastapi` para leitura por API.
+Na página principal não existe fallback para dados mockados: `DATA_SOURCE=postgres` consulta o banco diretamente e qualquer outro valor usa a FastAPI configurada em `FASTAPI_BASE_URL`.
+
+## Backend FastAPI e entidades ORM
+
+O diretório `backend/` contém um backend Python independente, pronto para acessar o mesmo PostgreSQL. Ele mapeia com SQLAlchemy 2 todas as tabelas povoadas usadas pelo domínio (`request`, `request_status`, `request_type`, `service_type`, `service_category`, `business`, `region`, `location` e `membership`), incluindo chaves estrangeiras e relacionamentos navegáveis.
+
+Para iniciar a API:
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+pip install -r backend/requirements.txt
+uvicorn backend.app.main:app --reload
+```
+
+A API lê `DATABASE_URL` (com driver `postgresql+psycopg://`) e disponibiliza `/docs`, `/health` e endpoints de listagem paginada para cada entidade, por exemplo `/requests`, `/service-categories` e `/memberships`. O parâmetro `limit` é limitado a 500 registros por chamada.
 
 ## Fluxo de dados: banco -> entidades -> view models -> páginas
 
@@ -83,16 +98,20 @@ A página `app/solicitar-atividade/chamado/page.tsx` lê `service_category` e `s
 
 A interpretação PostgreSQL acontece em `src/server/repositories/postgres/activity-request-form-postgres-repository.ts`:
 
+- `getLocationHierarchy()` consulta unidades de negócio, regiões e localizações para os três seletores dependentes.
 - `getActivityRequestFormData({ serviceCategory, serviceType })` consulta os tipos de serviço disponíveis para a categoria recebida.
 - Se a URL não trouxer `serviceType`, o primeiro tipo retornado vira `effectiveServiceType`.
 - Uma segunda consulta busca os `service_field_type` ativos do tipo efetivo.
 - `mapServiceFieldTypeRowToField()` transforma cada linha em `ActivityRequestField`, usando nomes de campo no padrão `service_field_<id>`.
 - `mapDatabaseFieldType()` traduz tipos do banco (`SINGLE_SELECT`, `MULTI_SELECT`, `NUMBER`, `DATE`, `BOOL`) para tipos de componente (`select`, `multi-select`, `number`, `date`, `checkbox`), com fallback para `text`.
 - `mapOptions()` interpreta `options` como JSON ou array e converte em `{ label, value }[]`.
+- Campos `MULTI_SELECT` são exibidos em um dropdown com checkboxes. Cada opção marcada é enviada com o mesmo nome `service_field_<id>`, permitindo selecionar mais de um valor.
 
-Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com campos fixos do formulário (`business_id`, `service_category`, `service_type`, `location_id`, `agreed_date`, `description`, `request_attachment`).
+Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com a descrição. O componente de formulário adiciona os seletores dependentes de unidade de negócio, região e localização; a localização escolhida é enviada como `location_id`.
 
-O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que chama `createActivityRequest()` em `src/server/services/request-service.ts`. Hoje, a criação só é enviada para backend externo quando `DATA_SOURCE=fastapi`; nos demais casos, a função retorna `{ ok: true, payload }` sem inserir no PostgreSQL.
+O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que vincula no servidor o ID do tipo escolhido e chama `createChamadoRequest()` em `src/server/services/request-service.ts`. Com `DATA_SOURCE=postgres`, `activity-request-postgres-repository.ts` valida os relacionamentos e grava, na mesma transação, a `REQUEST` e um `SERVICE_FIELD_VALUE` para cada campo adicional preenchido. Novas requests usam `ID_REQUEST_TYPE = 1`, `ID_MEMBER_REQUESTER = 8`, status aberto e `CREATED_DATE = CURRENT_TIMESTAMP`.
+
+Como a carga histórica de `REQUEST` informa IDs explicitamente, o script de carga e o fluxo de criação sincronizam a sequence da coluna identity com o maior ID existente antes de depender da geração automática. Isso evita colisões com a chave primária após uma importação.
 
 ## Onde e como são feitos os filtros/consultas do banco por página
 
@@ -126,16 +145,19 @@ Consultas e filtros:
 
 - Primeira consulta: lista `service_type` com join em `service_category`; filtra categoria por `WHERE ($1::text IS NULL OR sc.name = $1)` e ordena por categoria e tipo.
 - Segunda consulta: lista campos dinâmicos (`service_field_type`) ativos; filtra `sft.active IS TRUE`, `st.name = $1` e categoria opcional por `($2::text IS NULL OR sc.name = $2)`.
+- As consultas de localização listam `business`, `region` e `location`; o navegador filtra regiões por `region.id_business` e localizações por `location.id_region`.
 - Os parâmetros vêm da URL: `service_category` e `service_type` em `app/solicitar-atividade/chamado/page.tsx`.
 
-### `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` — Envio do formulário
+### `/solicitar-atividade/chamado` — Envio do formulário
 
 Arquivo de envio: `app/solicitar-atividade/actions.ts`, que chama `src/server/services/request-service.ts`.
 
-Comportamento atual:
+Comportamento:
 
 - `DATA_SOURCE=fastapi`: envia `FormData` para `POST` no caminho `FASTAPI_CREATE_REQUEST_PATH` ou `/activity-requests`.
-- Outros valores de `DATA_SOURCE`: não grava no PostgreSQL; retorna o payload recebido.
+- `DATA_SOURCE=postgres`: valida os dados no servidor e grava a request no PostgreSQL em uma transação. As respostas adicionais são armazenadas como JSONB em `service_field_value`, ligadas ao ID da request e ao ID de `service_field_type`.
+- Para `MULTI_SELECT`, todas as opções escolhidas são validadas, deduplicadas e armazenadas juntas em um único array JSONB, por exemplo `["Microondas", "Geladeira"]`.
+- Outros valores mantêm o fluxo mock e retornam somente o payload.
 
 ### `/acompanhamento-atividades`
 
@@ -143,7 +165,7 @@ A página chama `getActivityTrackingPageData()`, mas esse serviço usa apenas `s
 
 ### `/solicitar-atividade`
 
-A tela de seleção de categorias e tipos de serviço usa o array local `serviceCategories` em `app/solicitar-atividade/page.tsx`. Não há consulta ao banco nesta tela atualmente.
+A tela consulta diretamente as tabelas `service_category` e `service_type` no PostgreSQL e agrupa cada tipo na respectiva categoria. O catálogo não usa fallback para dados mockados e a rota é renderizada dinamicamente para refletir os registros atuais do banco.
 
 ### `/solicitar-atividade/patio`
 
@@ -157,25 +179,25 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | --- | --- | --- | --- |
 | `/` | Sim | `app/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
 | `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests; também pode usar FastAPI se `DATA_SOURCE=fastapi`. |
-| `/solicitar-atividade/chamado` | Sim, para montar campos | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê tipos de serviço e campos dinâmicos; o submit não insere no PostgreSQL atualmente. |
-| `/solicitar-atividade/chamado` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Só envia para FastAPI quando `DATA_SOURCE=fastapi`; caso contrário retorna payload. |
-| `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mesmo comportamento de submit do chamado. |
+| `/solicitar-atividade` | Sim | `app/solicitar-atividade/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê e agrupa todas as categorias e tipos de serviço diretamente do PostgreSQL, sem mock. |
+| `/solicitar-atividade/chamado` | Sim | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> repositórios PostgreSQL | Lê os três níveis de localização, o tipo de serviço e seus campos dinâmicos. |
+| `/solicitar-atividade/chamado` submit | Sim, com `DATA_SOURCE=postgres` | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` -> `src/server/repositories/postgres/activity-request-postgres-repository.ts` | Grava `request` e os respectivos `service_field_value` na mesma transação. |
+| `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mantém o comportamento anterior de envio à FastAPI ou retorno do payload. |
 
 ## Páginas que não conectam com o banco atualmente
 
 | Rota | Fonte de dados atual | Local |
 | --- | --- | --- |
 | `/acompanhamento-atividades` | Mock | `src/server/services/activity-tracking-service.ts` usa `src/server/repositories/mock/activity-tracking-mock-repository.ts`. |
-| `/solicitar-atividade` | Array local estático | `serviceCategories` em `app/solicitar-atividade/page.tsx`. |
 | `/solicitar-atividade/patio` | Array local estático para campos | `patioFields` em `app/solicitar-atividade/patio/page.tsx`. |
 
 ## Seleção de fonte de dados
 
 Os arquivos seletoras em `src/server/repositories/` definem qual implementação será usada:
 
-- `home-repository.ts`: usa PostgreSQL apenas quando `DATA_SOURCE=postgres`; caso contrário usa mock.
+- `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres` e FastAPI nos demais casos; nenhum dado mock abastece a home.
 - `request-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`, FastAPI com `DATA_SOURCE=fastapi` e mock nos demais casos.
-- `activity-request-form-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`; caso contrário usa mock.
+- `activity-request-form-repository.ts`: o catálogo de `/solicitar-atividade` sempre usa PostgreSQL; os dados do formulário de chamado usam PostgreSQL com `DATA_SOURCE=postgres` e mock nos demais casos.
 
 ## FastAPI opcional para requests
 
@@ -186,11 +208,13 @@ DATA_SOURCE=fastapi
 FASTAPI_BASE_URL=http://localhost:8000
 FASTAPI_REQUESTS_PATH=/activity-requests
 FASTAPI_CREATE_REQUEST_PATH=/activity-requests
+FASTAPI_ACTIVITIES_PATH=/activities
 ```
 
 Com essa configuração:
 
 - `/minhas-solicitacoes` chama `GET /activity-requests` e renderiza as requests retornadas.
+- O datagrid da home chama `GET /activities` com `start_date`, `end_date`, parâmetros repetidos `status` e parâmetros repetidos `business_unit`. A data exibida é selecionada conforme o status (`agreed_date`, `started_date`, `finished_date` ou `canceled_date`).
 - Os formulários de `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` enviam o `FormData` para `POST /activity-requests`.
 
 O endpoint `GET` deve retornar uma lista JSON compatível com:

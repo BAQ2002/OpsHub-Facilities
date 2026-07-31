@@ -1,17 +1,28 @@
 export const activityCategories = [
-  "Artífice",
-  "Civil",
-  "Copa e Café",
-  "Elétrica",
-  "Hidráulica",
-  "Jardinagem",
-  "Refrigeração",
-  "Limpeza",
+  "ARTÍFICE",
+  "CLIMATIZAÇÃO E REFRIGERAÇÃO",
+  "COPA",
+  "INSTALAÇÕES ELÉTRICAS",
+  "INSTALAÇÕES HIDRÁULICAS",
+  "JARDINAGEM",
+  "MANUTENÇÃO CIVIL",
+  "NOVOS PROJETOS",
+  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
+  "PMOC",
 ] as const;
 
 export type ActivityCategory = (typeof activityCategories)[number];
 
 export type ActivityType = "Atividade no Pátio" | "Chamado";
+
+export const activityStatuses = [
+  "Programada",
+  "Em andamento",
+  "Concluída",
+  "Cancelada",
+] as const;
+
+export type ActivityStatus = (typeof activityStatuses)[number];
 
 export type EquipmentCard = {
   title: string;
@@ -37,6 +48,8 @@ export type ActivityRecord = {
   category: ActivityCategory;
   serviceType: string;
   location: string;
+  status: ActivityStatus;
+  statusDate: string;
   plannedAt: string;
   description: string;
   mapPosition: {

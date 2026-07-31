@@ -1,5 +1,6 @@
 import type { ChartItem } from "@/src/domain/entities/dashboard";
 import { getActivityTrackingPageData } from "@/src/server/services/activity-tracking-service";
+import { TrackingTabs } from "./_components/TrackingTabs";
 
 export default async function ActivityTrackingPage() {
   const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue } = await getActivityTrackingPageData();
@@ -29,23 +30,9 @@ export default async function ActivityTrackingPage() {
           </button>
         </header>
 
-        <nav
-          className="mb-3 flex border-b border-slate-200"
-          aria-label="Seções do acompanhamento"
-        >
-          <a
-            className="inline-flex h-11 items-center border-b-2 border-teal-500 px-6 text-sm font-bold text-teal-600"
-            href="#requests"
-          >
-            Requests
-          </a>
-          <a
-            className="inline-flex h-11 items-center rounded-t-xl border border-b-0 border-slate-200 bg-white px-6 text-sm font-medium text-slate-600 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-            href="#dashboard"
-          >
-            Dashboard
-          </a>
-        </nav>
+        <div className="mb-3">
+          <TrackingTabs active="dashboard" />
+        </div>
 
         <section
           id="requests"
