@@ -1,12 +1,19 @@
-import Link from "next/link";
+"use client";
 
-import type { ActivityRequestField as Field } from "@/src/domain/entities/activity-request-form";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import type {
+  ActivityRequestField as Field,
+  LocationHierarchy,
+} from "@/src/domain/entities/activity-request-form";
 
 type ActivityRequestFormProps = {
   title: string;
   subtitle: string;
   sectionTitle: string;
   fields: Field[];
+  locationHierarchy?: LocationHierarchy;
   action?: (formData: FormData) => Promise<void>;
 };
 
@@ -15,6 +22,7 @@ export default function ActivityRequestForm({
   subtitle,
   sectionTitle,
   fields,
+  locationHierarchy,
   action,
 }: ActivityRequestFormProps) {
   return (
@@ -63,6 +71,7 @@ export default function ActivityRequestForm({
           </h2>
 
           <div className="grid gap-x-4 gap-y-5 md:grid-cols-2">
+            {locationHierarchy ? <LocationFields hierarchy={locationHierarchy} /> : null}
             {fields.map((field) => (
               <FormField key={field.name} field={field} />
             ))}
@@ -89,12 +98,123 @@ export default function ActivityRequestForm({
   );
 }
 
+function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
+  const [businessId, setBusinessId] = useState("");
+  const [regionId, setRegionId] = useState("");
+  const [locationId, setLocationId] = useState("");
+
+  const regions = useMemo(
+    () => hierarchy.regions.filter((region) => region.businessId === Number(businessId)),
+    [businessId, hierarchy.regions],
+  );
+  const locations = useMemo(
+    () => hierarchy.locations.filter((location) => location.regionId === Number(regionId)),
+    [hierarchy.locations, regionId],
+  );
+
+  return (
+    <div className="grid gap-x-4 gap-y-5 md:col-span-2 md:grid-cols-3">
+      <SelectField
+        label="Unidade de Negócio"
+        name="business_id"
+        value={businessId}
+        options={hierarchy.businesses.map((business) => ({
+          label: business.name,
+          value: business.id.toString(),
+        }))}
+        onChange={(value) => {
+          setBusinessId(value);
+          setRegionId("");
+          setLocationId("");
+        }}
+      />
+      <SelectField
+        label="Região"
+        name="region_id"
+        value={regionId}
+        options={regions.map((region) => ({ label: region.name, value: region.id.toString() }))}
+        disabled={!businessId}
+        onChange={(value) => {
+          setRegionId(value);
+          setLocationId("");
+        }}
+      />
+      <SelectField
+        label="Localização"
+        name="location_id"
+        options={locations.map((location) => ({ label: location.name, value: location.id.toString() }))}
+        disabled={!regionId}
+        value={locationId}
+        onChange={setLocationId}
+      />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  options,
+  value,
+  disabled = false,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  options: { label: string; value: string }[];
+  value?: string;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
+}) {
+  const fieldId = `activity-${name}`;
+  const inputClass =
+    "h-[46px] w-full rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-950 outline-none transition disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100";
+
+  return (
+    <label htmlFor={fieldId}>
+      <span className="mb-2 block text-sm font-medium text-slate-600">
+        {label} <span className="text-rose-500">*</span>
+      </span>
+      <select
+        className={inputClass}
+        disabled={disabled}
+        id={fieldId}
+        name={name}
+        required
+        value={value ?? ""}
+        onChange={onChange ? (event) => onChange(event.target.value) : undefined}
+      >
+        <option value="" disabled>
+          {disabled ? "Selecione o campo anterior..." : "Selecione o registro..."}
+        </option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function FormField({ field }: { field: Field }) {
   const fieldId = `activity-${field.name}`;
   const wrapperClass = field.fullWidth ? "md:col-span-2" : undefined;
 
   if (field.type === "hidden") {
     return <input name={field.name} type="hidden" value={field.placeholder ?? ""} />;
+  }
+
+  if (field.type === "multi-select") {
+    return (
+      <div className={wrapperClass}>
+        <label className="mb-2 block text-sm font-medium text-slate-600" htmlFor={fieldId}>
+          {field.label} {field.required !== false ? <span className="text-rose-500">*</span> : null}
+        </label>
+        <MultiSelectDropdown field={field} fieldId={fieldId} />
+        {field.helpText ? <span className="mt-2 block text-xs text-slate-500">{field.helpText}</span> : null}
+      </div>
+    );
   }
 
   return (
@@ -124,24 +244,6 @@ function renderField(field: Field, fieldId: string) {
         <option value="" disabled>
           Selecione o registro...
         </option>
-        {field.options?.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    );
-  }
-
-  if (field.type === "multi-select") {
-    return (
-      <select
-        className={`${inputClass} min-h-[116px] py-2`}
-        id={fieldId}
-        name={field.name}
-        multiple
-        required={field.required !== false}
-      >
         {field.options?.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -206,6 +308,156 @@ function renderField(field: Field, fieldId: string) {
       placeholder={field.placeholder}
       required={field.required !== false}
     />
+  );
+}
+
+function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [showRequiredError, setShowRequiredError] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const options = field.options ?? [];
+  const optionsId = `${fieldId}-options`;
+  const errorId = `${fieldId}-error`;
+  const isRequired = field.required !== false;
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function closeOnOutsideClick(event: MouseEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) setIsOpen(false);
+    }
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setIsOpen(false);
+      buttonRef.current?.focus();
+    }
+
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isOpen]);
+
+  function toggleOption(value: string) {
+    setSelectedValues((currentValues) => {
+      const nextValues = currentValues.includes(value)
+        ? currentValues.filter((currentValue) => currentValue !== value)
+        : [...currentValues, value];
+
+      if (nextValues.length > 0) setShowRequiredError(false);
+      return nextValues;
+    });
+  }
+
+  const selectedLabels = options
+    .filter((option) => selectedValues.includes(option.value))
+    .map((option) => option.label);
+  const summary =
+    selectedLabels.length === 0
+      ? "Selecione o registro..."
+      : selectedLabels.length <= 2
+        ? selectedLabels.join(", ")
+        : `${selectedLabels.length} opções selecionadas`;
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <button
+        aria-describedby={showRequiredError ? errorId : undefined}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-controls={optionsId}
+        className={`flex h-[46px] w-full items-center justify-between gap-3 rounded-xl border bg-white px-4 text-left text-base outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100 ${
+          showRequiredError ? "border-rose-500" : "border-slate-200"
+        }`}
+        id={fieldId}
+        onClick={() => setIsOpen((currentValue) => !currentValue)}
+        ref={buttonRef}
+        type="button"
+      >
+        <span className={selectedLabels.length === 0 ? "truncate text-slate-400" : "truncate text-slate-950"}>
+          {summary}
+        </span>
+        <ChevronDownIcon isOpen={isOpen} />
+      </button>
+
+      <input
+        aria-hidden="true"
+        className="pointer-events-none absolute h-px w-px opacity-0"
+        onInvalid={(event) => {
+          event.preventDefault();
+          setShowRequiredError(true);
+          setIsOpen(true);
+          buttonRef.current?.focus();
+        }}
+        readOnly
+        required={isRequired}
+        tabIndex={-1}
+        value={selectedValues.length > 0 ? "selected" : ""}
+      />
+
+      {isOpen ? (
+        <div
+          aria-multiselectable="true"
+          className="absolute z-20 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
+          id={optionsId}
+          role="listbox"
+        >
+          {options.length > 0 ? (
+            options.map((option) => {
+              const optionId = `${fieldId}-${option.value}`;
+              const isSelected = selectedValues.includes(option.value);
+
+              return (
+                <label
+                  className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-700 transition hover:bg-teal-50"
+                  htmlFor={optionId}
+                  key={option.value}
+                  role="option"
+                  aria-selected={isSelected}
+                >
+                  <input
+                    checked={isSelected}
+                    className="h-4 w-4 rounded border-slate-300 accent-teal-600"
+                    id={optionId}
+                    name={field.name}
+                    onChange={() => toggleOption(option.value)}
+                    type="checkbox"
+                    value={option.value}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              );
+            })
+          ) : (
+            <p className="px-3 py-2 text-sm text-slate-500">Nenhuma opção disponível.</p>
+          )}
+        </div>
+      ) : null}
+
+      {showRequiredError ? (
+        <span className="mt-2 block text-xs text-rose-600" id={errorId} role="alert">
+          Selecione pelo menos uma opção.
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+function ChevronDownIcon({ isOpen }: { isOpen: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`h-4 w-4 shrink-0 text-slate-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+    </svg>
   );
 }
 

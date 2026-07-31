@@ -9,6 +9,7 @@ export type ActivityMarkerViewModel = {
 };
 
 export type PlannedRequestFilterViewModel = {
+  value: string;
   label: string;
   count: number;
   isActive: boolean;

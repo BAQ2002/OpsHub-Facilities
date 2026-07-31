@@ -1,111 +1,10 @@
 import Link from "next/link";
+import { getServiceCatalogPageData } from "@/src/server/services/activity-request-form-service";
 
-const serviceCategories = [
-  {
-    name: "ARTÍFICE",
-    serviceTypes: [
-      "Fixação de Placas/Quadros",
-      "Outros",
-      "Regulagem de porta",
-      "Reparos em móveis",
-      "Substituição de dispenser (papel higiênico, papel toalha ou sabão)",
-      "Substituição de fitas de demarcação lisa/antiderrapante",
-      "Substituição de tampa de vaso sanitário",
-      "Troca de fechadura/miolo",
-    ],
-  },
-  {
-    name: "CLIMATIZAÇÃO E REFRIGERAÇÃO",
-    serviceTypes: [
-      "Equipamento com avaria evidente",
-      "Equipamento não liga",
-      "Equipamento não refrigera/climatiza",
-      "Instalação de equipamento",
-      "Outros",
-      "Remanejamento de unidade evaporadora/condensadora",
-      "Vazamento de água em equipamento",
-    ],
-  },
-  {
-    name: "COPA",
-    serviceTypes: ["Limpeza de geladeira ou micro-ondas"],
-  },
-  {
-    name: "DÚVIDA APLICATIVO",
-    serviceTypes: ["Dificuldade com a reserva"],
-  },
-  {
-    name: "INSTALAÇÕES ELÉTRICAS",
-    serviceTypes: [
-      "Interruptor ou Tomada com defeito/quebrado",
-      "Lâmpadas queimadas",
-      "Montagem de infraestrutura elétrica",
-      "Outros",
-      "Quadro elétrico desarmando",
-      "Regularização de extensões/plugs/equipamentos",
-      "Remoção ou Instalação de ponto de tomada",
-      "Substituição de biruta",
-      "Tomada com defeito/quebrada",
-    ],
-  },
-  {
-    name: "INSTALAÇÕES HIDRÁULICAS",
-    serviceTypes: [
-      "Ambiente sem água",
-      "Entupimento de pia, mictório ou vaso",
-      "Higienização dos bebedouros",
-      "Obstrução de caixa de esgoto",
-      "Outros",
-      "Registro com defeito",
-      "Vazamento em tubulação",
-      "Vazamento em válvula de descarga",
-    ],
-  },
-  {
-    name: "JARDINAGEM",
-    serviceTypes: [
-      "Poda de árvore ou arbusto",
-      "Retirada de vegetação (ervas daninhas)",
-    ],
-  },
-  {
-    name: "MANUTENÇÂO CIVIL",
-    serviceTypes: [
-      "Manutenção de Alvenaria",
-      "Outros",
-      "Reparo de pisos e revestimentos",
-    ],
-  },
-  {
-    name: "NOVOS PROJETOS",
-    serviceTypes: [
-      "Novo Projeto ou Readequação de Área",
-      "Solicitação de Recursos Diversos",
-    ],
-  },
-  {
-    name: "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
-    serviceTypes: [
-      "Pintura de segurança/operacional/predial/metálica",
-      "TESTE Pintura",
-    ],
-  },
-  {
-    name: "PMOC",
-    serviceTypes: [
-      "PMOC ANUAL",
-      "PMOC BIMESTRAL",
-      "PMOC BIMESTRAL Cortina de ar",
-      "PMOC MENSAL",
-      "PMOC MENSAL Cortina de ar",
-      "PMOC SEMESTRAL",
-      "PMOC SEMESTRAL Cortina de ar",
-      "PMOC TRIMESTRAL",
-    ],
-  },
-];
+export const dynamic = "force-dynamic";
 
-export default function SolicitarAtividadePage() {
+export default async function SolicitarAtividadePage() {
+  const serviceCategories = await getServiceCatalogPageData();
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div className="mx-auto w-full max-w-[980px]">
@@ -149,12 +48,12 @@ export default function SolicitarAtividadePage() {
           {serviceCategories.map((category) => (
             <section
               className="border-b border-slate-200 pb-4 last:border-b-0"
-              key={category.name}
-              aria-labelledby={`category-${category.name}`}
+              key={category.id}
+              aria-labelledby={`category-${category.id}`}
             >
               <h2
                 className="mb-4 text-sm font-bold uppercase tracking-[0.02em] text-slate-800"
-                id={`category-${category.name}`}
+                id={`category-${category.id}`}
               >
                 {category.name}
               </h2>
@@ -163,11 +62,11 @@ export default function SolicitarAtividadePage() {
                 {category.serviceTypes.map((serviceType) => (
                   <Link
                     className="group flex min-h-11 items-center justify-between gap-4 rounded-[4px] border border-slate-100 bg-white px-4 py-3 text-sm font-medium text-slate-800 no-underline shadow-[0_4px_14px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-teal-200 hover:text-teal-700 hover:shadow-[0_8px_22px_rgba(15,23,42,0.14)] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                    href={`/solicitar-atividade/chamado?service_category=${encodeURIComponent(category.name)}&service_type=${encodeURIComponent(serviceType)}`}
-                    key={`${category.name}-${serviceType}`}
-                    title={serviceType}
+                    href={`/solicitar-atividade/chamado?service_category=${encodeURIComponent(category.name)}&service_type=${encodeURIComponent(serviceType.name)}&service_type_id=${serviceType.id}`}
+                    key={serviceType.id}
+                    title={serviceType.name}
                   >
-                    <span className="truncate">{serviceType}</span>
+                    <span className="truncate">{serviceType.name}</span>
                     <span
                       className="shrink-0 text-xl leading-none text-slate-800 transition group-hover:translate-x-0.5 group-hover:text-teal-700"
                       aria-hidden="true"

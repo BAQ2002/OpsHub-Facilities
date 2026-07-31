@@ -2,59 +2,44 @@ import "server-only";
 
 import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
 import { getActivityRequestFormData as getRepositoryActivityRequestFormData } from "@/src/server/repositories/activity-request-form-repository";
+import {
+  getLocationHierarchy,
+  getServiceCatalog as getRepositoryServiceCatalog,
+  type ServiceCatalogCategory,
+} from "@/src/server/repositories/activity-request-form-repository";
 
 export type ActivityRequestFormPageData = {
   title: string;
   subtitle: string;
+  serviceTypeId?: number;
   fields: ActivityRequestField[];
+  locationHierarchy: Awaited<ReturnType<typeof getLocationHierarchy>>;
 };
+
+export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
+  return getRepositoryServiceCatalog();
+}
 
 export async function getChamadoRequestFormPageData(params: {
   serviceCategory?: string;
   serviceType?: string;
+  serviceTypeId?: number;
 }): Promise<ActivityRequestFormPageData> {
-  const dynamicData = await getRepositoryActivityRequestFormData(params);
+  const [dynamicData, locationHierarchy] = await Promise.all([
+    getRepositoryActivityRequestFormData(params),
+    getLocationHierarchy(),
+  ]);
   const serviceTypeName = dynamicData.serviceTypeName ?? params.serviceType;
   const serviceCategoryName = dynamicData.serviceCategoryName ?? params.serviceCategory;
 
   return {
     title: serviceTypeName ? `Nova request: ${serviceTypeName}` : "Nova request: Chamado",
     subtitle: ["request_type Chamado", serviceCategoryName, serviceTypeName].filter(Boolean).join(" · "),
+    serviceTypeId: dynamicData.serviceTypeId,
+    locationHierarchy,
     fields: [
       {
-        label: "Business",
-        name: "business_id",
-        type: "text",
-        placeholder: "Informe a unidade de negócio",
-        required: true,
-      },
-      ...(serviceCategoryName
-        ? [{ label: "Service category", name: "service_category", type: "hidden" as const, required: false, placeholder: serviceCategoryName }]
-        : []),
-      {
-        label: "Service type",
-        name: "service_type",
-        type: dynamicData.serviceTypeOptions.length > 0 ? "select" : "text",
-        options: dynamicData.serviceTypeOptions,
-        defaultValue: serviceTypeName,
-        placeholder: "Informe o tipo de serviço",
-        required: true,
-      },
-      {
-        label: "Location",
-        name: "location_id",
-        type: "text",
-        placeholder: "Informe o local vinculado ao location_id",
-        required: true,
-      },
-      {
-        label: "Agreed date",
-        name: "agreed_date",
-        type: "datetime-local",
-        required: true,
-      },
-      {
-        label: "Description",
+        label: "Descrição",
         name: "description",
         type: "textarea",
         placeholder: "Descreva a necessidade",
@@ -62,13 +47,6 @@ export async function getChamadoRequestFormPageData(params: {
         required: true,
       },
       ...dynamicData.fields,
-      {
-        label: "Request attachment",
-        name: "request_attachment",
-        type: "file",
-        fullWidth: true,
-        required: false,
-      },
     ],
   };
 }
