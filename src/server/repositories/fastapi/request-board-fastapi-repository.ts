@@ -11,21 +11,24 @@ type FastApiStatus = {
 type FastApiRequest = {
   id: string | number;
   id_request_status: string | number;
-  id_service_type: string | number;
+  id_member_requester: string | number;
+  id_location: string | number;
 };
 
-type FastApiServiceType = {
+type FastApiNamedEntity = {
   id: string | number;
   name?: string | null;
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {
-  const [statuses, requests, serviceTypes] = await Promise.all([
+  const [statuses, requests, memberships, locations] = await Promise.all([
     requestFastApi<FastApiStatus[]>("/request-statuses?limit=500"),
     requestFastApi<FastApiRequest[]>("/requests?limit=500"),
-    requestFastApi<FastApiServiceType[]>("/service-types?limit=500"),
+    requestFastApi<FastApiNamedEntity[]>("/memberships?limit=500"),
+    requestFastApi<FastApiNamedEntity[]>("/locations?limit=500"),
   ]);
-  const serviceTypeNames = new Map(serviceTypes.map((serviceType) => [Number(serviceType.id), serviceType.name]));
+  const membershipNames = new Map(memberships.map((membership) => [Number(membership.id), membership.name]));
+  const locationNames = new Map(locations.map((location) => [Number(location.id), location.name]));
 
   return {
     statuses: statuses.map((status) => ({
@@ -35,7 +38,8 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
     requests: requests.map((request) => ({
       id: Number(request.id),
       statusId: Number(request.id_request_status),
-      serviceTypeName: serviceTypeNames.get(Number(request.id_service_type)) ?? "Serviço não informado",
+      requesterName: membershipNames.get(Number(request.id_member_requester)) ?? "Solicitante não informado",
+      locationName: locationNames.get(Number(request.id_location)) ?? "Local não informado",
     })),
   };
 }

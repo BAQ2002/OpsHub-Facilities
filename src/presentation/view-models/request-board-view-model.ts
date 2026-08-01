@@ -1,6 +1,7 @@
 export type RequestBoardCardViewModel = {
   id: number;
-  label: string;
+  requesterName: string;
+  locationName: string;
 };
 
 export type RequestBoardColumnViewModel = {

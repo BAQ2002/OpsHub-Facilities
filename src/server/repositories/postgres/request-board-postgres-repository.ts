@@ -5,8 +5,9 @@ import { getPostgresPool } from "@/src/server/db/postgres";
 
 type RequestBoardRow = {
   id: string | number;
-  service_type_name: string | null;
   status_id: string | number;
+  requester_name: string | null;
+  location_name: string | null;
 };
 
 type RequestStatusRow = {
@@ -26,9 +27,11 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
       `SELECT
           r.id,
           r.id_request_status AS status_id,
-          st.name AS service_type_name
+          requester.name AS requester_name,
+          location.name AS location_name
          FROM request r
-         INNER JOIN service_type st ON st.id = r.id_service_type
+         LEFT JOIN membership requester ON requester.id = r.id_member_requester
+         LEFT JOIN location ON location.id = r.id_location
         ORDER BY r.id`,
     ),
   ]);
@@ -50,6 +53,7 @@ function mapRequest(row: RequestBoardRow): RequestBoardItem {
   return {
     id: Number(row.id),
     statusId: Number(row.status_id),
-    serviceTypeName: row.service_type_name ?? "Serviço não informado",
+    requesterName: row.requester_name ?? "Solicitante não informado",
+    locationName: row.location_name ?? "Local não informado",
   };
 }

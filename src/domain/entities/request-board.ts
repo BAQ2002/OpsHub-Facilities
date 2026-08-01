@@ -1,7 +1,8 @@
 export type RequestBoardItem = {
   id: number;
-  serviceTypeName: string;
   statusId: number;
+  requesterName: string;
+  locationName: string;
 };
 
 export type RequestBoardStatus = {
