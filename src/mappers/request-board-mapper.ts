@@ -10,7 +10,8 @@ export function mapRequestBoardDataToViewModel(data: RequestBoardData): RequestB
         .filter((request) => request.statusId === status.id)
         .map((request) => ({
           id: request.id,
-          label: `${request.id}-${request.serviceTypeName}`,
+          requesterName: request.requesterName,
+          locationName: request.locationName,
         })),
     })),
   };

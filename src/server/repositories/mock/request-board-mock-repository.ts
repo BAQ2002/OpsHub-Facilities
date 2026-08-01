@@ -11,8 +11,8 @@ const requestBoardData: RequestBoardData = {
     { id: 5, description: "Cancelada" },
   ],
   requests: [
-    { id: 116, serviceTypeName: "Higienização dos bebedouros", statusId: 3 },
-    { id: 566, serviceTypeName: "Equipamento com avaria evidente", statusId: 3 },
+    { id: 116, requesterName: "Mariana Costa", locationName: "Bloco administrativo", statusId: 3 },
+    { id: 566, requesterName: "Rafael Almeida", locationName: "Pátio operacional", statusId: 3 },
   ],
 };
 
