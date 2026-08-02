@@ -49,9 +49,10 @@ export default async function Home({
     ? selectedStatuses
     : [...activityStatuses];
   const selectedBusiness = resolvedSearchParams?.business ?? "all";
+  const today = new Date().toISOString().slice(0, 10);
   const dateRange = {
-    startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
-    endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
+    startDate: resolvedSearchParams?.startDate ?? today,
+    endDate: resolvedSearchParams?.endDate ?? today,
     statuses: effectiveStatuses,
   };
 
@@ -111,26 +112,10 @@ export default async function Home({
         <section className="mb-4 space-y-3">
           <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
             <div className="flex flex-wrap items-center gap-2">
-              <button
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
-                aria-label="Dia anterior"
-              >
-                <ChevronLeftIcon />
-              </button>
-
               <DateRangeFilters
                 startDate={dateRange.startDate}
                 endDate={dateRange.endDate}
               />
-
-              <button
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
-                aria-label="Próximo dia"
-              >
-                <ChevronRightIcon />
-              </button>
 
             </div>
           </div>
@@ -556,43 +541,5 @@ function Metric({
       <dt className="text-slate-500">{label}</dt>
       <dd className={`font-semibold ${valueClass}`}>{value}</dd>
     </div>
-  );
-}
-
-function ChevronLeftIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-3.5 w-3.5"
-      fill="none"
-      viewBox="0 0 16 16"
-    >
-      <path
-        d="M10 3.5 5.5 8l4.5 4.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function ChevronRightIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-3.5 w-3.5"
-      fill="none"
-      viewBox="0 0 16 16"
-    >
-      <path
-        d="M6 3.5 10.5 8 6 12.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
   );
 }
