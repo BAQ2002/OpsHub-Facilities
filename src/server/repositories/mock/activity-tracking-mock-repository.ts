@@ -44,5 +44,6 @@ export async function findActivityTrackingData(): Promise<ActivityTrackingData> 
     statusData,
     monthlyData,
     summaryCards,
+    filterOptions: { businesses: [], serviceCategories: [] },
   };
 }
