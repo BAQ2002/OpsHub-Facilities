@@ -167,14 +167,14 @@ export default async function Home({
           {equipmentCards.map((card) => (
             <article
               key={card.title}
-              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white px-2.5 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
               <div className="flex items-center justify-start gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
                 ></div>
 
-                <h3 className="min-w-0 break-words text-sm font-bold leading-tight text-slate-950">
+                <h3 className="min-w-0 whitespace-nowrap text-[13px] font-bold leading-tight text-slate-950">
                   {card.title}
                 </h3>
               </div>
