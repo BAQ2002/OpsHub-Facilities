@@ -1,15 +1,17 @@
-export const activityCategories = [
-  "ARTÍFICE",
-  "CLIMATIZAÇÃO E REFRIGERAÇÃO",
-  "COPA",
-  "INSTALAÇÕES ELÉTRICAS",
-  "INSTALAÇÕES HIDRÁULICAS",
-  "JARDINAGEM",
-  "MANUTENÇÃO CIVIL",
-  "NOVOS PROJETOS",
-  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
-  "PMOC",
-] as const;
+export const activityCategoryByServiceCategoryId = {
+  1: "ARTÍFICE",
+  2: "CLIMATIZAÇÃO E REFRIGERAÇÃO",
+  3: "COPA",
+  4: "INSTALAÇÕES ELÉTRICAS",
+  5: "INSTALAÇÕES HIDRÁULICAS",
+  6: "JARDINAGEM",
+  7: "MANUTENÇÃO CIVIL",
+  8: "NOVOS PROJETOS",
+  9: "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
+  10: "PMOC",
+} as const;
+
+export const activityCategories = Object.values(activityCategoryByServiceCategoryId);
 
 export type ActivityCategory = (typeof activityCategories)[number];
 

@@ -65,7 +65,7 @@ A página `app/page.tsx` lê `startDate` e `endDate` de `searchParams`, aplica v
 
 A interpretação dos registros PostgreSQL acontece em `src/server/repositories/postgres/home-postgres-repository.ts`:
 
-- `findEquipmentCards(dateRange)` consulta agrupamentos por `service_category` e status, depois transforma cada linha em `EquipmentCard` por `mapCategoryCountRowToEquipmentCard()`.
+- `findEquipmentCards(dateRange)` consulta agrupamentos por `service_category` e status, depois transforma cada linha em `EquipmentCard` por `mapCategoryCountRowToEquipmentCard()`. A identidade, o nome canônico e o estilo da categoria são resolvidos pelo `service_category.id`, usando `activityCategoryByServiceCategoryId`; o nome retornado pelo banco permanece apenas para diagnóstico, portanto alterações de nomenclatura não quebram a home.
 - `findActivityRecords(dateRange)` consulta requests, tipo, categoria, local, business e coordenadas; cada linha é transformada em `ActivityRecord` por `mapActivityRecordRowToEntity()`.
 - `findSlaSamplesInMinutes(dateRange)` calcula amostras de SLA em minutos e retorna `number[]`.
 - `findMapImage()` não consulta o banco; monta um `MapImage` a partir de variáveis `FACILITIES_MAP_*` ou do arquivo público padrão.
