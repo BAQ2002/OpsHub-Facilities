@@ -27,7 +27,6 @@ type ActivityRecordRow = {
   status_description: string;
   status_date: Date | string | null;
   agreed_date: Date | string | null;
-  description: string | null;
   map_x: string | number | null;
   map_y: string | number | null;
 };
@@ -103,7 +102,6 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
           WHEN rs.description = 'Cancelada' THEN r.canceled_date
         END AS status_date,
         r.agreed_date,
-        r.description,
         l.location_x AS map_x,
         l.location_y AS map_y
        FROM request r
@@ -202,7 +200,6 @@ function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
     status,
     statusDate: formatDateTime(row.status_date),
     plannedAt: formatDateTime(row.status_date),
-    description: row.description ?? "Sem descrição",
     mapPosition: {
       x: Number(row.map_x ?? 50),
       y: Number(row.map_y ?? 50),

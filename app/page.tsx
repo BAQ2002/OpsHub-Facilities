@@ -288,7 +288,7 @@ export default async function Home({
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-[1180px] w-full border-collapse text-left text-xs">
+              <table className="min-w-[900px] w-full border-collapse text-left text-xs">
                 <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
                   <tr>
                     <th className="px-4 py-3">ID</th>
@@ -299,7 +299,6 @@ export default async function Home({
                     <th className="px-4 py-3">Service type</th>
                     <th className="px-4 py-3">Location</th>
                     <th className="px-4 py-3">Data do status</th>
-                    <th className="px-4 py-3">Description</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
@@ -355,9 +354,6 @@ export default async function Home({
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                         {record.statusDate}
-                      </td>
-                      <td className="min-w-[280px] px-4 py-3">
-                        {record.description}
                       </td>
                     </tr>
                   ))}

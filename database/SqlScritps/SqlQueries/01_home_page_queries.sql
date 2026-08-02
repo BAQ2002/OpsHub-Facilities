@@ -61,7 +61,6 @@ SELECT
     l.name AS location,
     rg.name AS region,
     r.agreed_date AS planned_datetime,
-    r.description,
     l.location_x AS map_x,
     l.location_y AS map_y,
     rs.description AS status

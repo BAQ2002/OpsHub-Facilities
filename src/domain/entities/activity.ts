@@ -69,7 +69,6 @@ export type ActivityRecord = {
   status: ActivityStatus;
   statusDate: string;
   plannedAt: string;
-  description: string;
   mapPosition: {
     x: number;
     y: number;
