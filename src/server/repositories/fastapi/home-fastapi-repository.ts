@@ -2,9 +2,10 @@ import "server-only";
 
 import facilitiesMap from "@/public_resources/facilities-map.png";
 import {
-  activityCategories,
+  activityCategoryStylesById,
   activityStatuses,
-  type ActivityCategory,
+  defaultActivityCategoryStyle,
+  getActivityCategoryStyle,
   type ActivityRecord,
   type ActivityStatus,
   type ActivityType,
@@ -16,19 +17,6 @@ import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 
 type FastApiActivity = Record<string, unknown>;
 
-const categoryStyles: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
-  "ARTÍFICE": { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
-  "CLIMATIZAÇÃO E REFRIGERAÇÃO": { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
-  "COPA": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
-  "INSTALAÇÕES ELÉTRICAS": { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
-  "INSTALAÇÕES HIDRÁULICAS": { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
-  "JARDINAGEM": { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
-  "MANUTENÇÃO CIVIL": { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
-  "NOVOS PROJETOS": { accent: "text-indigo-500", iconBg: "bg-indigo-50", color: "#6366f1" },
-  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": { accent: "text-rose-500", iconBg: "bg-rose-50", color: "#f43f5e" },
-  "PMOC": { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
-};
-
 export async function findActivityRecords(filters: HomeDateRange): Promise<ActivityRecord[]> {
   const rows = await fetchActivities(filters);
   return rows.map(mapFastApiActivity);
@@ -36,17 +24,28 @@ export async function findActivityRecords(filters: HomeDateRange): Promise<Activ
 
 export async function findEquipmentCards(filters: HomeDateRange): Promise<EquipmentCard[]> {
   const activities = await findActivityRecords(filters);
-  return activityCategories.map((category) => {
-    const categoryActivities = activities.filter((activity) => activity.category === category);
+  const categories = new Map<string, Pick<ActivityRecord, "categoryId" | "category">>();
+  activities.forEach((activity) => {
+    const key = activity.categoryId === null ? `name:${activity.category}` : `id:${activity.categoryId}`;
+    categories.set(key, activity);
+  });
+
+  return [...categories.values()].map(({ categoryId, category }) => {
+    const categoryActivities = activities.filter((activity) =>
+      categoryId === null ? activity.categoryId === null && activity.category === category : activity.categoryId === categoryId,
+    );
     const Planned = categoryActivities.filter((activity) => activity.status === "Programada").length;
     const InProgress = categoryActivities.filter((activity) => activity.status === "Em andamento").length;
     const Completed = categoryActivities.filter((activity) => activity.status === "Concluída").length;
-    return { title: category, ...categoryStyles[category], Planned, InProgress, Completed, total: categoryActivities.length };
+    return { title: category, ...getActivityCategoryStyle(categoryId), Planned, InProgress, Completed, total: categoryActivities.length };
   });
 }
 
-export async function findCategoryColorMap(): Promise<Record<ActivityCategory, string>> {
-  return Object.fromEntries(activityCategories.map((category) => [category, categoryStyles[category].color])) as Record<ActivityCategory, string>;
+export async function findCategoryColorMap(): Promise<Record<string, string>> {
+  return Object.fromEntries([
+    ...Object.entries(activityCategoryStylesById).map(([id, style]) => [id, style.color]),
+    ["default", defaultActivityCategoryStyle.color],
+  ]);
 }
 
 export async function findMapImage(): Promise<MapImage> {
@@ -95,7 +94,8 @@ function mapFastApiActivity(row: FastApiActivity): ActivityRecord {
     id: readString(row, "id", "numero", "Numero") ?? "Não informado",
     activityType: normalizeActivityType(readString(row, "request_type", "tipo_de_solicitacao", "Tipo_de_solicitacao")),
     businessUnit: readString(row, "business_unit", "unidade_de_negocio", "Unidade_de_negocio") ?? "Não informado",
-    category: normalizeCategory(readString(row, "category", "categoria", "Categoria")),
+    categoryId: readNumber(row, "service_category_id", "category_id", "categoria_id") ?? null,
+    category: readString(row, "service_category_name", "category", "categoria", "Categoria") ?? "Não informado",
     serviceType: readString(row, "service", "servico", "Servico") ?? "Não informado",
     location: readString(row, "location", "localizacao", "Localizacao") ?? "Não informado",
     status,
@@ -133,21 +133,6 @@ function readNumber(row: FastApiActivity, ...keys: string[]) {
 function normalizeStatus(value?: string): ActivityStatus {
   const normalized = value?.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return activityStatuses.find((status) => status.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalized) ?? "Programada";
-}
-
-function normalizeCategory(value?: string): ActivityCategory {
-  const normalizedValue = value?.trim().toLocaleUpperCase("pt-BR");
-  const aliases: Partial<Record<string, ActivityCategory>> = {
-    "MANUTENÇÂO CIVIL": "MANUTENÇÃO CIVIL",
-  };
-  const category = aliases[normalizedValue ?? ""]
-    ?? activityCategories.find((item) => item === normalizedValue);
-
-  if (!category) {
-    throw new Error(`Categoria de serviço desconhecida: ${value ?? "não informada"}`);
-  }
-
-  return category;
 }
 
 function normalizeActivityType(value?: string): ActivityType {

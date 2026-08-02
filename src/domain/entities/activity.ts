@@ -1,19 +1,34 @@
-export const activityCategoryByServiceCategoryId = {
-  1: "ARTÍFICE",
-  2: "CLIMATIZAÇÃO E REFRIGERAÇÃO",
-  3: "COPA",
-  4: "INSTALAÇÕES ELÉTRICAS",
-  5: "INSTALAÇÕES HIDRÁULICAS",
-  6: "JARDINAGEM",
-  7: "MANUTENÇÃO CIVIL",
-  8: "NOVOS PROJETOS",
-  9: "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA",
-  10: "PMOC",
-} as const;
+export type ActivityCategory = string;
 
-export const activityCategories = Object.values(activityCategoryByServiceCategoryId);
+export type ActivityCategoryStyle = {
+  accent: string;
+  iconBg: string;
+  color: string;
+};
 
-export type ActivityCategory = (typeof activityCategories)[number];
+export const defaultActivityCategoryStyle: ActivityCategoryStyle = {
+  accent: "text-slate-600",
+  iconBg: "bg-slate-100",
+  color: "#64748b",
+};
+
+export const activityCategoryStylesById: Readonly<Record<number, ActivityCategoryStyle>> = {
+  1: { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
+  2: { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
+  3: { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
+  4: { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
+  5: { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
+  6: { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
+  7: { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
+  8: { accent: "text-indigo-500", iconBg: "bg-indigo-50", color: "#6366f1" },
+  9: { accent: "text-rose-500", iconBg: "bg-rose-50", color: "#f43f5e" },
+  10: { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
+};
+
+export function getActivityCategoryStyle(categoryId: number | null | undefined): ActivityCategoryStyle {
+  if (categoryId === null || categoryId === undefined) return defaultActivityCategoryStyle;
+  return activityCategoryStylesById[categoryId] ?? defaultActivityCategoryStyle;
+}
 
 export type ActivityType = "Atividade no Pátio" | "Chamado";
 
@@ -47,6 +62,7 @@ export type ActivityRecord = {
   id: string;
   activityType: ActivityType;
   businessUnit: string;
+  categoryId: number | null;
   category: ActivityCategory;
   serviceType: string;
   location: string;

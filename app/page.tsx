@@ -355,7 +355,7 @@ export default async function Home({
                             className="h-2 w-2 rounded-full"
                             style={{
                               backgroundColor:
-                                categoryColorMap[record.category],
+                                categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
                             }}
                             aria-hidden="true"
                           />
