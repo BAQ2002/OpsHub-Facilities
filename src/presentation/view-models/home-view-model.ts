@@ -1,4 +1,4 @@
-import type { ActivityCategory, ActivityRecord, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
+import type { ActivityRecord, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
 
 export type ActivityMarkerViewModel = {
   id: string;
@@ -32,5 +32,5 @@ export type HomePageViewModel = {
   plannedRequestFilterOptions: PlannedRequestFilterViewModel[];
   averageSlaClock: SlaClockViewModel;
   activityRecords: ActivityRecord[];
-  categoryColorMap: Record<ActivityCategory, string>;
+  categoryColorMap: Record<string, string>;
 };

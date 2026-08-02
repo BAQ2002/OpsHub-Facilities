@@ -1,8 +1,8 @@
 import "server-only";
 
 import facilitiesMap from "@/public_resources/facilities-map.png";
+import { activityCategoryStylesById, defaultActivityCategoryStyle } from "@/src/domain/entities/activity";
 import type {
-  ActivityCategory,
   ActivityRecord,
   EquipmentCard,
   MapImage,
@@ -84,18 +84,10 @@ const equipmentCards: EquipmentCard[] = [
   },
 ];
 
-const categoryColorMap: Record<ActivityCategory, string> = {
-  "ARTÍFICE": "#0891b2",
-  "CLIMATIZAÇÃO E REFRIGERAÇÃO": "#f97316",
-  "COPA": "#ef4444",
-  "INSTALAÇÕES ELÉTRICAS": "#eab308",
-  "INSTALAÇÕES HIDRÁULICAS": "#3b82f6",
-  "JARDINAGEM": "#22c55e",
-  "MANUTENÇÃO CIVIL": "#8b5cf6",
-  "NOVOS PROJETOS": "#6366f1",
-  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": "#f43f5e",
-  "PMOC": "#14b8a6",
-} as const;
+const categoryColorMap: Record<string, string> = Object.fromEntries([
+  ...Object.entries(activityCategoryStylesById).map(([id, style]) => [id, style.color]),
+  ["default", defaultActivityCategoryStyle.color],
+]);
 
 const mapImage: MapImage = {
   src: facilitiesMap.src,
@@ -108,8 +100,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-001",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Elétrica" as ActivityCategory,
+    category: "Elétrica",
     serviceType: "Manutenção",
     location: "Fila: G-11",
     status: "Programada",
@@ -121,8 +114,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-002",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Limpeza" as ActivityCategory,
+    category: "Limpeza",
     serviceType: "Limpeza",
     location: "Bloco administrativo, 2º andar",
     status: "Programada",
@@ -134,8 +128,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-003",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Artífice" as ActivityCategory,
+    category: "Artífice",
     serviceType: "Apoio operacional",
     location: "Fila: B-04",
     status: "Programada",
@@ -147,8 +142,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-004",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Copa e Café" as ActivityCategory,
+    category: "Copa e Café",
     serviceType: "Copa e café",
     location: "Recepção principal",
     status: "Programada",
@@ -160,8 +156,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-005",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Limpeza" as ActivityCategory,
+    category: "Limpeza",
     serviceType: "Limpeza",
     location: "Fila: D-18",
     status: "Programada",
@@ -173,8 +170,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-006",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Elétrica" as ActivityCategory,
+    category: "Elétrica",
     serviceType: "Manutenção",
     location: "Sala de controle operacional",
     status: "Programada",
@@ -186,8 +184,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-007",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Civil" as ActivityCategory,
+    category: "Civil",
     serviceType: "Outro",
     location: "Fila: H-07",
     status: "Programada",
@@ -199,8 +198,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-008",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Artífice" as ActivityCategory,
+    category: "Artífice",
     serviceType: "Outro",
     location: "Portaria de acesso interno",
     status: "Programada",
@@ -212,8 +212,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-009",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Civil" as ActivityCategory,
+    category: "Civil",
     serviceType: "Manutenção",
     location: "Fila: A-22",
     status: "Programada",
@@ -225,8 +226,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-010",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Limpeza" as ActivityCategory,
+    category: "Limpeza",
     serviceType: "Limpeza",
     location: "Corredor térreo do administrativo",
     status: "Programada",
@@ -238,8 +240,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-011",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Jardinagem" as ActivityCategory,
+    category: "Jardinagem",
     serviceType: "Apoio operacional",
     location: "Fila: C-15",
     status: "Programada",
@@ -251,8 +254,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-012",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Copa e Café" as ActivityCategory,
+    category: "Copa e Café",
     serviceType: "Copa e café",
     location: "Auditório",
     status: "Programada",
@@ -264,8 +268,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-013",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Limpeza" as ActivityCategory,
+    category: "Limpeza",
     serviceType: "Limpeza",
     location: "Fila: F-09",
     status: "Programada",
@@ -277,8 +282,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-014",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Elétrica" as ActivityCategory,
+    category: "Elétrica",
     serviceType: "Manutenção",
     location: "Sala de TI",
     status: "Programada",
@@ -290,8 +296,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-015",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Civil" as ActivityCategory,
+    category: "Civil",
     serviceType: "Outro",
     location: "Fila: E-13",
     status: "Programada",
@@ -303,8 +310,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-016",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Jardinagem" as ActivityCategory,
+    category: "Jardinagem",
     serviceType: "Outro",
     location: "Área externa do administrativo",
     status: "Programada",
@@ -316,8 +324,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-017",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Hidráulica" as ActivityCategory,
+    category: "Hidráulica",
     serviceType: "Manutenção",
     location: "Fila: I-02",
     status: "Programada",
@@ -329,8 +338,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-018",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Refrigeração" as ActivityCategory,
+    category: "Refrigeração",
     serviceType: "Limpeza",
     location: "Vestiário operacional",
     status: "Programada",
@@ -342,8 +352,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-019",
     activityType: "Atividade no Pátio",
+    categoryId: null,
     businessUnit: "TECON",
-    category: "Refrigeração" as ActivityCategory,
+    category: "Refrigeração",
     serviceType: "Apoio operacional",
     location: "Fila: J-06",
     status: "Programada",
@@ -355,8 +366,9 @@ const activityRecords: ActivityRecord[] = [
   {
     id: "ATV-020",
     activityType: "Chamado",
+    categoryId: null,
     businessUnit: "CLS",
-    category: "Artífice" as ActivityCategory,
+    category: "Artífice",
     serviceType: "Manutenção",
     location: "Sala da gerência",
     status: "Programada",
@@ -378,7 +390,7 @@ export async function findActivityRecords(): Promise<ActivityRecord[]> {
   return activityRecords;
 }
 
-export async function findCategoryColorMap(): Promise<Record<ActivityCategory, string>> {
+export async function findCategoryColorMap(): Promise<Record<string, string>> {
   return categoryColorMap;
 }
 

@@ -1,29 +1,16 @@
 import "server-only";
 
 import facilitiesMap from "@/public_resources/facilities-map.png";
-import type { ActivityCategory, ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
-import { activityCategories, activityCategoryByServiceCategoryId } from "@/src/domain/entities/activity";
+import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
+import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/src/domain/entities/activity";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
 const trackedStatusDescriptions = ["Concluída", "Concluida", "Programada", "Em andamento", "Em aberto"] as const;
 
-const categoryStyleMap: Record<ActivityCategory, Pick<EquipmentCard, "accent" | "iconBg"> & { color: string }> = {
-  "ARTÍFICE": { accent: "text-cyan-600", iconBg: "bg-cyan-50", color: "#0891b2" },
-  "CLIMATIZAÇÃO E REFRIGERAÇÃO": { accent: "text-orange-500", iconBg: "bg-orange-50", color: "#f97316" },
-  "COPA": { accent: "text-red-500", iconBg: "bg-red-50", color: "#ef4444" },
-  "INSTALAÇÕES ELÉTRICAS": { accent: "text-yellow-500", iconBg: "bg-yellow-50", color: "#eab308" },
-  "INSTALAÇÕES HIDRÁULICAS": { accent: "text-blue-500", iconBg: "bg-blue-50", color: "#3b82f6" },
-  "JARDINAGEM": { accent: "text-green-500", iconBg: "bg-green-50", color: "#22c55e" },
-  "MANUTENÇÃO CIVIL": { accent: "text-violet-500", iconBg: "bg-violet-50", color: "#8b5cf6" },
-  "NOVOS PROJETOS": { accent: "text-indigo-500", iconBg: "bg-indigo-50", color: "#6366f1" },
-  "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": { accent: "text-rose-500", iconBg: "bg-rose-50", color: "#f43f5e" },
-  "PMOC": { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
-};
-
 type CategoryCountRow = {
   category_id: string | number;
-  category_name: string;
+  category_name: string | null;
   planned: string | number;
   in_progress: string | number;
   completed: string | number;
@@ -148,10 +135,11 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
   return result.rows.map(mapActivityRecordRowToEntity);
 }
 
-export async function findCategoryColorMap(): Promise<Record<ActivityCategory, string>> {
-  return Object.fromEntries(
-    activityCategories.map((category) => [category, categoryStyleMap[category].color]),
-  ) as Record<ActivityCategory, string>;
+export async function findCategoryColorMap(): Promise<Record<string, string>> {
+  return Object.fromEntries([
+    ...Object.entries(activityCategoryStylesById).map(([id, style]) => [id, style.color]),
+    ["default", defaultActivityCategoryStyle.color],
+  ]);
 }
 
 export async function findMapImage(): Promise<MapImage> {
@@ -184,14 +172,14 @@ export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise
 }
 
 function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCard {
-  const category = findActivityCategoryByServiceCategoryId(row.category_id, row.category_name);
-  const style = categoryStyleMap[category];
+  const categoryId = Number(row.category_id);
+  const style = getActivityCategoryStyle(Number.isFinite(categoryId) ? categoryId : null);
   const Planned = Number(row.planned);
   const InProgress = Number(row.in_progress);
   const Completed = Number(row.completed);
 
   return {
-    title: category,
+    title: row.category_name ?? "Não informado",
     accent: style.accent,
     iconBg: style.iconBg,
     Planned,
@@ -207,7 +195,8 @@ function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
     id: String(row.id),
     activityType: normalizeActivityType(row.request_type_name),
     businessUnit: row.business_name ?? "Não informado",
-    category: findActivityCategoryByServiceCategoryId(row.service_category_id, row.service_category_name),
+    categoryId: toNullableNumber(row.service_category_id),
+    category: row.service_category_name ?? "Não informado",
     serviceType: row.service_type_name ?? "Não informado",
     location: row.location_name ?? "Não informado",
     status,
@@ -226,21 +215,10 @@ function normalizeActivityStatus(value: string): ActivityStatus {
   return "Concluída";
 }
 
-function findActivityCategoryByServiceCategoryId(
-  serviceCategoryId: string | number | null,
-  serviceCategoryName: string | null,
-): ActivityCategory {
-  const category = activityCategoryByServiceCategoryId[
-    Number(serviceCategoryId) as keyof typeof activityCategoryByServiceCategoryId
-  ];
-
-  if (!category) {
-    throw new Error(
-      `ID de categoria de serviço desconhecido: ${serviceCategoryId ?? "não informado"} (${serviceCategoryName ?? "nome não informado"})`,
-    );
-  }
-
-  return category;
+function toNullableNumber(value: string | number | null): number | null {
+  if (value === null) return null;
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : null;
 }
 
 function normalizeActivityType(value: string | null): ActivityType {

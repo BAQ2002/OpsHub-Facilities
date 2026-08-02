@@ -1,14 +1,14 @@
-import type { ActivityCategory, ActivityRecord, EquipmentCard } from "@/src/domain/entities/activity";
+import type { ActivityRecord, EquipmentCard } from "@/src/domain/entities/activity";
 import type { ActivityMarkerViewModel, PlannedRequestFilterViewModel, SlaClockViewModel } from "@/src/presentation/view-models/home-view-model";
 
 export function mapActivityRecordToMarker(
   record: ActivityRecord,
-  categoryColorMap: Record<ActivityCategory, string>,
+  categoryColorMap: Record<string, string>,
 ): ActivityMarkerViewModel {
   return {
     id: record.id,
     label: `${record.id} · ${record.category} · ${record.location}`,
-    color: categoryColorMap[record.category],
+    color: categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
     x: record.mapPosition.x,
     y: record.mapPosition.y,
   };
@@ -20,15 +20,10 @@ export function mapActivitiesToBusinessUnitFilters(
 ): PlannedRequestFilterViewModel[] {
   const businessUnits = Array.from(new Set(records.map((record) => record.businessUnit)));
 
-  const businessLabels: Record<string, string> = {
-    TECON: "TECON Salvador",
-    CLS: "Centro Logístico Salvador",
-  };
-
   return [
     ...businessUnits.map((businessUnit) => ({
       value: businessUnit,
-      label: businessLabels[businessUnit] ?? businessUnit,
+      label: businessUnit,
       count: records.filter((record) => record.businessUnit === businessUnit).length,
       isActive: selectedBusiness === businessUnit,
     })),
