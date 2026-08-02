@@ -6,7 +6,7 @@ export function mapActivityTrackingDataToViewModel(
 ): ActivityTrackingPageViewModel {
   return {
     ...data,
-    maxMonthlyValue: Math.max(
+    maxMonthlyValue: Math.max(1,
       ...data.monthlyData.flatMap((item) => [item.open, item.closed]),
     ),
   };
