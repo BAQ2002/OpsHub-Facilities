@@ -2,7 +2,7 @@ import "server-only";
 
 import facilitiesMap from "@/public_resources/facilities-map.png";
 import type { ActivityCategory, ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
-import { activityCategories } from "@/src/domain/entities/activity";
+import { activityCategories, activityCategoryByServiceCategoryId } from "@/src/domain/entities/activity";
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
@@ -33,6 +33,7 @@ type ActivityRecordRow = {
   id: string | number;
   request_type_name: string | null;
   business_name: string | null;
+  service_category_id: string | number | null;
   service_category_name: string | null;
   service_type_name: string | null;
   location_name: string | null;
@@ -103,6 +104,7 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
         r.id,
         rt.name AS request_type_name,
         b.name AS business_name,
+        sc.id AS service_category_id,
         sc.name AS service_category_name,
         st.name AS service_type_name,
         l.name AS location_name,
@@ -182,7 +184,7 @@ export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise
 }
 
 function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCard {
-  const category = normalizeActivityCategory(row.category_name);
+  const category = findActivityCategoryByServiceCategoryId(row.category_id, row.category_name);
   const style = categoryStyleMap[category];
   const Planned = Number(row.planned);
   const InProgress = Number(row.in_progress);
@@ -205,7 +207,7 @@ function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
     id: String(row.id),
     activityType: normalizeActivityType(row.request_type_name),
     businessUnit: row.business_name ?? "Não informado",
-    category: normalizeActivityCategory(row.service_category_name),
+    category: findActivityCategoryByServiceCategoryId(row.service_category_id, row.service_category_name),
     serviceType: row.service_type_name ?? "Não informado",
     location: row.location_name ?? "Não informado",
     status,
@@ -224,16 +226,18 @@ function normalizeActivityStatus(value: string): ActivityStatus {
   return "Concluída";
 }
 
-function normalizeActivityCategory(value: string | null): ActivityCategory {
-  const normalizedValue = value?.trim().toLocaleUpperCase("pt-BR");
-  const aliases: Partial<Record<string, ActivityCategory>> = {
-    "MANUTENÇÂO CIVIL": "MANUTENÇÃO CIVIL",
-  };
-  const category = aliases[normalizedValue ?? ""]
-    ?? activityCategories.find((item) => item === normalizedValue);
+function findActivityCategoryByServiceCategoryId(
+  serviceCategoryId: string | number | null,
+  serviceCategoryName: string | null,
+): ActivityCategory {
+  const category = activityCategoryByServiceCategoryId[
+    Number(serviceCategoryId) as keyof typeof activityCategoryByServiceCategoryId
+  ];
 
   if (!category) {
-    throw new Error(`Categoria de serviço desconhecida: ${value ?? "não informada"}`);
+    throw new Error(
+      `ID de categoria de serviço desconhecido: ${serviceCategoryId ?? "não informado"} (${serviceCategoryName ?? "nome não informado"})`,
+    );
   }
 
   return category;
