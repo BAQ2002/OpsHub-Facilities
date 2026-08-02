@@ -101,7 +101,6 @@ function mapFastApiActivity(row: FastApiActivity): ActivityRecord {
     status,
     statusDate: formatDateTime(statusDate),
     plannedAt: formatDateTime(statusDate),
-    description: readString(row, "description", "descricao", "Descricao") ?? "Sem descrição",
     mapPosition: {
       x: readNumber(row, "map_x", "location_x") ?? 50,
       y: readNumber(row, "map_y", "location_y") ?? 50,

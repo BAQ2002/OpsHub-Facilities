@@ -108,7 +108,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 08:30",
     plannedAt: "2026-06-03 08:30",
-    description: "Reparo preventivo em iluminação do pátio.",
     mapPosition: { x: 71, y: 28 },
   },
   {
@@ -122,7 +121,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 09:00",
     plannedAt: "2026-06-03 09:00",
-    description: "Higienização emergencial da sala de reunião.",
     mapPosition: { x: 55, y: 36 },
   },
   {
@@ -136,7 +134,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 09:45",
     plannedAt: "2026-06-03 09:45",
-    description: "Apoio para isolamento de área operacional.",
     mapPosition: { x: 43, y: 27 },
   },
   {
@@ -150,7 +147,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 10:15",
     plannedAt: "2026-06-03 10:15",
-    description: "Reposição de insumos de copa para visita técnica.",
     mapPosition: { x: 50, y: 44 },
   },
   {
@@ -164,7 +160,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 11:00",
     plannedAt: "2026-06-03 11:00",
-    description: "Limpeza de resíduos próximos à faixa de circulação.",
     mapPosition: { x: 64, y: 52 },
   },
   {
@@ -178,7 +173,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 11:30",
     plannedAt: "2026-06-03 11:30",
-    description: "Verificação de tomada sem energização.",
     mapPosition: { x: 35, y: 58 },
   },
   {
@@ -192,7 +186,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 13:00",
     plannedAt: "2026-06-03 13:00",
-    description: "Sinalização temporária para manutenção de piso.",
     mapPosition: { x: 73, y: 48 },
   },
   {
@@ -206,7 +199,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 13:45",
     plannedAt: "2026-06-03 13:45",
-    description: "Ajuste em mobiliário da área de espera.",
     mapPosition: { x: 28, y: 43 },
   },
   {
@@ -220,7 +212,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 14:10",
     plannedAt: "2026-06-03 14:10",
-    description: "Inspeção em proteção metálica próxima aos lotes.",
     mapPosition: { x: 38, y: 33 },
   },
   {
@@ -234,7 +225,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 14:40",
     plannedAt: "2026-06-03 14:40",
-    description: "Remoção de marcas no piso e revisão de lixeiras.",
     mapPosition: { x: 47, y: 62 },
   },
   {
@@ -248,7 +238,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 15:20",
     plannedAt: "2026-06-03 15:20",
-    description: "Apoio de equipe para reorganização de materiais.",
     mapPosition: { x: 59, y: 68 },
   },
   {
@@ -262,7 +251,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 16:00",
     plannedAt: "2026-06-03 16:00",
-    description: "Preparação de copa para treinamento interno.",
     mapPosition: { x: 31, y: 71 },
   },
   {
@@ -276,7 +264,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 16:30",
     plannedAt: "2026-06-03 16:30",
-    description: "Coleta de materiais soltos no pátio.",
     mapPosition: { x: 70, y: 63 },
   },
   {
@@ -290,7 +277,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-03 17:00",
     plannedAt: "2026-06-03 17:00",
-    description: "Correção de ponto de iluminação intermitente.",
     mapPosition: { x: 78, y: 39 },
   },
   {
@@ -304,7 +290,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 08:00",
     plannedAt: "2026-06-04 08:00",
-    description: "Avaliação de necessidade de pintura de demarcação.",
     mapPosition: { x: 54, y: 73 },
   },
   {
@@ -318,7 +303,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 08:40",
     plannedAt: "2026-06-04 08:40",
-    description: "Verificação de banco com fixação irregular.",
     mapPosition: { x: 24, y: 60 },
   },
   {
@@ -332,7 +316,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 09:20",
     plannedAt: "2026-06-04 09:20",
-    description: "Revisão de ponto hidráulico de apoio operacional.",
     mapPosition: { x: 81, y: 56 },
   },
   {
@@ -346,7 +329,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 10:00",
     plannedAt: "2026-06-04 10:00",
-    description: "Limpeza programada após intervenção predial.",
     mapPosition: { x: 40, y: 76 },
   },
   {
@@ -360,7 +342,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 10:45",
     plannedAt: "2026-06-04 10:45",
-    description: "Organização de área para chegada de equipamentos.",
     mapPosition: { x: 67, y: 79 },
   },
   {
@@ -374,7 +355,6 @@ const activityRecords: ActivityRecord[] = [
     status: "Programada",
     statusDate: "2026-06-04 11:15",
     plannedAt: "2026-06-04 11:15",
-    description: "Ajuste de fechadura e revisão de dobradiças.",
     mapPosition: { x: 46, y: 49 },
   },
 ];
