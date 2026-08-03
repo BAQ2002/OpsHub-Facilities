@@ -137,7 +137,7 @@ export default async function Home({
                 />
                 <SummaryCard
                   value={String(totals.Planned)}
-                  label="Planejadas"
+                  label="Programadas"
                   bg="bg-blue-50"
                   color="text-blue-600"
                 />
