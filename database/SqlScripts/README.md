@@ -1,8 +1,7 @@
 # Consultas planejadas para as pages Facilities
 
-Estes scripts complementam o schema criado em `SqlScritps/Create_Tables.sql` e documentam as consultas que as camadas de `repository` devem executar quando os mocks forem substituídos por banco de dados PostgreSQL.
+Estes scripts complementam o schema criado em `SqlScripts/Create_Tables.sql` e documentam as consultas que as camadas de `repository` devem executar quando os mocks forem substituídos por banco de dados PostgreSQL.
 
-> Observação: o diretório do script de criação existente está como `SqlScritps/` no repositório. Mantive os novos artefatos em `SqlScripts/` conforme solicitado.
 
 ## Convenção de parâmetros
 
