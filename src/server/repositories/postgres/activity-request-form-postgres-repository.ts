@@ -145,14 +145,16 @@ export async function getActivityRequestFormData({
 
 function mapServiceFieldTypeRowToField(row: ServiceFieldTypeRow): ActivityRequestField {
   const type = mapDatabaseFieldType(row.type);
+  const mediaOptions = type === "file" ? mapMediaOptions(row.options) : undefined;
 
   return {
     label: row.name,
     name: `service_field_${row.id}`,
     type,
     options: mapOptions(row.options),
+    mediaOptions,
     required: row.required ?? false,
-    fullWidth: type === "text",
+    fullWidth: type === "text" || type === "file",
   };
 }
 
@@ -164,8 +166,23 @@ function mapDatabaseFieldType(type: string): ActivityRequestField["type"] {
   if (normalizedType === "NUMBER") return "number";
   if (normalizedType === "DATE") return "date";
   if (normalizedType === "BOOL") return "checkbox";
+  if (normalizedType === "MEDIA") return "file";
 
   return "text";
+}
+
+function mapMediaOptions(options: unknown): NonNullable<ActivityRequestField["mediaOptions"]> {
+  const parsedOptions = typeof options === "string" ? parseJsonOptions(options) : options;
+
+  if (!parsedOptions || typeof parsedOptions !== "object" || Array.isArray(parsedOptions)) {
+    return { accept: [], multiple: false };
+  }
+
+  const config = parsedOptions as { accept?: unknown; multiple?: unknown };
+  return {
+    accept: Array.isArray(config.accept) ? config.accept.map(String) : [],
+    multiple: config.multiple === true,
+  };
 }
 
 function mapOptions(options: unknown): FormOption[] | undefined {
