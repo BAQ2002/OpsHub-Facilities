@@ -11,8 +11,44 @@ const requestBoardData: RequestBoardData = {
     { id: 5, description: "Cancelada" },
   ],
   requests: [
-    { id: 116, requesterName: "Mariana Costa", locationName: "Bloco administrativo", statusId: 3 },
-    { id: 566, requesterName: "Rafael Almeida", locationName: "Pátio operacional", statusId: 3 },
+    {
+      id: 116,
+      requesterName: "Mariana Costa",
+      locationName: "Bloco administrativo",
+      serviceTypeName: "Manutenção elétrica",
+      statusId: 3,
+      details: [
+        { id: "business", label: "Unidade de Negócio", value: "Operações" },
+        { id: "region", label: "Região", value: "Sudeste" },
+        { id: "location", label: "Localização", value: "Bloco administrativo" },
+        { id: "description", label: "Descrição", value: "Substituição de luminária no corredor principal." },
+        { id: "priority", label: "Prioridade", value: "Alta" },
+      ],
+      media: [],
+    },
+    {
+      id: 566,
+      requesterName: "Rafael Almeida",
+      locationName: "Pátio operacional",
+      serviceTypeName: "Inspeção de infraestrutura",
+      statusId: 3,
+      details: [
+        { id: "business", label: "Unidade de Negócio", value: "Logística" },
+        { id: "region", label: "Região", value: "Sul" },
+        { id: "location", label: "Localização", value: "Pátio operacional" },
+        { id: "description", label: "Descrição", value: "Avaliar avaria encontrada no piso." },
+      ],
+      media: [
+        {
+          id: 1,
+          fieldLabel: "Foto da ocorrência",
+          fileName: "avaria-piso.svg",
+          mimeType: "image/svg+xml",
+          fileSize: 536,
+          url: "/api/request-media/1",
+        },
+      ],
+    },
   ],
 };
 

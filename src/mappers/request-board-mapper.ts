@@ -10,8 +10,11 @@ export function mapRequestBoardDataToViewModel(data: RequestBoardData): RequestB
         .filter((request) => request.statusId === status.id)
         .map((request) => ({
           id: request.id,
+          serviceTypeName: request.serviceTypeName,
           requesterName: request.requesterName,
           locationName: request.locationName,
+          details: request.details,
+          media: request.media,
         })),
     })),
   };
