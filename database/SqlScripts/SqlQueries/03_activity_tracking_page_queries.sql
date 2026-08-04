@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Acompanhamento de atividades page queries
--- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
+-- Base schema: SqlScripts/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: substituir categoryData, statusData, monthlyData e summaryCards.
 -- ============================================================
 
