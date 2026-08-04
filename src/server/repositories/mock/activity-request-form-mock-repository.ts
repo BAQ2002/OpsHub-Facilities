@@ -28,7 +28,14 @@ const fieldsByServiceType: Record<string, ActivityRequestField[]> = {
     { label: "Referência", name: "service_field_1", type: "text", required: true },
   ],
   "Regulagem de porta": [
-    { label: "Anexo da ocorrência", name: "service_field_3", type: "text", required: true },
+    {
+      label: "Anexo da ocorrência",
+      name: "service_field_3",
+      type: "file",
+      required: true,
+      fullWidth: true,
+      mediaOptions: { accept: ["image/*", "video/*"], multiple: true },
+    },
     {
       label: "Problema identificado",
       name: "service_field_4",
@@ -45,11 +52,34 @@ const fieldsByServiceType: Record<string, ActivityRequestField[]> = {
     },
   ],
   "Reparos em móveis": [
-    { label: "Anexo da ocorrência", name: "service_field_6", type: "text", required: true },
+    {
+      label: "Anexo da ocorrência",
+      name: "service_field_6",
+      type: "file",
+      required: true,
+      fullWidth: true,
+      mediaOptions: { accept: ["image/*", "video/*"], multiple: true },
+    },
   ],
-  Outros: [{ label: "Foto da necessidade", name: "service_field_2", type: "text", required: true }],
+  Outros: [
+    {
+      label: "Foto da necessidade",
+      name: "service_field_2",
+      type: "file",
+      required: true,
+      fullWidth: true,
+      mediaOptions: { accept: ["image/*", "video/*"], multiple: true },
+    },
+  ],
   "Troca de fechadura/miolo": [
-    { label: "Anexo da ocorrência", name: "service_field_14", type: "text", required: true },
+    {
+      label: "Anexo da ocorrência",
+      name: "service_field_14",
+      type: "file",
+      required: true,
+      fullWidth: true,
+      mediaOptions: { accept: ["image/*", "video/*"], multiple: true },
+    },
     { label: "Observações", name: "service_field_15", type: "text", required: true },
     {
       label: "Motivo da troca",

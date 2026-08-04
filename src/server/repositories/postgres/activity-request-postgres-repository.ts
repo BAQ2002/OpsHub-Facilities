@@ -17,9 +17,20 @@ type RequestInput = {
   description: string;
 };
 
+type MediaFile = {
+  fieldId: number;
+  content: Buffer;
+  fileName: string;
+  mimeType: string;
+  fileSize: number;
+};
+
 const REQUEST_TYPE_ID = 1;
 const REQUESTER_MEMBER_ID = 8;
 const OPEN_REQUEST_STATUS_ID = 1;
+const MAX_MEDIA_FILES_PER_FIELD = 5;
+const MAX_MEDIA_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_MEDIA_TOTAL_SIZE = 25 * 1024 * 1024;
 
 export async function insertActivityRequest(formData: FormData) {
   const input = parseRequestInput(formData);
@@ -28,10 +39,13 @@ export async function insertActivityRequest(formData: FormData) {
 
   try {
     await client.query("BEGIN");
-    await synchronizeRequestIdSequence(client);
     await validateLocationHierarchy(client, input);
     const fieldDefinitions = await getFieldDefinitions(client, input.serviceTypeId);
-    const values = fieldDefinitions.flatMap((field) => parseFieldValue(field, formData));
+    const values = fieldDefinitions
+      .filter((field) => field.type.toUpperCase() !== "MEDIA")
+      .flatMap((field) => parseFieldValue(field, formData));
+    const mediaFiles = await parseMediaFiles(fieldDefinitions, formData);
+    await synchronizeRequestIdSequence(client);
 
     const requestResult = await client.query<{ id: number }>(
       `INSERT INTO request (
@@ -67,6 +81,20 @@ export async function insertActivityRequest(formData: FormData) {
       );
     }
 
+    for (const media of mediaFiles) {
+      await client.query(
+        `INSERT INTO service_field_media (
+           id_service_field_type,
+           id_request,
+           content,
+           file_name,
+           mime_type,
+           file_size
+         ) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [media.fieldId, requestId, media.content, media.fileName, media.mimeType, media.fileSize],
+      );
+    }
+
     await client.query("COMMIT");
     return requestId;
   } catch (error) {
@@ -74,6 +102,91 @@ export async function insertActivityRequest(formData: FormData) {
     throw error;
   } finally {
     client.release();
+  }
+}
+
+async function parseMediaFiles(fieldDefinitions: ServiceFieldDefinition[], formData: FormData): Promise<MediaFile[]> {
+  const mediaFiles: MediaFile[] = [];
+  let totalSize = 0;
+
+  for (const field of fieldDefinitions.filter((definition) => definition.type.toUpperCase() === "MEDIA")) {
+    const fieldName = `service_field_${field.id}`;
+    const entries = formData.getAll(fieldName);
+    const files = entries.filter((entry): entry is File => typeof entry !== "string" && entry.size > 0);
+    const options = parseMediaOptions(field.options);
+
+    if (entries.some((entry) => typeof entry === "string" && entry.length > 0)) {
+      throw new Error(`O campo de anexo ${field.id} contém um valor inválido.`);
+    }
+    if (field.required && files.length === 0) {
+      throw new Error(`O campo de anexo ${field.id} é obrigatório.`);
+    }
+    if (!options.multiple && files.length > 1) {
+      throw new Error(`O campo de anexo ${field.id} aceita apenas um arquivo.`);
+    }
+    if (files.length > MAX_MEDIA_FILES_PER_FIELD) {
+      throw new Error(`O campo de anexo ${field.id} aceita no máximo ${MAX_MEDIA_FILES_PER_FIELD} arquivos.`);
+    }
+
+    for (const file of files) {
+      validateMediaFile(field.id, file, options.accept);
+      totalSize += file.size;
+      if (totalSize > MAX_MEDIA_TOTAL_SIZE) {
+        throw new Error("Os anexos da solicitação excedem o limite total de 25 MB.");
+      }
+
+      mediaFiles.push({
+        fieldId: field.id,
+        content: Buffer.from(await file.arrayBuffer()),
+        fileName: file.name,
+        mimeType: file.type,
+        fileSize: file.size,
+      });
+    }
+  }
+
+  return mediaFiles;
+}
+
+function validateMediaFile(fieldId: number, file: File, acceptedTypes: string[]) {
+  if (!file.name || file.name.length > 255) {
+    throw new Error(`Um arquivo do campo ${fieldId} possui nome inválido.`);
+  }
+  if (!file.type || file.type.length > 100 || !matchesAcceptedType(file.type, acceptedTypes)) {
+    throw new Error(`O arquivo ${file.name} possui um tipo não permitido.`);
+  }
+  if (file.size > MAX_MEDIA_FILE_SIZE) {
+    throw new Error(`O arquivo ${file.name} excede o limite de 10 MB.`);
+  }
+}
+
+function matchesAcceptedType(mimeType: string, acceptedTypes: string[]) {
+  if (acceptedTypes.length === 0) return false;
+  return acceptedTypes.some((acceptedType) => {
+    const normalizedType = acceptedType.trim().toLowerCase();
+    if (normalizedType.endsWith("/*")) return mimeType.toLowerCase().startsWith(normalizedType.slice(0, -1));
+    return mimeType.toLowerCase() === normalizedType;
+  });
+}
+
+function parseMediaOptions(options: unknown): { accept: string[]; multiple: boolean } {
+  const parsedOptions = typeof options === "string" ? parseJson(options) : options;
+  if (!parsedOptions || typeof parsedOptions !== "object" || Array.isArray(parsedOptions)) {
+    return { accept: [], multiple: false };
+  }
+
+  const config = parsedOptions as { accept?: unknown; multiple?: unknown };
+  return {
+    accept: Array.isArray(config.accept) ? config.accept.map(String) : [],
+    multiple: config.multiple === true,
+  };
+}
+
+function parseJson(value: string): unknown {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return undefined;
   }
 }
 
@@ -146,7 +259,11 @@ async function getFieldDefinitions(client: PgClient, serviceTypeId: number) {
 
 function parseFieldValue(field: ServiceFieldDefinition, formData: FormData) {
   const name = `service_field_${field.id}`;
-  const rawValues = formData.getAll(name).filter((value): value is string => typeof value === "string");
+  const entries = formData.getAll(name);
+  if (entries.some((entry) => typeof entry !== "string")) {
+    throw new Error(`O campo adicional ${field.id} não aceita arquivos.`);
+  }
+  const rawValues = entries.filter((value): value is string => typeof value === "string");
   const type = field.type.toUpperCase();
   let value: string | number | boolean | string[] | undefined;
 

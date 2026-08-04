@@ -288,12 +288,14 @@ function renderField(field: Field, fieldId: string) {
           id={fieldId}
           name={field.name}
           type="file"
-          accept="image/*"
-          multiple
+          accept={field.mediaOptions?.accept.join(",") || undefined}
+          multiple={field.mediaOptions?.multiple ?? false}
           required={field.required !== false}
         />
         <span className="mt-3 block text-xs text-slate-500">
-          Anexe arquivos que serão vinculados como request_attachment.
+          {field.mediaOptions?.multiple
+            ? "Selecione um ou mais arquivos para anexar à solicitação."
+            : "Selecione um arquivo para anexar à solicitação."}
         </span>
       </div>
     );
