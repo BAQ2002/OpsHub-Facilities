@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Solicitar atividade form queries/mutations
--- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
+-- Base schema: SqlScripts/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: alimentar combos e persistir novas solicitações.
 -- ============================================================
 

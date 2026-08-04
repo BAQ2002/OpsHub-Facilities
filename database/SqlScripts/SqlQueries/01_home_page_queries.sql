@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Home page queries
--- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
+-- Base schema: SqlScripts/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: substituir os mocks da Home por consultas PostgreSQL.
 -- ============================================================
 

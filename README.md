@@ -235,7 +235,7 @@ Também são aceitos os aliases `titulo`, `request_title`, `createdAt` e `hasUnr
 
 ## Scripts de banco
 
-Os scripts SQL ficam em `database/SqlScritps/`:
+Os scripts SQL ficam em `database/SqlScripts/`:
 
 - `CreateTables/`: criação de tabelas.
 - `InsertTable/`: inserts de dados base.
