@@ -2,8 +2,20 @@ import type { ChartItem } from "@/src/domain/entities/dashboard";
 import { getActivityTrackingPageData } from "@/src/server/services/activity-tracking-service";
 import { TrackingTabs } from "./_components/TrackingTabs";
 
-export default async function ActivityTrackingPage() {
-  const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue } = await getActivityTrackingPageData();
+export const dynamic = "force-dynamic";
+
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function ActivityTrackingPage({ searchParams }: { searchParams: SearchParams }) {
+  const params = await searchParams;
+  const today = new Date().toISOString().slice(0, 10);
+  const defaultStart = `${today.slice(0, 4)}-01-01`;
+  const startDate = readDate(params.startDate, defaultStart);
+  const endDate = readDate(params.endDate, today);
+  const businessId = readPositiveInteger(params.businessId);
+  const serviceCategoryId = readPositiveInteger(params.serviceCategoryId);
+  const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue, filterOptions } =
+    await getActivityTrackingPageData({ startDate, endDate, businessId, serviceCategoryId });
 
   return (
     <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
@@ -34,32 +46,27 @@ export default async function ActivityTrackingPage() {
           <TrackingTabs active="dashboard" />
         </div>
 
-        <section
+        <form
+          method="get"
           id="requests"
           className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
           aria-label="Filtros de requests"
         >
-          <div className="grid gap-3 lg:grid-cols-[170px_1fr_1fr_auto_auto]">
-            <FilterField label="Período" value="06/06/2026 - 06/06/2026" />
-            <SelectField label="Business" value="Todos os business" />
-            <SelectField label="Service category" value="Todas as service_category" />
+          <div className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
+            <FilterField label="Data inicial" name="startDate" value={startDate} />
+            <FilterField label="Data final" name="endDate" value={endDate} min={startDate} />
+            <SelectField label="Business" name="businessId" value={businessId} placeholder="Todos os businesses" options={filterOptions.businesses} />
+            <SelectField label="Service category" name="serviceCategoryId" value={serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} />
 
             <button
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-teal-500 bg-white px-5 text-sm font-semibold text-teal-600 shadow-[0_1px_1px_rgba(15,23,42,0.04)] transition hover:bg-teal-50"
-              type="button"
-            >
-              <FilterIcon />
-              Filtros
-            </button>
-            <button
               className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700"
-              type="button"
+              type="submit"
             >
               <SearchIcon />
               Buscar
             </button>
           </div>
-        </section>
+        </form>
 
         <section className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do período">
           {summaryCards.map((card) => (
@@ -92,7 +99,7 @@ export default async function ActivityTrackingPage() {
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
                 Requests por mês
               </h2>
-              <p className="mt-1 text-xs text-slate-500">Comparativo anual entre requests abertas e fechadas.</p>
+              <p className="mt-1 text-xs text-slate-500">Comparativo mensal no período selecionado.</p>
             </div>
             <div className="flex gap-4 text-xs text-slate-600">
               <LegendItem color="#f97316" label="Abertas" />
@@ -107,30 +114,34 @@ export default async function ActivityTrackingPage() {
   );
 }
 
-function FilterField({ label, value }: { label: string; value: string }) {
+function FilterField({ label, name, value, min }: { label: string; name: string; value: string; min?: string }) {
   return (
     <label className="block">
       <span className="sr-only">{label}</span>
       <input
         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-600 outline-none transition [color-scheme:light] focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+        name={name}
         defaultValue={value}
+        min={min}
         aria-label={label}
-        type="text"
+        type="date"
       />
     </label>
   );
 }
 
-function SelectField({ label, value }: { label: string; value: string }) {
+function SelectField({ label, name, value, placeholder, options }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[] }) {
   return (
     <label className="block">
       <span className="sr-only">{label}</span>
       <select
         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-600 outline-none transition focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
-        defaultValue={value}
+        name={name}
+        defaultValue={value?.toString() ?? ""}
         aria-label={label}
       >
-        <option>{value}</option>
+        <option value="">{placeholder}</option>
+        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
       </select>
     </label>
   );
@@ -147,6 +158,9 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
 
 function DonutChart({ data }: { data: ChartItem[] }) {
   const total = data.reduce((acc, item) => acc + item.value, 0);
+  if (total === 0) {
+    return <EmptyState message="Nenhum chamado encontrado para os filtros selecionados." />;
+  }
   const segments = data.reduce<
     (ChartItem & { strokeDasharray: string; strokeDashoffset: number })[]
   >((acc, item) => {
@@ -211,12 +225,16 @@ function MonthlyBarChart({
   data: { month: string; open: number; closed: number }[];
   maxMonthlyValue: number;
 }) {
+  if (data.length === 0) {
+    return <EmptyState message="Não há evolução mensal no período selecionado." />;
+  }
+  const ticks = [maxMonthlyValue, Math.round(maxMonthlyValue * 0.75), Math.round(maxMonthlyValue * 0.5), Math.round(maxMonthlyValue * 0.25), 0];
   return (
     <div className="overflow-x-auto">
       <div className="grid min-w-[980px] grid-cols-[42px_1fr] gap-3">
         <div className="flex h-[260px] flex-col justify-between pb-8 text-right text-[11px] text-slate-400">
-          {[40, 30, 20, 10, 0].map((tick) => (
-            <span key={tick}>{tick}</span>
+          {ticks.map((tick, index) => (
+            <span key={`${tick}-${index}`}>{tick}</span>
           ))}
         </div>
         <div className="relative h-[260px] border-b border-slate-200">
@@ -251,6 +269,21 @@ function MonthlyBarChart({
   );
 }
 
+function EmptyState({ message }: { message: string }) {
+  return <p className="flex min-h-48 items-center justify-center rounded-xl bg-slate-50 px-6 text-center text-sm text-slate-500">{message}</p>;
+}
+
+function readDate(value: string | string[] | undefined, fallback: string) {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  return candidate && /^\d{4}-\d{2}-\d{2}$/.test(candidate) ? candidate : fallback;
+}
+
+function readPositiveInteger(value: string | string[] | undefined) {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  const parsed = Number(candidate);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : undefined;
+}
+
 function LegendItem({ color, label }: { color: string; label: string }) {
   return (
     <span className="inline-flex items-center gap-2">
@@ -265,16 +298,6 @@ function ActivityIcon({ className }: { className: string }) {
     <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M9 11l3 3L22 4" />
       <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-    </svg>
-  );
-}
-
-function FilterIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M3 5h18" />
-      <path d="M6 12h12" />
-      <path d="M10 19h4" />
     </svg>
   );
 }

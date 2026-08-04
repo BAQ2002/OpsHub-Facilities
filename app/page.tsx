@@ -49,9 +49,10 @@ export default async function Home({
     ? selectedStatuses
     : [...activityStatuses];
   const selectedBusiness = resolvedSearchParams?.business ?? "all";
+  const today = new Date().toISOString().slice(0, 10);
   const dateRange = {
-    startDate: resolvedSearchParams?.startDate ?? process.env.HOME_REQUEST_START_DATE ?? "2026-06-05",
-    endDate: resolvedSearchParams?.endDate ?? process.env.HOME_REQUEST_END_DATE ?? "2026-06-05",
+    startDate: resolvedSearchParams?.startDate ?? today,
+    endDate: resolvedSearchParams?.endDate ?? today,
     statuses: effectiveStatuses,
   };
 
@@ -111,26 +112,10 @@ export default async function Home({
         <section className="mb-4 space-y-3">
           <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
             <div className="flex flex-wrap items-center gap-2">
-              <button
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
-                aria-label="Dia anterior"
-              >
-                <ChevronLeftIcon />
-              </button>
-
               <DateRangeFilters
                 startDate={dateRange.startDate}
                 endDate={dateRange.endDate}
               />
-
-              <button
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-                type="button"
-                aria-label="Próximo dia"
-              >
-                <ChevronRightIcon />
-              </button>
 
             </div>
           </div>
@@ -152,7 +137,7 @@ export default async function Home({
                 />
                 <SummaryCard
                   value={String(totals.Planned)}
-                  label="Planejadas"
+                  label="Programadas"
                   bg="bg-blue-50"
                   color="text-blue-600"
                 />
@@ -182,14 +167,14 @@ export default async function Home({
           {equipmentCards.map((card) => (
             <article
               key={card.title}
-              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white px-2.5 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
               <div className="flex items-center justify-start gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
                 ></div>
 
-                <h3 className="min-w-0 break-words text-sm font-bold leading-tight text-slate-950">
+                <h3 className="min-w-0 whitespace-nowrap text-[13px] font-bold leading-tight text-slate-950">
                   {card.title}
                 </h3>
               </div>
@@ -303,7 +288,7 @@ export default async function Home({
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-[1180px] w-full border-collapse text-left text-xs">
+              <table className="min-w-[900px] w-full border-collapse text-left text-xs">
                 <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
                   <tr>
                     <th className="px-4 py-3">ID</th>
@@ -314,7 +299,6 @@ export default async function Home({
                     <th className="px-4 py-3">Service type</th>
                     <th className="px-4 py-3">Location</th>
                     <th className="px-4 py-3">Data do status</th>
-                    <th className="px-4 py-3">Description</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 text-slate-700">
@@ -355,7 +339,7 @@ export default async function Home({
                             className="h-2 w-2 rounded-full"
                             style={{
                               backgroundColor:
-                                categoryColorMap[record.category],
+                                categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
                             }}
                             aria-hidden="true"
                           />
@@ -370,9 +354,6 @@ export default async function Home({
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-500">
                         {record.statusDate}
-                      </td>
-                      <td className="min-w-[280px] px-4 py-3">
-                        {record.description}
                       </td>
                     </tr>
                   ))}
@@ -556,43 +537,5 @@ function Metric({
       <dt className="text-slate-500">{label}</dt>
       <dd className={`font-semibold ${valueClass}`}>{value}</dd>
     </div>
-  );
-}
-
-function ChevronLeftIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-3.5 w-3.5"
-      fill="none"
-      viewBox="0 0 16 16"
-    >
-      <path
-        d="M10 3.5 5.5 8l4.5 4.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function ChevronRightIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-3.5 w-3.5"
-      fill="none"
-      viewBox="0 0 16 16"
-    >
-      <path
-        d="M6 3.5 10.5 8 6 12.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
   );
 }

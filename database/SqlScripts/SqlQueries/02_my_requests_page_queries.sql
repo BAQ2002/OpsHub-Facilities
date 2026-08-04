@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Minhas solicitações page queries
--- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
+-- Base schema: SqlScripts/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: substituir requests[] e agrupamentos em memória.
 -- ============================================================
 

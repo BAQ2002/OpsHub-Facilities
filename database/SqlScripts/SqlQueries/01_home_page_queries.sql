@@ -1,6 +1,6 @@
 -- ============================================================
 -- OpsHub Facilities - Home page queries
--- Base schema: SqlScritps/CreateTables/CREATE_ALL_TABLES.sql
+-- Base schema: SqlScripts/CreateTables/CREATE_ALL_TABLES.sql
 -- Objetivo: substituir os mocks da Home por consultas PostgreSQL.
 -- ============================================================
 
@@ -61,7 +61,6 @@ SELECT
     l.name AS location,
     rg.name AS region,
     r.agreed_date AS planned_datetime,
-    r.description,
     l.location_x AS map_x,
     l.location_y AS map_y,
     rs.description AS status

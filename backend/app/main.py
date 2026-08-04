@@ -2,7 +2,7 @@ from datetime import date, datetime, time
 
 from fastapi import Depends, FastAPI, Query
 from sqlalchemy import case, select
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session, load_only, selectinload
 
 from .database import get_session
 from .models import Business, Location, Membership, Region, Request, RequestStatus, RequestType, ServiceCategory, ServiceType
@@ -47,6 +47,18 @@ def list_activities(
         .join(Request.location)
         .join(Location.region)
         .options(
+            load_only(
+                Request.id,
+                Request.id_request_type,
+                Request.id_location,
+                Request.id_service_type,
+                Request.id_request_status,
+                Request.created_date,
+                Request.agreed_date,
+                Request.started_date,
+                Request.finished_date,
+                Request.canceled_date,
+            ),
             selectinload(Request.status),
             selectinload(Request.request_type),
             selectinload(Request.service_type).selectinload(ServiceType.category),
@@ -75,7 +87,6 @@ def list_activities(
             "started_date": request.started_date,
             "finished_date": request.finished_date,
             "canceled_date": request.canceled_date,
-            "description": request.description,
             "map_x": request.location.location_x,
             "map_y": request.location.location_y,
         }

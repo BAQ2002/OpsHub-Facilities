@@ -1,55 +1,16 @@
+import type { RequestBoardColumnViewModel } from "@/src/presentation/view-models/request-board-view-model";
+import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
 import { TrackingTabs } from "../_components/TrackingTabs";
 
-type RequestCard = {
-  id: number;
-  title: string;
-  requester: string;
-  date: string;
-  assignee?: string;
-  age: string;
-  sla?: string;
-  slaTone?: "good" | "bad" | "info";
-};
+export const dynamic = "force-dynamic";
 
-const columns: { title: string; count: number; color: string; requests: RequestCard[] }[] = [
-  {
-    title: "Abertos",
-    count: 49,
-    color: "bg-indigo-500",
-    requests: [
-      { id: 973, title: "Poda de árvore ou arbusto", requester: "Ana Paula", date: "30/07/26 às 15:42", age: "Há 4 horas", sla: "19d 8h 41m", slaTone: "good" },
-      { id: 972, title: "Outros", requester: "Ana Paula", date: "30/07/26 às 15:39", age: "Há 4 horas" },
-      { id: 971, title: "Fixação de Placas/Quadros", requester: "Marcos Santos De Almeida", date: "30/07/26 às 13:48", age: "Há 6 horas", sla: "19d 6h 47m", slaTone: "good" },
-      { id: 969, title: "Fixação de Placas/Quadros", requester: "Tainara Carmo", date: "30/07/26 às 11:25", age: "Há 8 horas" },
-    ],
-  },
-  {
-    title: "Em Andamento",
-    count: 7,
-    color: "bg-sky-400",
-    requests: [
-      { id: 967, title: "Lâmpadas queimadas", requester: "Rogerio Santos Garcia", date: "30/07/26 às 09:12", assignee: "Rogerio Santos Garcia", age: "Há 11 horas", sla: "3d 2h 11m", slaTone: "good" },
-      { id: 694, title: "Quadro elétrico desarmando", requester: "Braian Costa", date: "19/06/26 às 12:19", assignee: "Isys Hanaira Mato Grosso Souza", age: "Há um mês", sla: "- 25d 7h 36m", slaTone: "bad" },
-      { id: 261, title: "Reparo de pisos e revestimentos", requester: "Isabella Valverde Santos", date: "06/05/26 às 08:00", assignee: "Isys Hanaira Mato Grosso Souza", age: "Há 3 meses" },
-    ],
-  },
-  {
-    title: "Fechados",
-    count: 869,
-    color: "bg-emerald-500",
-    requests: [
-      { id: 975, title: "PMOC MENSAL", requester: "Marcelo Lima De Jesus", date: "30/07/26 às 17:35", assignee: "Marcelo Lima De Jesus", age: "Há 2 horas", sla: "0 min", slaTone: "info" },
-      { id: 974, title: "PMOC ANUAL", requester: "Luis Henrique Dos Santos Borba", date: "30/07/26 às 16:22", assignee: "Luis Henrique Dos Santos Borba", age: "Há 4 horas", sla: "1 min", slaTone: "info" },
-      { id: 970, title: "PMOC ANUAL", requester: "Luis Henrique Dos Santos Borba", date: "30/07/26 às 11:16", assignee: "Luis Henrique Dos Santos Borba", age: "Há 8 horas", sla: "5h 7m", slaTone: "info" },
-    ],
-  },
-];
+export default async function RequestsPage() {
+  const { columns } = await getRequestBoardPageData();
 
-export default function RequestsPage() {
   return (
-    <section className="min-h-screen bg-[#fafafa] p-4 text-slate-700 md:p-6">
-      <div className="mx-auto max-w-[1640px]">
-        <div className="flex items-start justify-between border-b border-slate-200">
+    <section className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
+      <div className="mx-auto max-w-[1800px]">
+        <div className="flex items-start justify-between border-b border-slate-300/70">
           <TrackingTabs active="requests" />
           <div className="flex overflow-hidden rounded-lg border border-blue-500 bg-white text-blue-600">
             <IconButton label="Baixar chamados"><DownloadIcon /></IconButton>
@@ -58,19 +19,19 @@ export default function RequestsPage() {
         </div>
 
         <section className="mt-5 grid gap-2 md:grid-cols-[250px_1fr_auto_auto]" aria-label="Busca de chamados">
-          <label className="bg-slate-100 px-5 py-3 text-xs font-medium uppercase text-slate-500">
+          <label className="rounded-md bg-white/80 px-5 py-3 text-xs font-medium uppercase text-slate-500">
             <span>Data cadastro</span>
             <input className="sr-only" type="date" aria-label="Data cadastro" />
           </label>
-          <label className="bg-slate-100 px-4 py-3 text-xs font-medium uppercase text-slate-500">
+          <label className="rounded-md bg-white/80 px-4 py-3 text-xs font-medium uppercase text-slate-500">
             <span className="sr-only">Buscar chamado</span>
             <input className="w-full bg-transparent outline-none placeholder:text-slate-500" placeholder="BUSCAR CHAMADO" />
           </label>
-          <button className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-6 text-sm text-blue-600" type="button"><FilterIcon /> Filtros</button>
+          <button className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-6 py-3 text-sm text-blue-600" type="button"><FilterIcon /> Filtros</button>
           <button className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-8 py-3 text-sm font-semibold text-white" type="button"><SearchIcon /> Buscar</button>
         </section>
 
-        <div className="my-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="my-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex overflow-hidden rounded border border-slate-300">
             <button className="bg-blue-100 px-5 py-2 text-blue-600" type="button" aria-label="Visualização em quadro"><BoardIcon /></button>
             <button className="border-l border-slate-300 bg-white px-5 py-2 text-slate-500" type="button" aria-label="Visualização em lista"><ListIcon /></button>
@@ -80,50 +41,64 @@ export default function RequestsPage() {
           </label>
         </div>
 
-        <section className="grid gap-3 lg:grid-cols-3" aria-label="Quadro de chamados">
-          {columns.map((column) => <RequestColumn key={column.title} {...column} />)}
-        </section>
+        {columns.length > 0 ? (
+          <section className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
+            {columns.map((column) => <RequestColumn key={column.id} column={column} />)}
+          </section>
+        ) : (
+          <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">
+            Nenhum status de request cadastrado.
+          </p>
+        )}
       </div>
     </section>
   );
 }
 
-function RequestColumn({ title, count, color, requests }: (typeof columns)[number]) {
+function RequestColumn({ column }: { column: RequestBoardColumnViewModel }) {
   return (
-    <section className="min-w-0">
-      <header className="flex items-center gap-5 px-1 pb-2 text-sm"><h2>{title}</h2><span className="text-xs text-slate-400">{count}</span></header>
-      <div className={`h-[3px] ${color}`} />
-      <div className="mt-2 max-h-[610px] space-y-1 overflow-y-auto bg-slate-100 p-1.5">
-        {requests.map((request) => <RequestItem key={request.id} request={request} />)}
+    <section className="w-[280px] shrink-0 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
+      <header className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
+        <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
+        <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
+      </header>
+      <div className="max-h-[620px] space-y-2 overflow-y-auto">
+        {column.requests.map((request) => (
+          <article className="rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm transition-shadow hover:shadow-md" key={request.id}>
+            <div className="mb-3 flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Número</span>
+              <strong className="rounded-md bg-blue-50 px-2 py-1 text-sm font-bold tabular-nums text-blue-700">#{request.id}</strong>
+            </div>
+            <dl className="space-y-2.5">
+              <CardDetail icon={<RequesterIcon />} label="Solicitante" value={request.requesterName} />
+              <CardDetail icon={<LocationIcon />} label="Local solicitado" value={request.locationName} />
+            </dl>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
 
-function RequestItem({ request }: { request: RequestCard }) {
-  const tone = request.slaTone === "bad" ? "bg-rose-100 text-rose-500" : request.slaTone === "info" ? "bg-sky-100 text-sky-500" : "bg-emerald-100 text-emerald-600";
+function CardDetail({ icon: detailIcon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <article className="overflow-hidden rounded-sm bg-white shadow-sm">
-      <div className="p-4">
-        <div className="flex justify-between gap-3"><h3 className="font-medium text-slate-700">#{request.id} - {request.title}</h3><button className="text-xl leading-none text-slate-700" aria-label={`Opções do chamado ${request.id}`}>⋮</button></div>
-        <p className="mt-3 flex items-center gap-2 text-xs text-slate-500"><PersonIcon /> {request.requester}</p>
-        <p className="mt-2 flex items-center gap-2 text-xs text-slate-500"><ClockIcon /> {request.date}</p>
-        {request.assignee && <p className="mt-2 flex items-center gap-2 text-xs text-slate-500"><AssigneeIcon /> {request.assignee}</p>}
-        {request.sla && <div className="mt-1 flex justify-end"><span className={`rounded-full px-3 py-1 text-xs ${tone}`}>{request.sla}</span></div>}
+    <div className="grid grid-cols-[18px_1fr] gap-x-2">
+      <span className="mt-0.5 text-slate-400" aria-hidden="true">{detailIcon}</span>
+      <div className="min-w-0">
+        <dt className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{label}</dt>
+        <dd className="mt-0.5 break-words text-[13px] font-medium leading-5 text-slate-700">{value}</dd>
       </div>
-      <footer className="bg-slate-50 px-3 py-2 text-xs text-slate-500">{request.age}</footer>
-    </article>
+    </div>
   );
 }
 
 function IconButton({ label, divider, children }: { label: string; divider?: boolean; children: React.ReactNode }) { return <button type="button" aria-label={label} className={`flex h-9 w-11 items-center justify-center ${divider ? "border-l border-blue-500" : ""}`}>{children}</button>; }
 const icon = "h-[18px] w-[18px]";
-function DownloadIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3" /></svg>; }
-function SettingsIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.7-1.7.9-1.9-2.1-2.1-1.9.9-1.7-.7-.7-2h-3l-.7 2-1.7.7-1.9-.9-2.1 2.1.9 1.9-.7 1.7-2 .7v3l2 .7.7 1.7-.9 1.9 2.1 2.1 1.9-.9 1.7.7.7 2h3l.7-2 1.7-.7 1.9.9 2.1-2.1-.9-1.9.7-1.7z"/></svg>; }
-function FilterIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg>; }
-function SearchIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>; }
-function BoardIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18m6-18v18"/></svg>; }
-function ListIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>; }
-function PersonIcon() { return <svg className="h-4 w-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="7" r="3"/><path d="M5 21v-2a7 7 0 0 1 14 0v2z"/></svg>; }
-function ClockIcon() { return <svg className="h-4 w-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>; }
-function AssigneeIcon() { return <svg className="h-4 w-4 shrink-0 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="7" r="3"/><path d="M3 20a6 6 0 0 1 9-5m2 3 2 2 5-6"/></svg>; }
+function DownloadIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3" /></svg>; }
+function SettingsIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.7-1.7.9-1.9-2.1-2.1-1.9.9-1.7-.7-.7-2h-3l-.7 2-1.7.7-1.9-.9-2.1 2.1.9 1.9-.7 1.7-2 .7v3l2 .7.7 1.7-.9 1.9 2.1 2.1 1.9-.9 1.7.7.7 2h3l.7-2 1.7-.7 1.9.9 2.1-2.1-.9-1.9.7-1.7z"/></svg>; }
+function FilterIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg>; }
+function SearchIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>; }
+function BoardIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18m6-18v18"/></svg>; }
+function ListIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>; }
+function RequesterIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.6-4 3-6 7-6s6.4 2 7 6"/></svg>; }
+function LocationIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>; }

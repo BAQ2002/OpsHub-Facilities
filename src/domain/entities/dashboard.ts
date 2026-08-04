@@ -23,4 +23,15 @@ export type ActivityTrackingData = {
   statusData: ChartItem[];
   monthlyData: MonthlyActivity[];
   summaryCards: SummaryCard[];
+  filterOptions: {
+    businesses: { id: number; name: string }[];
+    serviceCategories: { id: number; name: string }[];
+  };
+};
+
+export type ActivityTrackingFilters = {
+  startDate: string;
+  endDate: string;
+  businessId?: number;
+  serviceCategoryId?: number;
 };

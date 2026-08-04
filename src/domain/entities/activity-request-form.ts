@@ -25,6 +25,10 @@ export type ActivityRequestField = {
   required?: boolean;
   helpText?: string;
   defaultValue?: string;
+  mediaOptions?: {
+    accept: string[];
+    multiple: boolean;
+  };
 };
 
 export type BusinessOption = {

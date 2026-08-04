@@ -22,12 +22,7 @@ export default function DateRangeFilters({
   }
 
   function selectToday() {
-    const today = new Date();
-    const formattedToday = [
-      today.getFullYear(),
-      String(today.getMonth() + 1).padStart(2, "0"),
-      String(today.getDate()).padStart(2, "0"),
-    ].join("-");
+    const formattedToday = formatLocalDate(new Date());
     const params = new URLSearchParams(searchParams.toString());
 
     params.set("startDate", formattedToday);
@@ -35,8 +30,24 @@ export default function DateRangeFilters({
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
+  function shiftDateRange(days: number) {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("startDate", addDays(startDate, days));
+    params.set("endDate", addDays(endDate, days));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }
+
   return (
     <>
+      <button
+        className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+        type="button"
+        aria-label="Dia anterior"
+        onClick={() => shiftDateRange(-1)}
+      >
+        <ChevronLeftIcon />
+      </button>
       <DateInput
         label="De"
         ariaLabel="Data inicial"
@@ -58,7 +69,69 @@ export default function DateRangeFilters({
       >
         Hoje
       </button>
+      <button
+        className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
+        type="button"
+        aria-label="Próximo dia"
+        onClick={() => shiftDateRange(1)}
+      >
+        <ChevronRightIcon />
+      </button>
     </>
+  );
+}
+
+function addDays(value: string, days: number) {
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  date.setDate(date.getDate() + days);
+  return formatLocalDate(date);
+}
+
+function formatLocalDate(date: Date) {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
+}
+
+function ChevronLeftIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-3.5 w-3.5"
+      fill="none"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M10 3.5 5.5 8l4.5 4.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-3.5 w-3.5"
+      fill="none"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M6 3.5 10.5 8 6 12.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
+    </svg>
   );
 }
 
