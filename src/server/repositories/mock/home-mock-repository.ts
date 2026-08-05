@@ -359,7 +359,7 @@ const activityRecords: ActivityRecord[] = [
   },
 ];
 
-const slaSamplesInMinutes = [53];
+const handlingTimeSamplesInMinutes = [53];
 
 
 export async function findEquipmentCards(): Promise<EquipmentCard[]> {
@@ -378,6 +378,6 @@ export async function findMapImage(): Promise<MapImage> {
   return mapImage;
 }
 
-export async function findSlaSamplesInMinutes(): Promise<number[]> {
-  return slaSamplesInMinutes;
+export async function findHandlingTimeSamplesInMinutes(): Promise<number[]> {
+  return handlingTimeSamplesInMinutes;
 }

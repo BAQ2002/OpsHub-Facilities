@@ -1,4 +1,5 @@
 from datetime import date, datetime, time
+from typing import Literal
 
 from fastapi import Depends, FastAPI, Query
 from sqlalchemy import case, select
@@ -33,9 +34,10 @@ def list_activities(
     end_date: date,
     status: list[str] = Query(default=[]),
     business_unit: list[int] = Query(default=[]),
+    date_field: Literal["status", "finished"] = "status",
     session: Session = Depends(get_session),
 ) -> list[dict]:
-    status_date = case(
+    status_date = Request.finished_date if date_field == "finished" else case(
         (RequestStatus.description == "Programada", Request.agreed_date),
         (RequestStatus.description == "Em andamento", Request.started_date),
         (RequestStatus.description.in_(["Concluída", "Concluida"]), Request.finished_date),

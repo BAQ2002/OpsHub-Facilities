@@ -42,7 +42,7 @@ body {
   min-width: 0;
 }
 
-@keyframes sla-caret-blink {
+@keyframes handling-time-caret-blink {
   0%,
   49% {
     opacity: 1;

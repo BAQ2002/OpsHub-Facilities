@@ -62,7 +62,7 @@ export default async function Home({
     mapImage,
     activityMarkers,
     plannedRequestFilterOptions,
-    averageSlaClock,
+    averageHandlingTimeClock,
     activityRecords,
     categoryColorMap,
   } = await getHomePageData(dateRange, selectedBusiness);
@@ -141,9 +141,9 @@ export default async function Home({
                   bg="bg-blue-50"
                   color="text-blue-600"
                 />
-                <SlaDisplay
-                  displayValue={averageSlaClock.display}
-                  caption={averageSlaClock.caption}
+                <HandlingTimeDisplay
+                  displayValue={averageHandlingTimeClock.display}
+                  caption={averageHandlingTimeClock.caption}
                 />
               </div>
             </div>
@@ -395,7 +395,7 @@ function normalizeStatuses(value: string | string[] | undefined) {
   return activityStatuses.filter((status) => values.includes(status));
 }
 
-function SlaDisplay({
+function HandlingTimeDisplay({
   displayValue,
   caption,
 }: {
@@ -407,18 +407,18 @@ function SlaDisplay({
   return (
     <section
       className="flex min-h-[118px] flex-col items-center justify-center rounded-xl bg-white px-3 py-2 text-center"
-      aria-labelledby="sla-display-title"
+      aria-labelledby="handling-time-display-title"
     >
       <h2
-        id="sla-display-title"
+        id="handling-time-display-title"
         className="mb-2 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#45628a]"
       >
-        Tempo médio de SLA
+        Tempo médio de atendimento
       </h2>
 
       <div
         className="flex h-[70px] w-[178px] items-center justify-center rounded-[15px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
-        aria-label={`SLA médio ${caption}`}
+        aria-label={`Tempo médio de atendimento ${caption}`}
         role="img"
       >
         <div className="flex items-center gap-[4.5px]">
@@ -443,7 +443,7 @@ function BlinkingColon() {
   return (
     <svg
       aria-hidden="true"
-      className="mx-[9px] h-[45px] w-[9px] shrink-0 animate-[sla-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
+      className="mx-[9px] h-[45px] w-[9px] shrink-0 animate-[handling-time-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
       fill="currentColor"
       viewBox="0 0 10 50"
     >

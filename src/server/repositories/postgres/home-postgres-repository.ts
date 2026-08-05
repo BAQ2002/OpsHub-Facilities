@@ -6,8 +6,6 @@ import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCa
 import type { HomeDateRange } from "@/src/server/repositories/home-repository";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
-const trackedStatusDescriptions = ["Concluída", "Concluida", "Programada", "Em andamento", "Em aberto"] as const;
-
 type CategoryCountRow = {
   category_id: string | number;
   category_name: string | null;
@@ -31,7 +29,7 @@ type ActivityRecordRow = {
   map_y: string | number | null;
 };
 
-type SlaSampleRow = {
+type HandlingTimeSampleRow = {
   minutes: string | number | null;
 };
 
@@ -149,17 +147,16 @@ export async function findMapImage(): Promise<MapImage> {
   };
 }
 
-export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
+export async function findHandlingTimeSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
   const pool = await getPostgresPool();
-  const result = await pool.query<SlaSampleRow>(
-    `SELECT EXTRACT(EPOCH FROM (COALESCE(r.finished_date, NOW()) - r.created_date)) / 60 AS minutes
+  const result = await pool.query<HandlingTimeSampleRow>(
+    `SELECT EXTRACT(EPOCH FROM (r.finished_date - r.started_date)) / 60 AS minutes
        FROM request r
-       INNER JOIN request_status rs ON rs.id = r.id_request_status
-      WHERE rs.description = ANY($1)
-        AND r.agreed_date >= $2::date
-        AND r.agreed_date < ($3::date + INTERVAL '1 day')
-        AND r.created_date IS NOT NULL`,
-    [trackedStatusDescriptions, dateRange.startDate, dateRange.endDate],
+      WHERE r.finished_date >= $1::date
+        AND r.finished_date < ($2::date + INTERVAL '1 day')
+        AND r.started_date IS NOT NULL
+        AND r.finished_date IS NOT NULL`,
+    [dateRange.startDate, dateRange.endDate],
   );
 
   const samples = result.rows

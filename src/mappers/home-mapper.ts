@@ -1,5 +1,5 @@
 import type { ActivityRecord, EquipmentCard } from "@/src/domain/entities/activity";
-import type { ActivityMarkerViewModel, PlannedRequestFilterViewModel, SlaClockViewModel } from "@/src/presentation/view-models/home-view-model";
+import type { ActivityMarkerViewModel, PlannedRequestFilterViewModel, HandlingTimeClockViewModel } from "@/src/presentation/view-models/home-view-model";
 
 export function mapActivityRecordToMarker(
   record: ActivityRecord,
@@ -47,7 +47,7 @@ export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
   );
 }
 
-export function mapSlaSamplesToClock(samplesInMinutes: number[]): SlaClockViewModel {
+export function mapHandlingTimeSamplesToClock(samplesInMinutes: number[]): HandlingTimeClockViewModel {
   const averageInMinutes = samplesInMinutes.length > 0
     ? Math.round(samplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) / samplesInMinutes.length)
     : 0;
