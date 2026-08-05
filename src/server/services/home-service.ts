@@ -5,14 +5,14 @@ import {
   findCategoryColorMap,
   findEquipmentCards,
   findMapImage,
-  findSlaSamplesInMinutes,
+  findHandlingTimeSamplesInMinutes,
   type HomeDateRange,
 } from "@/src/server/repositories/home-repository";
 import {
   mapActivitiesToBusinessUnitFilters,
   mapActivityRecordToMarker,
   mapEquipmentCardsToTotals,
-  mapSlaSamplesToClock,
+  mapHandlingTimeSamplesToClock,
 } from "@/src/mappers/home-mapper";
 import type { HomePageViewModel } from "@/src/presentation/view-models/home-view-model";
 
@@ -20,12 +20,12 @@ export async function getHomePageData(
   dateRange: HomeDateRange,
   selectedBusiness = "all",
 ): Promise<HomePageViewModel> {
-  const [equipmentCards, activityRecords, categoryColorMap, mapImage, slaSamples] = await Promise.all([
+  const [equipmentCards, activityRecords, categoryColorMap, mapImage, handlingTimeSamples] = await Promise.all([
     findEquipmentCards(dateRange),
     findActivityRecords(dateRange),
     findCategoryColorMap(),
     findMapImage(),
-    findSlaSamplesInMinutes(dateRange),
+    findHandlingTimeSamplesInMinutes(dateRange),
   ]);
 
   return {
@@ -34,7 +34,7 @@ export async function getHomePageData(
     mapImage,
     activityMarkers: activityRecords.map((record) => mapActivityRecordToMarker(record, categoryColorMap)),
     plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(activityRecords, selectedBusiness),
-    averageSlaClock: mapSlaSamplesToClock(slaSamples),
+    averageHandlingTimeClock: mapHandlingTimeSamplesToClock(handlingTimeSamples),
     activityRecords,
     categoryColorMap,
   };

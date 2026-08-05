@@ -6,14 +6,14 @@ import {
   findCategoryColorMap as findPostgresCategoryColorMap,
   findEquipmentCards as findPostgresEquipmentCards,
   findMapImage as findPostgresMapImage,
-  findSlaSamplesInMinutes as findPostgresSlaSamplesInMinutes,
+  findHandlingTimeSamplesInMinutes as findPostgresHandlingTimeSamplesInMinutes,
 } from "@/src/server/repositories/postgres/home-postgres-repository";
 import {
   findActivityRecords as findFastApiActivityRecords,
   findCategoryColorMap as findFastApiCategoryColorMap,
   findEquipmentCards as findFastApiEquipmentCards,
   findMapImage as findFastApiMapImage,
-  findSlaSamplesInMinutes as findFastApiSlaSamplesInMinutes,
+  findHandlingTimeSamplesInMinutes as findFastApiHandlingTimeSamplesInMinutes,
 } from "@/src/server/repositories/fastapi/home-fastapi-repository";
 
 export type HomeDateRange = {
@@ -59,10 +59,10 @@ export async function findMapImage(): Promise<MapImage> {
   return findFastApiMapImage();
 }
 
-export async function findSlaSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
+export async function findHandlingTimeSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
   if (process.env.DATA_SOURCE === "postgres") {
-    return findPostgresSlaSamplesInMinutes(dateRange);
+    return findPostgresHandlingTimeSamplesInMinutes(dateRange);
   }
 
-  return findFastApiSlaSamplesInMinutes(dateRange);
+  return findFastApiHandlingTimeSamplesInMinutes(dateRange);
 }

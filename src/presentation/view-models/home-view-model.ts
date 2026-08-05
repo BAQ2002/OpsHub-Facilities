@@ -15,7 +15,7 @@ export type PlannedRequestFilterViewModel = {
   isActive: boolean;
 };
 
-export type SlaClockViewModel = {
+export type HandlingTimeClockViewModel = {
   display: string;
   caption: string;
 };
@@ -30,7 +30,7 @@ export type HomePageViewModel = {
   mapImage: MapImage;
   activityMarkers: ActivityMarkerViewModel[];
   plannedRequestFilterOptions: PlannedRequestFilterViewModel[];
-  averageSlaClock: SlaClockViewModel;
+  averageHandlingTimeClock: HandlingTimeClockViewModel;
   activityRecords: ActivityRecord[];
   categoryColorMap: Record<string, string>;
 };

@@ -57,23 +57,28 @@ export async function findMapImage(): Promise<MapImage> {
   };
 }
 
-export async function findSlaSamplesInMinutes(filters: HomeDateRange): Promise<number[]> {
-  const rows = await fetchActivities(filters);
+export async function findHandlingTimeSamplesInMinutes(filters: HomeDateRange): Promise<number[]> {
+  const rows = await fetchActivities(
+    { startDate: filters.startDate, endDate: filters.endDate },
+    "finished",
+  );
   const samples = rows.map((row) => {
-    const createdAt = readString(row, "created_date", "created_at");
-    const finishedAt = readString(row, "finished_date", "finished_at") ?? new Date().toISOString();
-    if (!createdAt) return 0;
-    return (new Date(finishedAt).getTime() - new Date(createdAt).getTime()) / 60_000;
+    const startedAt = readString(row, "started_date", "started_at");
+    const finishedAt = readString(row, "finished_date", "finished_at");
+    if (!startedAt || !finishedAt) return 0;
+    return (new Date(finishedAt).getTime() - new Date(startedAt).getTime()) / 60_000;
   }).filter((minutes) => Number.isFinite(minutes) && minutes > 0);
   return samples.length ? samples : [0];
 }
 
-async function fetchActivities(filters: HomeDateRange): Promise<FastApiActivity[]> {
+async function fetchActivities(filters: HomeDateRange, dateField?: "finished"): Promise<FastApiActivity[]> {
   const path = getFastApiPath("FASTAPI_ACTIVITIES_PATH", "/activities");
   const params = new URLSearchParams({
     start_date: filters.startDate,
     end_date: filters.endDate,
   });
+
+  if (dateField) params.set("date_field", dateField);
 
   filters.statuses?.forEach((status) => params.append("status", status));
   filters.businessUnits?.forEach((unit) => params.append("business_unit", String(unit)));
