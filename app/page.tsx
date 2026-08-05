@@ -191,6 +191,11 @@ export default async function Home({
                     value={card.InProgress}
                     valueClass="text-yellow-500"
                   />
+                  <Metric
+                    label="Concluídas"
+                    value={card.Completed}
+                    valueClass="text-blue-500"
+                  />
                 </dl>
               </div>
             </article>
