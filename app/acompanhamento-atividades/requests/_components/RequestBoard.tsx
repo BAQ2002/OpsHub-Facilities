@@ -66,6 +66,15 @@ function RequestColumn({
 
 function RequestDetailsModal({ request, onClose }: { request: RequestBoardCardViewModel; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const detailsById = new Map(request.details.map((detail) => [detail.id, detail]));
+  const businessDetail = detailsById.get("business");
+  const regionDetail = detailsById.get("region");
+  const locationDetail = detailsById.get("location");
+  const createdAtDetail = detailsById.get("created-at");
+  const descriptionDetail = detailsById.get("description");
+  const serviceSpecificDetails = request.details.filter(
+    (detail) => !STANDARD_REQUEST_DETAIL_IDS.has(detail.id),
+  );
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -112,14 +121,42 @@ function RequestDetailsModal({ request, onClose }: { request: RequestBoardCardVi
         </header>
 
         <div className="space-y-7 p-5 sm:p-7">
-          <dl className="grid gap-4 sm:grid-cols-2">
-            {request.details.map((detail) => (
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4" key={detail.id}>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">{detail.label}</dt>
-                <dd className="mt-1 whitespace-pre-wrap break-words text-sm font-medium text-slate-800">{detail.value}</dd>
-              </div>
-            ))}
+          <dl className="grid gap-x-8 gap-y-5 border-b border-slate-200 pb-7 sm:grid-cols-2">
+            <ModalDetail label="Solicitante" value={request.requesterName} />
+            <ModalDetail
+              label={createdAtDetail?.label ?? "Data de abertura"}
+              value={createdAtDetail?.value ?? "Não informada"}
+            />
           </dl>
+
+          <dl className="grid gap-4 md:grid-cols-3">
+            <ModalDetailCard label={businessDetail?.label ?? "Unidade de negócio"} value={businessDetail?.value ?? "Não informado"} />
+            <ModalDetailCard label={regionDetail?.label ?? "Região"} value={regionDetail?.value ?? "Não informado"} />
+            <ModalDetailCard label={locationDetail?.label ?? "Localização"} value={locationDetail?.value ?? request.locationName} />
+          </dl>
+
+          <dl>
+            <ModalDetailCard
+              label={descriptionDetail?.label ?? "Descrição"}
+              value={descriptionDetail?.value ?? "Não informado"}
+            />
+          </dl>
+
+          {serviceSpecificDetails.length > 0 ? (
+            <section aria-labelledby="request-specific-fields-title">
+              <h3
+                className="mb-4 border-b border-slate-200 pb-3 text-xs font-semibold uppercase tracking-wide text-slate-500"
+                id="request-specific-fields-title"
+              >
+                Campos específicos do serviço
+              </h3>
+              <dl className="grid gap-4 sm:grid-cols-2">
+                {serviceSpecificDetails.map((detail) => (
+                  <ModalDetailCard key={detail.id} label={detail.label} value={detail.value} />
+                ))}
+              </dl>
+            </section>
+          ) : null}
 
           {request.media.length > 0 ? (
             <section aria-labelledby="request-media-title">
@@ -146,6 +183,33 @@ function RequestDetailsModal({ request, onClose }: { request: RequestBoardCardVi
           ) : null}
         </div>
       </section>
+    </div>
+  );
+}
+
+const STANDARD_REQUEST_DETAIL_IDS = new Set([
+  "business",
+  "region",
+  "location",
+  "service-type",
+  "requester",
+  "created-at",
+  "description",
+]);
+
+function ModalDetail({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</dt>
+      <dd className="mt-2 whitespace-pre-wrap break-words text-sm font-medium text-slate-800">{value}</dd>
+    </div>
+  );
+}
+
+function ModalDetailCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="h-full rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <ModalDetail label={label} value={value} />
     </div>
   );
 }
