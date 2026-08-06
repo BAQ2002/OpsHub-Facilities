@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TrackingTabs } from "../_components/TrackingTabs";
+
+export const metadata: Metadata = {
+  title: "Chamados | OpsHub Facilities",
+  description: "Quadro de chamados para acompanhamento das atividades.",
+};
 
 type RequestCard = {
   id: number;

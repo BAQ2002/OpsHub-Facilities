@@ -163,6 +163,10 @@ Comportamento:
 
 A página chama `getActivityTrackingPageData()`, mas esse serviço usa apenas `src/server/repositories/mock/activity-tracking-mock-repository.ts`. Não há consulta PostgreSQL nesta tela atualmente.
 
+### `/acompanhamento-atividades/requests`
+
+A rota exibe o quadro de chamados por status e pode ser acessada diretamente ou pela aba **Chamados** da página de acompanhamento. Atualmente, os cartões são definidos localmente em `app/acompanhamento-atividades/requests/page.tsx`.
+
 ### `/solicitar-atividade`
 
 A tela consulta diretamente as tabelas `service_category` e `service_type` no PostgreSQL e agrupa cada tipo na respectiva categoria. O catálogo não usa fallback para dados mockados e a rota é renderizada dinamicamente para refletir os registros atuais do banco.
@@ -189,6 +193,7 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | Rota | Fonte de dados atual | Local |
 | --- | --- | --- |
 | `/acompanhamento-atividades` | Mock | `src/server/services/activity-tracking-service.ts` usa `src/server/repositories/mock/activity-tracking-mock-repository.ts`. |
+| `/acompanhamento-atividades/requests` | Array local estático | `columns` em `app/acompanhamento-atividades/requests/page.tsx`. |
 | `/solicitar-atividade/patio` | Array local estático para campos | `patioFields` em `app/solicitar-atividade/patio/page.tsx`. |
 
 ## Seleção de fonte de dados
