@@ -34,12 +34,13 @@ INSERT INTO SERVICE_CATEGORY (NAME) VALUES
 ('ARTÍFICE'),
 ('CLIMATIZAÇÃO E REFRIGERAÇÃO'),
 ('COPA'),
+('Dúvida Aplicativo'),
 ('INSTALAÇÕES ELÉTRICAS'),
 ('INSTALAÇÕES HIDRÁULICAS'),
 ('JARDINAGEM'),
 ('MANUTENÇÂO CIVIL'),
 ('NOVOS PROJETOS'),
-('PINTURA'),
+('PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'),
 ('PMOC');
 
 -- ============================================================
@@ -182,3357 +183,987 @@ ON CONFLICT (ID) DO NOTHING;
 -- ================================================================
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Fixação de Placas/Quadros', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Fixação de Placas/Quadros'
-  );
+VALUES (1, 'Fixação de Placas/Quadros', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (1, 'Outros', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Regulagem de porta', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Regulagem de porta'
-  );
+VALUES (1, 'Regulagem de porta', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Reparos em móveis', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Reparos em móveis'
-  );
+VALUES (1, 'Reparos em móveis', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)'
-  );
+VALUES (1, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de fitas de demarcação lisa/antiderrapante', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de fitas de demarcação lisa/antiderrapante'
-  );
+VALUES (1, 'Substituição de fitas de demarcação lisa/antiderrapante', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de tampa de vaso sanitário', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de tampa de vaso sanitário'
-  );
+VALUES (1, 'Substituição de tampa de vaso sanitário', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Troca de fechadura/miolo', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Troca de fechadura/miolo'
-  );
+VALUES (1, 'Troca de fechadura/miolo', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento com avaria evidente', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento com avaria evidente'
-  );
+VALUES (2, 'Equipamento com avaria evidente', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento não liga', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento não liga'
-  );
+VALUES (2, 'Equipamento não liga', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento não refrigera/climatiza', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento não refrigera/climatiza'
-  );
+VALUES (2, 'Equipamento não refrigera/climatiza', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Instalação de equipamento', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Instalação de equipamento'
-  );
+VALUES (2, 'Instalação de equipamento', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (2, 'Outros', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Remanejamento de unidade evaporadora/condensadora', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Remanejamento de unidade evaporadora/condensadora'
-  );
+VALUES (2, 'Remanejamento de unidade evaporadora/condensadora', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento de água em equipamento', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento de água em equipamento'
-  );
+VALUES (2, 'Vazamento de água em equipamento', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Limpeza de geladeira ou micro-ondas', 'SERVIÇOS'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'COPA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Limpeza de geladeira ou micro-ondas'
-  );
+VALUES (3, 'Limpeza de geladeira ou micro-ondas', 'SERVIÇOS');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Dificuldade com a reserva', 'Aplicativo'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Dificuldade com a reserva'
-  );
+VALUES (4, 'Dificuldade com a reserva', 'Aplicativo');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Interruptor ou Tomada com defeito/quebrado', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Interruptor ou Tomada com defeito/quebrado'
-  );
+VALUES (5, 'Interruptor ou Tomada com defeito/quebrado', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Lâmpadas queimadas', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Lâmpadas queimadas'
-  );
+VALUES (5, 'Lâmpadas queimadas', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Montagem de infraestrutura elétrica', 'Nova Obra'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Montagem de infraestrutura elétrica'
-  );
+VALUES (5, 'Montagem de infraestrutura elétrica', 'Nova Obra');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (5, 'Outros', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Quadro elétrico desarmando', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Quadro elétrico desarmando'
-  );
+VALUES (5, 'Quadro elétrico desarmando', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Regularização de extensões/plugs/equipamentos', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  );
+VALUES (5, 'Regularização de extensões/plugs/equipamentos', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Remoção ou Instalação de ponto de tomada', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Remoção ou Instalação de ponto de tomada'
-  );
+VALUES (5, 'Remoção ou Instalação de ponto de tomada', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de biruta', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de biruta'
-  );
+VALUES (5, 'Substituição de biruta', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Tomada com defeito/quebrada', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Tomada com defeito/quebrada'
-  );
+VALUES (5, 'Tomada com defeito/quebrada', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Ambiente sem água', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Ambiente sem água'
-  );
+VALUES (6, 'Ambiente sem água', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Entupimento de pia, mictório ou vaso', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Entupimento de pia, mictório ou vaso'
-  );
+VALUES (6, 'Entupimento de pia, mictório ou vaso', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Higienização dos bebedouros', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Higienização dos bebedouros'
-  );
+VALUES (6, 'Higienização dos bebedouros', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Obstrução de caixa de esgoto', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Obstrução de caixa de esgoto'
-  );
+VALUES (6, 'Obstrução de caixa de esgoto', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (6, 'Outros', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Registro com defeito', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Registro com defeito'
-  );
+VALUES (6, 'Registro com defeito', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento em tubulação', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento em tubulação'
-  );
+VALUES (6, 'Vazamento em tubulação', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento em válvula de descarga', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento em válvula de descarga'
-  );
+VALUES (6, 'Vazamento em válvula de descarga', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Poda de árvore ou arbusto', 'Manutenção Corretiva Jardinagem'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'JARDINAGEM'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Poda de árvore ou arbusto'
-  );
+VALUES (7, 'Poda de árvore ou arbusto', 'Manutenção Corretiva Jardinagem');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Retirada de vegetação (ervas daninhas)', 'Manutenção Corretiva Jardinagem'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'JARDINAGEM'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Retirada de vegetação (ervas daninhas)'
-  );
+VALUES (7, 'Retirada de vegetação (ervas daninhas)', 'Manutenção Corretiva Jardinagem');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Manutenção de Alvenaria', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Manutenção de Alvenaria'
-  );
+VALUES (8, 'Manutenção de Alvenaria', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (8, 'Outros', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Reparo de pisos e revestimentos', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Reparo de pisos e revestimentos'
-  );
+VALUES (8, 'Reparo de pisos e revestimentos', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Novo Projeto ou Readequação de Área', 'Demanda personalizada'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  );
+VALUES (9, 'Novo Projeto ou Readequação de Área', 'Demanda personalizada');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Solicitação de Recursos Diversos', 'Demanda personalizada'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Solicitação de Recursos Diversos'
-  );
+VALUES (9, 'Solicitação de Recursos Diversos', 'Demanda personalizada');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Pintura de segurança/operacional/predial/metálica', 'Manutenção Preventiva Pintura de Sinalização'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Pintura de segurança/operacional/predial/metálica'
-  );
+VALUES (10, 'Pintura de segurança/operacional/predial/metálica', 'Manutenção Preventiva Pintura de Sinalização');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'TESTE Pintura', 'Manutenção Preventiva Pintura de Sinalização'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'TESTE Pintura'
-  );
+VALUES (10, 'TESTE Pintura', 'Manutenção Preventiva Pintura de Sinalização');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC ANUAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC ANUAL'
-  );
+VALUES (11, 'PMOC ANUAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC BIMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC BIMESTRAL'
-  );
+VALUES (11, 'PMOC BIMESTRAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC BIMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  );
+VALUES (11, 'PMOC BIMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC MENSAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC MENSAL'
-  );
+VALUES (11, 'PMOC MENSAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC MENSAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  );
+VALUES (11, 'PMOC MENSAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC SEMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC SEMESTRAL'
-  );
+VALUES (11, 'PMOC SEMESTRAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC SEMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  );
+VALUES (11, 'PMOC SEMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC TRIMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC TRIMESTRAL'
-  );
+VALUES (11, 'PMOC TRIMESTRAL', 'Manutenção Preventiva Refrigeração');
   
 COMMIT;
 
--- ============================================================
--- 10. SERVICE_FIELD_TYPE
--- ============================================================
 -- ================================================================
 -- SERVICE_FIELD_TYPE
 -- ================================================================
 -- ARTÍFICE > Fixação de Placas/Quadros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Referência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Fixação de Placas/Quadros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Referência'
-  );
+VALUES (1, 'Referência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- ARTÍFICE > Outros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Outros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (2, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- ARTÍFICE > Regulagem de porta
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Regulagem de porta'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (3, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Problema identificado', 'MULTI_SELECT', '["Não fecha", "Desalinhada", "outro", "Não abre bem"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Regulagem de porta'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Problema identificado'
-  );
+VALUES (3, 'Problema identificado', 'MULTI_SELECT', '["Não fecha", "Desalinhada", "outro", "Não abre bem"]'::JSONB, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo da porta', 'SINGLE_SELECT', '["Madeira", "Corta-fogo", "Vidro", "Metálica"]'::JSONB,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Regulagem de porta'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo da porta'
-  );
+VALUES (3, 'Tipo da porta', 'SINGLE_SELECT', '["Madeira", "Corta-fogo", "Vidro", "Metálica"]'::JSONB, TRUE, TRUE, 3);
 
 -- ARTÍFICE > Reparos em móveis
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Reparos em móveis'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (4, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- ARTÍFICE > Substituição de dispenser (papel higiênico, papel toalha ou sabão)
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (5, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo do dispenser', 'SINGLE_SELECT', '["Papel higiênico", "Sabão", "Papel toalha"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo do dispenser'
-  );
+VALUES (5, 'Tipo do dispenser', 'SINGLE_SELECT', '["Papel higiênico", "Sabão", "Papel toalha"]'::JSONB, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Motivo', 'SINGLE_SELECT', '["Outro", "Quebrado", "Não fixa na parede"]'::JSONB,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Motivo'
-  );
+VALUES (5, 'Motivo', 'SINGLE_SELECT', '["Outro", "Quebrado", "Não fixa na parede"]'::JSONB, TRUE, TRUE, 3);
 
 -- ARTÍFICE > Substituição de fitas de demarcação lisa/antiderrapante
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de fitas de demarcação lisa/antiderrapante'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (6, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Observações', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de fitas de demarcação lisa/antiderrapante'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Observações'
-  );
+VALUES (6, 'Observações', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- ARTÍFICE > Substituição de tampa de vaso sanitário
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de tampa de vaso sanitário'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (7, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Observações', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Substituição de tampa de vaso sanitário'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Observações'
-  );
+VALUES (7, 'Observações', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- ARTÍFICE > Troca de fechadura/miolo
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Troca de fechadura/miolo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (8, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Observações', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Troca de fechadura/miolo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Observações'
-  );
+VALUES (8, 'Observações', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Motivo da troca', 'SINGLE_SELECT', '["Outro", "Danificada", "Chave perdida"]'::JSONB,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Troca de fechadura/miolo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Motivo da troca'
-  );
+VALUES (8, 'Motivo da troca', 'SINGLE_SELECT', '["Outro", "Danificada", "Chave perdida"]'::JSONB, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Observações da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'ARTÍFICE'
-  AND ST.NAME = 'Troca de fechadura/miolo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Observações da ocorrência'
-  );
+VALUES (8, 'Observações da ocorrência', 'TEXT', NULL, TRUE, TRUE, 4);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Equipamento com avaria evidente
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento com avaria evidente'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (9, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento com avaria evidente'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quase sempre visíveis (exemplo ar-57)'
-  );
+VALUES (9, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Equipamento não liga
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento não liga'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (10, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento não liga'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quase sempre visíveis (exemplo ar-57)'
-  );
+VALUES (10, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Equipamento não refrigera/climatiza
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento não refrigera/climatiza'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (11, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Equipamento não refrigera/climatiza'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quase sempre visíveis (exemplo ar-57)'
-  );
+VALUES (11, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Instalação de equipamento
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Instalação de equipamento'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto'
-  );
+VALUES (12, 'Foto', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Instalação de equipamento'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (12, 'Técnico responsável', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Outros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Outros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (13, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Remanejamento de unidade evaporadora/condensadora
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Remanejamento de unidade evaporadora/condensadora'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (14, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Remanejamento de unidade evaporadora/condensadora'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quase sempre visíveis (exemplo ar-57)'
-  );
+VALUES (14, 'Quase sempre visíveis (exemplo ar-57)', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- CLIMATIZAÇÃO E REFRIGERAÇÃO > Vazamento de água em equipamento
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quase sempre visível (exemplo ar-57)', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Vazamento de água em equipamento'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quase sempre visível (exemplo ar-57)'
-  );
+VALUES (15, 'Quase sempre visível (exemplo ar-57)', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND ST.NAME = 'Vazamento de água em equipamento'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (15, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- COPA > Limpeza de geladeira ou micro-ondas
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Equipamento que necessita limpeza', 'MULTI_SELECT', '["Microondas", "Geladeira"]'::JSONB,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'COPA'
-  AND ST.NAME = 'Limpeza de geladeira ou micro-ondas'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Equipamento que necessita limpeza'
-  );
+VALUES (16, 'Equipamento que necessita limpeza', 'MULTI_SELECT', '["Microondas", "Geladeira"]'::JSONB, TRUE, TRUE, 1);
 
 -- Dúvida Aplicativo > Dificuldade com a reserva
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Está tendo dificuldade em fazer a reserva?', 'BOOL', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND ST.NAME = 'Dificuldade com a reserva'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Está tendo dificuldade em fazer a reserva?'
-  );
+VALUES (17, 'Está tendo dificuldade em fazer a reserva?', 'BOOL', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Descreva a situação?', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND ST.NAME = 'Dificuldade com a reserva'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Descreva a situação?'
-  );
+VALUES (17, 'Descreva a situação?', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Caso esteja aparecendo algum erro, envie o print da tela', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND ST.NAME = 'Dificuldade com a reserva'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Caso esteja aparecendo algum erro, envie o print da tela'
-  );
+VALUES (17, 'Caso esteja aparecendo algum erro, envie o print da tela', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Está conforme?', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND ST.NAME = 'Dificuldade com a reserva'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Está conforme?'
-  );
+VALUES (17, 'Está conforme?', 'TEXT', NULL, TRUE, TRUE, 4);
 
 -- INSTALAÇÕES ELÉTRICAS > Interruptor ou Tomada com defeito/quebrado
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Interruptor ou Tomada com defeito/quebrado'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (18, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tet', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Interruptor ou Tomada com defeito/quebrado'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tet'
-  );
+VALUES (18, 'Tet', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES ELÉTRICAS > Lâmpadas queimadas
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Lâmpadas queimadas'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (19, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Qual o seu problema?', 'SINGLE_SELECT', '["Lâmpada/refletor queimada", "Problema no interruptor"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Lâmpadas queimadas'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Qual o seu problema?'
-  );
+VALUES (19, 'Qual o seu problema?', 'SINGLE_SELECT', '["Lâmpada/refletor queimada", "Problema no interruptor"]'::JSONB, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES ELÉTRICAS > Outros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Outros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (21, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- INSTALAÇÕES ELÉTRICAS > Quadro elétrico desarmando
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Quadro elétrico desarmando'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (22, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- INSTALAÇÕES ELÉTRICAS > Regularização de extensões/plugs/equipamentos
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (23, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo de item', 'SINGLE_SELECT', '["Equipamento elétrico", "Plug"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo de item'
-  );
+VALUES (23, 'Tipo de item', 'SINGLE_SELECT', '["Equipamento elétrico", "Plug"]'::JSONB, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quantidade de itens', 'NUMBER', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quantidade de itens'
-  );
+VALUES (23, 'Quantidade de itens', 'NUMBER', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Risco identificado', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Risco identificado'
-  );
+VALUES (23, 'Risco identificado', 'TEXT', NULL, TRUE, TRUE, 4);
 
 -- INSTALAÇÕES ELÉTRICAS > Substituição de biruta
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Substituição de biruta'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (25, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quantidade', 'NUMBER', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Substituição de biruta'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quantidade'
-  );
+VALUES (25, 'Quantidade', 'NUMBER', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES ELÉTRICAS > Tomada com defeito/quebrada
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Motivo', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Tomada com defeito/quebrada'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Motivo'
-  );
+VALUES (26, 'Motivo', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quantidade', 'NUMBER', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Tomada com defeito/quebrada'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quantidade'
-  );
+VALUES (26, 'Quantidade', 'NUMBER', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo de tomada', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND ST.NAME = 'Tomada com defeito/quebrada'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo de tomada'
-  );
+VALUES (26, 'Tipo de tomada', 'TEXT', NULL, TRUE, TRUE, 3);
 
 -- INSTALAÇÕES HIDRÁULICAS > Ambiente sem água
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo de ponto afetado', 'SINGLE_SELECT', '["OUTRO", "VASO SANITARIO"]'::JSONB,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Ambiente sem água'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo de ponto afetado'
-  );
+VALUES (27, 'Tipo de ponto afetado', 'SINGLE_SELECT', '["OUTRO", "VASO SANITARIO"]'::JSONB, TRUE, TRUE, 1);
 
 -- INSTALAÇÕES HIDRÁULICAS > Entupimento de pia, mictório ou vaso
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Entupimento de pia, mictório ou vaso'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (28, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Ponto afetado', 'SINGLE_SELECT', '["Mictório", "Outro", "Vaso sanitário"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Entupimento de pia, mictório ou vaso'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Ponto afetado'
-  );
+VALUES (28, 'Ponto afetado', 'SINGLE_SELECT', '["Mictório", "Outro", "Vaso sanitário"]'::JSONB, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES HIDRÁULICAS > Higienização dos bebedouros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Higienização dos bebedouros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (29, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quantidade de bebedouro', 'NUMBER', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Higienização dos bebedouros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quantidade de bebedouro'
-  );
+VALUES (29, 'Quantidade de bebedouro', 'NUMBER', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES HIDRÁULICAS > Obstrução de caixa de esgoto
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Obstrução identificada', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Obstrução de caixa de esgoto'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Obstrução identificada'
-  );
+VALUES (30, 'Obstrução identificada', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Quantidade de caixas', 'NUMBER', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Obstrução de caixa de esgoto'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Quantidade de caixas'
-  );
+VALUES (30, 'Quantidade de caixas', 'NUMBER', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES HIDRÁULICAS > Outros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto da necessidade', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Outros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto da necessidade'
-  );
+VALUES (31, 'Foto da necessidade', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- INSTALAÇÕES HIDRÁULICAS > Registro com defeito
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Registro com defeito'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (32, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Problema identificado', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Registro com defeito'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Problema identificado'
-  );
+VALUES (32, 'Problema identificado', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES HIDRÁULICAS > Vazamento em tubulação
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Itensidade', 'SINGLE_SELECT', '["FLUXO CONTÍNUO", "GOTEJAMENTO"]'::JSONB,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Vazamento em tubulação'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Itensidade'
-  );
+VALUES (33, 'Itensidade', 'SINGLE_SELECT', '["FLUXO CONTÍNUO", "GOTEJAMENTO"]'::JSONB, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Vazamento em tubulação'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto'
-  );
+VALUES (33, 'Foto', 'TEXT', NULL, TRUE, TRUE, 2);
 
 -- INSTALAÇÕES HIDRÁULICAS > Vazamento em válvula de descarga
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Frequencia do vazamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND ST.NAME = 'Vazamento em válvula de descarga'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Frequencia do vazamento'
-  );
+VALUES (34, 'Frequencia do vazamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- JARDINAGEM > Poda de árvore ou arbusto
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Insira imagem', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'JARDINAGEM'
-  AND ST.NAME = 'Poda de árvore ou arbusto'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Insira imagem'
-  );
+VALUES (35, 'Insira imagem', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- JARDINAGEM > Retirada de vegetação (ervas daninhas)
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Área aproximada afetada (metros quadrados)', 'NUMBER', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'JARDINAGEM'
-  AND ST.NAME = 'Retirada de vegetação (ervas daninhas)'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Área aproximada afetada (metros quadrados)'
-  );
+VALUES (36, 'Área aproximada afetada (metros quadrados)', 'NUMBER', NULL, TRUE, TRUE, 1);
 
 -- MANUTENÇÂO CIVIL > Outros
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Foto/anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND ST.NAME = 'Outros'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Foto/anexo da ocorrência'
-  );
+VALUES (38, 'Foto/anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- MANUTENÇÂO CIVIL > Reparo de pisos e revestimentos
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Anexo da ocorrência', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND ST.NAME = 'Reparo de pisos e revestimentos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Anexo da ocorrência'
-  );
+VALUES (39, 'Anexo da ocorrência', 'TEXT', NULL, TRUE, TRUE, 1);
 
 -- NOVOS PROJETOS > Novo Projeto ou Readequação de Área
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Setor demandante', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Setor demandante'
-  );
+VALUES (40, 'Setor demandante', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Projeto ou readequação de área', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Projeto ou readequação de área'
-  );
+VALUES (40, 'Projeto ou readequação de área', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Número da pt e/ou apr', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Número da pt e/ou apr'
-  );
+VALUES (40, 'Número da pt e/ou apr', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Registros', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Registros'
-  );
+VALUES (40, 'Registros', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tempo', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tempo'
-  );
+VALUES (40, 'Tempo', 'TEXT', NULL, TRUE, TRUE, 5);
 
 -- NOVOS PROJETOS > Solicitação de Recursos Diversos
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'O que será realizado?', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'O que será realizado?'
-  );
+VALUES (41, 'O que será realizado?', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Onde será realizado?', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Onde será realizado?'
-  );
+VALUES (41, 'Onde será realizado?', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Há necessidade de artificies ?', 'BOOL', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Há necessidade de artificies ?'
-  );
+VALUES (41, 'Há necessidade de artificies ?', 'BOOL', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'qual o nível urgência?', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'qual o nível urgência?'
-  );
+VALUES (41, 'qual o nível urgência?', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Envolve instalações/modificações elétricas ?', 'BOOL', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Envolve instalações/modificações elétricas ?'
-  );
+VALUES (41, 'Envolve instalações/modificações elétricas ?', 'BOOL', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Envolve instalações/modificações hidráulicas ?', 'BOOL', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Envolve instalações/modificações hidráulicas ?'
-  );
+VALUES (41, 'Envolve instalações/modificações hidráulicas ?', 'BOOL', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Envolve instalações/modificações de refirgeração ?', 'BOOL', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Envolve instalações/modificações de refirgeração ?'
-  );
+VALUES (41, 'Envolve instalações/modificações de refirgeração ?', 'BOOL', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Há necessidade de materiais de pintura ?', 'BOOL', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Há necessidade de materiais de pintura ?'
-  );
+VALUES (41, 'Há necessidade de materiais de pintura ?', 'BOOL', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Se houver documentos do projeto anexar', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND ST.NAME = 'Solicitação de Recursos Diversos'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Se houver documentos do projeto anexar'
-  );
+VALUES (41, 'Se houver documentos do projeto anexar', 'TEXT', NULL, TRUE, TRUE, 9);
 
 -- PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA > Pintura de segurança/operacional/predial/metálica
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Observações', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND ST.NAME = 'Pintura de segurança/operacional/predial/metálica'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Observações'
-  );
+VALUES (42, 'Observações', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Pintura', 'SINGLE_SELECT', '["Outros", "Faixa de pedestre"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND ST.NAME = 'Pintura de segurança/operacional/predial/metálica'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Pintura'
-  );
+VALUES (42, 'Pintura', 'SINGLE_SELECT', '["Outros", "Faixa de pedestre"]'::JSONB, TRUE, TRUE, 2);
 
 -- PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA > TESTE Pintura
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Possui pt vinculada', 'BOOL', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND ST.NAME = 'TESTE Pintura'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Possui pt vinculada'
-  );
+VALUES (43, 'Possui pt vinculada', 'BOOL', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tipo de pintura', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND ST.NAME = 'TESTE Pintura'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tipo de pintura'
-  );
+VALUES (43, 'Tipo de pintura', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Data de finalização', 'DATE', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND ST.NAME = 'TESTE Pintura'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Data de finalização'
-  );
+VALUES (43, 'Data de finalização', 'DATE', NULL, TRUE, TRUE, 3);
 
 -- PMOC > PMOC ANUAL
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (44, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas'
-  );
+VALUES (44, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno'
-  );
+VALUES (44, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos'
-  );
+VALUES (44, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpar os ventiladores (carcaça e rotor)'
-  );
+VALUES (44, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; '
-  );
+VALUES (44, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar presença de ruídos e/ou vibrações anormais'
-  );
+VALUES (44, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a vedação dos painéis de fechamento do gabinete'
-  );
+VALUES (44, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)'
-  );
+VALUES (44, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL, TRUE, TRUE, 9);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL,
-       TRUE, TRUE, 10
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar o estado de conservação do isolamento térmico'
-  );
+VALUES (44, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL, TRUE, TRUE, 10);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de existência de vazamentos', 'TEXT', NULL,
-       TRUE, TRUE, 11
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de existência de vazamentos'
-  );
+VALUES (44, 'Verificação de existência de vazamentos', 'TEXT', NULL, TRUE, TRUE, 11);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Hidrojateamento geral do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 12
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Hidrojateamento geral do equipamento'
-  );
+VALUES (44, 'Hidrojateamento geral do equipamento', 'TEXT', NULL, TRUE, TRUE, 12);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 13
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (44, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 13);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leituras de tensão', 'TEXT', NULL,
-       TRUE, TRUE, 14
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leituras de tensão'
-  );
+VALUES (44, 'Leituras de tensão', 'TEXT', NULL, TRUE, TRUE, 14);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leitura de corrente', 'TEXT', NULL,
-       TRUE, TRUE, 15
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leitura de corrente'
-  );
+VALUES (44, 'Leitura de corrente', 'TEXT', NULL, TRUE, TRUE, 15);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leitura de pressão', 'TEXT', NULL,
-       TRUE, TRUE, 16
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leitura de pressão'
-  );
+VALUES (44, 'Leitura de pressão', 'TEXT', NULL, TRUE, TRUE, 16);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de terminais', 'TEXT', NULL,
-       TRUE, TRUE, 17
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de terminais'
-  );
+VALUES (44, 'Verificação de terminais', 'TEXT', NULL, TRUE, TRUE, 17);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de fiação e contatos', 'TEXT', NULL,
-       TRUE, TRUE, 18
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de fiação e contatos'
-  );
+VALUES (44, 'Verificação de fiação e contatos', 'TEXT', NULL, TRUE, TRUE, 18);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Reaperto de conexões', 'TEXT', NULL,
-       TRUE, TRUE, 19
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Reaperto de conexões'
-  );
+VALUES (44, 'Reaperto de conexões', 'TEXT', NULL, TRUE, TRUE, 19);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de diferencial', 'TEXT', NULL,
-       TRUE, TRUE, 20
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC ANUAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de diferencial'
-  );
+VALUES (44, 'Medição de diferencial', 'TEXT', NULL, TRUE, TRUE, 20);
 
 -- PMOC > PMOC BIMESTRAL
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (45, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas'
-  );
+VALUES (45, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)'
-  );
+VALUES (45, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (45, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de diferencial', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de diferencial'
-  );
+VALUES (45, 'Medição de diferencial', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação da operação de drenagem de água da bandeja e limpeza do dreno', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação da operação de drenagem de água da bandeja e limpeza do dreno'
-  );
+VALUES (45, 'Verificação da operação de drenagem de água da bandeja e limpeza do dreno', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lavagem do gabinete, das bandejas e das serpentinas, sem o uso de produtos desengraxantes e corrosiv', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lavagem do gabinete, das bandejas e das serpentinas, sem o uso de produtos desengraxantes e corrosiv'
-  );
+VALUES (45, 'Lavagem do gabinete, das bandejas e das serpentinas, sem o uso de produtos desengraxantes e corrosiv', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpeza dos ventiladores (carcaça e rotor)', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpeza dos ventiladores (carcaça e rotor)'
-  );
+VALUES (45, 'Limpeza dos ventiladores (carcaça e rotor)', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Filtro verificação e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Filtro verificação e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas'
-  );
+VALUES (45, 'Filtro verificação e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas', 'TEXT', NULL, TRUE, TRUE, 9);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação da presença de ruídos e/ou vibrações anormais', 'TEXT', NULL,
-       TRUE, TRUE, 10
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação da presença de ruídos e/ou vibrações anormais'
-  );
+VALUES (45, 'Verificação da presença de ruídos e/ou vibrações anormais', 'TEXT', NULL, TRUE, TRUE, 10);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação da vedação dos painéis de fechamento do gabinete', 'TEXT', NULL,
-       TRUE, TRUE, 11
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação da vedação dos painéis de fechamento do gabinete'
-  );
+VALUES (45, 'Verificação da vedação dos painéis de fechamento do gabinete', 'TEXT', NULL, TRUE, TRUE, 11);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação do estado de conservação do isolamento térmico', 'TEXT', NULL,
-       TRUE, TRUE, 12
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação do estado de conservação do isolamento térmico'
-  );
+VALUES (45, 'Verificação do estado de conservação do isolamento térmico', 'TEXT', NULL, TRUE, TRUE, 12);
 
 -- PMOC > PMOC BIMESTRAL Cortina de ar
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (46, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (46, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza da carenagem', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza da carenagem'
-  );
+VALUES (46, 'Verificação e limpeza da carenagem', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza da turbina', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza da turbina'
-  );
+VALUES (46, 'Verificação e limpeza da turbina', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza dos defletores', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza dos defletores'
-  );
+VALUES (46, 'Verificação e limpeza dos defletores', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza do direcionamento de ar', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza do direcionamento de ar'
-  );
+VALUES (46, 'Verificação e limpeza do direcionamento de ar', 'TEXT', NULL, TRUE, TRUE, 6);
 
 -- PMOC > PMOC MENSAL
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (47, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas'
-  );
+VALUES (47, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno'
-  );
+VALUES (47, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos'
-  );
+VALUES (47, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpar os ventiladores (carcaça e rotor)'
-  );
+VALUES (47, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; '
-  );
+VALUES (47, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar presença de ruídos e/ou vibrações anormais'
-  );
+VALUES (47, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a vedação dos painéis de fechamento do gabinete'
-  );
+VALUES (47, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)'
-  );
+VALUES (47, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL, TRUE, TRUE, 9);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL,
-       TRUE, TRUE, 10
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar o estado de conservação do isolamento térmico'
-  );
+VALUES (47, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL, TRUE, TRUE, 10);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição do diferencial', 'TEXT', NULL,
-       TRUE, TRUE, 11
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição do diferencial'
-  );
+VALUES (47, 'Medição do diferencial', 'TEXT', NULL, TRUE, TRUE, 11);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 12
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (47, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 12);
 
 -- PMOC > PMOC MENSAL Cortina de ar
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (48, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (48, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza da carenagem', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza da carenagem'
-  );
+VALUES (48, 'Verificação e limpeza da carenagem', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza da turbina', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza da turbina'
-  );
+VALUES (48, 'Verificação e limpeza da turbina', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza dos defletores', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza dos defletores'
-  );
+VALUES (48, 'Verificação e limpeza dos defletores', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação e limpeza do direcionamento de ar', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação e limpeza do direcionamento de ar'
-  );
+VALUES (48, 'Verificação e limpeza do direcionamento de ar', 'TEXT', NULL, TRUE, TRUE, 6);
 
 -- PMOC > PMOC SEMESTRAL
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (49, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas'
-  );
+VALUES (49, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno'
-  );
+VALUES (49, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos'
-  );
+VALUES (49, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpar os ventiladores (carcaça e rotor)'
-  );
+VALUES (49, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; '
-  );
+VALUES (49, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar presença de ruídos e/ou vibrações anormais'
-  );
+VALUES (49, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a vedação dos painéis de fechamento do gabinete'
-  );
+VALUES (49, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)'
-  );
+VALUES (49, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL, TRUE, TRUE, 9);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL,
-       TRUE, TRUE, 10
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar o estado de conservação do isolamento térmico'
-  );
+VALUES (49, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL, TRUE, TRUE, 10);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de existência de vazamentos', 'TEXT', NULL,
-       TRUE, TRUE, 11
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de existência de vazamentos'
-  );
+VALUES (49, 'Verificação de existência de vazamentos', 'TEXT', NULL, TRUE, TRUE, 11);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB,
-       TRUE, TRUE, 12
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Técnico responsável'
-  );
+VALUES (49, 'Técnico responsável', 'SINGLE_SELECT', '["Rodrigo Silveira", "Bruno Silveira"]'::JSONB, TRUE, TRUE, 12);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leituras de tensão', 'TEXT', NULL,
-       TRUE, TRUE, 13
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leituras de tensão'
-  );
+VALUES (49, 'Leituras de tensão', 'TEXT', NULL, TRUE, TRUE, 13);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leitura de corrente', 'TEXT', NULL,
-       TRUE, TRUE, 14
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leitura de corrente'
-  );
+VALUES (49, 'Leitura de corrente', 'TEXT', NULL, TRUE, TRUE, 14);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Leitura de pressão', 'TEXT', NULL,
-       TRUE, TRUE, 15
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Leitura de pressão'
-  );
+VALUES (49, 'Leitura de pressão', 'TEXT', NULL, TRUE, TRUE, 15);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de terminais', 'TEXT', NULL,
-       TRUE, TRUE, 16
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de terminais'
-  );
+VALUES (49, 'Verificação de terminais', 'TEXT', NULL, TRUE, TRUE, 16);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de fiação e contatos', 'TEXT', NULL,
-       TRUE, TRUE, 17
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de fiação e contatos'
-  );
+VALUES (49, 'Verificação de fiação e contatos', 'TEXT', NULL, TRUE, TRUE, 17);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Reaperto de conexões', 'TEXT', NULL,
-       TRUE, TRUE, 18
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Reaperto de conexões'
-  );
+VALUES (49, 'Reaperto de conexões', 'TEXT', NULL, TRUE, TRUE, 18);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de diferencial', 'TEXT', NULL,
-       TRUE, TRUE, 19
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de diferencial'
-  );
+VALUES (49, 'Medição de diferencial', 'TEXT', NULL, TRUE, TRUE, 19);
 
 -- PMOC > PMOC SEMESTRAL Cortina de ar
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (50, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpeza dos componentes elétricos', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpeza dos componentes elétricos'
-  );
+VALUES (50, 'Limpeza dos componentes elétricos', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar conexões eletricas', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar conexões eletricas'
-  );
+VALUES (50, 'Verificar conexões eletricas', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lubrificação do eixo e do sistema de fixação da turbina', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lubrificação do eixo e do sistema de fixação da turbina'
-  );
+VALUES (50, 'Lubrificação do eixo e do sistema de fixação da turbina', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpeza de carenagem', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpeza de carenagem'
-  );
+VALUES (50, 'Limpeza de carenagem', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpeza de turbina', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpeza de turbina'
-  );
+VALUES (50, 'Limpeza de turbina', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpeza do direcionamento de ar', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpeza do direcionamento de ar'
-  );
+VALUES (50, 'Limpeza do direcionamento de ar', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de corrente', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de corrente'
-  );
+VALUES (50, 'Medição de corrente', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de tensão', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de tensão'
-  );
+VALUES (50, 'Medição de tensão', 'TEXT', NULL, TRUE, TRUE, 9);
 
 -- PMOC > PMOC TRIMESTRAL
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Tag do equipamento', 'TEXT', NULL,
-       TRUE, TRUE, 1
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Tag do equipamento'
-  );
+VALUES (51, 'Tag do equipamento', 'TEXT', NULL, TRUE, TRUE, 1);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL,
-       TRUE, TRUE, 2
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas'
-  );
+VALUES (51, 'Verificar e eliminar danos e/ou corrosão no gabinete, na bandeja e nas serpentinas', 'TEXT', NULL, TRUE, TRUE, 2);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL,
-       TRUE, TRUE, 3
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno'
-  );
+VALUES (51, 'Verificar a operação de drenagem de água da bandeja e realizar limpeza do dreno', 'TEXT', NULL, TRUE, TRUE, 3);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL,
-       TRUE, TRUE, 4
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos'
-  );
+VALUES (51, 'Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos', 'TEXT', NULL, TRUE, TRUE, 4);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL,
-       TRUE, TRUE, 5
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Limpar os ventiladores (carcaça e rotor)'
-  );
+VALUES (51, 'Limpar os ventiladores (carcaça e rotor)', 'TEXT', NULL, TRUE, TRUE, 5);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL,
-       TRUE, TRUE, 6
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; '
-  );
+VALUES (51, 'Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; ', 'TEXT', NULL, TRUE, TRUE, 6);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL,
-       TRUE, TRUE, 7
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar presença de ruídos e/ou vibrações anormais'
-  );
+VALUES (51, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', NULL, TRUE, TRUE, 7);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL,
-       TRUE, TRUE, 8
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar a vedação dos painéis de fechamento do gabinete'
-  );
+VALUES (51, 'Verificar a vedação dos painéis de fechamento do gabinete', 'TEXT', NULL, TRUE, TRUE, 8);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL,
-       TRUE, TRUE, 9
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)'
-  );
+VALUES (51, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', NULL, TRUE, TRUE, 9);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL,
-       TRUE, TRUE, 10
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Verificar o estado de conservação do isolamento térmico'
-  );
+VALUES (51, 'Verificar o estado de conservação do isolamento térmico', 'TEXT', NULL, TRUE, TRUE, 10);
 
 INSERT INTO SERVICE_FIELD_TYPE
     (ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
-SELECT ST.ID, 'Medição de diferencial', 'TEXT', NULL,
-       TRUE, TRUE, 11
-FROM SERVICE_TYPE ST
-JOIN SERVICE_CATEGORY SC
-  ON SC.ID = ST.ID_SERVICE_CATEGORY
-WHERE SC.NAME = 'PMOC'
-  AND ST.NAME = 'PMOC TRIMESTRAL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_FIELD_TYPE SFT
-      WHERE SFT.ID_SERVICE_TYPE = ST.ID
-        AND SFT.NAME = 'Medição de diferencial'
-  );
+VALUES (51, 'Medição de diferencial', 'TEXT', NULL, TRUE, TRUE, 11);
 
 COMMIT;
 
--- ============================================================
--- 11. ASSOC_MEMBERSHIP_SECTOR
--- ============================================================
--- Nao ha dados de carga para esta tabela nos scripts existentes.
-
--- ============================================================
--- 12. REGION
--- ============================================================
--- ================================== REGION ================================== --
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 1, 'Prédio Administrativo');
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 1, 'Almoxarifado');
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 1, 'Armazém');
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 1, 'Manutenção');
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 1, 'Pàtio Operacional');
-INSERT INTO REGION ( ID_BUSINESS, NAME) VALUES ( 2, 'Prédio Administrativo');
-
--- ============================================================
--- 13. LOCATION
--- ============================================================
 -- =========================
 -- LOCATION
 -- Registros agrupados por ID_REGION; IDs originais preservados.

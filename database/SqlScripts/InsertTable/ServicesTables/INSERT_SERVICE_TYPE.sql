@@ -3,563 +3,206 @@
 -- ================================================================
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Fixação de Placas/Quadros', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Fixação de Placas/Quadros'
-  );
+VALUES (1, 'Fixação de Placas/Quadros', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (1, 'Outros', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Regulagem de porta', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Regulagem de porta'
-  );
+VALUES (1, 'Regulagem de porta', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Reparos em móveis', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Reparos em móveis'
-  );
+VALUES (1, 'Reparos em móveis', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)'
-  );
+VALUES (1, 'Substituição de dispenser (papel higiênico, papel toalha ou sabão)', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de fitas de demarcação lisa/antiderrapante', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de fitas de demarcação lisa/antiderrapante'
-  );
+VALUES (1, 'Substituição de fitas de demarcação lisa/antiderrapante', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de tampa de vaso sanitário', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de tampa de vaso sanitário'
-  );
+VALUES (1, 'Substituição de tampa de vaso sanitário', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Troca de fechadura/miolo', 'Manutenção Corretiva Artífice'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'ARTÍFICE'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Troca de fechadura/miolo'
-  );
+VALUES (1, 'Troca de fechadura/miolo', 'Manutenção Corretiva Artífice');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento com avaria evidente', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento com avaria evidente'
-  );
+VALUES (2, 'Equipamento com avaria evidente', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento não liga', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento não liga'
-  );
+VALUES (2, 'Equipamento não liga', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Equipamento não refrigera/climatiza', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Equipamento não refrigera/climatiza'
-  );
+VALUES (2, 'Equipamento não refrigera/climatiza', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Instalação de equipamento', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Instalação de equipamento'
-  );
+VALUES (2, 'Instalação de equipamento', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (2, 'Outros', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Remanejamento de unidade evaporadora/condensadora', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Remanejamento de unidade evaporadora/condensadora'
-  );
+VALUES (2, 'Remanejamento de unidade evaporadora/condensadora', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento de água em equipamento', 'Manutenção Corretiva Climatização e Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'CLIMATIZAÇÃO E REFRIGERAÇÃO'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento de água em equipamento'
-  );
+VALUES (2, 'Vazamento de água em equipamento', 'Manutenção Corretiva Climatização e Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Limpeza de geladeira ou micro-ondas', 'SERVIÇOS'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'COPA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Limpeza de geladeira ou micro-ondas'
-  );
+VALUES (3, 'Limpeza de geladeira ou micro-ondas', 'SERVIÇOS');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Dificuldade com a reserva', 'Aplicativo'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'Dúvida Aplicativo'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Dificuldade com a reserva'
-  );
+VALUES (4, 'Dificuldade com a reserva', 'Aplicativo');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Interruptor ou Tomada com defeito/quebrado', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Interruptor ou Tomada com defeito/quebrado'
-  );
+VALUES (5, 'Interruptor ou Tomada com defeito/quebrado', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Lâmpadas queimadas', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Lâmpadas queimadas'
-  );
+VALUES (5, 'Lâmpadas queimadas', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Montagem de infraestrutura elétrica', 'Nova Obra'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Montagem de infraestrutura elétrica'
-  );
+VALUES (5, 'Montagem de infraestrutura elétrica', 'Nova Obra');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (5, 'Outros', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Quadro elétrico desarmando', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Quadro elétrico desarmando'
-  );
+VALUES (5, 'Quadro elétrico desarmando', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Regularização de extensões/plugs/equipamentos', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Regularização de extensões/plugs/equipamentos'
-  );
+VALUES (5, 'Regularização de extensões/plugs/equipamentos', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Remoção ou Instalação de ponto de tomada', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Remoção ou Instalação de ponto de tomada'
-  );
+VALUES (5, 'Remoção ou Instalação de ponto de tomada', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Substituição de biruta', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Substituição de biruta'
-  );
+VALUES (5, 'Substituição de biruta', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Tomada com defeito/quebrada', 'Manutenção Corretiva Elétrica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES ELÉTRICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Tomada com defeito/quebrada'
-  );
+VALUES (5, 'Tomada com defeito/quebrada', 'Manutenção Corretiva Elétrica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Ambiente sem água', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Ambiente sem água'
-  );
+VALUES (6, 'Ambiente sem água', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Entupimento de pia, mictório ou vaso', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Entupimento de pia, mictório ou vaso'
-  );
+VALUES (6, 'Entupimento de pia, mictório ou vaso', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Higienização dos bebedouros', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Higienização dos bebedouros'
-  );
+VALUES (6, 'Higienização dos bebedouros', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Obstrução de caixa de esgoto', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Obstrução de caixa de esgoto'
-  );
+VALUES (6, 'Obstrução de caixa de esgoto', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (6, 'Outros', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Registro com defeito', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Registro com defeito'
-  );
+VALUES (6, 'Registro com defeito', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento em tubulação', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento em tubulação'
-  );
+VALUES (6, 'Vazamento em tubulação', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Vazamento em válvula de descarga', 'Manutenção Corretiva Hidráulica'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'INSTALAÇÕES HIDRÁULICAS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Vazamento em válvula de descarga'
-  );
+VALUES (6, 'Vazamento em válvula de descarga', 'Manutenção Corretiva Hidráulica');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Poda de árvore ou arbusto', 'Manutenção Corretiva Jardinagem'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'JARDINAGEM'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Poda de árvore ou arbusto'
-  );
+VALUES (7, 'Poda de árvore ou arbusto', 'Manutenção Corretiva Jardinagem');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Retirada de vegetação (ervas daninhas)', 'Manutenção Corretiva Jardinagem'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'JARDINAGEM'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Retirada de vegetação (ervas daninhas)'
-  );
+VALUES (7, 'Retirada de vegetação (ervas daninhas)', 'Manutenção Corretiva Jardinagem');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Manutenção de Alvenaria', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Manutenção de Alvenaria'
-  );
+VALUES (8, 'Manutenção de Alvenaria', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Outros', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Outros'
-  );
+VALUES (8, 'Outros', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Reparo de pisos e revestimentos', 'Manutenção Civil corretiva'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'MANUTENÇÂO CIVIL'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Reparo de pisos e revestimentos'
-  );
+VALUES (8, 'Reparo de pisos e revestimentos', 'Manutenção Civil corretiva');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Novo Projeto ou Readequação de Área', 'Demanda personalizada'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Novo Projeto ou Readequação de Área'
-  );
+VALUES (9, 'Novo Projeto ou Readequação de Área', 'Demanda personalizada');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Solicitação de Recursos Diversos', 'Demanda personalizada'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'NOVOS PROJETOS'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Solicitação de Recursos Diversos'
-  );
+VALUES (9, 'Solicitação de Recursos Diversos', 'Demanda personalizada');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'Pintura de segurança/operacional/predial/metálica', 'Manutenção Preventiva Pintura de Sinalização'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'Pintura de segurança/operacional/predial/metálica'
-  );
+VALUES (10, 'Pintura de segurança/operacional/predial/metálica', 'Manutenção Preventiva Pintura de Sinalização');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'TESTE Pintura', 'Manutenção Preventiva Pintura de Sinalização'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'TESTE Pintura'
-  );
+VALUES (10, 'TESTE Pintura', 'Manutenção Preventiva Pintura de Sinalização');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC ANUAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC ANUAL'
-  );
+VALUES (11, 'PMOC ANUAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC BIMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC BIMESTRAL'
-  );
+VALUES (11, 'PMOC BIMESTRAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC BIMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC BIMESTRAL Cortina de ar'
-  );
+VALUES (11, 'PMOC BIMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC MENSAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC MENSAL'
-  );
+VALUES (11, 'PMOC MENSAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC MENSAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC MENSAL Cortina de ar'
-  );
+VALUES (11, 'PMOC MENSAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC SEMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC SEMESTRAL'
-  );
+VALUES (11, 'PMOC SEMESTRAL', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC SEMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC SEMESTRAL Cortina de ar'
-  );
+VALUES (11, 'PMOC SEMESTRAL Cortina de ar', 'Manutenção Preventiva Refrigeração');
 
 INSERT INTO SERVICE_TYPE
     (ID_SERVICE_CATEGORY, NAME, DESCRIPTION)
-SELECT SC.ID, 'PMOC TRIMESTRAL', 'Manutenção Preventiva Refrigeração'
-FROM SERVICE_CATEGORY SC
-WHERE SC.NAME = 'PMOC'
-  AND NOT EXISTS (
-      SELECT 1 FROM SERVICE_TYPE ST
-      WHERE ST.ID_SERVICE_CATEGORY = SC.ID
-        AND ST.NAME = 'PMOC TRIMESTRAL'
-  );
+VALUES (11, 'PMOC TRIMESTRAL', 'Manutenção Preventiva Refrigeração');
   
 COMMIT;
