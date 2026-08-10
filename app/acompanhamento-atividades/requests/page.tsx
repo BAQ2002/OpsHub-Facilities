@@ -1,11 +1,19 @@
 import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
 import { TrackingTabs } from "../_components/TrackingTabs";
 import { RequestBoard } from "./_components/RequestBoard";
+import { findMembershipOptions } from "@/src/server/repositories/postgres/request-task-postgres-repository";
 
 export const dynamic = "force-dynamic";
 
 export default async function RequestsPage() {
-  const { columns } = await getRequestBoardPageData();
+  const [{ columns }, executors] = await Promise.all([
+    getRequestBoardPageData(),
+    process.env.DATA_SOURCE === "postgres" ? findMembershipOptions() : Promise.resolve([
+      { id: 1, name: "Ademilson Alves Dos Santos" },
+      { id: 2, name: "Alan Cunha" },
+      { id: 3, name: "Alexandro Vieira Dos Santos" },
+    ]),
+  ]);
 
   return (
     <section className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
@@ -42,7 +50,7 @@ export default async function RequestsPage() {
         </div>
 
         {columns.length > 0 ? (
-          <RequestBoard columns={columns} />
+          <RequestBoard columns={columns} executors={executors} />
         ) : (
           <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">
             Nenhum status de request cadastrado.
