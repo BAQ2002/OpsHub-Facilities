@@ -6636,7 +6636,7 @@ VALUES
 -- Nao ha dados de carga para esta tabela nos scripts existentes.
 
 -- ============================================================
--- 19. REQUEST_TASK_MIDIA
+-- 19. REQUEST_TASK_MEDIA
 -- ============================================================
 -- Nao ha dados de carga para esta tabela nos scripts existentes.
 
