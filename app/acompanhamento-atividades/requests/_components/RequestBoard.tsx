@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { addVisitAction, type AddVisitState } from "../actions";
 
 import type {
   RequestBoardCardViewModel,
   RequestBoardColumnViewModel,
 } from "@/src/presentation/view-models/request-board-view-model";
 
-export function RequestBoard({ columns }: { columns: RequestBoardColumnViewModel[] }) {
+type Executor = { id: number; name: string };
+
+export function RequestBoard({ columns, executors }: { columns: RequestBoardColumnViewModel[]; executors: Executor[] }) {
   const [selectedRequest, setSelectedRequest] = useState<RequestBoardCardViewModel | null>(null);
 
   return (
@@ -18,7 +21,7 @@ export function RequestBoard({ columns }: { columns: RequestBoardColumnViewModel
         ))}
       </section>
       {selectedRequest ? (
-        <RequestDetailsModal request={selectedRequest} onClose={() => setSelectedRequest(null)} />
+        <RequestDetailsModal request={selectedRequest} executors={executors} onClose={() => setSelectedRequest(null)} />
       ) : null}
     </>
   );
@@ -64,8 +67,9 @@ function RequestColumn({
   );
 }
 
-function RequestDetailsModal({ request, onClose }: { request: RequestBoardCardViewModel; onClose: () => void }) {
+function RequestDetailsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [showVisit, setShowVisit] = useState(false);
   const detailsById = new Map(request.details.map((detail) => [detail.id, detail]));
   const businessDetail = detailsById.get("business");
   const regionDetail = detailsById.get("region");
@@ -181,11 +185,68 @@ function RequestDetailsModal({ request, onClose }: { request: RequestBoardCardVi
               </div>
             </section>
           ) : null}
+          <div className="flex justify-end border-t border-slate-200 pt-5">
+            <button className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300" type="button" onClick={() => setShowVisit(true)}>
+              Adicionar visita
+            </button>
+          </div>
         </div>
+      </section>
+      {showVisit ? <AddVisitModal requestId={request.id} executors={executors} onClose={() => setShowVisit(false)} /> : null}
+    </div>
+  );
+}
+
+const initialVisitState: AddVisitState = { status: "idle", message: "" };
+
+function AddVisitModal({ requestId, executors, onClose }: { requestId: number; executors: Executor[]; onClose: () => void }) {
+  const action = addVisitAction.bind(null, requestId);
+  const [state, formAction, pending] = useActionState(action, initialVisitState);
+  const [photoNames, setPhotoNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (state.status === "success") {
+      const timer = window.setTimeout(onClose, 900);
+      return () => window.clearTimeout(timer);
+    }
+  }, [state.status, onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/65 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+      <section className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
+        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
+          <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
+        </header>
+        <form action={formAction} className="space-y-6 p-6">
+          <fieldset>
+            <legend className="mb-2 text-sm font-semibold text-slate-700">Executantes <span className="text-red-500">*</span></legend>
+            <div className="grid max-h-36 gap-2 overflow-y-auto rounded-xl border border-slate-200 p-3 sm:grid-cols-2">
+              {executors.map((executor) => <label className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-blue-50" key={executor.id}><input className="h-4 w-4 accent-blue-600" type="checkbox" name="member_ids" value={executor.id} />{executor.name}</label>)}
+            </div>
+          </fieldset>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
+            <VisitField label="Data e hora do fim"><input className={inputClass} name="stop_datetime" type="datetime-local" required /></VisitField>
+          </div>
+          <VisitField label="Descrição"><textarea className={`${inputClass} min-h-28 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
+          <VisitField label="Registros fotográficos">
+            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/50 px-4 py-6 text-center text-sm text-blue-700 hover:bg-blue-50">
+              <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos</strong><span className="mt-1 text-xs text-slate-500">Imagens de até 10 MB cada</span>
+              <input className="sr-only" name="photos" type="file" accept="image/*" multiple required onChange={(event) => setPhotoNames(Array.from(event.target.files ?? [], (file) => file.name))} />
+            </label>
+            {photoNames.length ? <ul className="mt-2 text-xs text-slate-500">{photoNames.map((name) => <li className="truncate" key={name}>• {name}</li>)}</ul> : null}
+          </VisitField>
+          {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
+          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
+        </form>
       </section>
     </div>
   );
 }
+
+const inputClass = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+function VisitField({ label, children }: { label: string; children: React.ReactNode }) { return <label className="block text-sm font-semibold text-slate-700">{label} <span className="text-red-500">*</span>{children}</label>; }
 
 const STANDARD_REQUEST_DETAIL_IDS = new Set([
   "business",
