@@ -12,6 +12,12 @@ export type RequestBoardCardViewModel = {
     fileSize?: number;
     url: string;
   }[];
+  visits: {
+    id: number;
+    startDate: string;
+    endDate: string;
+    description: string;
+  }[];
 };
 
 export type RequestBoardColumnViewModel = {
