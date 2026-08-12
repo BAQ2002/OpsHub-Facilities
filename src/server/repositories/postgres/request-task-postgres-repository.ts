@@ -30,7 +30,8 @@ export async function insertRequestTaskVisit(input: VisitInput) {
     input.photos.map(async (photo) => ({
       content: Buffer.from(await photo.arrayBuffer()),
       fileName: photo.name,
-      fileSize: photo.size.toString(),
+      mimeType: photo.type,
+      fileSize: photo.size,
     })),
   );
   const pool = await getPostgresPool();
@@ -65,9 +66,9 @@ export async function insertRequestTaskVisit(input: VisitInput) {
     }
     for (const photo of photoBuffers) {
       await client.query(
-        `INSERT INTO request_task_media (id_request_task, content, file_name, file_size)
-         VALUES ($1, $2, $3, $4)`,
-        [taskId, photo.content, photo.fileName, photo.fileSize],
+        `INSERT INTO request_task_media (id_request_task, content, file_name, mime_type, file_size)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [taskId, photo.content, photo.fileName, photo.mimeType, photo.fileSize],
       );
     }
     await client.query("COMMIT");
