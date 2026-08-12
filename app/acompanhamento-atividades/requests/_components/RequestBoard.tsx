@@ -35,7 +35,7 @@ function RequestColumn({
   onOpen: (request: RequestBoardCardViewModel) => void;
 }) {
   return (
-    <section className="w-[280px] shrink-0 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
+    <section className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
       <header className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
         <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
         <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
