@@ -55,7 +55,7 @@ export default async function ActivityTrackingPage({ searchParams }: { searchPar
           <div className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
             <FilterField label="Data inicial" name="startDate" value={startDate} />
             <FilterField label="Data final" name="endDate" value={endDate} min={startDate} />
-            <SelectField label="Business" name="businessId" value={businessId} placeholder="Todos os businesses" options={filterOptions.businesses} />
+            <SelectField label="Business" name="businessId" value={businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} />
             <SelectField label="Service category" name="serviceCategoryId" value={serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} />
 
             <button
