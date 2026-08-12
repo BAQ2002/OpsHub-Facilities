@@ -15,6 +15,7 @@ export function mapRequestBoardDataToViewModel(data: RequestBoardData): RequestB
           locationName: request.locationName,
           details: request.details,
           media: request.media,
+          visits: request.visits,
         })),
     })),
   };

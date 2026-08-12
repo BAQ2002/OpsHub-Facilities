@@ -6,7 +6,7 @@ from sqlalchemy import case, select
 from sqlalchemy.orm import Session, load_only, selectinload
 
 from .database import get_session
-from .models import Business, Location, Membership, Region, Request, RequestStatus, RequestType, ServiceCategory, ServiceType
+from .models import Business, Location, Membership, Region, Request, RequestStatus, RequestTask, RequestType, ServiceCategory, ServiceType
 
 app = FastAPI(title="OpsHub Facilities API")
 
@@ -20,6 +20,7 @@ ENTITIES = {
     "regions": Region,
     "locations": Location,
     "memberships": Membership,
+    "request-tasks": RequestTask,
 }
 
 

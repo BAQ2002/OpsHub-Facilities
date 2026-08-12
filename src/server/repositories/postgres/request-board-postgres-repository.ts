@@ -36,9 +36,17 @@ type RequestStatusRow = {
   description: string | null;
 };
 
+type VisitRow = {
+  id: string | number;
+  request_id: string | number;
+  start_datetime: Date | string | null;
+  stop_datetime: Date | string | null;
+  description: string | null;
+};
+
 export async function findRequestBoardData(): Promise<RequestBoardData> {
   const pool = await getPostgresPool();
-  const [statusResult, requestResult, fieldResult, mediaResult] = await Promise.all([
+  const [statusResult, requestResult, fieldResult, mediaResult, visitResult] = await Promise.all([
     pool.query<RequestStatusRow>(
       `SELECT id, description
          FROM request_status
@@ -85,15 +93,26 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
          INNER JOIN service_field_type field ON field.id = media.id_service_field_type
         ORDER BY media.id_request, field.display_order NULLS LAST, media.id`,
     ),
+    pool.query<VisitRow>(
+      `SELECT id, id_request AS request_id, start_datetime, stop_datetime, description
+         FROM request_task
+        ORDER BY id_request, start_datetime DESC NULLS LAST, id DESC`,
+    ),
   ]);
 
   const fieldValuesByRequest = groupByRequest(fieldResult.rows);
   const mediaByRequest = groupByRequest(mediaResult.rows);
+  const visitsByRequest = groupByRequest(visitResult.rows);
 
   return {
     statuses: statusResult.rows.map(mapStatus),
     requests: requestResult.rows.map((row) =>
-      mapRequest(row, fieldValuesByRequest.get(Number(row.id)) ?? [], mediaByRequest.get(Number(row.id)) ?? []),
+      mapRequest(
+        row,
+        fieldValuesByRequest.get(Number(row.id)) ?? [],
+        mediaByRequest.get(Number(row.id)) ?? [],
+        visitsByRequest.get(Number(row.id)) ?? [],
+      ),
     ),
   };
 }
@@ -105,7 +124,7 @@ function mapStatus(row: RequestStatusRow): RequestBoardStatus {
   };
 }
 
-function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: MediaRow[]): RequestBoardItem {
+function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: MediaRow[], visits: VisitRow[]): RequestBoardItem {
   return {
     id: Number(row.id),
     statusId: Number(row.status_id),
@@ -134,7 +153,20 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
       fileSize: item.file_size == null ? undefined : Number(item.file_size),
       url: `/api/request-media/${item.id}`,
     })),
+    visits: visits.map((visit) => ({
+      id: Number(visit.id),
+      startDate: formatVisitDate(visit.start_datetime),
+      endDate: formatVisitDate(visit.stop_datetime),
+      description: visit.description ?? "Não informada",
+    })),
   };
+}
+
+function formatVisitDate(value: Date | string | null): string {
+  if (!value) return "dd/mm/yyyy";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "dd/mm/yyyy";
+  return new Intl.DateTimeFormat("pt-BR").format(date);
 }
 
 function formatFieldValue(value: unknown): string {

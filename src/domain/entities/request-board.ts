@@ -6,6 +6,14 @@ export type RequestBoardItem = {
   locationName: string;
   details: RequestBoardDetail[];
   media: RequestBoardMedia[];
+  visits: RequestBoardVisit[];
+};
+
+export type RequestBoardVisit = {
+  id: number;
+  startDate: string;
+  endDate: string;
+  description: string;
 };
 
 export type RequestBoardDetail = {

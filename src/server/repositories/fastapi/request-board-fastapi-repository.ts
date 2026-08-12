@@ -23,17 +23,31 @@ type FastApiNamedEntity = {
   name?: string | null;
 };
 
+type FastApiRequestTask = {
+  id: string | number;
+  id_request: string | number;
+  start_datetime?: string | null;
+  stop_datetime?: string | null;
+  description?: string | null;
+};
+
 export async function findRequestBoardData(): Promise<RequestBoardData> {
-  const [statuses, requests, memberships, locations, serviceTypes] = await Promise.all([
+  const [statuses, requests, memberships, locations, serviceTypes, requestTasks] = await Promise.all([
     requestFastApi<FastApiStatus[]>("/request-statuses?limit=500"),
     requestFastApi<FastApiRequest[]>("/requests?limit=500"),
     requestFastApi<FastApiNamedEntity[]>("/memberships?limit=500"),
     requestFastApi<FastApiNamedEntity[]>("/locations?limit=500"),
     requestFastApi<FastApiNamedEntity[]>("/service-types?limit=500"),
+    requestFastApi<FastApiRequestTask[]>("/request-tasks?limit=500"),
   ]);
   const membershipNames = new Map(memberships.map((membership) => [Number(membership.id), membership.name]));
   const locationNames = new Map(locations.map((location) => [Number(location.id), location.name]));
   const serviceTypeNames = new Map(serviceTypes.map((serviceType) => [Number(serviceType.id), serviceType.name]));
+  const tasksByRequest = new Map<number, FastApiRequestTask[]>();
+  for (const task of requestTasks) {
+    const requestId = Number(task.id_request);
+    tasksByRequest.set(requestId, [...(tasksByRequest.get(requestId) ?? []), task]);
+  }
 
   return {
     statuses: statuses.map((status) => ({
@@ -61,6 +75,19 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
         { id: "created-at", label: "Data de abertura", value: request.created_date ?? "Não informada" },
       ],
       media: [],
+      visits: (tasksByRequest.get(Number(request.id)) ?? []).map((task) => ({
+        id: Number(task.id),
+        startDate: formatVisitDate(task.start_datetime),
+        endDate: formatVisitDate(task.stop_datetime),
+        description: task.description ?? "Não informada",
+      })),
     })),
   };
+}
+
+function formatVisitDate(value?: string | null): string {
+  if (!value) return "dd/mm/yyyy";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "dd/mm/yyyy";
+  return new Intl.DateTimeFormat("pt-BR").format(date);
 }
