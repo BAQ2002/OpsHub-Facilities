@@ -35,7 +35,7 @@ function RequestColumn({
   onOpen: (request: RequestBoardCardViewModel) => void;
 }) {
   return (
-    <section className="w-[280px] shrink-0 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
+    <section className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
       <header className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
         <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
         <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
@@ -70,6 +70,7 @@ function RequestColumn({
 function RequestDetailsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [showVisit, setShowVisit] = useState(false);
+  const [showVisits, setShowVisits] = useState(false);
   const detailsById = new Map(request.details.map((detail) => [detail.id, detail]));
   const businessDetail = detailsById.get("business");
   const regionDetail = detailsById.get("region");
@@ -84,15 +85,23 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
     closeButtonRef.current?.focus();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key !== "Escape") return;
+      if (showVisit) setShowVisit(false);
+      else if (showVisits) setShowVisits(false);
+      else onClose();
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [onClose]);
+  }, [onClose, showVisit, showVisits]);
 
   return (
     <div
@@ -123,6 +132,23 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
             ×
           </button>
         </header>
+
+        <div className="flex flex-wrap justify-end gap-3 border-b border-slate-200 px-5 py-3 sm:px-7">
+          <button
+            className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            type="button"
+            onClick={() => setShowVisits(true)}
+          >
+            Visualizar visitas
+          </button>
+          <button
+            className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            type="button"
+            onClick={() => setShowVisit(true)}
+          >
+            Adicionar visita
+          </button>
+        </div>
 
         <div className="space-y-7 p-5 sm:p-7">
           <dl className="grid gap-x-8 gap-y-5 border-b border-slate-200 pb-7 sm:grid-cols-2">
@@ -185,14 +211,72 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
               </div>
             </section>
           ) : null}
-          <div className="flex justify-end border-t border-slate-200 pt-5">
-            <button className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300" type="button" onClick={() => setShowVisit(true)}>
-              Adicionar visita
-            </button>
-          </div>
         </div>
       </section>
+      {showVisits ? <VisitsModal request={request} onClose={() => setShowVisits(false)} /> : null}
       {showVisit ? <AddVisitModal requestId={request.id} executors={executors} onClose={() => setShowVisit(false)} /> : null}
+    </div>
+  );
+}
+
+function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel; onClose: () => void }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/65 p-4"
+      role="presentation"
+      onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
+    >
+      <section
+        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="visits-modal-title"
+      >
+        <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{request.id}</p>
+            <h2 className="mt-1 text-xl font-bold text-slate-900" id="visits-modal-title">Visitas vinculadas</h2>
+          </div>
+          <button
+            ref={closeButtonRef}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            type="button"
+            aria-label="Fechar visitas vinculadas"
+            onClick={onClose}
+          >
+            ×
+          </button>
+        </header>
+
+        <div className="p-5 sm:p-7">
+          {request.visits.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {request.visits.map((visit) => (
+                <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm" key={visit.id}>
+                  <dl className="grid gap-4 border-b border-slate-200 pb-4 sm:grid-cols-2">
+                    <ModalDetail label="Data de início" value={visit.startDate} />
+                    <ModalDetail label="Data de fim" value={visit.endDate} />
+                  </dl>
+                  <dl className="pt-4">
+                    <ModalDetail label="Descrição da visita" value={visit.description} />
+                  </dl>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+              <p className="text-sm font-semibold text-slate-700">Nenhuma visita vinculada</p>
+              <p className="mt-1 text-sm text-slate-500">Esta request ainda não possui registros de visita.</p>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
@@ -212,8 +296,8 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
   }, [state.status, onClose]);
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/65 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-      <section className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+      <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>

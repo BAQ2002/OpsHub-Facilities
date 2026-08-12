@@ -95,3 +95,12 @@ class Request(Base):
     location: Mapped[Location] = relationship(back_populates="requests")
     service_type: Mapped[ServiceType] = relationship(back_populates="requests")
     status: Mapped[RequestStatus] = relationship(back_populates="requests")
+
+
+class RequestTask(Base):
+    __tablename__ = "request_task"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    id_request: Mapped[int] = mapped_column(ForeignKey("request.id"))
+    start_datetime: Mapped[datetime | None]
+    stop_datetime: Mapped[datetime | None]
+    description: Mapped[str | None] = mapped_column(String(300))

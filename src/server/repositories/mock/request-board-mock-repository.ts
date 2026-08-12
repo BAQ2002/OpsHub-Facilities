@@ -25,6 +25,20 @@ const requestBoardData: RequestBoardData = {
         { id: "priority", label: "Prioridade", value: "Alta" },
       ],
       media: [],
+      visits: [
+        {
+          id: 1,
+          startDate: "10/08/2026",
+          endDate: "10/08/2026",
+          description: "Inspeção da instalação elétrica e substituição da luminária danificada.",
+        },
+        {
+          id: 2,
+          startDate: "12/08/2026",
+          endDate: "dd/mm/yyyy",
+          description: "Retorno para validação do funcionamento e encerramento do atendimento.",
+        },
+      ],
     },
     {
       id: 566,
@@ -48,6 +62,7 @@ const requestBoardData: RequestBoardData = {
           url: "/api/request-media/1",
         },
       ],
+      visits: [],
     },
   ],
 };
