@@ -13,7 +13,11 @@ export type RequestBoardVisit = {
   id: number;
   startDate: string;
   endDate: string;
+  startDatetime: string;
+  endDatetime: string;
   description: string;
+  executors: { id: number; name: string }[];
+  photos: { id: number; fileName: string }[];
 };
 
 export type RequestBoardDetail = {

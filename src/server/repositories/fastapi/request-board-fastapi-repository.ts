@@ -79,10 +79,20 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
         id: Number(task.id),
         startDate: formatVisitDate(task.start_datetime),
         endDate: formatVisitDate(task.stop_datetime),
+        startDatetime: formatVisitInputDate(task.start_datetime),
+        endDatetime: formatVisitInputDate(task.stop_datetime),
         description: task.description ?? "Não informada",
+        executors: [],
+        photos: [],
       })),
     })),
   };
+}
+
+function formatVisitInputDate(value?: string | null): string {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 16);
 }
 
 function formatVisitDate(value?: string | null): string {

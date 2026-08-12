@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { addVisitAction, type AddVisitState } from "../actions";
+import { addVisitAction, updateVisitAction, type AddVisitState } from "../actions";
 
 import type {
   RequestBoardCardViewModel,
@@ -9,6 +9,7 @@ import type {
 } from "@/src/presentation/view-models/request-board-view-model";
 
 type Executor = { id: number; name: string };
+type Visit = RequestBoardCardViewModel["visits"][number];
 
 export function RequestBoard({ columns, executors }: { columns: RequestBoardColumnViewModel[]; executors: Executor[] }) {
   const [selectedRequest, setSelectedRequest] = useState<RequestBoardCardViewModel | null>(null);
@@ -213,14 +214,15 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
           ) : null}
         </div>
       </section>
-      {showVisits ? <VisitsModal request={request} onClose={() => setShowVisits(false)} /> : null}
+      {showVisits ? <VisitsModal request={request} executors={executors} onClose={() => setShowVisits(false)} /> : null}
       {showVisit ? <AddVisitModal requestId={request.id} executors={executors} onClose={() => setShowVisit(false)} /> : null}
     </div>
   );
 }
 
-function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel; onClose: () => void }) {
+function VisitsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -258,7 +260,7 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
           {request.visits.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2">
               {request.visits.map((visit) => (
-                <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm" key={visit.id}>
+                <button className="w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300" key={visit.id} type="button" onClick={() => setSelectedVisit(visit)} aria-label={`Visualizar visita de ${visit.startDate}`}>
                   <dl className="grid gap-4 border-b border-slate-200 pb-4 sm:grid-cols-2">
                     <ModalDetail label="Data de início" value={visit.startDate} />
                     <ModalDetail label="Data de fim" value={visit.endDate} />
@@ -266,7 +268,7 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
                   <dl className="pt-4">
                     <ModalDetail label="Descrição da visita" value={visit.description} />
                   </dl>
-                </article>
+                </button>
               ))}
             </div>
           ) : (
@@ -276,6 +278,64 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
             </div>
           )}
         </div>
+      </section>
+      {selectedVisit ? <VisitDetailsModal visit={selectedVisit} executors={executors} onClose={() => setSelectedVisit(null)} /> : null}
+    </div>
+  );
+}
+
+const initialUpdateVisitState: AddVisitState = { status: "idle", message: "" };
+
+function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; executors: Executor[]; onClose: () => void }) {
+  const action = updateVisitAction.bind(null, visit.id);
+  const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
+  const [editing, setEditing] = useState(false);
+  const [selectedExecutorIds, setSelectedExecutorIds] = useState(visit.executors.map((executor) => executor.id));
+  const formRef = useRef<HTMLFormElement>(null);
+
+  function cancelEditing() {
+    formRef.current?.reset();
+    setSelectedExecutorIds(visit.executors.map((executor) => executor.id));
+    setEditing(false);
+  }
+
+  useEffect(() => {
+    if (state.status !== "success") return;
+    const timer = window.setTimeout(() => setEditing(false), 0);
+    return () => window.clearTimeout(timer);
+  }, [state.status]);
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+      <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
+          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da visita</p><h2 id="visit-details-title" className="mt-1 text-xl font-bold text-slate-900">Visita #{visit.id}</h2></div>
+          <div className="flex items-center gap-2">
+            <button type="button" disabled={editing} onClick={() => setEditing(true)} className="flex h-9 items-center gap-2 rounded-lg border border-blue-200 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400" aria-label="Editar visita"><EditIcon /> Editar</button>
+            <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar detalhes da visita" onClick={onClose}>×</button>
+          </div>
+        </header>
+        <form ref={formRef} action={formAction} className="space-y-6 p-6">
+          {selectedExecutorIds.map((id) => <input key={id} type="hidden" name="member_ids" value={id} />)}
+          <fieldset disabled={!editing || pending} className="space-y-6 disabled:pointer-events-none">
+            <VisitField label="Executantes">
+              <div className={`mt-2 max-h-44 space-y-1 overflow-y-auto rounded-xl border p-3 ${editing ? "border-slate-300 bg-white" : "border-slate-200 bg-slate-100"}`}>
+                {executors.map((executor) => <label className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm" key={executor.id}><input type="checkbox" className="h-4 w-4 accent-blue-600" checked={selectedExecutorIds.includes(executor.id)} onChange={() => setSelectedExecutorIds((ids) => ids.includes(executor.id) ? ids.filter((id) => id !== executor.id) : [...ids, executor.id])} />{executor.name}</label>)}
+              </div>
+            </VisitField>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <VisitField label="Data e hora do início"><input className={editing ? inputClass : readOnlyInputClass} name="start_datetime" type="datetime-local" defaultValue={visit.startDatetime} required /></VisitField>
+              <VisitField label="Data e hora do fim"><input className={editing ? inputClass : readOnlyInputClass} name="stop_datetime" type="datetime-local" defaultValue={visit.endDatetime} required /></VisitField>
+            </div>
+            <VisitField label="Descrição"><textarea className={`${editing ? inputClass : readOnlyInputClass} min-h-28 resize-none`} name="description" defaultValue={visit.description} maxLength={300} required /></VisitField>
+            <VisitField label="Registros fotográficos">
+              <div className="mt-2 rounded-xl border border-slate-200 bg-slate-100 p-4 text-sm text-slate-600">{visit.photos.length ? <ul>{visit.photos.map((photo) => <li key={photo.id}>• {photo.fileName}</li>)}</ul> : "Nenhum registro fotográfico."}</div>
+              {editing ? <input className="mt-3 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700" name="photos" type="file" accept="image/*" multiple /> : null}
+            </VisitField>
+          </fieldset>
+          {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
+          {editing ? <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={cancelEditing}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Salvar"}</button></footer> : null}
+        </form>
       </section>
     </div>
   );
@@ -368,6 +428,7 @@ function normalizeSearchValue(value: string) {
 }
 
 const inputClass = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+const readOnlyInputClass = "mt-2 w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-500 opacity-100";
 function VisitField({ label, children }: { label: string; children: React.ReactNode }) { return <label className="block text-sm font-semibold text-slate-700">{label} <span className="text-red-500">*</span>{children}</label>; }
 
 const STANDARD_REQUEST_DETAIL_IDS = new Set([
@@ -409,3 +470,4 @@ function CardDetail({ icon: detailIcon, label, value }: { icon: React.ReactNode;
 
 function RequesterIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.6-4 3-6 7-6s6.4 2 7 6"/></svg>; }
 function LocationIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>; }
+function EditIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m4 20 4.2-1 10.6-10.6a2 2 0 0 0-2.8-2.8L5.4 16.2 4 20Z"/><path d="m14.5 7.1 2.8 2.8"/></svg>; }

@@ -42,6 +42,8 @@ type VisitRow = {
   start_datetime: Date | string | null;
   stop_datetime: Date | string | null;
   description: string | null;
+  executors: { id: number; name: string }[] | null;
+  photos: { id: number; fileName: string }[] | null;
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {
@@ -94,8 +96,14 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
         ORDER BY media.id_request, field.display_order NULLS LAST, media.id`,
     ),
     pool.query<VisitRow>(
-      `SELECT id, id_request AS request_id, start_datetime, stop_datetime, description
-         FROM request_task
+      `SELECT task.id, task.id_request AS request_id, task.start_datetime, task.stop_datetime, task.description,
+          COALESCE((SELECT json_agg(json_build_object('id', member.id, 'name', member.name) ORDER BY member.name)
+            FROM task_member_occurrence occurrence
+            JOIN membership member ON member.id = occurrence.id_membership
+            WHERE occurrence.id_task = task.id), '[]'::json) AS executors,
+          COALESCE((SELECT json_agg(json_build_object('id', media.id, 'fileName', media.file_name) ORDER BY media.id)
+            FROM request_task_media media WHERE media.id_request_task = task.id), '[]'::json) AS photos
+         FROM request_task task
         ORDER BY id_request, start_datetime DESC NULLS LAST, id DESC`,
     ),
   ]);
@@ -157,9 +165,21 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
       id: Number(visit.id),
       startDate: formatVisitDate(visit.start_datetime),
       endDate: formatVisitDate(visit.stop_datetime),
+      startDatetime: formatVisitInputDate(visit.start_datetime),
+      endDatetime: formatVisitInputDate(visit.stop_datetime),
       description: visit.description ?? "Não informada",
+      executors: visit.executors ?? [],
+      photos: visit.photos ?? [],
     })),
   };
+}
+
+function formatVisitInputDate(value: Date | string | null): string {
+  if (!value) return "";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
+  return localDate.toISOString().slice(0, 16);
 }
 
 function formatVisitDate(value: Date | string | null): string {
