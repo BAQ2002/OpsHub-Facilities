@@ -287,6 +287,18 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
   const action = addVisitAction.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
   const [photoNames, setPhotoNames] = useState<string[]>([]);
+  const [executorSearch, setExecutorSearch] = useState("");
+  const [selectedExecutorIds, setSelectedExecutorIds] = useState<number[]>([]);
+  const normalizedSearch = normalizeSearchValue(executorSearch);
+  const filteredExecutors = executors.filter((executor) => normalizeSearchValue(executor.name).includes(normalizedSearch));
+
+  function toggleExecutor(executorId: number) {
+    setSelectedExecutorIds((currentIds) => (
+      currentIds.includes(executorId)
+        ? currentIds.filter((id) => id !== executorId)
+        : [...currentIds, executorId]
+    ));
+  }
 
   useEffect(() => {
     if (state.status === "success") {
@@ -305,8 +317,30 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
         <form action={formAction} className="space-y-6 p-6">
           <fieldset>
             <legend className="mb-2 text-sm font-semibold text-slate-700">Executantes <span className="text-red-500">*</span></legend>
-            <div className="grid max-h-36 gap-2 overflow-y-auto rounded-xl border border-slate-200 p-3 sm:grid-cols-2">
-              {executors.map((executor) => <label className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-blue-50" key={executor.id}><input className="h-4 w-4 accent-blue-600" type="checkbox" name="member_ids" value={executor.id} />{executor.name}</label>)}
+            <label className="relative block">
+              <span className="sr-only">Buscar executante pelo nome</span>
+              <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400" aria-hidden="true">⌕</span>
+              <input
+                className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                type="search"
+                value={executorSearch}
+                onChange={(event) => setExecutorSearch(event.target.value)}
+                placeholder="Buscar executante pelo nome"
+              />
+            </label>
+            {selectedExecutorIds.map((executorId) => <input key={executorId} type="hidden" name="member_ids" value={executorId} />)}
+            <div className="mt-2 max-h-44 space-y-1 overflow-y-auto rounded-xl border border-slate-200 p-3">
+              {filteredExecutors.length ? filteredExecutors.map((executor) => (
+                <label className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-blue-50" key={executor.id}>
+                  <input
+                    className="h-4 w-4 accent-blue-600"
+                    type="checkbox"
+                    checked={selectedExecutorIds.includes(executor.id)}
+                    onChange={() => toggleExecutor(executor.id)}
+                  />
+                  {executor.name}
+                </label>
+              )) : <p className="px-2 py-4 text-center text-sm text-slate-500">Nenhum executante encontrado.</p>}
             </div>
           </fieldset>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -327,6 +361,10 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
       </section>
     </div>
   );
+}
+
+function normalizeSearchValue(value: string) {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
 }
 
 const inputClass = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
