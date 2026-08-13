@@ -34,7 +34,7 @@ const requestBoardData: RequestBoardData = {
           endDatetime: "2026-08-10T11:30",
           description: "Inspeção da instalação elétrica e substituição da luminária danificada.",
           executors: [{ id: 1, name: "Carlos Souza" }],
-          photos: [{ id: 1, fileName: "inspecao-eletrica.jpg" }],
+          photos: [{ id: 1, fileName: "inspecao-eletrica.svg", mimeType: "image/svg+xml", url: "/api/request-task-media/1" }],
         },
         {
           id: 2,
@@ -44,7 +44,7 @@ const requestBoardData: RequestBoardData = {
           endDatetime: "2026-08-12T15:00",
           description: "Retorno para validação do funcionamento e encerramento do atendimento.",
           executors: [{ id: 2, name: "Ana Lima" }],
-          photos: [{ id: 2, fileName: "validacao.jpg" }],
+          photos: [{ id: 2, fileName: "validacao.svg", mimeType: "image/svg+xml", url: "/api/request-task-media/2" }],
         },
       ],
     },

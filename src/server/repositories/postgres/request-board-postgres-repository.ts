@@ -43,7 +43,7 @@ type VisitRow = {
   stop_datetime: Date | string | null;
   description: string | null;
   executors: { id: number; name: string }[] | null;
-  photos: { id: number; fileName: string }[] | null;
+  photos: { id: number; fileName: string; mimeType: string }[] | null;
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {
@@ -101,7 +101,11 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
             FROM task_member_occurrence occurrence
             JOIN membership member ON member.id = occurrence.id_membership
             WHERE occurrence.id_task = task.id), '[]'::json) AS executors,
-          COALESCE((SELECT json_agg(json_build_object('id', media.id, 'fileName', media.file_name) ORDER BY media.id)
+          COALESCE((SELECT json_agg(json_build_object(
+              'id', media.id,
+              'fileName', media.file_name,
+              'mimeType', media.mime_type
+            ) ORDER BY media.id)
             FROM request_task_media media WHERE media.id_request_task = task.id), '[]'::json) AS photos
          FROM request_task task
         ORDER BY id_request, start_datetime DESC NULLS LAST, id DESC`,
@@ -169,7 +173,12 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
       endDatetime: formatVisitInputDate(visit.stop_datetime),
       description: visit.description ?? "Não informada",
       executors: visit.executors ?? [],
-      photos: visit.photos ?? [],
+      photos: (visit.photos ?? []).map((photo) => ({
+        ...photo,
+        fileName: photo.fileName ?? "Anexo sem nome",
+        mimeType: photo.mimeType ?? "application/octet-stream",
+        url: `/api/request-task-media/${photo.id}`,
+      })),
     })),
   };
 }

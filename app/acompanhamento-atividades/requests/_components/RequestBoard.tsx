@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { addVisitAction, updateVisitAction, type AddVisitState } from "../actions";
 
 import type {
@@ -291,11 +291,14 @@ function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; execut
   const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
   const [editing, setEditing] = useState(false);
   const [selectedExecutorIds, setSelectedExecutorIds] = useState(visit.executors.map((executor) => executor.id));
+  const [newMediaFiles, setNewMediaFiles] = useState<File[]>([]);
+  const newMedia = useMediaPreviews(newMediaFiles);
   const formRef = useRef<HTMLFormElement>(null);
 
   function cancelEditing() {
     formRef.current?.reset();
     setSelectedExecutorIds(visit.executors.map((executor) => executor.id));
+    setNewMediaFiles([]);
     setEditing(false);
   }
 
@@ -328,11 +331,20 @@ function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; execut
               <VisitField label="Data e hora do fim"><input className={editing ? inputClass : readOnlyInputClass} name="stop_datetime" type="datetime-local" defaultValue={visit.endDatetime} required /></VisitField>
             </div>
             <VisitField label="Descrição"><textarea className={`${editing ? inputClass : readOnlyInputClass} min-h-28 resize-none`} name="description" defaultValue={visit.description} maxLength={300} required /></VisitField>
-            <VisitField label="Registros fotográficos">
-              <div className="mt-2 rounded-xl border border-slate-200 bg-slate-100 p-4 text-sm text-slate-600">{visit.photos.length ? <ul>{visit.photos.map((photo) => <li key={photo.id}>• {photo.fileName}</li>)}</ul> : "Nenhum registro fotográfico."}</div>
-              {editing ? <input className="mt-3 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700" name="photos" type="file" accept="image/*" multiple /> : null}
-            </VisitField>
           </fieldset>
+          <VisitMediaField
+            media={[...visit.photos, ...newMedia]}
+            input={editing ? (
+              <input
+                className="mt-3 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700"
+                name="photos"
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                onChange={(event) => setNewMediaFiles(Array.from(event.target.files ?? []))}
+              />
+            ) : null}
+          />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           {editing ? <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={cancelEditing}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Salvar"}</button></footer> : null}
         </form>
@@ -346,7 +358,8 @@ const initialVisitState: AddVisitState = { status: "idle", message: "" };
 function AddVisitModal({ requestId, executors, onClose }: { requestId: number; executors: Executor[]; onClose: () => void }) {
   const action = addVisitAction.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
-  const [photoNames, setPhotoNames] = useState<string[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
+  const mediaPreviews = useMediaPreviews(mediaFiles);
   const [executorSearch, setExecutorSearch] = useState("");
   const [selectedExecutorIds, setSelectedExecutorIds] = useState<number[]>([]);
   const normalizedSearch = normalizeSearchValue(executorSearch);
@@ -410,16 +423,114 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
           <VisitField label="Descrição"><textarea className={`${inputClass} min-h-28 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
           <VisitField label="Registros fotográficos">
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/50 px-4 py-6 text-center text-sm text-blue-700 hover:bg-blue-50">
-              <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos</strong><span className="mt-1 text-xs text-slate-500">Imagens de até 10 MB cada</span>
-              <input className="sr-only" name="photos" type="file" accept="image/*" multiple required onChange={(event) => setPhotoNames(Array.from(event.target.files ?? [], (file) => file.name))} />
+              <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos ou vídeos</strong><span className="mt-1 text-xs text-slate-500">Arquivos de até 10 MB cada</span>
+              <input className="sr-only" name="photos" type="file" accept="image/*,video/*" multiple required onChange={(event) => setMediaFiles(Array.from(event.target.files ?? []))} />
             </label>
-            {photoNames.length ? <ul className="mt-2 text-xs text-slate-500">{photoNames.map((name) => <li className="truncate" key={name}>• {name}</li>)}</ul> : null}
           </VisitField>
+          <MediaGallery media={mediaPreviews} emptyMessage="Selecione fotos ou vídeos para pré-visualizá-los." />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
       </section>
     </div>
+  );
+}
+
+type GalleryMedia = {
+  id: number | string;
+  fileName: string;
+  mimeType: string;
+  url: string;
+};
+
+function useMediaPreviews(files: File[]): GalleryMedia[] {
+  const previews = useMemo(() => files.map((file, index) => ({
+      id: `preview-${index}-${file.name}-${file.lastModified}`,
+      fileName: file.name,
+      mimeType: file.type,
+      url: URL.createObjectURL(file),
+    })), [files]);
+
+  useEffect(() => {
+    return () => previews.forEach((media) => URL.revokeObjectURL(media.url));
+  }, [previews]);
+
+  return previews;
+}
+
+function VisitMediaField({ media, input }: { media: GalleryMedia[]; input?: React.ReactNode }) {
+  return (
+    <section aria-labelledby="visit-media-label">
+      <h3 className="text-sm font-semibold text-slate-700" id="visit-media-label">Registros fotográficos</h3>
+      <div className="mt-2">
+        <MediaGallery media={media} />
+      </div>
+      {input}
+    </section>
+  );
+}
+
+function MediaGallery({ media, emptyMessage = "Nenhum registro fotográfico." }: { media: GalleryMedia[]; emptyMessage?: string }) {
+  const [mode, setMode] = useState<"carousel" | "grid">("carousel");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (activeIndex < media.length) return;
+    const timer = window.setTimeout(() => setActiveIndex(Math.max(0, media.length - 1)), 0);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, media.length]);
+
+  if (!media.length) {
+    return <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-500">{emptyMessage}</div>;
+  }
+
+  const activeMedia = media[activeIndex] ?? media[0];
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs font-medium text-slate-500">{media.length} {media.length === 1 ? "anexo" : "anexos"}</p>
+        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-1" aria-label="Modo de visualização" role="group">
+          <GalleryModeButton active={mode === "carousel"} onClick={() => setMode("carousel")}>Carrossel</GalleryModeButton>
+          <GalleryModeButton active={mode === "grid"} onClick={() => setMode("grid")}>Grid</GalleryModeButton>
+        </div>
+      </div>
+
+      {mode === "carousel" ? (
+        <div>
+          <MediaItem media={activeMedia} featured />
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <button className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={media.length < 2} onClick={() => setActiveIndex((index) => (index - 1 + media.length) % media.length)} aria-label="Exibir anexo anterior">‹ Anterior</button>
+            <span className="text-xs font-semibold tabular-nums text-slate-500" aria-live="polite">{activeIndex + 1} de {media.length}</span>
+            <button className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={media.length < 2} onClick={() => setActiveIndex((index) => (index + 1) % media.length)} aria-label="Exibir próximo anexo">Próximo ›</button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {media.map((item) => <MediaItem key={item.id} media={item} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GalleryModeButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return <button className={`rounded-md px-3 py-1.5 text-xs font-semibold transition ${active ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"}`} type="button" aria-pressed={active} onClick={onClick}>{children}</button>;
+}
+
+function MediaItem({ media, featured = false }: { media: GalleryMedia; featured?: boolean }) {
+  const mediaClass = featured ? "h-[min(52vh,30rem)] w-full" : "aspect-video w-full";
+  return (
+    <figure className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      {media.mimeType.startsWith("video/") ? (
+        <video className={`${mediaClass} bg-slate-950 object-contain`} controls playsInline preload="metadata" src={media.url}>
+          Seu navegador não suporta a reprodução deste vídeo.
+        </video>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element -- URLs locais e binárias não possuem dimensões conhecidas.
+        <img className={`${mediaClass} bg-slate-100 object-contain`} src={media.url} alt={`Registro fotográfico: ${media.fileName}`} />
+      )}
+      <figcaption className="truncate border-t border-slate-200 px-3 py-2 text-xs font-medium text-slate-600" title={media.fileName}>{media.fileName}</figcaption>
+    </figure>
   );
 }
 

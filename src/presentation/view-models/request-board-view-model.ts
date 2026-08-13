@@ -20,7 +20,7 @@ export type RequestBoardCardViewModel = {
     endDatetime: string;
     description: string;
     executors: { id: number; name: string }[];
-    photos: { id: number; fileName: string }[];
+    photos: { id: number; fileName: string; mimeType: string; url: string }[];
   }[];
 };
 
