@@ -123,9 +123,11 @@ function validateVisit(input: VisitInput, requirePhotos = true) {
   if (input.memberIds.length === 0) throw new Error("Selecione ao menos um executante.");
   if (input.memberIds.some((id) => !Number.isSafeInteger(id) || id <= 0)) throw new Error("A lista de executantes é inválida.");
   if (requirePhotos && input.photos.length === 0) throw new Error("Adicione ao menos um registro fotográfico.");
-  if (input.photos.reduce((total, photo) => total + photo.size, 0) > MAX_TOTAL_SIZE) throw new Error("As fotos excedem o limite total de 25 MB.");
+  if (input.photos.reduce((total, photo) => total + photo.size, 0) > MAX_TOTAL_SIZE) throw new Error("Os registros de mídia excedem o limite total de 25 MB.");
   for (const photo of input.photos) {
-    if (!photo.type.startsWith("image/")) throw new Error(`${photo.name} não é uma imagem válida.`);
-    if (!photo.name || photo.name.length > 255 || photo.size > MAX_PHOTO_SIZE) throw new Error(`${photo.name || "A foto"} excede o limite permitido de 10 MB.`);
+    if (!photo.type.startsWith("image/") && !photo.type.startsWith("video/")) {
+      throw new Error(`${photo.name} não é uma imagem ou um vídeo válido.`);
+    }
+    if (!photo.name || photo.name.length > 255 || photo.size > MAX_PHOTO_SIZE) throw new Error(`${photo.name || "O arquivo"} excede o limite permitido de 10 MB.`);
   }
 }

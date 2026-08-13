@@ -17,7 +17,14 @@ export type RequestBoardVisit = {
   endDatetime: string;
   description: string;
   executors: { id: number; name: string }[];
-  photos: { id: number; fileName: string }[];
+  photos: RequestBoardVisitMedia[];
+};
+
+export type RequestBoardVisitMedia = {
+  id: number;
+  fileName: string;
+  mimeType: string;
+  url: string;
 };
 
 export type RequestBoardDetail = {
