@@ -383,53 +383,57 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
       <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
-        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
         </header>
-        <form action={formAction} className="space-y-6 p-6">
-          <fieldset>
-            <legend className="mb-2 text-sm font-semibold text-slate-700">Executantes <span className="text-red-500">*</span></legend>
-            <label className="relative block">
-              <span className="sr-only">Buscar executante pelo nome</span>
-              <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400" aria-hidden="true">⌕</span>
-              <input
-                className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                type="search"
-                value={executorSearch}
-                onChange={(event) => setExecutorSearch(event.target.value)}
-                placeholder="Buscar executante pelo nome"
-              />
-            </label>
-            {selectedExecutorIds.map((executorId) => <input key={executorId} type="hidden" name="member_ids" value={executorId} />)}
-            <div className="mt-2 max-h-44 space-y-1 overflow-y-auto rounded-xl border border-slate-200 p-3">
-              {filteredExecutors.length ? filteredExecutors.map((executor) => (
-                <label className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-blue-50" key={executor.id}>
-                  <input
-                    className="h-4 w-4 accent-blue-600"
-                    type="checkbox"
-                    checked={selectedExecutorIds.includes(executor.id)}
-                    onChange={() => toggleExecutor(executor.id)}
-                  />
-                  {executor.name}
-                </label>
-              )) : <p className="px-2 py-4 text-center text-sm text-slate-500">Nenhum executante encontrado.</p>}
+        <form action={formAction} className="space-y-5 p-6">
+          <div className="grid gap-5 md:grid-cols-2 md:items-start">
+            <div className="grid gap-5">
+              <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
+              <VisitField label="Data e hora do fim"><input className={inputClass} name="stop_datetime" type="datetime-local" required /></VisitField>
             </div>
-          </fieldset>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
-            <VisitField label="Data e hora do fim"><input className={inputClass} name="stop_datetime" type="datetime-local" required /></VisitField>
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold text-slate-700">Executante(s) <span className="text-red-500">*</span></legend>
+              <label className="relative block">
+                <span className="sr-only">Buscar executante pelo nome</span>
+                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400" aria-hidden="true">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+                </span>
+                <input
+                  className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  type="search"
+                  value={executorSearch}
+                  onChange={(event) => setExecutorSearch(event.target.value)}
+                  placeholder="Buscar executante pelo nome"
+                />
+              </label>
+              {selectedExecutorIds.map((executorId) => <input key={executorId} type="hidden" name="member_ids" value={executorId} />)}
+              <div className="mt-2 h-[132px] space-y-0.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
+                {filteredExecutors.length ? filteredExecutors.map((executor) => (
+                  <label className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-blue-50" key={executor.id}>
+                    <input
+                      className="h-4 w-4 accent-blue-600"
+                      type="checkbox"
+                      checked={selectedExecutorIds.includes(executor.id)}
+                      onChange={() => toggleExecutor(executor.id)}
+                    />
+                    {executor.name}
+                  </label>
+                )) : <p className="px-2 py-4 text-center text-sm text-slate-500">Nenhum executante encontrado.</p>}
+              </div>
+            </fieldset>
           </div>
-          <VisitField label="Descrição"><textarea className={`${inputClass} min-h-28 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
+          <VisitField label="Descrição"><textarea className={`${inputClass} min-h-24 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
           <VisitField label="Registros fotográficos">
-            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/50 px-4 py-6 text-center text-sm text-blue-700 hover:bg-blue-50">
+            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/30 px-4 py-4 text-center text-sm text-blue-700 hover:bg-blue-50">
               <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos ou vídeos</strong><span className="mt-1 text-xs text-slate-500">Arquivos de até 10 MB cada</span>
               <input className="sr-only" name="photos" type="file" accept="image/*,video/*" multiple required onChange={(event) => setMediaFiles(Array.from(event.target.files ?? []))} />
             </label>
           </VisitField>
           <MediaGallery media={mediaPreviews} emptyMessage="Selecione fotos ou vídeos para pré-visualizá-los." />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
-          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
+          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
       </section>
     </div>
