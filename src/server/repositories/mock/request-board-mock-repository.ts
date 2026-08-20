@@ -35,6 +35,7 @@ const requestBoardData: RequestBoardData = {
           description: "Inspeção da instalação elétrica e substituição da luminária danificada.",
           executors: [{ id: 1, name: "Carlos Souza" }],
           photos: [{ id: 1, fileName: "inspecao-eletrica.svg", mimeType: "image/svg+xml", url: "/api/request-task-media/1" }],
+          checklists: [],
         },
         {
           id: 2,
@@ -45,6 +46,7 @@ const requestBoardData: RequestBoardData = {
           description: "Retorno para validação do funcionamento e encerramento do atendimento.",
           executors: [{ id: 2, name: "Ana Lima" }],
           photos: [{ id: 2, fileName: "validacao.svg", mimeType: "image/svg+xml", url: "/api/request-task-media/2" }],
+          checklists: [],
         },
       ],
     },

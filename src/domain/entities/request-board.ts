@@ -18,6 +18,7 @@ export type RequestBoardVisit = {
   description: string;
   executors: { id: number; name: string }[];
   photos: RequestBoardVisitMedia[];
+  checklists: import("./checklist").VisitChecklist[];
 };
 
 export type RequestBoardVisitMedia = {

@@ -83,7 +83,8 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
         endDatetime: formatVisitInputDate(task.stop_datetime),
         description: task.description ?? "Não informada",
         executors: [],
-        photos: [],
+          photos: [],
+          checklists: [],
       })),
     })),
   };

@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getPostgresPool } from "@/src/server/db/postgres";
+import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
+import { insertChecklistSubmissions } from "@/src/server/repositories/postgres/checklist-postgres-repository";
 
 export type MembershipOption = { id: number; name: string };
 
@@ -11,6 +13,7 @@ type VisitInput = {
   stopDatetime: string;
   memberIds: number[];
   photos: File[];
+  checklists: ChecklistSubmission[];
 };
 
 type UpdateVisitInput = Omit<VisitInput, "requestId"> & { visitId: number };
@@ -73,6 +76,7 @@ export async function insertRequestTaskVisit(input: VisitInput) {
         [taskId, photo.content, photo.fileName, photo.mimeType, photo.fileSize],
       );
     }
+    await insertChecklistSubmissions(client, taskId, input.checklists);
     await client.query("COMMIT");
   } catch (error) {
     await client.query("ROLLBACK");
@@ -83,7 +87,7 @@ export async function insertRequestTaskVisit(input: VisitInput) {
 }
 
 export async function updateRequestTaskVisit(input: UpdateVisitInput) {
-  validateVisit({ ...input, requestId: 1 }, false);
+  validateVisit({ ...input, requestId: 1, checklists: [] }, false);
   if (!Number.isSafeInteger(input.visitId) || input.visitId <= 0) throw new Error("Visita inválida.");
   const photoBuffers = await Promise.all(input.photos.map(async (photo) => ({
     content: Buffer.from(await photo.arrayBuffer()), fileName: photo.name, mimeType: photo.type, fileSize: photo.size,

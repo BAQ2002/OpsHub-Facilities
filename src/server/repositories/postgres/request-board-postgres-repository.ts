@@ -44,6 +44,7 @@ type VisitRow = {
   description: string | null;
   executors: { id: number; name: string }[] | null;
   photos: { id: number; fileName: string; mimeType: string }[] | null;
+  checklists: import("@/src/domain/entities/checklist").VisitChecklist[] | null;
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {
@@ -107,6 +108,26 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
               'mimeType', media.mime_type
             ) ORDER BY media.id)
             FROM request_task_media media WHERE media.id_request_task = task.id), '[]'::json) AS photos
+          ,COALESCE((SELECT json_agg(json_build_object(
+              'id', task_checklist.id,
+              'checklistTypeId', checklist.id,
+              'name', checklist.name,
+              'description', COALESCE(checklist.description, ''),
+              'version', checklist.version,
+              'values', COALESCE((SELECT json_agg(json_build_object(
+                'id', field_value.id,
+                'fieldId', field.id,
+                'name', field.name,
+                'type', field.type,
+                'value', field_value.value
+              ) ORDER BY field.display_order, field.id)
+                FROM checklist_field_value field_value
+                JOIN checklist_field_type field ON field.id = field_value.id_checklist_field_type
+                WHERE field_value.id_request_task_checklist = task_checklist.id), '[]'::json)
+            ) ORDER BY task_checklist.id)
+            FROM request_task_checklist task_checklist
+            JOIN checklist_type checklist ON checklist.id = task_checklist.id_checklist_type
+            WHERE task_checklist.id_request_task = task.id), '[]'::json) AS checklists
          FROM request_task task
         ORDER BY id_request, start_datetime DESC NULLS LAST, id DESC`,
     ),
@@ -179,6 +200,7 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
         mimeType: photo.mimeType ?? "application/octet-stream",
         url: `/api/request-task-media/${photo.id}`,
       })),
+      checklists: visit.checklists ?? [],
     })),
   };
 }
