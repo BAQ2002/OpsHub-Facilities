@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
-import { addVisitAction, updateVisitAction, type AddVisitState } from "../actions";
+import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
+import { addChecklistAction, addVisitAction, deleteChecklistAction, updateVisitAction, type AddVisitState } from "../actions";
+import type { ChecklistDefinition, ChecklistSubmission } from "@/src/domain/entities/checklist";
 
 import type {
   RequestBoardCardViewModel,
@@ -11,18 +12,19 @@ import type {
 type Executor = { id: number; name: string };
 type Visit = RequestBoardCardViewModel["visits"][number];
 
-export function RequestBoard({ columns, executors }: { columns: RequestBoardColumnViewModel[]; executors: Executor[] }) {
-  const [selectedRequest, setSelectedRequest] = useState<RequestBoardCardViewModel | null>(null);
+export function RequestBoard({ columns, executors, checklistDefinitions }: { columns: RequestBoardColumnViewModel[]; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
+  const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
+  const selectedRequest = columns.flatMap((column) => column.requests).find((request) => request.id === selectedRequestId) ?? null;
 
   return (
     <>
       <section className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
         {columns.map((column) => (
-          <RequestColumn key={column.id} column={column} onOpen={setSelectedRequest} />
+          <RequestColumn key={column.id} column={column} onOpen={(request) => setSelectedRequestId(request.id)} />
         ))}
       </section>
       {selectedRequest ? (
-        <RequestDetailsModal request={selectedRequest} executors={executors} onClose={() => setSelectedRequest(null)} />
+        <RequestDetailsModal request={selectedRequest} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedRequestId(null)} />
       ) : null}
     </>
   );
@@ -68,7 +70,7 @@ function RequestColumn({
   );
 }
 
-function RequestDetailsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
+function RequestDetailsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [showVisit, setShowVisit] = useState(false);
   const [showVisits, setShowVisits] = useState(false);
@@ -214,15 +216,16 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
           ) : null}
         </div>
       </section>
-      {showVisits ? <VisitsModal request={request} executors={executors} onClose={() => setShowVisits(false)} /> : null}
-      {showVisit ? <AddVisitModal requestId={request.id} executors={executors} onClose={() => setShowVisit(false)} /> : null}
+      {showVisits ? <VisitsModal request={request} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisits(false)} /> : null}
+      {showVisit ? <AddVisitModal requestId={request.id} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisit(false)} /> : null}
     </div>
   );
 }
 
-function VisitsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
+function VisitsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
+  const [selectedVisitId, setSelectedVisitId] = useState<number | null>(null);
+  const selectedVisit = request.visits.find((visit) => visit.id === selectedVisitId) ?? null;
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -260,7 +263,7 @@ function VisitsModal({ request, executors, onClose }: { request: RequestBoardCar
           {request.visits.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2">
               {request.visits.map((visit) => (
-                <button className="w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300" key={visit.id} type="button" onClick={() => setSelectedVisit(visit)} aria-label={`Visualizar visita de ${visit.startDate}`}>
+                <button className="w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300" key={visit.id} type="button" onClick={() => setSelectedVisitId(visit.id)} aria-label={`Visualizar visita de ${visit.startDate}`}>
                   <dl className="grid gap-4 border-b border-slate-200 pb-4 sm:grid-cols-2">
                     <ModalDetail label="Data de início" value={visit.startDate} />
                     <ModalDetail label="Data de fim" value={visit.endDate} />
@@ -279,14 +282,14 @@ function VisitsModal({ request, executors, onClose }: { request: RequestBoardCar
           )}
         </div>
       </section>
-      {selectedVisit ? <VisitDetailsModal visit={selectedVisit} executors={executors} onClose={() => setSelectedVisit(null)} /> : null}
+      {selectedVisit ? <VisitDetailsModal visit={selectedVisit} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedVisitId(null)} /> : null}
     </div>
   );
 }
 
 const initialUpdateVisitState: AddVisitState = { status: "idle", message: "" };
 
-function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; executors: Executor[]; onClose: () => void }) {
+function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: { visit: Visit; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = updateVisitAction.bind(null, visit.id);
   const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
   const [editing, setEditing] = useState(false);
@@ -294,6 +297,9 @@ function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; execut
   const [newMediaFiles, setNewMediaFiles] = useState<File[]>([]);
   const newMedia = useMediaPreviews(newMediaFiles);
   const formRef = useRef<HTMLFormElement>(null);
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [deletingChecklist, startDeleteChecklist] = useTransition();
+  const [checklistMessage, setChecklistMessage] = useState("");
 
   function cancelEditing() {
     formRef.current?.reset();
@@ -345,17 +351,37 @@ function VisitDetailsModal({ visit, executors, onClose }: { visit: Visit; execut
               />
             ) : null}
           />
+          <section className="space-y-3 border-t border-slate-200 pt-5" aria-labelledby="visit-checklists-title">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div><h3 id="visit-checklists-title" className="font-bold text-slate-900">Checklists</h3><p className="text-sm text-slate-500">Registros imutáveis vinculados a esta visita.</p></div>
+              <button className="rounded-lg border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" type="button" onClick={() => setShowChecklist(true)}>＋ Adicionar checklist</button>
+            </div>
+            {visit.checklists.length ? <ul className="space-y-3">
+              {visit.checklists.map((checklist, index) => <li key={checklist.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div><p className="font-semibold text-slate-900">{checklist.name} <span className="font-normal text-slate-500">#{index + 1}</span></p><p className="text-xs text-slate-500">Versão {checklist.version}{checklist.description ? ` · ${checklist.description}` : ""}</p></div>
+                  <button disabled={deletingChecklist} className="text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50" type="button" onClick={() => {
+                    if (!window.confirm(`Excluir a ocorrência de ${checklist.name}?`)) return;
+                    startDeleteChecklist(async () => { const result = await deleteChecklistAction(checklist.id); setChecklistMessage(result.message); });
+                  }}>Excluir</button>
+                </div>
+                <dl className="mt-3 grid gap-3 sm:grid-cols-2">{checklist.values.map((item) => <ModalDetail key={item.id} label={item.name} value={formatChecklistValue(item.value)} />)}</dl>
+              </li>)}
+            </ul> : <p className="rounded-xl border border-dashed border-slate-300 p-5 text-center text-sm text-slate-500">Nenhum checklist vinculado.</p>}
+            {checklistMessage ? <p className="text-sm text-slate-600" role="status">{checklistMessage}</p> : null}
+          </section>
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           {editing ? <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={cancelEditing}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Salvar"}</button></footer> : null}
         </form>
       </section>
+      {showChecklist ? <AddChecklistModal visitId={visit.id} definitions={checklistDefinitions} onClose={() => setShowChecklist(false)} /> : null}
     </div>
   );
 }
 
 const initialVisitState: AddVisitState = { status: "idle", message: "" };
 
-function AddVisitModal({ requestId, executors, onClose }: { requestId: number; executors: Executor[]; onClose: () => void }) {
+function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: { requestId: number; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = addVisitAction.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
   const [mediaFiles, setMediaFiles] = useState<File[]>([]);
@@ -364,6 +390,7 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
   const [selectedExecutorIds, setSelectedExecutorIds] = useState<number[]>([]);
   const normalizedSearch = normalizeSearchValue(executorSearch);
   const filteredExecutors = executors.filter((executor) => normalizeSearchValue(executor.name).includes(normalizedSearch));
+  const [checklists, setChecklists] = useState<ChecklistDraft[]>([]);
 
   function toggleExecutor(executorId: number) {
     setSelectedExecutorIds((currentIds) => (
@@ -388,6 +415,7 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
         </header>
         <form action={formAction} className="space-y-5 p-6">
+          <input type="hidden" name="checklists_json" value={serializeChecklists(checklists)} />
           <div className="grid gap-5 md:grid-cols-2 md:items-start">
             <div className="grid gap-5">
               <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
@@ -432,12 +460,83 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
             </label>
           </VisitField>
           <MediaGallery media={mediaPreviews} emptyMessage="Selecione fotos ou vídeos para pré-visualizá-los." />
+          <ChecklistCollectionEditor definitions={checklistDefinitions} drafts={checklists} onChange={setChecklists} />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
       </section>
     </div>
   );
+}
+
+type ChecklistDraft = { key: number; checklistTypeId: number; values: Record<number, unknown> };
+
+function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number; definitions: ChecklistDefinition[]; onClose: () => void }) {
+  const action = addChecklistAction.bind(null, visitId);
+  const [state, formAction, pending] = useActionState(action, initialVisitState);
+  const [drafts, setDrafts] = useState<ChecklistDraft[]>([]);
+
+  useEffect(() => {
+    if (state.status !== "success") return;
+    const timer = window.setTimeout(onClose, 900);
+    return () => window.clearTimeout(timer);
+  }, [onClose, state.status]);
+
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+    <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Visita #{visitId}</p><h2 id="add-checklist-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar checklist</h2></div><button className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500" type="button" onClick={onClose} aria-label="Fechar formulário de checklist">×</button></header>
+      <form action={formAction} className="space-y-5 p-6">
+        <input type="hidden" name="checklists_json" value={serializeChecklists(drafts)} />
+        <ChecklistCollectionEditor definitions={definitions} drafts={drafts} onChange={setDrafts} maximum={1} />
+        {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
+        <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50" type="submit" disabled={pending || drafts.length !== 1}>{pending ? "Salvando..." : "Adicionar checklist"}</button></footer>
+      </form>
+    </section>
+  </div>;
+}
+
+function ChecklistCollectionEditor({ definitions, drafts, onChange, maximum }: { definitions: ChecklistDefinition[]; drafts: ChecklistDraft[]; onChange: (drafts: ChecklistDraft[]) => void; maximum?: number }) {
+  function addDraft() {
+    const first = definitions[0];
+    if (!first || (maximum != null && drafts.length >= maximum)) return;
+    onChange([...drafts, { key: Date.now() + drafts.length, checklistTypeId: first.id, values: {} }]);
+  }
+  return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-editor-title">
+    <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 id="checklist-editor-title" className="font-bold text-slate-900">Checklists da visita</h3><p className="text-sm text-slate-500">É permitido adicionar várias ocorrências do mesmo tipo.</p></div><button className="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50" disabled={!definitions.length || (maximum != null && drafts.length >= maximum)} type="button" onClick={addDraft}>＋ Adicionar checklist</button></div>
+    {!definitions.length ? <p className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">Nenhum tipo de checklist ativo disponível.</p> : null}
+    {drafts.map((draft, index) => {
+      const definition = definitions.find((item) => item.id === draft.checklistTypeId) ?? definitions[0];
+      return <fieldset key={draft.key} className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
+        <div className="flex items-end justify-between gap-4"><label className="flex-1 text-sm font-semibold text-slate-700">Tipo de checklist<select className={`${inputClass} mt-2`} value={draft.checklistTypeId} onChange={(event) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, checklistTypeId: Number(event.target.value), values: {} } : item))}>{definitions.map((item) => <option key={item.id} value={item.id}>{item.name} — v{item.version}</option>)}</select></label><button className="mb-2 text-sm font-semibold text-red-600" type="button" onClick={() => onChange(drafts.filter((item) => item.key !== draft.key))}>Remover</button></div>
+        {definition.description ? <p className="text-sm text-slate-500">{definition.description}</p> : null}
+        <div className="grid gap-4 sm:grid-cols-2">{definition.fields.map((field) => <ChecklistDynamicField key={field.id} field={field} value={draft.values[field.id]} onChange={(value) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, values: { ...item.values, [field.id]: value } } : item))} />)}</div>
+        <span className="sr-only">Ocorrência {index + 1}</span>
+      </fieldset>;
+    })}
+  </section>;
+}
+
+function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDefinition["fields"][number]; value: unknown; onChange: (value: unknown) => void }) {
+  const id = `${useId()}-checklist-field-${field.id}`;
+  const label = <span className="mb-2 block text-sm font-semibold text-slate-700">{field.name}{field.required ? <span className="text-red-500"> *</span> : null}</span>;
+  if (field.type === "BOOL") return <label className="sm:col-span-2">{label}<select id={id} className={inputClass} required={field.required} value={value == null ? "" : String(value)} onChange={(event) => onChange(event.target.value === "true")}><option value="">Selecione...</option><option value="true">Sim</option><option value="false">Não</option></select></label>;
+  if (field.type === "SINGLE_SELECT") return <label>{label}<select id={id} className={inputClass} required={field.required} value={String(value ?? "")} onChange={(event) => onChange(event.target.value)}><option value="">Selecione...</option>{field.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
+  if (field.type === "MULTI_SELECT") return <fieldset><legend>{label}</legend><div className="max-h-40 space-y-2 overflow-auto rounded-xl border border-slate-300 p-3">{field.options.map((option) => { const selected = Array.isArray(value) ? value as string[] : []; return <label key={option.value} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={selected.includes(option.value)} onChange={() => onChange(selected.includes(option.value) ? selected.filter((item) => item !== option.value) : [...selected, option.value])} />{option.label}</label>; })}</div>{field.required && (!Array.isArray(value) || value.length === 0) ? <input className="sr-only" required value="" onChange={() => undefined} aria-label={field.name} /> : null}</fieldset>;
+  const inputType = field.type === "NUMBER" ? "number" : field.type === "DATE" ? "date" : "text";
+  return <label className={field.type === "TEXT" ? "sm:col-span-2" : undefined}>{label}<input id={id} className={inputClass} type={inputType} required={field.required} value={String(value ?? "")} onChange={(event) => onChange(field.type === "NUMBER" ? (event.target.value === "" ? "" : Number(event.target.value)) : event.target.value)} /></label>;
+}
+
+function serializeChecklists(drafts: ChecklistDraft[]): string {
+  const submissions: ChecklistSubmission[] = drafts.map((draft) => ({ checklistTypeId: draft.checklistTypeId, values: Object.entries(draft.values).map(([fieldId, value]) => ({ fieldId: Number(fieldId), value })) }));
+  return JSON.stringify(submissions);
+}
+
+function formatChecklistValue(value: unknown): string {
+  if (value == null || value === "") return "Não informado";
+  if (typeof value === "boolean") return value ? "Sim" : "Não";
+  if (Array.isArray(value)) return value.join(", ");
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
 }
 
 type GalleryMedia = {

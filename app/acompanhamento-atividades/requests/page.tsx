@@ -2,17 +2,20 @@ import { getRequestBoardPageData } from "@/src/server/services/request-board-ser
 import { TrackingTabs } from "../_components/TrackingTabs";
 import { RequestBoard } from "./_components/RequestBoard";
 import { findMembershipOptions } from "@/src/server/repositories/postgres/request-task-postgres-repository";
+import { findActiveChecklistDefinitions } from "@/src/server/repositories/postgres/checklist-postgres-repository";
+import type { ChecklistDefinition } from "@/src/domain/entities/checklist";
 
 export const dynamic = "force-dynamic";
 
 export default async function RequestsPage() {
-  const [{ columns }, executors] = await Promise.all([
+  const [{ columns }, executors, checklists] = await Promise.all([
     getRequestBoardPageData(),
     process.env.DATA_SOURCE === "postgres" ? findMembershipOptions() : Promise.resolve([
       { id: 1, name: "Ademilson Alves Dos Santos" },
       { id: 2, name: "Alan Cunha" },
       { id: 3, name: "Alexandro Vieira Dos Santos" },
     ]),
+    process.env.DATA_SOURCE === "postgres" ? findActiveChecklistDefinitions() : Promise.resolve(mockChecklists),
   ]);
 
   return (
@@ -50,7 +53,7 @@ export default async function RequestsPage() {
         </div>
 
         {columns.length > 0 ? (
-          <RequestBoard columns={columns} executors={executors} />
+          <RequestBoard columns={columns} executors={executors} checklistDefinitions={checklists} />
         ) : (
           <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">
             Nenhum status de request cadastrado.
@@ -60,6 +63,17 @@ export default async function RequestsPage() {
     </section>
   );
 }
+
+const mockChecklists: ChecklistDefinition[] = [{
+  id: 1,
+  name: "Inspeção da visita",
+  description: "Verificações realizadas durante a visita.",
+  version: "1.0",
+  fields: [
+    { id: 1, name: "Condição encontrada", type: "SINGLE_SELECT", required: true, options: [{ label: "Conforme", value: "Conforme" }, { label: "Não conforme", value: "Não conforme" }] },
+    { id: 2, name: "Observações", type: "TEXT", required: false, options: [] },
+  ],
+}];
 
 function IconButton({ label, divider, children }: { label: string; divider?: boolean; children: React.ReactNode }) { return <button type="button" aria-label={label} className={`flex h-9 w-11 items-center justify-center ${divider ? "border-l border-blue-500" : ""}`}>{children}</button>; }
 const icon = "h-[18px] w-[18px]";
