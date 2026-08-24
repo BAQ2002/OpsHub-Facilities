@@ -114,6 +114,13 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
               'name', checklist.name,
               'description', COALESCE(checklist.description, ''),
               'version', checklist.version,
+              'corporation', task_checklist.corporation,
+              'equipmentTag', task_checklist.equipment_tag,
+              'equipmentBrand', task_checklist.equipment_brand,
+              'equipmentModel', task_checklist.equipment_model,
+              'rentedEquipment', task_checklist.rented_equipment,
+              'serialNumber', task_checklist.serial_number,
+              'ptNumber', task_checklist.pt_number,
               'values', COALESCE((SELECT json_agg(json_build_object(
                 'id', field_value.id,
                 'fieldId', field.id,

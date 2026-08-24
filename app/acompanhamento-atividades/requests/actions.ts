@@ -81,6 +81,33 @@ function parseChecklistSubmissions(value: FormDataEntryValue | null): ChecklistS
     if (!item || typeof item !== "object" || !("checklistTypeId" in item) || !("values" in item) || !Array.isArray(item.values)) {
       throw new Error("Os dados de um checklist são inválidos.");
     }
-    return { checklistTypeId: Number(item.checklistTypeId), values: item.values as ChecklistSubmission["values"] };
+    return {
+      checklistTypeId: Number(item.checklistTypeId),
+      corporation: optionalText(item, "corporation", 255, "Empresa/Setor"),
+      equipmentTag: optionalText(item, "equipmentTag", 100, "Tag"),
+      equipmentBrand: optionalText(item, "equipmentBrand", 255, "Marca"),
+      equipmentModel: optionalText(item, "equipmentModel", 255, "Modelo"),
+      rentedEquipment: optionalBoolean(item, "rentedEquipment", "Equipamento alugado"),
+      serialNumber: optionalText(item, "serialNumber", 255, "Nº Série ou Patrimônio"),
+      ptNumber: optionalText(item, "ptNumber", 20, "PT"),
+      values: item.values as ChecklistSubmission["values"],
+    };
   });
+}
+
+function optionalText(item: object, property: string, maximum: number, label: string): string | null {
+  const value = (item as Record<string, unknown>)[property];
+  if (value == null || value === "") return null;
+  if (typeof value !== "string") throw new Error(`O campo ${label} é inválido.`);
+  const normalized = value.trim();
+  if (!normalized) return null;
+  if (normalized.length > maximum) throw new Error(`O campo ${label} deve ter no máximo ${maximum} caracteres.`);
+  return normalized;
+}
+
+function optionalBoolean(item: object, property: string, label: string): boolean | null {
+  const value = (item as Record<string, unknown>)[property];
+  if (value == null || value === "") return null;
+  if (typeof value !== "boolean") throw new Error(`O campo ${label} é inválido.`);
+  return value;
 }
