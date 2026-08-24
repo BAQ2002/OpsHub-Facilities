@@ -16,7 +16,12 @@ export type RequestBoardCardViewModel = {
     id: number;
     startDate: string;
     endDate: string;
+    startDatetime: string;
+    endDatetime: string;
     description: string;
+    executors: { id: number; name: string }[];
+    photos: { id: number; fileName: string; mimeType: string; url: string }[];
+    checklists: import("@/src/domain/entities/checklist").VisitChecklist[];
   }[];
 };
 

@@ -42,6 +42,9 @@ type VisitRow = {
   start_datetime: Date | string | null;
   stop_datetime: Date | string | null;
   description: string | null;
+  executors: { id: number; name: string }[] | null;
+  photos: { id: number; fileName: string; mimeType: string }[] | null;
+  checklists: import("@/src/domain/entities/checklist").VisitChecklist[] | null;
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {
@@ -94,8 +97,45 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
         ORDER BY media.id_request, field.display_order NULLS LAST, media.id`,
     ),
     pool.query<VisitRow>(
-      `SELECT id, id_request AS request_id, start_datetime, stop_datetime, description
-         FROM request_task
+      `SELECT task.id, task.id_request AS request_id, task.start_datetime, task.stop_datetime, task.description,
+          COALESCE((SELECT json_agg(json_build_object('id', member.id, 'name', member.name) ORDER BY member.name)
+            FROM task_member_occurrence occurrence
+            JOIN membership member ON member.id = occurrence.id_membership
+            WHERE occurrence.id_task = task.id), '[]'::json) AS executors,
+          COALESCE((SELECT json_agg(json_build_object(
+              'id', media.id,
+              'fileName', media.file_name,
+              'mimeType', media.mime_type
+            ) ORDER BY media.id)
+            FROM request_task_media media WHERE media.id_request_task = task.id), '[]'::json) AS photos
+          ,COALESCE((SELECT json_agg(json_build_object(
+              'id', task_checklist.id,
+              'checklistTypeId', checklist.id,
+              'name', checklist.name,
+              'description', COALESCE(checklist.description, ''),
+              'version', checklist.version,
+              'corporation', task_checklist.corporation,
+              'equipmentTag', task_checklist.equipment_tag,
+              'equipmentBrand', task_checklist.equipment_brand,
+              'equipmentModel', task_checklist.equipment_model,
+              'rentedEquipment', task_checklist.rented_equipment,
+              'serialNumber', task_checklist.serial_number,
+              'ptNumber', task_checklist.pt_number,
+              'values', COALESCE((SELECT json_agg(json_build_object(
+                'id', field_value.id,
+                'fieldId', field.id,
+                'name', field.name,
+                'type', field.type,
+                'value', field_value.value
+              ) ORDER BY field.display_order, field.id)
+                FROM checklist_field_value field_value
+                JOIN checklist_field_type field ON field.id = field_value.id_checklist_field_type
+                WHERE field_value.id_request_task_checklist = task_checklist.id), '[]'::json)
+            ) ORDER BY task_checklist.id)
+            FROM request_task_checklist task_checklist
+            JOIN checklist_type checklist ON checklist.id = task_checklist.id_checklist_type
+            WHERE task_checklist.id_request_task = task.id), '[]'::json) AS checklists
+         FROM request_task task
         ORDER BY id_request, start_datetime DESC NULLS LAST, id DESC`,
     ),
   ]);
@@ -157,9 +197,27 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
       id: Number(visit.id),
       startDate: formatVisitDate(visit.start_datetime),
       endDate: formatVisitDate(visit.stop_datetime),
+      startDatetime: formatVisitInputDate(visit.start_datetime),
+      endDatetime: formatVisitInputDate(visit.stop_datetime),
       description: visit.description ?? "Não informada",
+      executors: visit.executors ?? [],
+      photos: (visit.photos ?? []).map((photo) => ({
+        ...photo,
+        fileName: photo.fileName ?? "Anexo sem nome",
+        mimeType: photo.mimeType ?? "application/octet-stream",
+        url: `/api/request-task-media/${photo.id}`,
+      })),
+      checklists: visit.checklists ?? [],
     })),
   };
+}
+
+function formatVisitInputDate(value: Date | string | null): string {
+  if (!value) return "";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
+  return localDate.toISOString().slice(0, 16);
 }
 
 function formatVisitDate(value: Date | string | null): string {

@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
-import { addVisitAction, type AddVisitState } from "../actions";
+import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
+import { addChecklistAction, addVisitAction, deleteChecklistAction, updateVisitAction, type AddVisitState } from "../actions";
+import type { ChecklistDefinition, ChecklistSubmission } from "@/src/domain/entities/checklist";
 
 import type {
   RequestBoardCardViewModel,
@@ -9,19 +10,21 @@ import type {
 } from "@/src/presentation/view-models/request-board-view-model";
 
 type Executor = { id: number; name: string };
+type Visit = RequestBoardCardViewModel["visits"][number];
 
-export function RequestBoard({ columns, executors }: { columns: RequestBoardColumnViewModel[]; executors: Executor[] }) {
-  const [selectedRequest, setSelectedRequest] = useState<RequestBoardCardViewModel | null>(null);
+export function RequestBoard({ columns, executors, checklistDefinitions }: { columns: RequestBoardColumnViewModel[]; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
+  const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
+  const selectedRequest = columns.flatMap((column) => column.requests).find((request) => request.id === selectedRequestId) ?? null;
 
   return (
     <>
       <section className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
         {columns.map((column) => (
-          <RequestColumn key={column.id} column={column} onOpen={setSelectedRequest} />
+          <RequestColumn key={column.id} column={column} onOpen={(request) => setSelectedRequestId(request.id)} />
         ))}
       </section>
       {selectedRequest ? (
-        <RequestDetailsModal request={selectedRequest} executors={executors} onClose={() => setSelectedRequest(null)} />
+        <RequestDetailsModal request={selectedRequest} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedRequestId(null)} />
       ) : null}
     </>
   );
@@ -67,7 +70,7 @@ function RequestColumn({
   );
 }
 
-function RequestDetailsModal({ request, executors, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; onClose: () => void }) {
+function RequestDetailsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [showVisit, setShowVisit] = useState(false);
   const [showVisits, setShowVisits] = useState(false);
@@ -213,14 +216,16 @@ function RequestDetailsModal({ request, executors, onClose }: { request: Request
           ) : null}
         </div>
       </section>
-      {showVisits ? <VisitsModal request={request} onClose={() => setShowVisits(false)} /> : null}
-      {showVisit ? <AddVisitModal requestId={request.id} executors={executors} onClose={() => setShowVisit(false)} /> : null}
+      {showVisits ? <VisitsModal request={request} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisits(false)} /> : null}
+      {showVisit ? <AddVisitModal requestId={request.id} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisit(false)} /> : null}
     </div>
   );
 }
 
-function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel; onClose: () => void }) {
+function VisitsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [selectedVisitId, setSelectedVisitId] = useState<number | null>(null);
+  const selectedVisit = request.visits.find((visit) => visit.id === selectedVisitId) ?? null;
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -258,7 +263,7 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
           {request.visits.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2">
               {request.visits.map((visit) => (
-                <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-sm" key={visit.id}>
+                <button className="w-full rounded-xl border border-slate-200 bg-slate-50 p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300" key={visit.id} type="button" onClick={() => setSelectedVisitId(visit.id)} aria-label={`Visualizar visita de ${visit.startDate}`}>
                   <dl className="grid gap-4 border-b border-slate-200 pb-4 sm:grid-cols-2">
                     <ModalDetail label="Data de início" value={visit.startDate} />
                     <ModalDetail label="Data de fim" value={visit.endDate} />
@@ -266,7 +271,7 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
                   <dl className="pt-4">
                     <ModalDetail label="Descrição da visita" value={visit.description} />
                   </dl>
-                </article>
+                </button>
               ))}
             </div>
           ) : (
@@ -277,16 +282,132 @@ function VisitsModal({ request, onClose }: { request: RequestBoardCardViewModel;
           )}
         </div>
       </section>
+      {selectedVisit ? <VisitDetailsModal visit={selectedVisit} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedVisitId(null)} /> : null}
+    </div>
+  );
+}
+
+const initialUpdateVisitState: AddVisitState = { status: "idle", message: "" };
+
+function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: { visit: Visit; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
+  const action = updateVisitAction.bind(null, visit.id);
+  const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
+  const [editing, setEditing] = useState(false);
+  const [selectedExecutorIds, setSelectedExecutorIds] = useState(visit.executors.map((executor) => executor.id));
+  const [newMediaFiles, setNewMediaFiles] = useState<File[]>([]);
+  const newMedia = useMediaPreviews(newMediaFiles);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [deletingChecklist, startDeleteChecklist] = useTransition();
+  const [checklistMessage, setChecklistMessage] = useState("");
+
+  function cancelEditing() {
+    formRef.current?.reset();
+    setSelectedExecutorIds(visit.executors.map((executor) => executor.id));
+    setNewMediaFiles([]);
+    setEditing(false);
+  }
+
+  useEffect(() => {
+    if (state.status !== "success") return;
+    const timer = window.setTimeout(() => setEditing(false), 0);
+    return () => window.clearTimeout(timer);
+  }, [state.status]);
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+      <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
+          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da visita</p><h2 id="visit-details-title" className="mt-1 text-xl font-bold text-slate-900">Visita #{visit.id}</h2></div>
+          <div className="flex items-center gap-2">
+            <button type="button" disabled={editing} onClick={() => setEditing(true)} className="flex h-9 items-center gap-2 rounded-lg border border-blue-200 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400" aria-label="Editar visita"><EditIcon /> Editar</button>
+            <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar detalhes da visita" onClick={onClose}>×</button>
+          </div>
+        </header>
+        <form ref={formRef} action={formAction} className="space-y-6 p-6">
+          {selectedExecutorIds.map((id) => <input key={id} type="hidden" name="member_ids" value={id} />)}
+          <fieldset disabled={!editing || pending} className="space-y-6 disabled:pointer-events-none">
+            <VisitField label="Executantes">
+              <div className={`mt-2 max-h-44 space-y-1 overflow-y-auto rounded-xl border p-3 ${editing ? "border-slate-300 bg-white" : "border-slate-200 bg-slate-100"}`}>
+                {executors.map((executor) => <label className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm" key={executor.id}><input type="checkbox" className="h-4 w-4 accent-blue-600" checked={selectedExecutorIds.includes(executor.id)} onChange={() => setSelectedExecutorIds((ids) => ids.includes(executor.id) ? ids.filter((id) => id !== executor.id) : [...ids, executor.id])} />{executor.name}</label>)}
+              </div>
+            </VisitField>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <VisitField label="Data e hora do início"><input className={editing ? inputClass : readOnlyInputClass} name="start_datetime" type="datetime-local" defaultValue={visit.startDatetime} required /></VisitField>
+              <VisitField label="Data e hora do fim"><input className={editing ? inputClass : readOnlyInputClass} name="stop_datetime" type="datetime-local" defaultValue={visit.endDatetime} required /></VisitField>
+            </div>
+            <VisitField label="Descrição"><textarea className={`${editing ? inputClass : readOnlyInputClass} min-h-28 resize-none`} name="description" defaultValue={visit.description} maxLength={300} required /></VisitField>
+          </fieldset>
+          <VisitMediaField
+            media={[...visit.photos, ...newMedia]}
+            input={editing ? (
+              <input
+                className="mt-3 block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700"
+                name="photos"
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                onChange={(event) => setNewMediaFiles(Array.from(event.target.files ?? []))}
+              />
+            ) : null}
+          />
+          <section className="space-y-3 border-t border-slate-200 pt-5" aria-labelledby="visit-checklists-title">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div><h3 id="visit-checklists-title" className="font-bold text-slate-900">Checklists</h3><p className="text-sm text-slate-500">Registros imutáveis vinculados a esta visita.</p></div>
+              <button className="rounded-lg border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" type="button" onClick={() => setShowChecklist(true)}>＋ Adicionar checklist</button>
+            </div>
+            {visit.checklists.length ? <ul className="space-y-3">
+              {visit.checklists.map((checklist, index) => <li key={checklist.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div><p className="font-semibold text-slate-900">{checklist.name} <span className="font-normal text-slate-500">#{index + 1}</span></p><p className="text-xs text-slate-500">Versão {checklist.version}{checklist.description ? ` · ${checklist.description}` : ""}</p></div>
+                  <button disabled={deletingChecklist} className="text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50" type="button" onClick={() => {
+                    if (!window.confirm(`Excluir a ocorrência de ${checklist.name}?`)) return;
+                    startDeleteChecklist(async () => { const result = await deleteChecklistAction(checklist.id); setChecklistMessage(result.message); });
+                  }}>Excluir</button>
+                </div>
+                <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <ModalDetail label="Empresa/Setor" value={formatChecklistValue(checklist.corporation)} />
+                  <ModalDetail label="Tag" value={formatChecklistValue(checklist.equipmentTag)} />
+                  <ModalDetail label="Marca" value={formatChecklistValue(checklist.equipmentBrand)} />
+                  <ModalDetail label="Modelo" value={formatChecklistValue(checklist.equipmentModel)} />
+                  <ModalDetail label="Equipamento alugado?" value={formatChecklistValue(checklist.rentedEquipment)} />
+                  <ModalDetail label="Nº Série ou Patrimônio" value={formatChecklistValue(checklist.serialNumber)} />
+                  <ModalDetail label="PT" value={formatChecklistValue(checklist.ptNumber)} />
+                  {checklist.values.map((item) => <ModalDetail key={item.id} label={item.name} value={formatChecklistValue(item.value)} />)}
+                </dl>
+              </li>)}
+            </ul> : <p className="rounded-xl border border-dashed border-slate-300 p-5 text-center text-sm text-slate-500">Nenhum checklist vinculado.</p>}
+            {checklistMessage ? <p className="text-sm text-slate-600" role="status">{checklistMessage}</p> : null}
+          </section>
+          {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
+          {editing ? <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={cancelEditing}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Salvar"}</button></footer> : null}
+        </form>
+      </section>
+      {showChecklist ? <AddChecklistModal visitId={visit.id} definitions={checklistDefinitions} onClose={() => setShowChecklist(false)} /> : null}
     </div>
   );
 }
 
 const initialVisitState: AddVisitState = { status: "idle", message: "" };
 
-function AddVisitModal({ requestId, executors, onClose }: { requestId: number; executors: Executor[]; onClose: () => void }) {
+function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: { requestId: number; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = addVisitAction.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
-  const [photoNames, setPhotoNames] = useState<string[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
+  const mediaPreviews = useMediaPreviews(mediaFiles);
+  const [executorSearch, setExecutorSearch] = useState("");
+  const [selectedExecutorIds, setSelectedExecutorIds] = useState<number[]>([]);
+  const normalizedSearch = normalizeSearchValue(executorSearch);
+  const filteredExecutors = executors.filter((executor) => normalizeSearchValue(executor.name).includes(normalizedSearch));
+  const [checklists, setChecklists] = useState<ChecklistDraft[]>([]);
+
+  function toggleExecutor(executorId: number) {
+    setSelectedExecutorIds((currentIds) => (
+      currentIds.includes(executorId)
+        ? currentIds.filter((id) => id !== executorId)
+        : [...currentIds, executorId]
+    ));
+  }
 
   useEffect(() => {
     if (state.status === "success") {
@@ -298,38 +419,284 @@ function AddVisitModal({ requestId, executors, onClose }: { requestId: number; e
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
       <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
-        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
         </header>
-        <form action={formAction} className="space-y-6 p-6">
-          <fieldset>
-            <legend className="mb-2 text-sm font-semibold text-slate-700">Executantes <span className="text-red-500">*</span></legend>
-            <div className="grid max-h-36 gap-2 overflow-y-auto rounded-xl border border-slate-200 p-3 sm:grid-cols-2">
-              {executors.map((executor) => <label className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-blue-50" key={executor.id}><input className="h-4 w-4 accent-blue-600" type="checkbox" name="member_ids" value={executor.id} />{executor.name}</label>)}
+        <form action={formAction} className="space-y-5 p-6">
+          <input type="hidden" name="checklists_json" value={serializeChecklists(checklists)} />
+          <div className="grid gap-5 md:grid-cols-2 md:items-start">
+            <div className="grid gap-5">
+              <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
+              <VisitField label="Data e hora do fim"><input className={inputClass} name="stop_datetime" type="datetime-local" required /></VisitField>
             </div>
-          </fieldset>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <VisitField label="Data e hora do início"><input className={inputClass} name="start_datetime" type="datetime-local" required /></VisitField>
-            <VisitField label="Data e hora do fim"><input className={inputClass} name="stop_datetime" type="datetime-local" required /></VisitField>
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold text-slate-700">Executante(s) <span className="text-red-500">*</span></legend>
+              <label className="relative block">
+                <span className="sr-only">Buscar executante pelo nome</span>
+                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400" aria-hidden="true">
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+                </span>
+                <input
+                  className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  type="search"
+                  value={executorSearch}
+                  onChange={(event) => setExecutorSearch(event.target.value)}
+                  placeholder="Buscar executante pelo nome"
+                />
+              </label>
+              {selectedExecutorIds.map((executorId) => <input key={executorId} type="hidden" name="member_ids" value={executorId} />)}
+              <div className="mt-2 h-[132px] space-y-0.5 overflow-y-auto rounded-lg border border-slate-200 p-2">
+                {filteredExecutors.length ? filteredExecutors.map((executor) => (
+                  <label className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-blue-50" key={executor.id}>
+                    <input
+                      className="h-4 w-4 accent-blue-600"
+                      type="checkbox"
+                      checked={selectedExecutorIds.includes(executor.id)}
+                      onChange={() => toggleExecutor(executor.id)}
+                    />
+                    {executor.name}
+                  </label>
+                )) : <p className="px-2 py-4 text-center text-sm text-slate-500">Nenhum executante encontrado.</p>}
+              </div>
+            </fieldset>
           </div>
-          <VisitField label="Descrição"><textarea className={`${inputClass} min-h-28 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
+          <VisitField label="Descrição"><textarea className={`${inputClass} min-h-24 resize-y`} maxLength={300} name="description" placeholder="Descreva as atividades realizadas durante a visita" required /></VisitField>
           <VisitField label="Registros fotográficos">
-            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-200 bg-blue-50/50 px-4 py-6 text-center text-sm text-blue-700 hover:bg-blue-50">
-              <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos</strong><span className="mt-1 text-xs text-slate-500">Imagens de até 10 MB cada</span>
-              <input className="sr-only" name="photos" type="file" accept="image/*" multiple required onChange={(event) => setPhotoNames(Array.from(event.target.files ?? [], (file) => file.name))} />
+            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/30 px-4 py-4 text-center text-sm text-blue-700 hover:bg-blue-50">
+              <span className="text-2xl" aria-hidden="true">＋</span><strong>Selecionar fotos ou vídeos</strong><span className="mt-1 text-xs text-slate-500">Arquivos de até 10 MB cada</span>
+              <input className="sr-only" name="photos" type="file" accept="image/*,video/*" multiple required onChange={(event) => setMediaFiles(Array.from(event.target.files ?? []))} />
             </label>
-            {photoNames.length ? <ul className="mt-2 text-xs text-slate-500">{photoNames.map((name) => <li className="truncate" key={name}>• {name}</li>)}</ul> : null}
           </VisitField>
+          <MediaGallery media={mediaPreviews} emptyMessage="Selecione fotos ou vídeos para pré-visualizá-los." />
+          <ChecklistCollectionEditor definitions={checklistDefinitions} drafts={checklists} onChange={setChecklists} />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
-          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
+          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
       </section>
     </div>
   );
 }
 
+type ChecklistDraft = {
+  key: number;
+  checklistTypeId: number;
+  corporation: string;
+  equipmentTag: string;
+  equipmentBrand: string;
+  equipmentModel: string;
+  rentedEquipment: boolean | null;
+  serialNumber: string;
+  ptNumber: string;
+  values: Record<number, unknown>;
+};
+
+function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number; definitions: ChecklistDefinition[]; onClose: () => void }) {
+  const action = addChecklistAction.bind(null, visitId);
+  const [state, formAction, pending] = useActionState(action, initialVisitState);
+  const [drafts, setDrafts] = useState<ChecklistDraft[]>([]);
+
+  useEffect(() => {
+    if (state.status !== "success") return;
+    const timer = window.setTimeout(onClose, 900);
+    return () => window.clearTimeout(timer);
+  }, [onClose, state.status]);
+
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+    <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Visita #{visitId}</p><h2 id="add-checklist-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar checklist</h2></div><button className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500" type="button" onClick={onClose} aria-label="Fechar formulário de checklist">×</button></header>
+      <form action={formAction} className="space-y-5 p-6">
+        <input type="hidden" name="checklists_json" value={serializeChecklists(drafts)} />
+        <ChecklistCollectionEditor definitions={definitions} drafts={drafts} onChange={setDrafts} maximum={1} />
+        {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
+        <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50" type="submit" disabled={pending || drafts.length !== 1}>{pending ? "Salvando..." : "Adicionar checklist"}</button></footer>
+      </form>
+    </section>
+  </div>;
+}
+
+function ChecklistCollectionEditor({ definitions, drafts, onChange, maximum }: { definitions: ChecklistDefinition[]; drafts: ChecklistDraft[]; onChange: (drafts: ChecklistDraft[]) => void; maximum?: number }) {
+  function addDraft() {
+    const first = definitions[0];
+    if (!first || (maximum != null && drafts.length >= maximum)) return;
+    onChange([...drafts, createChecklistDraft(first.id, Date.now() + drafts.length)]);
+  }
+  return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-editor-title">
+    <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 id="checklist-editor-title" className="font-bold text-slate-900">Checklists da visita</h3><p className="text-sm text-slate-500">É permitido adicionar várias ocorrências do mesmo tipo.</p></div><button className="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50" disabled={!definitions.length || (maximum != null && drafts.length >= maximum)} type="button" onClick={addDraft}>＋ Adicionar checklist</button></div>
+    {!definitions.length ? <p className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">Nenhum tipo de checklist ativo disponível.</p> : null}
+    {drafts.map((draft, index) => {
+      const definition = definitions.find((item) => item.id === draft.checklistTypeId) ?? definitions[0];
+      return <fieldset key={draft.key} className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
+        <div className="flex items-end justify-between gap-4"><label className="flex-1 text-sm font-semibold text-slate-700">Tipo de checklist<select className={`${inputClass} mt-2`} value={draft.checklistTypeId} onChange={(event) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, checklistTypeId: Number(event.target.value), values: {} } : item))}>{definitions.map((item) => <option key={item.id} value={item.id}>{item.name} — v{item.version}</option>)}</select></label><button className="mb-2 text-sm font-semibold text-red-600" type="button" onClick={() => onChange(drafts.filter((item) => item.key !== draft.key))}>Remover</button></div>
+        {definition.description ? <p className="text-sm text-slate-500">{definition.description}</p> : null}
+        <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div><h4 className="font-semibold text-slate-800">Identificação do equipamento</h4><p className="text-xs text-slate-500">Todos os campos desta seção são opcionais.</p></div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ChecklistMetadataField label="Empresa/Setor" maxLength={255} value={draft.corporation} onChange={(corporation) => updateChecklistDraft(drafts, draft.key, { corporation }, onChange)} />
+            <ChecklistMetadataField label="Tag" maxLength={100} value={draft.equipmentTag} onChange={(equipmentTag) => updateChecklistDraft(drafts, draft.key, { equipmentTag }, onChange)} />
+            <ChecklistMetadataField label="Marca" maxLength={255} value={draft.equipmentBrand} onChange={(equipmentBrand) => updateChecklistDraft(drafts, draft.key, { equipmentBrand }, onChange)} />
+            <ChecklistMetadataField label="Modelo" maxLength={255} value={draft.equipmentModel} onChange={(equipmentModel) => updateChecklistDraft(drafts, draft.key, { equipmentModel }, onChange)} />
+            <label><span className="mb-2 block text-sm font-semibold text-slate-700">Equipamento alugado?</span><select className={inputClass} value={draft.rentedEquipment == null ? "" : String(draft.rentedEquipment)} onChange={(event) => updateChecklistDraft(drafts, draft.key, { rentedEquipment: event.target.value === "" ? null : event.target.value === "true" }, onChange)}><option value="">Não informado</option><option value="true">Sim</option><option value="false">Não</option></select></label>
+            <ChecklistMetadataField label="Nº Série ou Patrimônio" maxLength={255} value={draft.serialNumber} onChange={(serialNumber) => updateChecklistDraft(drafts, draft.key, { serialNumber }, onChange)} />
+            <ChecklistMetadataField label="PT" maxLength={20} value={draft.ptNumber} onChange={(ptNumber) => updateChecklistDraft(drafts, draft.key, { ptNumber }, onChange)} />
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">{definition.fields.map((field) => <ChecklistDynamicField key={field.id} field={field} value={draft.values[field.id]} onChange={(value) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, values: { ...item.values, [field.id]: value } } : item))} />)}</div>
+        <span className="sr-only">Ocorrência {index + 1}</span>
+      </fieldset>;
+    })}
+  </section>;
+}
+
+function createChecklistDraft(checklistTypeId: number, key: number): ChecklistDraft {
+  return { key, checklistTypeId, corporation: "", equipmentTag: "", equipmentBrand: "", equipmentModel: "", rentedEquipment: null, serialNumber: "", ptNumber: "", values: {} };
+}
+
+function updateChecklistDraft(drafts: ChecklistDraft[], key: number, update: Partial<ChecklistDraft>, onChange: (drafts: ChecklistDraft[]) => void) {
+  onChange(drafts.map((draft) => draft.key === key ? { ...draft, ...update } : draft));
+}
+
+function ChecklistMetadataField({ label, maxLength, value, onChange }: { label: string; maxLength: number; value: string; onChange: (value: string) => void }) {
+  return <label><span className="mb-2 block text-sm font-semibold text-slate-700">{label}</span><input className={inputClass} type="text" maxLength={maxLength} value={value} onChange={(event) => onChange(event.target.value)} /></label>;
+}
+
+function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDefinition["fields"][number]; value: unknown; onChange: (value: unknown) => void }) {
+  const id = `${useId()}-checklist-field-${field.id}`;
+  const label = <span className="mb-2 block text-sm font-semibold text-slate-700">{field.name}{field.required ? <span className="text-red-500"> *</span> : null}</span>;
+  if (field.type === "BOOL") return <label className="sm:col-span-2">{label}<select id={id} className={inputClass} required={field.required} value={value == null ? "" : String(value)} onChange={(event) => onChange(event.target.value === "true")}><option value="">Selecione...</option><option value="true">Sim</option><option value="false">Não</option></select></label>;
+  if (field.type === "SINGLE_SELECT") return <label>{label}<select id={id} className={inputClass} required={field.required} value={String(value ?? "")} onChange={(event) => onChange(event.target.value)}><option value="">Selecione...</option>{field.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>;
+  if (field.type === "MULTI_SELECT") return <fieldset><legend>{label}</legend><div className="max-h-40 space-y-2 overflow-auto rounded-xl border border-slate-300 p-3">{field.options.map((option) => { const selected = Array.isArray(value) ? value as string[] : []; return <label key={option.value} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={selected.includes(option.value)} onChange={() => onChange(selected.includes(option.value) ? selected.filter((item) => item !== option.value) : [...selected, option.value])} />{option.label}</label>; })}</div>{field.required && (!Array.isArray(value) || value.length === 0) ? <input className="sr-only" required value="" onChange={() => undefined} aria-label={field.name} /> : null}</fieldset>;
+  const inputType = field.type === "NUMBER" ? "number" : field.type === "DATE" ? "date" : "text";
+  return <label className={field.type === "TEXT" ? "sm:col-span-2" : undefined}>{label}<input id={id} className={inputClass} type={inputType} required={field.required} value={String(value ?? "")} onChange={(event) => onChange(field.type === "NUMBER" ? (event.target.value === "" ? "" : Number(event.target.value)) : event.target.value)} /></label>;
+}
+
+function serializeChecklists(drafts: ChecklistDraft[]): string {
+  const submissions: ChecklistSubmission[] = drafts.map((draft) => ({
+    checklistTypeId: draft.checklistTypeId,
+    corporation: draft.corporation || null,
+    equipmentTag: draft.equipmentTag || null,
+    equipmentBrand: draft.equipmentBrand || null,
+    equipmentModel: draft.equipmentModel || null,
+    rentedEquipment: draft.rentedEquipment,
+    serialNumber: draft.serialNumber || null,
+    ptNumber: draft.ptNumber || null,
+    values: Object.entries(draft.values).map(([fieldId, value]) => ({ fieldId: Number(fieldId), value })),
+  }));
+  return JSON.stringify(submissions);
+}
+
+function formatChecklistValue(value: unknown): string {
+  if (value == null || value === "") return "Não informado";
+  if (typeof value === "boolean") return value ? "Sim" : "Não";
+  if (Array.isArray(value)) return value.join(", ");
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+type GalleryMedia = {
+  id: number | string;
+  fileName: string;
+  mimeType: string;
+  url: string;
+};
+
+function useMediaPreviews(files: File[]): GalleryMedia[] {
+  const previews = useMemo(() => files.map((file, index) => ({
+      id: `preview-${index}-${file.name}-${file.lastModified}`,
+      fileName: file.name,
+      mimeType: file.type,
+      url: URL.createObjectURL(file),
+    })), [files]);
+
+  useEffect(() => {
+    return () => previews.forEach((media) => URL.revokeObjectURL(media.url));
+  }, [previews]);
+
+  return previews;
+}
+
+function VisitMediaField({ media, input }: { media: GalleryMedia[]; input?: React.ReactNode }) {
+  return (
+    <section aria-labelledby="visit-media-label">
+      <h3 className="text-sm font-semibold text-slate-700" id="visit-media-label">Registros fotográficos</h3>
+      <div className="mt-2">
+        <MediaGallery media={media} />
+      </div>
+      {input}
+    </section>
+  );
+}
+
+function MediaGallery({ media, emptyMessage = "Nenhum registro fotográfico." }: { media: GalleryMedia[]; emptyMessage?: string }) {
+  const [mode, setMode] = useState<"carousel" | "grid">("carousel");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (activeIndex < media.length) return;
+    const timer = window.setTimeout(() => setActiveIndex(Math.max(0, media.length - 1)), 0);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, media.length]);
+
+  if (!media.length) {
+    return <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-500">{emptyMessage}</div>;
+  }
+
+  const activeMedia = media[activeIndex] ?? media[0];
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs font-medium text-slate-500">{media.length} {media.length === 1 ? "anexo" : "anexos"}</p>
+        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-1" aria-label="Modo de visualização" role="group">
+          <GalleryModeButton active={mode === "carousel"} onClick={() => setMode("carousel")}>Carrossel</GalleryModeButton>
+          <GalleryModeButton active={mode === "grid"} onClick={() => setMode("grid")}>Grid</GalleryModeButton>
+        </div>
+      </div>
+
+      {mode === "carousel" ? (
+        <div>
+          <MediaItem media={activeMedia} featured />
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <button className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={media.length < 2} onClick={() => setActiveIndex((index) => (index - 1 + media.length) % media.length)} aria-label="Exibir anexo anterior">‹ Anterior</button>
+            <span className="text-xs font-semibold tabular-nums text-slate-500" aria-live="polite">{activeIndex + 1} de {media.length}</span>
+            <button className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={media.length < 2} onClick={() => setActiveIndex((index) => (index + 1) % media.length)} aria-label="Exibir próximo anexo">Próximo ›</button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {media.map((item) => <MediaItem key={item.id} media={item} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GalleryModeButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return <button className={`rounded-md px-3 py-1.5 text-xs font-semibold transition ${active ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"}`} type="button" aria-pressed={active} onClick={onClick}>{children}</button>;
+}
+
+function MediaItem({ media, featured = false }: { media: GalleryMedia; featured?: boolean }) {
+  const mediaClass = featured ? "h-[min(52vh,30rem)] w-full" : "aspect-video w-full";
+  return (
+    <figure className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      {media.mimeType.startsWith("video/") ? (
+        <video className={`${mediaClass} bg-slate-950 object-contain`} controls playsInline preload="metadata" src={media.url}>
+          Seu navegador não suporta a reprodução deste vídeo.
+        </video>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element -- URLs locais e binárias não possuem dimensões conhecidas.
+        <img className={`${mediaClass} bg-slate-100 object-contain`} src={media.url} alt={`Registro fotográfico: ${media.fileName}`} />
+      )}
+      <figcaption className="truncate border-t border-slate-200 px-3 py-2 text-xs font-medium text-slate-600" title={media.fileName}>{media.fileName}</figcaption>
+    </figure>
+  );
+}
+
+function normalizeSearchValue(value: string) {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+}
+
 const inputClass = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+const readOnlyInputClass = "mt-2 w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-500 opacity-100";
 function VisitField({ label, children }: { label: string; children: React.ReactNode }) { return <label className="block text-sm font-semibold text-slate-700">{label} <span className="text-red-500">*</span>{children}</label>; }
 
 const STANDARD_REQUEST_DETAIL_IDS = new Set([
@@ -371,3 +738,4 @@ function CardDetail({ icon: detailIcon, label, value }: { icon: React.ReactNode;
 
 function RequesterIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.6-4 3-6 7-6s6.4 2 7 6"/></svg>; }
 function LocationIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>; }
+function EditIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m4 20 4.2-1 10.6-10.6a2 2 0 0 0-2.8-2.8L5.4 16.2 4 20Z"/><path d="m14.5 7.1 2.8 2.8"/></svg>; }

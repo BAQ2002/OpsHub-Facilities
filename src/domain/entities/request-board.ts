@@ -13,7 +13,19 @@ export type RequestBoardVisit = {
   id: number;
   startDate: string;
   endDate: string;
+  startDatetime: string;
+  endDatetime: string;
   description: string;
+  executors: { id: number; name: string }[];
+  photos: RequestBoardVisitMedia[];
+  checklists: import("./checklist").VisitChecklist[];
+};
+
+export type RequestBoardVisitMedia = {
+  id: number;
+  fileName: string;
+  mimeType: string;
+  url: string;
 };
 
 export type RequestBoardDetail = {
