@@ -365,7 +365,16 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
                     startDeleteChecklist(async () => { const result = await deleteChecklistAction(checklist.id); setChecklistMessage(result.message); });
                   }}>Excluir</button>
                 </div>
-                <dl className="mt-3 grid gap-3 sm:grid-cols-2">{checklist.values.map((item) => <ModalDetail key={item.id} label={item.name} value={formatChecklistValue(item.value)} />)}</dl>
+                <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <ModalDetail label="Empresa/Setor" value={formatChecklistValue(checklist.corporation)} />
+                  <ModalDetail label="Tag" value={formatChecklistValue(checklist.equipmentTag)} />
+                  <ModalDetail label="Marca" value={formatChecklistValue(checklist.equipmentBrand)} />
+                  <ModalDetail label="Modelo" value={formatChecklistValue(checklist.equipmentModel)} />
+                  <ModalDetail label="Equipamento alugado?" value={formatChecklistValue(checklist.rentedEquipment)} />
+                  <ModalDetail label="Nº Série ou Patrimônio" value={formatChecklistValue(checklist.serialNumber)} />
+                  <ModalDetail label="PT" value={formatChecklistValue(checklist.ptNumber)} />
+                  {checklist.values.map((item) => <ModalDetail key={item.id} label={item.name} value={formatChecklistValue(item.value)} />)}
+                </dl>
               </li>)}
             </ul> : <p className="rounded-xl border border-dashed border-slate-300 p-5 text-center text-sm text-slate-500">Nenhum checklist vinculado.</p>}
             {checklistMessage ? <p className="text-sm text-slate-600" role="status">{checklistMessage}</p> : null}
@@ -469,7 +478,18 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
   );
 }
 
-type ChecklistDraft = { key: number; checklistTypeId: number; values: Record<number, unknown> };
+type ChecklistDraft = {
+  key: number;
+  checklistTypeId: number;
+  corporation: string;
+  equipmentTag: string;
+  equipmentBrand: string;
+  equipmentModel: string;
+  rentedEquipment: boolean | null;
+  serialNumber: string;
+  ptNumber: string;
+  values: Record<number, unknown>;
+};
 
 function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number; definitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = addChecklistAction.bind(null, visitId);
@@ -499,7 +519,7 @@ function ChecklistCollectionEditor({ definitions, drafts, onChange, maximum }: {
   function addDraft() {
     const first = definitions[0];
     if (!first || (maximum != null && drafts.length >= maximum)) return;
-    onChange([...drafts, { key: Date.now() + drafts.length, checklistTypeId: first.id, values: {} }]);
+    onChange([...drafts, createChecklistDraft(first.id, Date.now() + drafts.length)]);
   }
   return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-editor-title">
     <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 id="checklist-editor-title" className="font-bold text-slate-900">Checklists da visita</h3><p className="text-sm text-slate-500">É permitido adicionar várias ocorrências do mesmo tipo.</p></div><button className="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50" disabled={!definitions.length || (maximum != null && drafts.length >= maximum)} type="button" onClick={addDraft}>＋ Adicionar checklist</button></div>
@@ -509,11 +529,35 @@ function ChecklistCollectionEditor({ definitions, drafts, onChange, maximum }: {
       return <fieldset key={draft.key} className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
         <div className="flex items-end justify-between gap-4"><label className="flex-1 text-sm font-semibold text-slate-700">Tipo de checklist<select className={`${inputClass} mt-2`} value={draft.checklistTypeId} onChange={(event) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, checklistTypeId: Number(event.target.value), values: {} } : item))}>{definitions.map((item) => <option key={item.id} value={item.id}>{item.name} — v{item.version}</option>)}</select></label><button className="mb-2 text-sm font-semibold text-red-600" type="button" onClick={() => onChange(drafts.filter((item) => item.key !== draft.key))}>Remover</button></div>
         {definition.description ? <p className="text-sm text-slate-500">{definition.description}</p> : null}
+        <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div><h4 className="font-semibold text-slate-800">Identificação do equipamento</h4><p className="text-xs text-slate-500">Todos os campos desta seção são opcionais.</p></div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ChecklistMetadataField label="Empresa/Setor" maxLength={255} value={draft.corporation} onChange={(corporation) => updateChecklistDraft(drafts, draft.key, { corporation }, onChange)} />
+            <ChecklistMetadataField label="Tag" maxLength={100} value={draft.equipmentTag} onChange={(equipmentTag) => updateChecklistDraft(drafts, draft.key, { equipmentTag }, onChange)} />
+            <ChecklistMetadataField label="Marca" maxLength={255} value={draft.equipmentBrand} onChange={(equipmentBrand) => updateChecklistDraft(drafts, draft.key, { equipmentBrand }, onChange)} />
+            <ChecklistMetadataField label="Modelo" maxLength={255} value={draft.equipmentModel} onChange={(equipmentModel) => updateChecklistDraft(drafts, draft.key, { equipmentModel }, onChange)} />
+            <label><span className="mb-2 block text-sm font-semibold text-slate-700">Equipamento alugado?</span><select className={inputClass} value={draft.rentedEquipment == null ? "" : String(draft.rentedEquipment)} onChange={(event) => updateChecklistDraft(drafts, draft.key, { rentedEquipment: event.target.value === "" ? null : event.target.value === "true" }, onChange)}><option value="">Não informado</option><option value="true">Sim</option><option value="false">Não</option></select></label>
+            <ChecklistMetadataField label="Nº Série ou Patrimônio" maxLength={255} value={draft.serialNumber} onChange={(serialNumber) => updateChecklistDraft(drafts, draft.key, { serialNumber }, onChange)} />
+            <ChecklistMetadataField label="PT" maxLength={20} value={draft.ptNumber} onChange={(ptNumber) => updateChecklistDraft(drafts, draft.key, { ptNumber }, onChange)} />
+          </div>
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">{definition.fields.map((field) => <ChecklistDynamicField key={field.id} field={field} value={draft.values[field.id]} onChange={(value) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, values: { ...item.values, [field.id]: value } } : item))} />)}</div>
         <span className="sr-only">Ocorrência {index + 1}</span>
       </fieldset>;
     })}
   </section>;
+}
+
+function createChecklistDraft(checklistTypeId: number, key: number): ChecklistDraft {
+  return { key, checklistTypeId, corporation: "", equipmentTag: "", equipmentBrand: "", equipmentModel: "", rentedEquipment: null, serialNumber: "", ptNumber: "", values: {} };
+}
+
+function updateChecklistDraft(drafts: ChecklistDraft[], key: number, update: Partial<ChecklistDraft>, onChange: (drafts: ChecklistDraft[]) => void) {
+  onChange(drafts.map((draft) => draft.key === key ? { ...draft, ...update } : draft));
+}
+
+function ChecklistMetadataField({ label, maxLength, value, onChange }: { label: string; maxLength: number; value: string; onChange: (value: string) => void }) {
+  return <label><span className="mb-2 block text-sm font-semibold text-slate-700">{label}</span><input className={inputClass} type="text" maxLength={maxLength} value={value} onChange={(event) => onChange(event.target.value)} /></label>;
 }
 
 function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDefinition["fields"][number]; value: unknown; onChange: (value: unknown) => void }) {
@@ -527,7 +571,17 @@ function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDef
 }
 
 function serializeChecklists(drafts: ChecklistDraft[]): string {
-  const submissions: ChecklistSubmission[] = drafts.map((draft) => ({ checklistTypeId: draft.checklistTypeId, values: Object.entries(draft.values).map(([fieldId, value]) => ({ fieldId: Number(fieldId), value })) }));
+  const submissions: ChecklistSubmission[] = drafts.map((draft) => ({
+    checklistTypeId: draft.checklistTypeId,
+    corporation: draft.corporation || null,
+    equipmentTag: draft.equipmentTag || null,
+    equipmentBrand: draft.equipmentBrand || null,
+    equipmentModel: draft.equipmentModel || null,
+    rentedEquipment: draft.rentedEquipment,
+    serialNumber: draft.serialNumber || null,
+    ptNumber: draft.ptNumber || null,
+    values: Object.entries(draft.values).map(([fieldId, value]) => ({ fieldId: Number(fieldId), value })),
+  }));
   return JSON.stringify(submissions);
 }
 

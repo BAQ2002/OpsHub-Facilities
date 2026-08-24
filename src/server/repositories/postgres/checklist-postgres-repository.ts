@@ -103,8 +103,22 @@ export async function insertChecklistSubmissions(client: PgClient, visitId: numb
     }
 
     const checklist = await client.query<{ id: number }>(
-      `INSERT INTO request_task_checklist (id_checklist_type, id_request_task) VALUES ($1, $2) RETURNING id`,
-      [typeId, visitId],
+      `INSERT INTO request_task_checklist
+         (id_checklist_type, id_request_task, corporation, equipment_tag, equipment_brand,
+          equipment_model, rented_equipment, serial_number, pt_number)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING id`,
+      [
+        typeId,
+        visitId,
+        submission.corporation,
+        submission.equipmentTag,
+        submission.equipmentBrand,
+        submission.equipmentModel,
+        submission.rentedEquipment,
+        submission.serialNumber,
+        submission.ptNumber,
+      ],
     );
     for (const field of fields.rows) {
       const value = submitted.get(Number(field.id));

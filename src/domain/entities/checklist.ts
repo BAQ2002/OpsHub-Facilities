@@ -20,6 +20,13 @@ export type ChecklistDefinition = {
 
 export type ChecklistSubmission = {
   checklistTypeId: number;
+  corporation: string | null;
+  equipmentTag: string | null;
+  equipmentBrand: string | null;
+  equipmentModel: string | null;
+  rentedEquipment: boolean | null;
+  serialNumber: string | null;
+  ptNumber: string | null;
   values: { fieldId: number; value: unknown }[];
 };
 
@@ -29,5 +36,12 @@ export type VisitChecklist = {
   name: string;
   description: string;
   version: string;
+  corporation: string | null;
+  equipmentTag: string | null;
+  equipmentBrand: string | null;
+  equipmentModel: string | null;
+  rentedEquipment: boolean | null;
+  serialNumber: string | null;
+  ptNumber: string | null;
   values: { id: number; fieldId: number; name: string; type: string; value: unknown }[];
 };
