@@ -511,7 +511,7 @@ function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number;
   }, [onClose, state.status]);
 
   return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-    <section className="max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
+    <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
       <div className="max-h-[92vh] overflow-y-auto">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-5"><div><p className="text-xs font-bold uppercase tracking-wider text-blue-600">Checklist</p><h2 id="add-checklist-title" className="mt-1 text-xl font-bold text-slate-950">Aplicar checklist</h2></div><button className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 transition hover:bg-slate-50 hover:text-slate-800" type="button" onClick={onClose} aria-label="Fechar formulário de checklist">×</button></header>
       <form action={formAction} className="space-y-6 p-6">
