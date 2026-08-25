@@ -115,9 +115,10 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
       <section
         aria-labelledby="request-modal-title"
         aria-modal="true"
-        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+        className="max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl"
         role="dialog"
       >
+        <div className="max-h-[90vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da request</p>
@@ -215,6 +216,7 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
             </section>
           ) : null}
         </div>
+        </div>
       </section>
       {showVisits ? <VisitsModal request={request} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisits(false)} /> : null}
       {showVisit ? <AddVisitModal requestId={request.id} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setShowVisit(false)} /> : null}
@@ -238,11 +240,12 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
       onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
     >
       <section
-        className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+        className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="visits-modal-title"
       >
+        <div className="max-h-[90vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{request.id}</p>
@@ -281,6 +284,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
             </div>
           )}
         </div>
+        </div>
       </section>
       {selectedVisit ? <VisitDetailsModal visit={selectedVisit} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedVisitId(null)} /> : null}
     </div>
@@ -316,7 +320,8 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-      <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
+      <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
+        <div className="max-h-[92vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da visita</p><h2 id="visit-details-title" className="mt-1 text-xl font-bold text-slate-900">Visita #{visit.id}</h2></div>
           <div className="flex items-center gap-2">
@@ -382,6 +387,7 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           {editing ? <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={cancelEditing}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Salvar"}</button></footer> : null}
         </form>
+        </div>
       </section>
       {showChecklist ? <AddChecklistModal visitId={visit.id} definitions={checklistDefinitions} onClose={() => setShowChecklist(false)} /> : null}
     </div>
@@ -418,7 +424,8 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-      <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
+      <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
+        <div className="max-h-[92vh] overflow-y-auto">
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
@@ -473,6 +480,7 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
+        </div>
       </section>
     </div>
   );
@@ -503,7 +511,8 @@ function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number;
   }, [onClose, state.status]);
 
   return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-    <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
+    <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="add-checklist-title">
+      <div className="max-h-[92vh] overflow-y-auto">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Visita #{visitId}</p><h2 id="add-checklist-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar checklist</h2></div><button className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500" type="button" onClick={onClose} aria-label="Fechar formulário de checklist">×</button></header>
       <form action={formAction} className="space-y-5 p-6">
         <input type="hidden" name="checklists_json" value={serializeChecklists(drafts)} />
@@ -511,6 +520,7 @@ function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number;
         {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
         <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50" type="submit" disabled={pending || drafts.length !== 1}>{pending ? "Salvando..." : "Adicionar checklist"}</button></footer>
       </form>
+      </div>
     </section>
   </div>;
 }
