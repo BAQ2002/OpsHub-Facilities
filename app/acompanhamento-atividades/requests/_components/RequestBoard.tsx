@@ -406,6 +406,7 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
   const normalizedSearch = normalizeSearchValue(executorSearch);
   const filteredExecutors = executors.filter((executor) => normalizeSearchValue(executor.name).includes(normalizedSearch));
   const [checklists, setChecklists] = useState<ChecklistDraft[]>([]);
+  const [checklistModalKey, setChecklistModalKey] = useState<number | "new" | null>(null);
 
   function toggleExecutor(executorId: number) {
     setSelectedExecutorIds((currentIds) => (
@@ -476,12 +477,31 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
             </label>
           </VisitField>
           <MediaGallery media={mediaPreviews} emptyMessage="Selecione fotos ou vídeos para pré-visualizá-los." />
-          <ChecklistCollectionEditor definitions={checklistDefinitions} drafts={checklists} onChange={setChecklists} />
+          <ChecklistDraftSummary
+            definitions={checklistDefinitions}
+            drafts={checklists}
+            onAdd={() => setChecklistModalKey("new")}
+            onEdit={setChecklistModalKey}
+            onRemove={(key) => setChecklists((drafts) => drafts.filter((draft) => draft.key !== key))}
+          />
           {state.message ? <p className={`rounded-lg p-3 text-sm ${state.status === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`} role="status">{state.message}</p> : null}
           <footer className="flex justify-end gap-3 border-t border-slate-200 pt-4"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={pending}>{pending ? "Salvando..." : "Adicionar visita"}</button></footer>
         </form>
         </div>
       </section>
+      {checklistModalKey !== null ? (
+        <DraftChecklistModal
+          definitions={checklistDefinitions}
+          initialDraft={checklistModalKey === "new" ? undefined : checklists.find((draft) => draft.key === checklistModalKey)}
+          onClose={() => setChecklistModalKey(null)}
+          onSave={(draft) => {
+            setChecklists((drafts) => checklistModalKey === "new"
+              ? [...drafts, draft]
+              : drafts.map((item) => item.key === checklistModalKey ? draft : item));
+            setChecklistModalKey(null);
+          }}
+        />
+      ) : null}
     </div>
   );
 }
@@ -523,6 +543,39 @@ function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number;
       </div>
     </section>
   </div>;
+}
+
+function DraftChecklistModal({ definitions, initialDraft, onClose, onSave }: { definitions: ChecklistDefinition[]; initialDraft?: ChecklistDraft; onClose: () => void; onSave: (draft: ChecklistDraft) => void }) {
+  const [draft, setDraft] = useState<ChecklistDraft | undefined>(() => initialDraft ?? (definitions[0] ? createChecklistDraft(definitions[0].id, Date.now()) : undefined));
+
+  return <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+    <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="draft-checklist-title">
+      <div className="max-h-[92vh] overflow-y-auto">
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-5"><div><p className="text-xs font-bold uppercase tracking-wider text-blue-600">Checklist</p><h2 id="draft-checklist-title" className="mt-1 text-xl font-bold text-slate-950">Aplicar checklist</h2></div><button className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 transition hover:bg-slate-50 hover:text-slate-800" type="button" onClick={onClose} aria-label="Fechar formulário de checklist">×</button></header>
+        <form className="space-y-6 p-6" onSubmit={(event) => { event.preventDefault(); if (draft) onSave(draft); }}>
+          <ApplyChecklistEditor definitions={definitions} draft={draft} onChange={setDraft} />
+          <footer className="flex justify-end gap-3 border-t border-slate-200 pt-5"><button className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50" type="button" onClick={onClose}>Cancelar</button><button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50" type="submit" disabled={!draft}>Salvar checklist</button></footer>
+        </form>
+      </div>
+    </section>
+  </div>;
+}
+
+function ChecklistDraftSummary({ definitions, drafts, onAdd, onEdit, onRemove }: { definitions: ChecklistDefinition[]; drafts: ChecklistDraft[]; onAdd: () => void; onEdit: (key: number) => void; onRemove: (key: number) => void }) {
+  return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-summary-title">
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div><h3 id="checklist-summary-title" className="font-bold text-slate-900">Checklists da visita</h3><p className="text-sm text-slate-500">Adicione os checklists em uma janela separada.</p></div>
+      <button className="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50" disabled={!definitions.length} type="button" onClick={onAdd}>＋ Adicionar checklist</button>
+    </div>
+    {!definitions.length ? <p className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">Nenhum tipo de checklist ativo disponível.</p> : null}
+    {drafts.length ? <ul className="space-y-2">{drafts.map((draft, index) => {
+      const definition = definitions.find((item) => item.id === draft.checklistTypeId);
+      return <li className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-3" key={draft.key}>
+        <div><p className="text-sm font-semibold text-slate-900">{definition?.name ?? "Checklist"} <span className="font-normal text-slate-500">#{index + 1}</span></p><p className="text-xs text-slate-500">{definition ? `Versão ${definition.version}` : "Tipo não disponível"}</p></div>
+        <div className="flex items-center gap-3"><button className="text-sm font-semibold text-blue-700 hover:text-blue-800" type="button" onClick={() => onEdit(draft.key)}>Editar</button><button className="text-sm font-semibold text-red-600 hover:text-red-700" type="button" onClick={() => onRemove(draft.key)}>Remover</button></div>
+      </li>;
+    })}</ul> : definitions.length ? <p className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">Nenhum checklist adicionado.</p> : null}
+  </section>;
 }
 
 function ApplyChecklistEditor({ definitions, draft, onChange }: { definitions: ChecklistDefinition[]; draft?: ChecklistDraft; onChange: (draft?: ChecklistDraft) => void }) {
@@ -585,45 +638,8 @@ function SingleSelectChecklistItem({ field, index, value, onChange }: { field: C
   </li>;
 }
 
-function ChecklistCollectionEditor({ definitions, drafts, onChange, maximum }: { definitions: ChecklistDefinition[]; drafts: ChecklistDraft[]; onChange: (drafts: ChecklistDraft[]) => void; maximum?: number }) {
-  function addDraft() {
-    const first = definitions[0];
-    if (!first || (maximum != null && drafts.length >= maximum)) return;
-    onChange([...drafts, createChecklistDraft(first.id, Date.now() + drafts.length)]);
-  }
-  return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-editor-title">
-    <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 id="checklist-editor-title" className="font-bold text-slate-900">Checklists da visita</h3><p className="text-sm text-slate-500">É permitido adicionar várias ocorrências do mesmo tipo.</p></div><button className="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50" disabled={!definitions.length || (maximum != null && drafts.length >= maximum)} type="button" onClick={addDraft}>＋ Adicionar checklist</button></div>
-    {!definitions.length ? <p className="rounded-lg border border-dashed border-slate-300 p-4 text-center text-sm text-slate-500">Nenhum tipo de checklist ativo disponível.</p> : null}
-    {drafts.map((draft, index) => {
-      const definition = definitions.find((item) => item.id === draft.checklistTypeId) ?? definitions[0];
-      return <fieldset key={draft.key} className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
-        <div className="flex items-end justify-between gap-4"><label className="flex-1 text-sm font-semibold text-slate-700">Tipo de checklist<select className={`${inputClass} mt-2`} value={draft.checklistTypeId} onChange={(event) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, checklistTypeId: Number(event.target.value), values: {} } : item))}>{definitions.map((item) => <option key={item.id} value={item.id}>{item.name} — v{item.version}</option>)}</select></label><button className="mb-2 text-sm font-semibold text-red-600" type="button" onClick={() => onChange(drafts.filter((item) => item.key !== draft.key))}>Remover</button></div>
-        {definition.description ? <p className="text-sm text-slate-500">{definition.description}</p> : null}
-        <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <div><h4 className="font-semibold text-slate-800">Identificação do equipamento</h4><p className="text-xs text-slate-500">Todos os campos desta seção são opcionais.</p></div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ChecklistMetadataField label="Empresa/Setor" maxLength={255} value={draft.corporation} onChange={(corporation) => updateChecklistDraft(drafts, draft.key, { corporation }, onChange)} />
-            <ChecklistMetadataField label="Tag" maxLength={100} value={draft.equipmentTag} onChange={(equipmentTag) => updateChecklistDraft(drafts, draft.key, { equipmentTag }, onChange)} />
-            <ChecklistMetadataField label="Marca" maxLength={255} value={draft.equipmentBrand} onChange={(equipmentBrand) => updateChecklistDraft(drafts, draft.key, { equipmentBrand }, onChange)} />
-            <ChecklistMetadataField label="Modelo" maxLength={255} value={draft.equipmentModel} onChange={(equipmentModel) => updateChecklistDraft(drafts, draft.key, { equipmentModel }, onChange)} />
-            <label><span className="mb-2 block text-sm font-semibold text-slate-700">Equipamento alugado?</span><select className={inputClass} value={draft.rentedEquipment == null ? "" : String(draft.rentedEquipment)} onChange={(event) => updateChecklistDraft(drafts, draft.key, { rentedEquipment: event.target.value === "" ? null : event.target.value === "true" }, onChange)}><option value="">Não informado</option><option value="true">Sim</option><option value="false">Não</option></select></label>
-            <ChecklistMetadataField label="Nº Série ou Patrimônio" maxLength={255} value={draft.serialNumber} onChange={(serialNumber) => updateChecklistDraft(drafts, draft.key, { serialNumber }, onChange)} />
-            <ChecklistMetadataField label="PT" maxLength={20} value={draft.ptNumber} onChange={(ptNumber) => updateChecklistDraft(drafts, draft.key, { ptNumber }, onChange)} />
-          </div>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">{definition.fields.map((field) => <ChecklistDynamicField key={field.id} field={field} value={draft.values[field.id]} onChange={(value) => onChange(drafts.map((item) => item.key === draft.key ? { ...item, values: { ...item.values, [field.id]: value } } : item))} />)}</div>
-        <span className="sr-only">Ocorrência {index + 1}</span>
-      </fieldset>;
-    })}
-  </section>;
-}
-
 function createChecklistDraft(checklistTypeId: number, key: number): ChecklistDraft {
   return { key, checklistTypeId, corporation: "", equipmentTag: "", equipmentBrand: "", equipmentModel: "", rentedEquipment: null, serialNumber: "", ptNumber: "", values: {} };
-}
-
-function updateChecklistDraft(drafts: ChecklistDraft[], key: number, update: Partial<ChecklistDraft>, onChange: (drafts: ChecklistDraft[]) => void) {
-  onChange(drafts.map((draft) => draft.key === key ? { ...draft, ...update } : draft));
 }
 
 function ChecklistMetadataField({ label, maxLength, value, onChange, placeholder, hint }: { label: string; maxLength: number; value: string; onChange: (value: string) => void; placeholder?: string; hint?: string }) {
