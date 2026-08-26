@@ -8,7 +8,7 @@ import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
 export type UpdateVisitState = AddVisitState;
 
-export async function addVisitAction(
+export async function InsertRequestTask(
   requestId: number,
   _previousState: AddVisitState,
   formData: FormData,
@@ -32,7 +32,7 @@ export async function addVisitAction(
   }
 }
 
-export async function updateVisitAction(visitId: number, _previousState: UpdateVisitState, formData: FormData): Promise<UpdateVisitState> {
+export async function UpdateRequestTask(visitId: number, _previousState: UpdateVisitState, formData: FormData): Promise<UpdateVisitState> {
   try {
     await updateRequestTaskVisit({
       visitId,
@@ -50,7 +50,7 @@ export async function updateVisitAction(visitId: number, _previousState: UpdateV
   }
 }
 
-export async function addChecklistAction(visitId: number, _previousState: AddVisitState, formData: FormData): Promise<AddVisitState> {
+export async function InsertRequestTaskChecklist(visitId: number, _previousState: AddVisitState, formData: FormData): Promise<AddVisitState> {
   try {
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
     if (submissions.length !== 1) throw new Error("Selecione um checklist para adicionar.");
@@ -62,7 +62,7 @@ export async function addChecklistAction(visitId: number, _previousState: AddVis
   }
 }
 
-export async function deleteChecklistAction(checklistId: number): Promise<AddVisitState> {
+export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
     await deleteVisitChecklist(checklistId);
     revalidatePath("/acompanhamento-atividades/requests");
