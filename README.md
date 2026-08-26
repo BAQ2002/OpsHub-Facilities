@@ -29,7 +29,7 @@ POSTGRES_POOL_MAX=10
 POSTGRES_SSL=false
 ```
 
-Na página principal não existe fallback para dados mockados: `DATA_SOURCE=postgres` consulta o banco diretamente e qualquer outro valor usa a FastAPI configurada em `FASTAPI_BASE_URL`.
+A aplicação aceita exclusivamente `DATA_SOURCE=postgres`. A validação é centralizada, diferencia maiúsculas de minúsculas e rejeita valores ausentes ou diferentes de `postgres` antes de abrir o pool.
 
 ## Backend FastAPI e entidades ORM
 
@@ -52,7 +52,7 @@ O projeto separa a interpretação dos registros do banco em camadas:
 
 1. **Páginas em `app/`**: componentes assíncronos chamam serviços do servidor e renderizam os dados já preparados.
 2. **Serviços em `src/server/services/`**: orquestram chamadas de repositórios e aplicam filtros de tela que não pertencem ao SQL.
-3. **Repositórios em `src/server/repositories/`**: escolhem a fonte de dados (`postgres`, `fastapi` ou mock) e executam as consultas.
+3. **Repositórios em `src/server/repositories/`**: encaminham as operações para as implementações PostgreSQL e executam as consultas.
 4. **Repositórios PostgreSQL em `src/server/repositories/postgres/`**: executam SQL parametrizado com `pool.query<T>(sql, params)` e mapeiam linhas do banco para entidades de domínio.
 5. **Entidades em `src/domain/entities/`**: definem os formatos utilizáveis no aplicativo, como `ActivityRecord`, `EquipmentCard`, `RequestEntity` e `ActivityRequestField`.
 6. **Mappers em `src/mappers/`**: convertem entidades de domínio em view models de apresentação quando a página precisa de um formato específico.
@@ -90,8 +90,6 @@ A interpretação PostgreSQL acontece em `src/server/repositories/postgres/reque
 
 Em seguida, `src/server/services/request-service.ts` aplica `mapRequestEntityToViewModel()` e separa os registros em `openRequests` e `closedRequests` conforme `request.status`.
 
-Quando `DATA_SOURCE=fastapi`, `src/server/repositories/fastapi/request-fastapi-repository.ts` interpreta a resposta JSON da API em `RequestEntity` com `mapFastApiRequestToEntity()`, aceitando aliases como `title`, `titulo`, `request_title`, `created_at`, `createdAt`, `has_unread_message` e `hasUnreadMessage`.
-
 ### Formulário de chamado (`/solicitar-atividade/chamado`)
 
 A página `app/solicitar-atividade/chamado/page.tsx` lê `service_category` e `service_type` de `searchParams` e chama `getChamadoRequestFormPageData()`.
@@ -109,7 +107,7 @@ A interpretação PostgreSQL acontece em `src/server/repositories/postgres/activ
 
 Depois, `src/server/services/activity-request-form-service.ts` combina os campos dinâmicos do banco com a descrição. O componente de formulário adiciona os seletores dependentes de unidade de negócio, região e localização; a localização escolhida é enviada como `location_id`.
 
-O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que vincula no servidor o ID do tipo escolhido e chama `createChamadoRequest()` em `src/server/services/request-service.ts`. Com `DATA_SOURCE=postgres`, `activity-request-postgres-repository.ts` valida os relacionamentos e grava, na mesma transação, a `REQUEST` e um `SERVICE_FIELD_VALUE` para cada campo adicional preenchido. Novas requests usam `ID_REQUEST_TYPE = 1`, `ID_MEMBER_REQUESTER = 8`, status aberto e `CREATED_DATE = CURRENT_TIMESTAMP`.
+O envio do formulário usa a Server Action `app/solicitar-atividade/actions.ts`, que vincula no servidor o ID do tipo escolhido e chama `createChamadoRequest()` em `src/server/services/request-service.ts`. `activity-request-postgres-repository.ts` valida os relacionamentos e grava, na mesma transação, a `REQUEST` e um `SERVICE_FIELD_VALUE` para cada campo adicional preenchido. Novas requests usam `ID_REQUEST_TYPE = 1`, `ID_MEMBER_REQUESTER = 8`, status aberto e `CREATED_DATE = CURRENT_TIMESTAMP`.
 
 Como a carga histórica de `REQUEST` informa IDs explicitamente, o script de carga e o fluxo de criação sincronizam a sequence da coluna identity com o maior ID existente antes de depender da geração automática. Isso evita colisões com a chave primária após uma importação.
 
@@ -154,14 +152,13 @@ Arquivo de envio: `app/solicitar-atividade/actions.ts`, que chama `src/server/se
 
 Comportamento:
 
-- `DATA_SOURCE=fastapi`: envia `FormData` para `POST` no caminho `FASTAPI_CREATE_REQUEST_PATH` ou `/activity-requests`.
-- `DATA_SOURCE=postgres`: valida os dados no servidor e grava a request no PostgreSQL em uma transação. As respostas adicionais são armazenadas como JSONB em `service_field_value`, ligadas ao ID da request e ao ID de `service_field_type`.
+- Valida os dados no servidor e grava a request no PostgreSQL em uma transação. As respostas adicionais são armazenadas como JSONB em `service_field_value`, ligadas ao ID da request e ao ID de `service_field_type`.
 - Para `MULTI_SELECT`, todas as opções escolhidas são validadas, deduplicadas e armazenadas juntas em um único array JSONB, por exemplo `["Microondas", "Geladeira"]`.
-- Outros valores mantêm o fluxo mock e retornam somente o payload.
+- Não há envio para FastAPI nem retorno simulado: uma fonte inválida gera erro explícito.
 
 ### `/acompanhamento-atividades`
 
-A página chama `getActivityTrackingPageData()`, mas esse serviço usa apenas `src/server/repositories/mock/activity-tracking-mock-repository.ts`. Não há consulta PostgreSQL nesta tela atualmente.
+A página chama `getActivityTrackingPageData()`, que consulta exclusivamente `src/server/repositories/postgres/activity-tracking-postgres-repository.ts`.
 
 ### `/solicitar-atividade`
 
@@ -169,7 +166,7 @@ A tela consulta diretamente as tabelas `service_category` e `service_type` no Po
 
 ### `/solicitar-atividade/patio`
 
-A tela usa o array local `patioFields` em `app/solicitar-atividade/patio/page.tsx`. Não consulta o banco para montar o formulário. Ela apenas pode acionar a Server Action no submit, seguindo o comportamento descrito acima.
+A tela usa o array local `patioFields` em `app/solicitar-atividade/patio/page.tsx`. Não consulta o banco para montar o formulário. No submit, a Server Action encaminha os campos ao repositório PostgreSQL; os valores precisam corresponder aos IDs e relacionamentos exigidos pelo banco.
 
 ## Páginas que conectam com o banco atualmente
 
@@ -178,60 +175,21 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 | Rota | Conecta ao PostgreSQL? | Local da conexão/consulta | Observações |
 | --- | --- | --- | --- |
 | `/` | Sim | `app/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
-| `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests; também pode usar FastAPI se `DATA_SOURCE=fastapi`. |
+| `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests diretamente do PostgreSQL. |
 | `/solicitar-atividade` | Sim | `app/solicitar-atividade/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê e agrupa todas as categorias e tipos de serviço diretamente do PostgreSQL, sem mock. |
 | `/solicitar-atividade/chamado` | Sim | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> repositórios PostgreSQL | Lê os três níveis de localização, o tipo de serviço e seus campos dinâmicos. |
-| `/solicitar-atividade/chamado` submit | Sim, com `DATA_SOURCE=postgres` | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` -> `src/server/repositories/postgres/activity-request-postgres-repository.ts` | Grava `request` e os respectivos `service_field_value` na mesma transação. |
-| `/solicitar-atividade/patio` submit | Não no PostgreSQL | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` | Mantém o comportamento anterior de envio à FastAPI ou retorno do payload. |
+| `/solicitar-atividade/chamado` submit | Sim | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` -> `src/server/repositories/postgres/activity-request-postgres-repository.ts` | Grava `request` e os respectivos `service_field_value` na mesma transação. |
+| `/solicitar-atividade/patio` submit | Sim | `app/solicitar-atividade/actions.ts` -> `src/server/services/request-service.ts` -> `src/server/repositories/postgres/activity-request-postgres-repository.ts` | Tenta persistir os campos no PostgreSQL e aplica as mesmas validações do repositório. |
 
-## Páginas que não conectam com o banco atualmente
+## Fonte de dados
 
-| Rota | Fonte de dados atual | Local |
-| --- | --- | --- |
-| `/acompanhamento-atividades` | Mock | `src/server/services/activity-tracking-service.ts` usa `src/server/repositories/mock/activity-tracking-mock-repository.ts`. |
-| `/solicitar-atividade/patio` | Array local estático para campos | `patioFields` em `app/solicitar-atividade/patio/page.tsx`. |
+PostgreSQL é a única fonte de dados da aplicação Next.js. `assertPostgresDataSource()` centraliza a validação antes da criação ou reutilização do pool:
 
-## Seleção de fonte de dados
+- o único valor aceito é `DATA_SOURCE=postgres`;
+- a comparação é case-sensitive, portanto `POSTGRES`, `Postgres`, vazio e variável ausente são inválidos;
+- não existem fallbacks para FastAPI, dados mockados, anexos ilustrativos ou respostas de sucesso sem persistência.
 
-Os arquivos seletoras em `src/server/repositories/` definem qual implementação será usada:
-
-- `home-repository.ts`: usa PostgreSQL quando `DATA_SOURCE=postgres` e FastAPI nos demais casos; nenhum dado mock abastece a home.
-- `request-repository.ts`: usa PostgreSQL com `DATA_SOURCE=postgres`, FastAPI com `DATA_SOURCE=fastapi` e mock nos demais casos.
-- `activity-request-form-repository.ts`: o catálogo de `/solicitar-atividade` sempre usa PostgreSQL; os dados do formulário de chamado usam PostgreSQL com `DATA_SOURCE=postgres` e mock nos demais casos.
-
-## FastAPI opcional para requests
-
-Para usar uma API FastAPI como backend de requests, configure:
-
-```bash
-DATA_SOURCE=fastapi
-FASTAPI_BASE_URL=http://localhost:8000
-FASTAPI_REQUESTS_PATH=/activity-requests
-FASTAPI_CREATE_REQUEST_PATH=/activity-requests
-FASTAPI_ACTIVITIES_PATH=/activities
-```
-
-Com essa configuração:
-
-- `/minhas-solicitacoes` chama `GET /activity-requests` e renderiza as requests retornadas.
-- O datagrid da home chama `GET /activities` com `start_date`, `end_date`, parâmetros repetidos `status` e parâmetros repetidos `business_unit`. A data exibida é selecionada conforme o status (`agreed_date`, `started_date`, `finished_date` ou `canceled_date`).
-- Os formulários de `/solicitar-atividade/chamado` e `/solicitar-atividade/patio` enviam o `FormData` para `POST /activity-requests`.
-
-O endpoint `GET` deve retornar uma lista JSON compatível com:
-
-```json
-[
-  {
-    "id": 212,
-    "title": "Reparos em móveis",
-    "status": "Aberto",
-    "has_unread_message": false,
-    "created_at": "2026-04-29T11:35:00-03:00"
-  }
-]
-```
-
-Também são aceitos os aliases `titulo`, `request_title`, `createdAt` e `hasUnreadMessage`. Status desconhecidos são exibidos como `Aberto`; `Fechado`, `closed` e `CLOSED` são exibidos como `Fechado`.
+O backend Python em `backend/` continua sendo um projeto independente e não é selecionável como fonte de dados do Next.js.
 
 ## Scripts de banco
 

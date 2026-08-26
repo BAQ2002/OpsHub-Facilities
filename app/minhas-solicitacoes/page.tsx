@@ -1,6 +1,8 @@
 import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
 import { getMyRequestsPageData } from "@/src/server/services/request-service";
 
+export const dynamic = "force-dynamic";
+
 export default async function MyRequestsPage() {
   const { openRequests, closedRequests } = await getMyRequestsPageData();
 

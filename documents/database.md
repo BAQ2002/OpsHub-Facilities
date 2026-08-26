@@ -38,7 +38,7 @@ Para ativar o banco real, defina:
 DATA_SOURCE=postgres
 ```
 
-Sem essa variável, a página principal usa a FastAPI configurada em `FASTAPI_BASE_URL`; ela não possui fallback para dados mockados.
+`DATA_SOURCE` é obrigatório, aceita exclusivamente o valor case-sensitive `postgres` e não possui fallback para FastAPI ou dados mockados.
 
 ## Dependência do driver
 
