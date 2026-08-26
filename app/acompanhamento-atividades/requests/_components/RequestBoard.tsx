@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
-import { addChecklistAction, addVisitAction, deleteChecklistAction, updateVisitAction, type AddVisitState } from "../actions";
+import { DeleteRequestTaskChecklist, InsertRequestTask, InsertRequestTaskChecklist, UpdateRequestTask, type AddVisitState } from "../actions";
 import type { ChecklistDefinition, ChecklistSubmission } from "@/src/domain/entities/checklist";
 
 import type {
@@ -294,7 +294,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
 const initialUpdateVisitState: AddVisitState = { status: "idle", message: "" };
 
 function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: { visit: Visit; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
-  const action = updateVisitAction.bind(null, visit.id);
+  const action = UpdateRequestTask.bind(null, visit.id);
   const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
   const [editing, setEditing] = useState(false);
   const [selectedExecutorIds, setSelectedExecutorIds] = useState(visit.executors.map((executor) => executor.id));
@@ -367,7 +367,7 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
                   <div><p className="font-semibold text-slate-900">{checklist.name} <span className="font-normal text-slate-500">#{index + 1}</span></p><p className="text-xs text-slate-500">Versão {checklist.version}{checklist.description ? ` · ${checklist.description}` : ""}</p></div>
                   <button disabled={deletingChecklist} className="text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50" type="button" onClick={() => {
                     if (!window.confirm(`Excluir a ocorrência de ${checklist.name}?`)) return;
-                    startDeleteChecklist(async () => { const result = await deleteChecklistAction(checklist.id); setChecklistMessage(result.message); });
+                    startDeleteChecklist(async () => { const result = await DeleteRequestTaskChecklist(checklist.id); setChecklistMessage(result.message); });
                   }}>Excluir</button>
                 </div>
                 <dl className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -397,7 +397,7 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
 const initialVisitState: AddVisitState = { status: "idle", message: "" };
 
 function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: { requestId: number; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
-  const action = addVisitAction.bind(null, requestId);
+  const action = InsertRequestTask.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
   const [mediaFiles, setMediaFiles] = useState<File[]>([]);
   const mediaPreviews = useMediaPreviews(mediaFiles);
@@ -520,7 +520,7 @@ type ChecklistDraft = {
 };
 
 function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number; definitions: ChecklistDefinition[]; onClose: () => void }) {
-  const action = addChecklistAction.bind(null, visitId);
+  const action = InsertRequestTaskChecklist.bind(null, visitId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
   const [drafts, setDrafts] = useState<ChecklistDraft[]>(() => definitions[0] ? [createChecklistDraft(definitions[0].id, Date.now())] : []);
 
