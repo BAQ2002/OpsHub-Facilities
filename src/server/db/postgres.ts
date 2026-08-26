@@ -1,5 +1,7 @@
 import "server-only";
 
+import { assertPostgresDataSource } from "@/src/server/config/data-source";
+
 type QueryResult<T> = {
   rows: T[];
 };
@@ -33,6 +35,8 @@ export function getDatabaseUrl() {
 }
 
 export async function getPostgresPool() {
+  assertPostgresDataSource();
+
   if (globalThis.__opshubPgPool) {
     return globalThis.__opshubPgPool;
   }
