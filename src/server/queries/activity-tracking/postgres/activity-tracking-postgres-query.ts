@@ -2,6 +2,7 @@ import "server-only";
 
 import type { ActivityTrackingData, ActivityTrackingFilters, ChartItem } from "@/src/domain/entities/dashboard";
 import { getPostgresPool } from "@/src/server/db/postgres";
+import type { ActivityTrackingQuery } from "@/src/server/queries/activity-tracking/activity-tracking-query";
 
 type CountRow = { label: string | null; value: string | number };
 type SummaryRow = { total: string | number; in_progress: string | number; average_minutes: string | number | null; critical: string | number };
@@ -12,6 +13,10 @@ const categoryColors = ["#14b8a6", "#38bdf8", "#f59e0b", "#8b5cf6", "#ec4899", "
 const statusColors = ["#f97316", "#0ea5e9", "#84cc16", "#8b5cf6", "#64748b"];
 const closedStatuses = ["Concluída", "Concluida", "Cancelada"];
 const monthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" });
+
+export const postgresActivityTrackingQuery: ActivityTrackingQuery = {
+  findData: findActivityTrackingData,
+};
 
 export async function findActivityTrackingData(filters: ActivityTrackingFilters): Promise<ActivityTrackingData> {
   const pool = await getPostgresPool();

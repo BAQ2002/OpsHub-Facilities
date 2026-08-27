@@ -2,10 +2,10 @@ import "server-only";
 
 import { getPostgresPool } from "@/src/server/db/postgres";
 
-export type RequestMediaContent = {
-  content: Uint8Array;
-  fileName: string;
-  mimeType: string;
+import type { RequestMediaContent, RequestServiceMediaRepository } from "@/src/server/repositories/service-catalog/request-service-media-repository";
+
+export const postgresRequestServiceMediaRepository: RequestServiceMediaRepository = {
+  findById: findRequestMediaById,
 };
 
 export async function findRequestMediaById(id: number): Promise<RequestMediaContent | null> {

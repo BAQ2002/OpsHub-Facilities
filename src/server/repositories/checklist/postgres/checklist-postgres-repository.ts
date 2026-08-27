@@ -2,6 +2,7 @@ import "server-only";
 
 import type { ChecklistDefinition, ChecklistFieldType, ChecklistSubmission } from "@/src/domain/entities/checklist";
 import { getPostgresPool, type PgClient } from "@/src/server/db/postgres";
+import type { ChecklistRepository } from "@/src/server/repositories/checklist/checklist-repository";
 
 type DefinitionRow = {
   checklist_id: number | string;
@@ -16,6 +17,12 @@ type DefinitionRow = {
 };
 
 const SUPPORTED_TYPES = new Set<ChecklistFieldType>(["TEXT", "NUMBER", "DATE", "BOOL", "SINGLE_SELECT", "MULTI_SELECT"]);
+
+export const postgresChecklistRepository: ChecklistRepository = {
+  findActiveDefinitions: findActiveChecklistDefinitions,
+  addToVisit: insertChecklistForVisit,
+  deleteFromVisit: deleteVisitChecklist,
+};
 
 export async function findActiveChecklistDefinitions(): Promise<ChecklistDefinition[]> {
   const pool = await getPostgresPool();

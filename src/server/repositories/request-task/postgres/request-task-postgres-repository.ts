@@ -2,11 +2,10 @@ import "server-only";
 
 import { getPostgresPool } from "@/src/server/db/postgres";
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
-import { insertChecklistSubmissions } from "@/src/server/repositories/postgres/checklist-postgres-repository";
+import { insertChecklistSubmissions } from "@/src/server/repositories/checklist/postgres/checklist-postgres-repository";
+import type { RequestTaskRepository } from "@/src/server/repositories/request-task/request-task-repository";
 
-export type MembershipOption = { id: number; name: string };
-
-type VisitInput = {
+export type VisitInput = {
   requestId: number;
   description: string;
   startDatetime: string;
@@ -16,18 +15,15 @@ type VisitInput = {
   checklists: ChecklistSubmission[];
 };
 
-type UpdateVisitInput = Omit<VisitInput, "requestId"> & { visitId: number };
+export type UpdateVisitInput = Omit<VisitInput, "requestId"> & { visitId: number };
 
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
 const MAX_TOTAL_SIZE = 25 * 1024 * 1024;
 
-export async function findMembershipOptions(): Promise<MembershipOption[]> {
-  const pool = await getPostgresPool();
-  const result = await pool.query<MembershipOption>(
-    `SELECT id, name FROM membership WHERE name IS NOT NULL ORDER BY name, id`,
-  );
-  return result.rows;
-}
+export const postgresRequestTaskRepository: RequestTaskRepository = {
+  createVisit: insertRequestTaskVisit,
+  updateVisit: updateRequestTaskVisit,
+};
 
 export async function insertRequestTaskVisit(input: VisitInput) {
   validateVisit(input);

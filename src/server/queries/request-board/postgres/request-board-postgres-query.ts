@@ -2,6 +2,7 @@ import "server-only";
 
 import type { RequestBoardData, RequestBoardItem, RequestBoardStatus } from "@/src/domain/entities/request-board";
 import { getPostgresPool } from "@/src/server/db/postgres";
+import type { RequestBoardQuery } from "@/src/server/queries/request-board/request-board-query";
 
 type RequestBoardRow = {
   id: string | number;
@@ -45,6 +46,10 @@ type VisitRow = {
   executors: { id: number; name: string }[] | null;
   photos: { id: number; fileName: string; mimeType: string }[] | null;
   checklists: import("@/src/domain/entities/checklist").VisitChecklist[] | null;
+};
+
+export const postgresRequestBoardQuery: RequestBoardQuery = {
+  findData: findRequestBoardData,
 };
 
 export async function findRequestBoardData(): Promise<RequestBoardData> {

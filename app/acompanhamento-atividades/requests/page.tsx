@@ -1,16 +1,18 @@
 import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
 import { TrackingTabs } from "../_components/TrackingTabs";
 import { RequestBoard } from "./_components/RequestBoard";
-import { findMembershipOptions } from "@/src/server/repositories/postgres/request-task-postgres-repository";
-import { findActiveChecklistDefinitions } from "@/src/server/repositories/postgres/checklist-postgres-repository";
+import { getMembershipRepository } from "@/src/server/repositories/membership/membership-repository-provider";
+import { getChecklistRepository } from "@/src/server/repositories/checklist/checklist-repository-provider";
 
 export const dynamic = "force-dynamic";
 
 export default async function RequestsPage() {
+  const membershipRepository = getMembershipRepository();
+  const checklistRepository = getChecklistRepository();
   const [{ columns }, executors, checklists] = await Promise.all([
     getRequestBoardPageData(),
-    findMembershipOptions(),
-    findActiveChecklistDefinitions(),
+    membershipRepository.findExecutorOptions(),
+    checklistRepository.findActiveDefinitions(),
   ]);
 
   return (
