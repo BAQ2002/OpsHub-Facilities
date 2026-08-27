@@ -3,7 +3,7 @@ import "server-only";
 import facilitiesMap from "@/public_resources/facilities-map.png";
 import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
 import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/src/domain/entities/activity";
-import type { HomeDateRange } from "@/src/server/repositories/home-repository";
+import type { HomeDashboardQuery, HomeDateRange } from "@/src/server/queries/home-dashboard/home-dashboard-query";
 import { getPostgresPool } from "@/src/server/db/postgres";
 
 type CategoryCountRow = {
@@ -42,6 +42,14 @@ const dateTimeFormatter = new Intl.DateTimeFormat("pt-BR", {
   hour12: false,
   timeZone: "America/Sao_Paulo",
 });
+
+export const postgresHomeDashboardQuery: HomeDashboardQuery = {
+  findEquipmentCards,
+  findActivityRecords,
+  findCategoryColorMap,
+  findMapImage,
+  findHandlingTimeSamplesInMinutes,
+};
 
 export async function findEquipmentCards(dateRange: HomeDateRange): Promise<EquipmentCard[]> {
   const pool = await getPostgresPool();

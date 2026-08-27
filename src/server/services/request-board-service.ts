@@ -2,8 +2,8 @@ import "server-only";
 
 import { mapRequestBoardDataToViewModel } from "@/src/mappers/request-board-mapper";
 import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
-import { findRequestBoardData } from "@/src/server/repositories/request-board-repository";
+import { getRequestBoardQuery } from "@/src/server/queries/request-board/request-board-query-provider";
 
 export async function getRequestBoardPageData(): Promise<RequestBoardPageViewModel> {
-  return mapRequestBoardDataToViewModel(await findRequestBoardData());
+  return mapRequestBoardDataToViewModel(await getRequestBoardQuery().findData());
 }

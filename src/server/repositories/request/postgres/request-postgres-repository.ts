@@ -1,20 +1,14 @@
 import "server-only";
 
+import type { RequestEntity, RequestStatus } from "@/src/domain/entities/request";
 import { getPostgresPool, type PgClient } from "@/src/server/db/postgres";
+import type { CreateRequestInput, RequestFieldValue, RequestRepository } from "@/src/server/repositories/request/request-repository";
 
 type ServiceFieldDefinition = {
   id: number;
   type: string;
   options: unknown;
   required: boolean | null;
-};
-
-type RequestInput = {
-  businessId: number;
-  regionId: number;
-  locationId: number;
-  serviceTypeId: number;
-  description: string;
 };
 
 type MediaFile = {
@@ -32,8 +26,71 @@ const MAX_MEDIA_FILES_PER_FIELD = 5;
 const MAX_MEDIA_FILE_SIZE = 10 * 1024 * 1024;
 const MAX_MEDIA_TOTAL_SIZE = 25 * 1024 * 1024;
 
-export async function insertActivityRequest(formData: FormData) {
-  const input = parseRequestInput(formData);
+type RequestRow = {
+  id: string | number;
+  title: string | null;
+  status: RequestStatus;
+  has_unread_message: boolean;
+  created_at: Date | string | null;
+};
+
+const dateTimeFormatter = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: "America/Sao_Paulo",
+});
+
+export const postgresRequestRepository: RequestRepository = {
+  findByCurrentUser: findRequestsByCurrentUser,
+  create: insertActivityRequest,
+};
+
+async function findRequestsByCurrentUser(): Promise<RequestEntity[]> {
+  const pool = await getPostgresPool();
+  const requesterMemberId = process.env.CURRENT_MEMBER_ID ? Number(process.env.CURRENT_MEMBER_ID) : null;
+  const result = await pool.query<RequestRow>(
+    `SELECT
+        r.id,
+        COALESCE(st.name, rt.name, 'Solicitação') AS title,
+        CASE
+          WHEN rs.description IN ('Concluída', 'Cancelada') THEN 'Fechado'
+          ELSE 'Aberto'
+        END AS status,
+        FALSE AS has_unread_message,
+        r.created_date AS created_at
+       FROM request r
+       INNER JOIN request_status rs ON rs.id = r.id_request_status
+       INNER JOIN request_type rt ON rt.id = r.id_request_type
+       INNER JOIN service_type st ON st.id = r.id_service_type
+      WHERE ($1::integer IS NULL OR r.id_member_requester = $1)
+      ORDER BY r.created_date DESC NULLS LAST, r.id DESC`,
+    [requesterMemberId],
+  );
+
+  return result.rows.map(mapRequestRowToEntity);
+}
+
+function mapRequestRowToEntity(row: RequestRow): RequestEntity {
+  return {
+    id: Number(row.id),
+    title: row.title ?? "Solicitação",
+    status: row.status,
+    createdAt: formatDateTime(row.created_at),
+    hasUnreadMessage: row.has_unread_message,
+  };
+}
+
+function formatDateTime(value: Date | string | null) {
+  if (!value) return "Data não informada";
+  return dateTimeFormatter.format(new Date(value)).replace(",", "");
+}
+
+export async function insertActivityRequest(input: CreateRequestInput) {
+  validateRequestInput(input);
   const pool = await getPostgresPool();
   const client = await pool.connect();
 
@@ -43,8 +100,8 @@ export async function insertActivityRequest(formData: FormData) {
     const fieldDefinitions = await getFieldDefinitions(client, input.serviceTypeId);
     const values = fieldDefinitions
       .filter((field) => field.type.toUpperCase() !== "MEDIA")
-      .flatMap((field) => parseFieldValue(field, formData));
-    const mediaFiles = await parseMediaFiles(fieldDefinitions, formData);
+      .flatMap((field) => parseFieldValue(field, input.additionalFields));
+    const mediaFiles = await parseMediaFiles(fieldDefinitions, input.additionalFields);
     await synchronizeRequestIdSequence(client);
 
     const requestResult = await client.query<{ id: number }>(
@@ -105,13 +162,16 @@ export async function insertActivityRequest(formData: FormData) {
   }
 }
 
-async function parseMediaFiles(fieldDefinitions: ServiceFieldDefinition[], formData: FormData): Promise<MediaFile[]> {
+async function parseMediaFiles(
+  fieldDefinitions: ServiceFieldDefinition[],
+  additionalFields: CreateRequestInput["additionalFields"],
+): Promise<MediaFile[]> {
   const mediaFiles: MediaFile[] = [];
   let totalSize = 0;
 
   for (const field of fieldDefinitions.filter((definition) => definition.type.toUpperCase() === "MEDIA")) {
     const fieldName = `service_field_${field.id}`;
-    const entries = formData.getAll(fieldName);
+    const entries = getAll(additionalFields, fieldName);
     const files = entries.filter((entry): entry is File => typeof entry !== "string" && entry.size > 0);
     const options = parseMediaOptions(field.options);
 
@@ -205,23 +265,21 @@ async function synchronizeRequestIdSequence(client: PgClient) {
   );
 }
 
-function parseRequestInput(formData: FormData): RequestInput {
-  const description = getString(formData, "description").trim();
-
-  if (!description || description.length > 300) {
+function validateRequestInput(input: CreateRequestInput) {
+  if (!input.description || input.description.length > 300) {
     throw new Error("A descrição deve possuir entre 1 e 300 caracteres.");
   }
-
-  return {
-    businessId: getPositiveInteger(formData, "business_id"),
-    regionId: getPositiveInteger(formData, "region_id"),
-    locationId: getPositiveInteger(formData, "location_id"),
-    serviceTypeId: getPositiveInteger(formData, "service_type_id"),
-    description,
-  };
+  for (const [name, value] of [
+    ["business_id", input.businessId],
+    ["region_id", input.regionId],
+    ["location_id", input.locationId],
+    ["service_type_id", input.serviceTypeId],
+  ] as const) {
+    if (!Number.isInteger(value) || value <= 0) throw new Error(`O campo ${name} é inválido.`);
+  }
 }
 
-async function validateLocationHierarchy(client: PgClient, input: RequestInput) {
+async function validateLocationHierarchy(client: PgClient, input: CreateRequestInput) {
   const result = await client.query<{ valid: boolean }>(
     `SELECT TRUE AS valid
        FROM business b
@@ -257,9 +315,9 @@ async function getFieldDefinitions(client: PgClient, serviceTypeId: number) {
   return result.rows;
 }
 
-function parseFieldValue(field: ServiceFieldDefinition, formData: FormData) {
+function parseFieldValue(field: ServiceFieldDefinition, additionalFields: CreateRequestInput["additionalFields"]) {
   const name = `service_field_${field.id}`;
-  const entries = formData.getAll(name);
+  const entries = getAll(additionalFields, name);
   if (entries.some((entry) => typeof entry !== "string")) {
     throw new Error(`O campo adicional ${field.id} não aceita arquivos.`);
   }
@@ -321,14 +379,6 @@ function parseNumber(value: string, fieldName: string) {
   return parsed;
 }
 
-function getPositiveInteger(formData: FormData, name: string) {
-  const parsed = Number(getString(formData, name));
-  if (!Number.isInteger(parsed) || parsed <= 0) throw new Error(`O campo ${name} é inválido.`);
-  return parsed;
-}
-
-function getString(formData: FormData, name: string) {
-  const value = formData.get(name);
-  if (typeof value !== "string") throw new Error(`O campo ${name} é obrigatório.`);
-  return value;
+function getAll(fields: CreateRequestInput["additionalFields"], name: string): RequestFieldValue[] {
+  return fields[name] ?? [];
 }

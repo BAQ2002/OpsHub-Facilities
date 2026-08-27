@@ -1,23 +1,20 @@
 import "server-only";
 
-import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
-import { getActivityRequestFormData as getRepositoryActivityRequestFormData } from "@/src/server/repositories/activity-request-form-repository";
-import {
-  getLocationHierarchy,
-  getServiceCatalog as getRepositoryServiceCatalog,
-  type ServiceCatalogCategory,
-} from "@/src/server/repositories/activity-request-form-repository";
+import type { ActivityRequestField, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
+import { getOrganizationRepository } from "@/src/server/repositories/organization/organization-repository-provider";
+import { getServiceCatalogRepository } from "@/src/server/repositories/service-catalog/service-catalog-repository-provider";
+import type { ServiceCatalogCategory } from "@/src/server/repositories/service-catalog/service-catalog-repository";
 
 export type ActivityRequestFormPageData = {
   title: string;
   subtitle: string;
   serviceTypeId?: number;
   fields: ActivityRequestField[];
-  locationHierarchy: Awaited<ReturnType<typeof getLocationHierarchy>>;
+  locationHierarchy: LocationHierarchy;
 };
 
 export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
-  return getRepositoryServiceCatalog();
+  return getServiceCatalogRepository().findCatalog();
 }
 
 export async function getChamadoRequestFormPageData(params: {
@@ -26,8 +23,8 @@ export async function getChamadoRequestFormPageData(params: {
   serviceTypeId?: number;
 }): Promise<ActivityRequestFormPageData> {
   const [dynamicData, locationHierarchy] = await Promise.all([
-    getRepositoryActivityRequestFormData(params),
-    getLocationHierarchy(),
+    getServiceCatalogRepository().findRequestFormData(params),
+    getOrganizationRepository().findLocationHierarchy(),
   ]);
   const serviceTypeName = dynamicData.serviceTypeName ?? params.serviceType;
   const serviceCategoryName = dynamicData.serviceCategoryName ?? params.serviceCategory;

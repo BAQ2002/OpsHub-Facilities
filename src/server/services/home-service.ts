@@ -1,13 +1,7 @@
 import "server-only";
 
-import {
-  findActivityRecords,
-  findCategoryColorMap,
-  findEquipmentCards,
-  findMapImage,
-  findHandlingTimeSamplesInMinutes,
-  type HomeDateRange,
-} from "@/src/server/repositories/home-repository";
+import { getHomeDashboardQuery } from "@/src/server/queries/home-dashboard/home-dashboard-query-provider";
+import type { HomeDateRange } from "@/src/server/queries/home-dashboard/home-dashboard-query";
 import {
   mapActivitiesToBusinessUnitFilters,
   mapActivityRecordToMarker,
@@ -20,12 +14,13 @@ export async function getHomePageData(
   dateRange: HomeDateRange,
   selectedBusiness = "all",
 ): Promise<HomePageViewModel> {
+  const query = getHomeDashboardQuery();
   const [equipmentCards, activityRecords, categoryColorMap, mapImage, handlingTimeSamples] = await Promise.all([
-    findEquipmentCards(dateRange),
-    findActivityRecords(dateRange),
-    findCategoryColorMap(),
-    findMapImage(),
-    findHandlingTimeSamplesInMinutes(dateRange),
+    query.findEquipmentCards(dateRange),
+    query.findActivityRecords(dateRange),
+    query.findCategoryColorMap(),
+    query.findMapImage(),
+    query.findHandlingTimeSamplesInMinutes(dateRange),
   ]);
 
   return {

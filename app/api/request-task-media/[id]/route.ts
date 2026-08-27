@@ -1,4 +1,4 @@
-import { findRequestTaskMediaById } from "@/src/server/repositories/request-task-media-repository";
+import { getRequestTaskMediaRepository } from "@/src/server/repositories/request-task/request-task-media-repository-provider";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     return new Response("Identificador de mídia inválido.", { status: 400 });
   }
 
-  const media = await findRequestTaskMediaById(id);
+  const media = await getRequestTaskMediaRepository().findById(id);
   if (!media) return new Response("Mídia não encontrada.", { status: 404 });
 
   return new Response(media.content as BodyInit, {

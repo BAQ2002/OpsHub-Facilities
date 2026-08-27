@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { insertRequestTaskVisit, updateRequestTaskVisit } from "@/src/server/repositories/postgres/request-task-postgres-repository";
-import { deleteVisitChecklist, insertChecklistForVisit } from "@/src/server/repositories/postgres/checklist-postgres-repository";
+import { getRequestTaskRepository } from "@/src/server/repositories/request-task/request-task-repository-provider";
+import { getChecklistRepository } from "@/src/server/repositories/checklist/checklist-repository-provider";
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
@@ -16,7 +16,7 @@ export async function InsertRequestTask(
   try {
     const memberIds = [...new Set(formData.getAll("member_ids").map(Number))];
     const photos = formData.getAll("photos").filter((value): value is File => value instanceof File && value.size > 0);
-    await insertRequestTaskVisit({
+    await getRequestTaskRepository().createVisit({
       requestId,
       description: String(formData.get("description") ?? "").trim(),
       startDatetime: String(formData.get("start_datetime") ?? ""),
@@ -34,7 +34,7 @@ export async function InsertRequestTask(
 
 export async function UpdateRequestTask(visitId: number, _previousState: UpdateVisitState, formData: FormData): Promise<UpdateVisitState> {
   try {
-    await updateRequestTaskVisit({
+    await getRequestTaskRepository().updateVisit({
       visitId,
       description: String(formData.get("description") ?? "").trim(),
       startDatetime: String(formData.get("start_datetime") ?? ""),
@@ -54,7 +54,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
   try {
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
     if (submissions.length !== 1) throw new Error("Selecione um checklist para adicionar.");
-    await insertChecklistForVisit(visitId, submissions[0]);
+    await getChecklistRepository().addToVisit(visitId, submissions[0]);
     revalidatePath("/acompanhamento-atividades/requests");
     return { status: "success", message: "Checklist adicionado com sucesso." };
   } catch (error) {
@@ -64,7 +64,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
 
 export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
-    await deleteVisitChecklist(checklistId);
+    await getChecklistRepository().deleteFromVisit(checklistId);
     revalidatePath("/acompanhamento-atividades/requests");
     return { status: "success", message: "Checklist excluído com sucesso." };
   } catch (error) {

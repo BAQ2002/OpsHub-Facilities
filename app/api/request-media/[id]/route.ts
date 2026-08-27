@@ -1,4 +1,4 @@
-import { findRequestMediaById } from "@/src/server/repositories/request-media-repository";
+import { getRequestServiceMediaRepository } from "@/src/server/repositories/service-catalog/request-service-media-repository-provider";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     return new Response("Identificador de mídia inválido.", { status: 400 });
   }
 
-  const media = await findRequestMediaById(id);
+  const media = await getRequestServiceMediaRepository().findById(id);
   if (!media) return new Response("Mídia não encontrada.", { status: 404 });
 
   return new Response(media.content as BodyInit, {
