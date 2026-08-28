@@ -5,7 +5,7 @@ import type { ActivityTrackingPageViewModel } from "@/src/presentation/view-mode
  * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
  *
  * Map activity tracking data to view model para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `max`, `flatMap`.
+ * Durante o fluxo, aciona {@link max}, {@link flatMap}.
  *
  * @param data Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

@@ -5,7 +5,7 @@ import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/r
  * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
  *
  * Map request board data to view model para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `map`, `filter`.
+ * Durante o fluxo, aciona {@link map}, {@link filter}.
  *
  * @param data Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

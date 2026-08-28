@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a operação de create activity request action e preserva as validações do domínio.
- * Durante o fluxo, aciona `createActivityRequest`.
+ * Durante o fluxo, aciona {@link createActivityRequest}.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -20,7 +20,7 @@ export async function createActivityRequestAction(formData: FormData) {
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a operação de create chamado request action e preserva as validações do domínio.
- * Durante o fluxo, aciona `set`, `toString`, `createChamadoRequest`, `redirect`.
+ * Durante o fluxo, aciona {@link set}, {@link toString}, {@link createChamadoRequest}, {@link redirect}.
  *
  * @param serviceTypeId Dados necessários para executar esta função.
  * @param formData Dados necessários para executar esta função.

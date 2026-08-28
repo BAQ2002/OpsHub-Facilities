@@ -8,7 +8,7 @@ import { getRequestBoardQuery } from "@/src/server/queries/request-board/request
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém request board page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `mapRequestBoardDataToViewModel`, `findData`, `getRequestBoardQuery`.
+ * Durante o fluxo, aciona {@link mapRequestBoardDataToViewModel}, {@link findData}, {@link getRequestBoardQuery}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */

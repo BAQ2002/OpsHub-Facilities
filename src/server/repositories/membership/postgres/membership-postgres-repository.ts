@@ -11,7 +11,7 @@ export const postgresMembershipRepository: MembershipRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém executor options para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */

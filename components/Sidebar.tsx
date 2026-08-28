@@ -21,7 +21,7 @@ const facilitiesSubItems = [
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente Sidebar com os dados recebidos.
- * Durante o fluxo, aciona `usePathname`, `map`, `startsWith`.
+ * Durante o fluxo, aciona {@link usePathname}, {@link map}, {@link startsWith}.
  *
  * @returns O elemento React que representa esta interface.
  */

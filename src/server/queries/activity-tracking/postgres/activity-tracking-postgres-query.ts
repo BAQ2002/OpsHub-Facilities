@@ -22,7 +22,7 @@ export const postgresActivityTrackingQuery: ActivityTrackingQuery = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém activity tracking data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `all`, `query`, `mapChartRows` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link all}, {@link query}, {@link mapChartRows} e outras rotinas auxiliares.
  *
  * @param filters Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -81,7 +81,7 @@ export async function findActivityTrackingData(filters: ActivityTrackingFilters)
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map chart rows para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `map`.
+ * Durante o fluxo, aciona {@link map}.
  *
  * @param rows Dados necessários para executar esta função.
  * @param colors Dados necessários para executar esta função.
@@ -103,7 +103,7 @@ function mapOption(row: OptionRow) { return { id: Number(row.id), name: row.name
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Capitalize para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `toUpperCase`, `charAt`, `slice`.
+ * Durante o fluxo, aciona {@link toUpperCase}, {@link charAt}, {@link slice}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -113,7 +113,7 @@ function capitalize(value: string) { return value.charAt(0).toUpperCase() + valu
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format minutes para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `max`, `round`, `floor`, `padStart`.
+ * Durante o fluxo, aciona {@link max}, {@link round}, {@link floor}, {@link padStart}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

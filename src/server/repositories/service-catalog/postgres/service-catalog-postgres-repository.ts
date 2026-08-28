@@ -40,7 +40,7 @@ export const postgresServiceCatalogRepository: ServiceCatalogRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém service catalog para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `get`, `push` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link get}, {@link push} e outras rotinas auxiliares.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -83,7 +83,7 @@ export async function getServiceCatalog(): Promise<ServiceCatalogCategory[]> {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém activity request form data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`, `find`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link map}, {@link find}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -143,7 +143,7 @@ export async function getActivityRequestFormData({
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map service field type row to field para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `mapDatabaseFieldType`, `mapMediaOptions`, `mapOptions`.
+ * Durante o fluxo, aciona {@link mapDatabaseFieldType}, {@link mapMediaOptions}, {@link mapOptions}.
  *
  * @param row Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -167,7 +167,7 @@ function mapServiceFieldTypeRowToField(row: ServiceFieldTypeRow): ActivityReques
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map database field type para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `toUpperCase`.
+ * Durante o fluxo, aciona {@link toUpperCase}.
  *
  * @param type Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -189,7 +189,7 @@ function mapDatabaseFieldType(type: string): ActivityRequestField["type"] {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map media options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parseJsonOptions`, `isArray`, `map`.
+ * Durante o fluxo, aciona {@link parseJsonOptions}, {@link isArray}, {@link map}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -212,7 +212,7 @@ function mapMediaOptions(options: unknown): NonNullable<ActivityRequestField["me
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parseJsonOptions`, `isArray`, `map`.
+ * Durante o fluxo, aciona {@link parseJsonOptions}, {@link isArray}, {@link map}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -229,7 +229,7 @@ function mapOptions(options: unknown): FormOption[] | undefined {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse json options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parse`.
+ * Durante o fluxo, aciona {@link parse}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

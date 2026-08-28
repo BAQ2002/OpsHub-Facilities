@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Monta os dados e a interface da página de my requests.
- * Durante o fluxo, aciona `getMyRequestsPageData`.
+ * Durante o fluxo, aciona {@link getMyRequestsPageData}.
  *
  * @returns O elemento React que representa esta interface.
  */
@@ -67,7 +67,7 @@ export default async function MyRequestsPage() {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente RequestGroup com os dados recebidos.
- * Durante o fluxo, aciona `toLowerCase`, `map`.
+ * Durante o fluxo, aciona {@link toLowerCase}, {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

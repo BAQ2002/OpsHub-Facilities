@@ -42,7 +42,7 @@ const zoomStep = 0.25;
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Clamp para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `min`, `max`.
+ * Durante o fluxo, aciona {@link min}, {@link max}.
  *
  * @param value Dados necessários para executar esta função.
  * @param min Dados necessários para executar esta função.
@@ -57,7 +57,7 @@ function clamp(value: number, min: number, max: number) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Clamp map view para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `clamp`.
+ * Durante o fluxo, aciona {@link clamp}.
  *
  * @param view Dados necessários para executar esta função.
  * @param width Dados necessários para executar esta função.
@@ -79,7 +79,7 @@ function clampMapView(view: MapView, width: number, height: number): MapView {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente FacilitiesMap com os dados recebidos.
- * Durante o fluxo, aciona `useRef`, `useState`, `useMemo`, `join` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link useRef}, {@link useState}, {@link useMemo}, {@link join} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

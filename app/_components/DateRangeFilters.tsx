@@ -11,7 +11,7 @@ type DateRangeFiltersProps = {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente DateRangeFilters com os dados recebidos.
- * Durante o fluxo, aciona `usePathname`, `useRouter`, `useSearchParams`, `toString` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link usePathname}, {@link useRouter}, {@link useSearchParams}, {@link toString} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -28,7 +28,7 @@ export default function DateRangeFilters({
    * Acionada internamente pela função ou pelo componente que a declara.
    *
    * Executa a operação de update date e preserva as validações do domínio.
-   * Durante o fluxo, aciona `toString`, `set`, `replace`.
+   * Durante o fluxo, aciona {@link toString}, {@link set}, {@link replace}.
    *
    * @param name Dados necessários para executar esta função.
    * @param value Dados necessários para executar esta função.
@@ -44,7 +44,7 @@ export default function DateRangeFilters({
    * Acionada internamente pela função ou pelo componente que a declara.
    *
    * Atualiza o estado da interface para select today.
-   * Durante o fluxo, aciona `formatLocalDate`, `toString`, `set`, `replace`.
+   * Durante o fluxo, aciona {@link formatLocalDate}, {@link toString}, {@link set}, {@link replace}.
    *
    * @returns Não retorna valor.
    */
@@ -61,7 +61,7 @@ export default function DateRangeFilters({
    * Acionada internamente pela função ou pelo componente que a declara.
    *
    * Atualiza o estado da interface para shift date range.
-   * Durante o fluxo, aciona `toString`, `set`, `addDays`, `replace`.
+   * Durante o fluxo, aciona {@link toString}, {@link set}, {@link addDays}, {@link replace}.
    *
    * @param days Dados necessários para executar esta função.
    * @returns Não retorna valor.
@@ -121,7 +121,7 @@ export default function DateRangeFilters({
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Executa add days no fluxo atual.
- * Durante o fluxo, aciona `map`, `split`, `setDate`, `getDate` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link map}, {@link split}, {@link setDate}, {@link getDate} e outras rotinas auxiliares.
  *
  * @param value Dados necessários para executar esta função.
  * @param days Dados necessários para executar esta função.
@@ -139,7 +139,7 @@ function addDays(value: string, days: number) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Format local date para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `join`, `getFullYear`, `padStart`, `getMonth` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link join}, {@link getFullYear}, {@link padStart}, {@link getMonth} e outras rotinas auxiliares.
  *
  * @param date Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -208,7 +208,7 @@ function ChevronRightIcon() {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente DateInput com os dados recebidos.
- * Durante o fluxo, aciona `onChange`.
+ * Durante o fluxo, aciona {@link onChange}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

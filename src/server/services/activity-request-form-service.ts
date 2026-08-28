@@ -16,7 +16,7 @@ export type ActivityRequestFormPageData = {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém service catalog page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `findCatalog`, `getServiceCatalogRepository`.
+ * Durante o fluxo, aciona {@link findCatalog}, {@link getServiceCatalogRepository}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -28,7 +28,7 @@ export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategor
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém chamado request form page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `all`, `findRequestFormData`, `getServiceCatalogRepository`, `findLocationHierarchy` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link all}, {@link findRequestFormData}, {@link getServiceCatalogRepository}, {@link findLocationHierarchy} e outras rotinas auxiliares.
  *
  * @param params Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

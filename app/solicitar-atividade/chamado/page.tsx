@@ -15,7 +15,7 @@ type ChamadoRequestPageProps = {
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Monta os dados e a interface da página de chamado request.
- * Durante o fluxo, aciona `getChamadoRequestFormPageData`, `isInteger`, `notFound`, `bind`.
+ * Durante o fluxo, aciona {@link getChamadoRequestFormPageData}, {@link isInteger}, {@link notFound}, {@link bind}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

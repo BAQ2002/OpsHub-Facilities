@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Monta os dados e a interface da página de solicitar atividade.
- * Durante o fluxo, aciona `getServiceCatalogPageData`, `map`.
+ * Durante o fluxo, aciona {@link getServiceCatalogPageData}, {@link map}.
  *
  * @returns O elemento React que representa esta interface.
  */

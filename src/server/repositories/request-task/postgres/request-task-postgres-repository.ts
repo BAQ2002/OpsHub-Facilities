@@ -29,7 +29,7 @@ export const postgresRequestTaskRepository: RequestTaskRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de insert request task visit e preserva as validações do domínio.
- * Durante o fluxo, aciona `validateVisit`, `all`, `map`, `from` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link validateVisit}, {@link all}, {@link map}, {@link from} e outras rotinas auxiliares.
  *
  * @param input Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -95,7 +95,7 @@ export async function insertRequestTaskVisit(input: VisitInput) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de update request task visit e preserva as validações do domínio.
- * Durante o fluxo, aciona `validateVisit`, `isSafeInteger`, `all`, `map` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link validateVisit}, {@link isSafeInteger}, {@link all}, {@link map} e outras rotinas auxiliares.
  *
  * @param input Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -135,7 +135,7 @@ export async function updateRequestTaskVisit(input: UpdateVisitInput) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate visit e preserva as validações do domínio.
- * Durante o fluxo, aciona `isSafeInteger`, `valueOf`, `some`, `reduce` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link isSafeInteger}, {@link valueOf}, {@link some}, {@link reduce} e outras rotinas auxiliares.
  *
  * @param input Dados necessários para executar esta função.
  * @param requirePhotos Dados necessários para executar esta função.

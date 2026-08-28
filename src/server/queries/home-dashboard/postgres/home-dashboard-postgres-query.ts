@@ -55,7 +55,7 @@ export const postgresHomeDashboardQuery: HomeDashboardQuery = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém equipment cards para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link map}.
  *
  * @param dateRange Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -96,7 +96,7 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém activity records para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `flatMap`, `query`, `map`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link flatMap}, {@link query}, {@link map}.
  *
  * @param dateRange Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -161,7 +161,7 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém category color map para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `fromEntries`, `map`, `entries`.
+ * Durante o fluxo, aciona {@link fromEntries}, {@link map}, {@link entries}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -192,7 +192,7 @@ export async function findMapImage(): Promise<MapImage> {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém handling time samples in minutes para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `filter`, `map` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link filter}, {@link map} e outras rotinas auxiliares.
  *
  * @param dateRange Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -220,7 +220,7 @@ export async function findHandlingTimeSamplesInMinutes(dateRange: HomeDateRange)
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map category count row to equipment card para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `getActivityCategoryStyle`, `isFinite`.
+ * Durante o fluxo, aciona {@link getActivityCategoryStyle}, {@link isFinite}.
  *
  * @param row Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -247,7 +247,7 @@ function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCar
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map activity record row to entity para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `normalizeActivityStatus`, `normalizeActivityType`, `toNullableNumber`, `formatDateTime`.
+ * Durante o fluxo, aciona {@link normalizeActivityStatus}, {@link normalizeActivityType}, {@link toNullableNumber}, {@link formatDateTime}.
  *
  * @param row Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -289,7 +289,7 @@ function normalizeActivityStatus(value: string): ActivityStatus {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * To nullable number para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isFinite`.
+ * Durante o fluxo, aciona {@link isFinite}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -316,7 +316,7 @@ function normalizeActivityType(value: string | null): ActivityType {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format date time para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `replace`, `format`.
+ * Durante o fluxo, aciona {@link replace}, {@link format}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
