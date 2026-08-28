@@ -1,4 +1,4 @@
-import { getRequestTaskMediaRepository } from "@/src/server/repositories/request-task/request-task-media-repository-provider";
+import { getRequestTaskMediaRepository } from "@/src/server/repositories/repositories";
 
 export const dynamic = "force-dynamic";
 
