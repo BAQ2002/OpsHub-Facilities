@@ -12,10 +12,27 @@ export type ActivityRequestFormPageData = {
   locationHierarchy: LocationHierarchy;
 };
 
+/**
+ * Acionada pela página ou Server Action que solicita este caso de uso.
+ *
+ * Obtém service catalog page data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `findCatalog`, `getServiceCatalogRepository`.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
   return getServiceCatalogRepository().findCatalog();
 }
 
+/**
+ * Acionada pela página ou Server Action que solicita este caso de uso.
+ *
+ * Obtém chamado request form page data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `all`, `findRequestFormData`, `getServiceCatalogRepository`, `findLocationHierarchy` e outras rotinas auxiliares.
+ *
+ * @param params Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getChamadoRequestFormPageData(params: {
   serviceCategory?: string;
   serviceType?: string;

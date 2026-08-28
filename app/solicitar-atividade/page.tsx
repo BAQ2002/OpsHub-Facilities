@@ -3,6 +3,14 @@ import { getServiceCatalogPageData } from "@/src/server/services/activity-reques
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de solicitar atividade.
+ * Durante o fluxo, aciona `getServiceCatalogPageData`, `map`.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function SolicitarAtividadePage() {
   const serviceCategories = await getServiceCatalogPageData();
   return (
@@ -84,6 +92,13 @@ export default async function SolicitarAtividadePage() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de alert diamond.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function AlertDiamondIcon() {
   return (
     <svg width="31" height="31" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -94,6 +109,13 @@ function AlertDiamondIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">

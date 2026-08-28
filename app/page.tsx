@@ -38,6 +38,15 @@ type HomeSearchParams = {
   business?: string;
 };
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Renderiza o componente Home com os dados recebidos.
+ * Durante o fluxo, aciona `normalizeStatuses`, `slice`, `toISOString`, `getHomePageData` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function Home({
   searchParams,
 }: {
@@ -372,6 +381,16 @@ export default async function Home({
   );
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Build business filter href para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `set`, `normalizeParam`, `append`, `toString`.
+ *
+ * @param searchParams Dados necessários para executar esta função.
+ * @param business Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function buildBusinessFilterHref(
   searchParams: HomeSearchParams | undefined,
   business: string,
@@ -389,17 +408,44 @@ function buildBusinessFilterHref(
   return query ? `/?${query}` : "/";
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Normalize param para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeParam(value: string | string[] | undefined) {
   if (value === undefined) return [];
   return Array.isArray(value) ? value : [value];
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Normalize statuses para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `normalizeParam`, `filter`, `includes`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeStatuses(value: string | string[] | undefined) {
   const values = normalizeParam(value);
 
   return activityStatuses.filter((status) => values.includes(status));
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente HandlingTimeDisplay com os dados recebidos.
+ * Durante o fluxo, aciona `split`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function HandlingTimeDisplay({
   displayValue,
   caption,
@@ -444,6 +490,13 @@ function HandlingTimeDisplay({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente BlinkingColon com os dados recebidos.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function BlinkingColon() {
   return (
     <svg
@@ -458,6 +511,15 @@ function BlinkingColon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente SevenSegmentDigit com os dados recebidos.
+ * Durante o fluxo, aciona `map`, `includes`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function SevenSegmentDigit({ value }: { value: string }) {
   const activeSegments = sevenSegmentMap[value] ?? sevenSegmentMap["0"];
 
@@ -486,6 +548,14 @@ function SevenSegmentDigit({ value }: { value: string }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente SummaryCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function SummaryCard({
   value,
   label,
@@ -511,6 +581,14 @@ function SummaryCard({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ActionCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ActionCard({ href, label }: { href: string; label: string }) {
   return (
     <Link
@@ -522,6 +600,14 @@ function ActionCard({ href, label }: { href: string; label: string }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente Metric com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function Metric({
   label,
   value,

@@ -5,6 +5,14 @@ import { getChecklistRepository, getMembershipRepository } from "@/src/server/re
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de requests.
+ * Durante o fluxo, aciona `getMembershipRepository`, `getChecklistRepository`, `all`, `getRequestBoardPageData` e outras rotinas auxiliares.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function RequestsPage() {
   const membershipRepository = getMembershipRepository();
   const checklistRepository = getChecklistRepository();
@@ -60,11 +68,61 @@ export default async function RequestsPage() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente IconButton com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function IconButton({ label, divider, children }: { label: string; divider?: boolean; children: React.ReactNode }) { return <button type="button" aria-label={label} className={`flex h-9 w-11 items-center justify-center ${divider ? "border-l border-blue-500" : ""}`}>{children}</button>; }
 const icon = "h-[18px] w-[18px]";
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de download.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function DownloadIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3" /></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de settings.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SettingsIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.7-1.7.9-1.9-2.1-2.1-1.9.9-1.7-.7-.7-2h-3l-.7 2-1.7.7-1.9-.9-2.1 2.1.9 1.9-.7 1.7-2 .7v3l2 .7.7 1.7-.9 1.9 2.1 2.1 1.9-.9 1.7.7.7 2h3l.7-2 1.7-.7 1.9.9 2.1-2.1-.9-1.9.7-1.7z"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de filter.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function FilterIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de board.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function BoardIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18m6-18v18"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de list.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ListIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>; }

@@ -2,6 +2,14 @@ import "server-only";
 
 const POSTGRES_DATA_SOURCE = "postgres";
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Executa a operação de assert postgres data source e preserva as validações do domínio.
+ * Durante o fluxo, aciona `stringify`.
+ *
+ * @returns Não retorna valor.
+ */
 export function assertPostgresDataSource(): void {
   const dataSource = process.env.DATA_SOURCE;
 

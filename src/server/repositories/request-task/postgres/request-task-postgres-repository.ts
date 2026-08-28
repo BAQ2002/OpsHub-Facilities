@@ -25,6 +25,15 @@ export const postgresRequestTaskRepository: RequestTaskRepository = {
   updateVisit: updateRequestTaskVisit,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de insert request task visit e preserva as validações do domínio.
+ * Durante o fluxo, aciona `validateVisit`, `all`, `map`, `from` e outras rotinas auxiliares.
+ *
+ * @param input Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 export async function insertRequestTaskVisit(input: VisitInput) {
   validateVisit(input);
   const photoBuffers = await Promise.all(
@@ -82,6 +91,15 @@ export async function insertRequestTaskVisit(input: VisitInput) {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de update request task visit e preserva as validações do domínio.
+ * Durante o fluxo, aciona `validateVisit`, `isSafeInteger`, `all`, `map` e outras rotinas auxiliares.
+ *
+ * @param input Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 export async function updateRequestTaskVisit(input: UpdateVisitInput) {
   validateVisit({ ...input, requestId: 1, checklists: [] }, false);
   if (!Number.isSafeInteger(input.visitId) || input.visitId <= 0) throw new Error("Visita inválida.");
@@ -113,6 +131,16 @@ export async function updateRequestTaskVisit(input: UpdateVisitInput) {
   } finally { client.release(); }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate visit e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isSafeInteger`, `valueOf`, `some`, `reduce` e outras rotinas auxiliares.
+ *
+ * @param input Dados necessários para executar esta função.
+ * @param requirePhotos Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 function validateVisit(input: VisitInput, requirePhotos = true) {
   if (!Number.isSafeInteger(input.requestId) || input.requestId <= 0) throw new Error("Request inválida.");
   if (!input.description || input.description.length > 300) throw new Error("A descrição deve possuir entre 1 e 300 caracteres.");

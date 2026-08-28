@@ -12,6 +12,15 @@ import type {
 type Executor = { id: number; name: string };
 type Visit = RequestBoardCardViewModel["visits"][number];
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestBoard com os dados recebidos.
+ * Durante o fluxo, aciona `useState`, `find`, `flatMap`, `map` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export function RequestBoard({ columns, executors, checklistDefinitions }: { columns: RequestBoardColumnViewModel[]; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
   const selectedRequest = columns.flatMap((column) => column.requests).find((request) => request.id === selectedRequestId) ?? null;
@@ -30,6 +39,15 @@ export function RequestBoard({ columns, executors, checklistDefinitions }: { col
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestColumn com os dados recebidos.
+ * Durante o fluxo, aciona `map`, `onOpen`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestColumn({
   column,
   onOpen,
@@ -70,6 +88,15 @@ function RequestColumn({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestDetailsModal com os dados recebidos.
+ * Durante o fluxo, aciona `useRef`, `useState`, `map`, `get` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestDetailsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [showVisit, setShowVisit] = useState(false);
@@ -94,6 +121,15 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
   }, []);
 
   useEffect(() => {
+    /**
+     * Acionada internamente pela função ou pelo componente que a declara.
+     *
+     * Atualiza o estado da interface para close on escape.
+     * Durante o fluxo, aciona `setShowVisit`, `setShowVisits`, `onClose`.
+     *
+     * @param event Dados necessários para executar esta função.
+     * @returns Não retorna valor.
+     */
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       if (showVisit) setShowVisit(false);
@@ -224,6 +260,15 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente VisitsModal com os dados recebidos.
+ * Durante o fluxo, aciona `useRef`, `useState`, `find`, `useEffect` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function VisitsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [selectedVisitId, setSelectedVisitId] = useState<number | null>(null);
@@ -293,6 +338,15 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
 
 const initialUpdateVisitState: AddVisitState = { status: "idle", message: "" };
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente VisitDetailsModal com os dados recebidos.
+ * Durante o fluxo, aciona `bind`, `useActionState`, `useState`, `map` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: { visit: Visit; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = UpdateRequestTask.bind(null, visit.id);
   const [state, formAction, pending] = useActionState(action, initialUpdateVisitState);
@@ -305,6 +359,14 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
   const [deletingChecklist, startDeleteChecklist] = useTransition();
   const [checklistMessage, setChecklistMessage] = useState("");
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Atualiza o estado da interface para cancel editing.
+   * Durante o fluxo, aciona `reset`, `setSelectedExecutorIds`, `map`, `setNewMediaFiles` e outras rotinas auxiliares.
+   *
+   * @returns Não retorna valor.
+   */
   function cancelEditing() {
     formRef.current?.reset();
     setSelectedExecutorIds(visit.executors.map((executor) => executor.id));
@@ -396,6 +458,15 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
 
 const initialVisitState: AddVisitState = { status: "idle", message: "" };
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente AddVisitModal com os dados recebidos.
+ * Durante o fluxo, aciona `bind`, `useActionState`, `useState`, `useMediaPreviews` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: { requestId: number; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = InsertRequestTask.bind(null, requestId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
@@ -408,6 +479,15 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
   const [checklists, setChecklists] = useState<ChecklistDraft[]>([]);
   const [checklistModalKey, setChecklistModalKey] = useState<number | "new" | null>(null);
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Toggle executor para o formato esperado pelo fluxo.
+   * Durante o fluxo, aciona `setSelectedExecutorIds`, `includes`, `filter`.
+   *
+   * @param executorId Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   function toggleExecutor(executorId: number) {
     setSelectedExecutorIds((currentIds) => (
       currentIds.includes(executorId)
@@ -519,6 +599,15 @@ type ChecklistDraft = {
   values: Record<number, unknown>;
 };
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente AddChecklistModal com os dados recebidos.
+ * Durante o fluxo, aciona `bind`, `useActionState`, `useState`, `createChecklistDraft` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number; definitions: ChecklistDefinition[]; onClose: () => void }) {
   const action = InsertRequestTaskChecklist.bind(null, visitId);
   const [state, formAction, pending] = useActionState(action, initialVisitState);
@@ -545,6 +634,15 @@ function AddChecklistModal({ visitId, definitions, onClose }: { visitId: number;
   </div>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente DraftChecklistModal com os dados recebidos.
+ * Durante o fluxo, aciona `useState`, `createChecklistDraft`, `now`, `onClose` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function DraftChecklistModal({ definitions, initialDraft, onClose, onSave }: { definitions: ChecklistDefinition[]; initialDraft?: ChecklistDraft; onClose: () => void; onSave: (draft: ChecklistDraft) => void }) {
   const [draft, setDraft] = useState<ChecklistDraft | undefined>(() => initialDraft ?? (definitions[0] ? createChecklistDraft(definitions[0].id, Date.now()) : undefined));
 
@@ -561,6 +659,15 @@ function DraftChecklistModal({ definitions, initialDraft, onClose, onSave }: { d
   </div>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ChecklistDraftSummary com os dados recebidos.
+ * Durante o fluxo, aciona `map`, `find`, `onEdit`, `onRemove`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ChecklistDraftSummary({ definitions, drafts, onAdd, onEdit, onRemove }: { definitions: ChecklistDefinition[]; drafts: ChecklistDraft[]; onAdd: () => void; onEdit: (key: number) => void; onRemove: (key: number) => void }) {
   return <section className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/60 p-4" aria-labelledby="checklist-summary-title">
     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -578,13 +685,41 @@ function ChecklistDraftSummary({ definitions, drafts, onAdd, onEdit, onRemove }:
   </section>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ApplyChecklistEditor com os dados recebidos.
+ * Durante o fluxo, aciona `find`, `filter`, `onChange`, `update` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ApplyChecklistEditor({ definitions, draft, onChange }: { definitions: ChecklistDefinition[]; draft?: ChecklistDraft; onChange: (draft?: ChecklistDraft) => void }) {
   if (!definitions.length || !draft) return <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500">Nenhum tipo de checklist ativo disponível.</p>;
 
   const definition = definitions.find((item) => item.id === draft.checklistTypeId) ?? definitions[0];
   const singleSelectFields = definition.fields.filter((field) => field.type === "SINGLE_SELECT");
   const otherFields = definition.fields.filter((field) => field.type !== "SINGLE_SELECT");
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Executa a operação de update e preserva as validações do domínio.
+   * Durante o fluxo, aciona `onChange`.
+   *
+   * @param values Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   const update = (values: Partial<ChecklistDraft>) => onChange({ ...draft, ...values });
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Executa a operação de update value e preserva as validações do domínio.
+   * Durante o fluxo, aciona `update`.
+   *
+   * @param fieldId Dados necessários para executar esta função.
+   * @param value Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   const updateValue = (fieldId: number, value: unknown) => update({ values: { ...draft.values, [fieldId]: value } });
 
   return <div className="space-y-7">
@@ -625,6 +760,15 @@ function ApplyChecklistEditor({ definitions, draft, onChange }: { definitions: C
   </div>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente SingleSelectChecklistItem com os dados recebidos.
+ * Durante o fluxo, aciona `useId`, `map`, `onChange`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function SingleSelectChecklistItem({ field, index, value, onChange }: { field: ChecklistDefinition["fields"][number]; index: number; value: unknown; onChange: (value: string) => void }) {
   const groupName = `${useId()}-single-select-${field.id}`;
   const optionStyles = ["border-emerald-200 bg-emerald-50 text-emerald-700", "border-red-200 bg-red-50 text-red-600", "border-slate-200 bg-slate-50 text-slate-600"];
@@ -638,14 +782,41 @@ function SingleSelectChecklistItem({ field, index, value, onChange }: { field: C
   </li>;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Executa a operação de create checklist draft e preserva as validações do domínio.
+ *
+ * @param checklistTypeId Dados necessários para executar esta função.
+ * @param key Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function createChecklistDraft(checklistTypeId: number, key: number): ChecklistDraft {
   return { key, checklistTypeId, corporation: "", equipmentTag: "", equipmentBrand: "", equipmentModel: "", rentedEquipment: null, serialNumber: "", ptNumber: "", values: {} };
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ChecklistMetadataField com os dados recebidos.
+ * Durante o fluxo, aciona `onChange`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ChecklistMetadataField({ label, maxLength, value, onChange, placeholder, hint }: { label: string; maxLength: number; value: string; onChange: (value: string) => void; placeholder?: string; hint?: string }) {
   return <label><span className="mb-2 block text-sm font-semibold text-slate-700">{label}</span><input className={inputClass} type="text" maxLength={maxLength} placeholder={placeholder} value={value} onChange={(event) => onChange(event.target.value)} />{hint ? <span className="mt-1 block text-xs text-slate-500">{hint}</span> : null}</label>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ChecklistDynamicField com os dados recebidos.
+ * Durante o fluxo, aciona `useId`, `onChange`, `map`, `isArray` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDefinition["fields"][number]; value: unknown; onChange: (value: unknown) => void }) {
   const id = `${useId()}-checklist-field-${field.id}`;
   const label = <span className="mb-2 block text-sm font-semibold text-slate-700">{field.name}{field.required ? <span className="text-red-500"> *</span> : null}</span>;
@@ -656,6 +827,15 @@ function ChecklistDynamicField({ field, value, onChange }: { field: ChecklistDef
   return <label className={field.type === "TEXT" ? "sm:col-span-2" : undefined}>{label}<input id={id} className={inputClass} type={inputType} required={field.required} value={String(value ?? "")} onChange={(event) => onChange(field.type === "NUMBER" ? (event.target.value === "" ? "" : Number(event.target.value)) : event.target.value)} /></label>;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Serialize checklists para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `map`, `entries`, `stringify`.
+ *
+ * @param drafts Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function serializeChecklists(drafts: ChecklistDraft[]): string {
   const submissions: ChecklistSubmission[] = drafts.map((draft) => ({
     checklistTypeId: draft.checklistTypeId,
@@ -671,6 +851,15 @@ function serializeChecklists(drafts: ChecklistDraft[]): string {
   return JSON.stringify(submissions);
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Format checklist value para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`, `join`, `stringify`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatChecklistValue(value: unknown): string {
   if (value == null || value === "") return "Não informado";
   if (typeof value === "boolean") return value ? "Sim" : "Não";
@@ -686,6 +875,15 @@ type GalleryMedia = {
   url: string;
 };
 
+/**
+ * Acionada durante a renderização do componente que consome este hook.
+ *
+ * Mantém media previews sincronizado com o ciclo de vida do componente.
+ * Durante o fluxo, aciona `useMemo`, `map`, `createObjectURL`, `useEffect` e outras rotinas auxiliares.
+ *
+ * @param files Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function useMediaPreviews(files: File[]): GalleryMedia[] {
   const previews = useMemo(() => files.map((file, index) => ({
       id: `preview-${index}-${file.name}-${file.lastModified}`,
@@ -701,6 +899,14 @@ function useMediaPreviews(files: File[]): GalleryMedia[] {
   return previews;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente VisitMediaField com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function VisitMediaField({ media, input }: { media: GalleryMedia[]; input?: React.ReactNode }) {
   return (
     <section aria-labelledby="visit-media-label">
@@ -713,6 +919,15 @@ function VisitMediaField({ media, input }: { media: GalleryMedia[]; input?: Reac
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MediaGallery com os dados recebidos.
+ * Durante o fluxo, aciona `useState`, `useEffect`, `setTimeout`, `setActiveIndex` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function MediaGallery({ media, emptyMessage = "Nenhum registro fotográfico." }: { media: GalleryMedia[]; emptyMessage?: string }) {
   const [mode, setMode] = useState<"carousel" | "grid">("carousel");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -756,10 +971,27 @@ function MediaGallery({ media, emptyMessage = "Nenhum registro fotográfico." }:
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente GalleryModeButton com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function GalleryModeButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return <button className={`rounded-md px-3 py-1.5 text-xs font-semibold transition ${active ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100"}`} type="button" aria-pressed={active} onClick={onClick}>{children}</button>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MediaItem com os dados recebidos.
+ * Durante o fluxo, aciona `startsWith`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function MediaItem({ media, featured = false }: { media: GalleryMedia; featured?: boolean }) {
   const mediaClass = featured ? "h-[min(52vh,30rem)] w-full" : "aspect-video w-full";
   return (
@@ -777,12 +1009,29 @@ function MediaItem({ media, featured = false }: { media: GalleryMedia; featured?
   );
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Normalize search value para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `toLocaleLowerCase`, `replace`, `normalize`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeSearchValue(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
 }
 
 const inputClass = "mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
 const readOnlyInputClass = "mt-2 w-full cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm text-slate-500 opacity-100";
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente VisitField com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function VisitField({ label, children }: { label: string; children: React.ReactNode }) { return <label className="block text-sm font-semibold text-slate-700">{label} <span className="text-red-500">*</span>{children}</label>; }
 
 const STANDARD_REQUEST_DETAIL_IDS = new Set([
@@ -795,6 +1044,14 @@ const STANDARD_REQUEST_DETAIL_IDS = new Set([
   "description",
 ]);
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ModalDetail com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ModalDetail({ label, value }: { label: string; value: string }) {
   return (
     <div>
@@ -804,6 +1061,14 @@ function ModalDetail({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ModalDetailCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ModalDetailCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="h-full rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -812,16 +1077,54 @@ function ModalDetailCard({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Format file size para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `toFixed`.
+ *
+ * @param bytes Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatFileSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente CardDetail com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function CardDetail({ icon: detailIcon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return <div className="grid grid-cols-[18px_1fr] gap-x-2"><span className="mt-0.5 text-slate-400" aria-hidden="true">{detailIcon}</span><div className="min-w-0"><dt className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{label}</dt><dd className="mt-0.5 break-words text-[13px] font-medium leading-5 text-slate-700">{value}</dd></div></div>;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de requester.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function RequesterIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.6-4 3-6 7-6s6.4 2 7 6"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de location.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function LocationIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>; }
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de edit.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function EditIcon() { return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m4 20 4.2-1 10.6-10.6a2 2 0 0 0-2.8-2.8L5.4 16.2 4 20Z"/><path d="m14.5 7.1 2.8 2.8"/></svg>; }

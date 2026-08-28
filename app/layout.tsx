@@ -7,6 +7,14 @@ export const metadata: Metadata = {
   description: "Sistema de gestão operacional",
 };
 
+/**
+ * Acionada pelo Next.js para envolver a renderização das rotas da aplicação.
+ *
+ * Define a estrutura visual compartilhada por todas as páginas da aplicação.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

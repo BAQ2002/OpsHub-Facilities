@@ -52,6 +52,13 @@ const patioFields = [
   },
 ];
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de patio request.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default function PatioRequestPage() {
   return (
     <ActivityRequestForm

@@ -17,6 +17,15 @@ type ActivityRequestFormProps = {
   action?: (formData: FormData) => Promise<void>;
 };
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ActivityRequestForm com os dados recebidos.
+ * Durante o fluxo, aciona `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default function ActivityRequestForm({
   title,
   subtitle,
@@ -98,6 +107,15 @@ export default function ActivityRequestForm({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente LocationFields com os dados recebidos.
+ * Durante o fluxo, aciona `useState`, `useMemo`, `filter`, `map` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
   const [businessId, setBusinessId] = useState("");
   const [regionId, setRegionId] = useState("");
@@ -151,6 +169,15 @@ function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente SelectField com os dados recebidos.
+ * Durante o fluxo, aciona `onChange`, `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function SelectField({
   label,
   name,
@@ -197,6 +224,15 @@ function SelectField({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente FormField com os dados recebidos.
+ * Durante o fluxo, aciona `renderField`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function FormField({ field }: { field: Field }) {
   const fieldId = `activity-${field.name}`;
   const wrapperClass = field.fullWidth ? "md:col-span-2" : undefined;
@@ -228,6 +264,16 @@ function FormField({ field }: { field: Field }) {
   );
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Executa render field no fluxo atual.
+ * Durante o fluxo, aciona `map`, `join`.
+ *
+ * @param field Dados necessários para executar esta função.
+ * @param fieldId Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function renderField(field: Field, fieldId: string) {
   const inputClass =
     "h-[46px] w-full rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-100";
@@ -313,6 +359,15 @@ function renderField(field: Field, fieldId: string) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MultiSelectDropdown com os dados recebidos.
+ * Durante o fluxo, aciona `useState`, `useRef`, `useEffect`, `contains` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
@@ -327,10 +382,28 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
   useEffect(() => {
     if (!isOpen) return;
 
+    /**
+     * Acionada internamente pela função ou pelo componente que a declara.
+     *
+     * Atualiza o estado da interface para close on outside click.
+     * Durante o fluxo, aciona `contains`, `setIsOpen`.
+     *
+     * @param event Dados necessários para executar esta função.
+     * @returns Não retorna valor.
+     */
     function closeOnOutsideClick(event: MouseEvent) {
       if (!containerRef.current?.contains(event.target as Node)) setIsOpen(false);
     }
 
+    /**
+     * Acionada internamente pela função ou pelo componente que a declara.
+     *
+     * Atualiza o estado da interface para close on escape.
+     * Durante o fluxo, aciona `setIsOpen`, `focus`.
+     *
+     * @param event Dados necessários para executar esta função.
+     * @returns Não retorna valor.
+     */
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
       setIsOpen(false);
@@ -345,6 +418,15 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
     };
   }, [isOpen]);
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Toggle option para o formato esperado pelo fluxo.
+   * Durante o fluxo, aciona `setSelectedValues`, `includes`, `filter`, `setShowRequiredError`.
+   *
+   * @param value Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   function toggleOption(value: string) {
     setSelectedValues((currentValues) => {
       const nextValues = currentValues.includes(value)
@@ -450,6 +532,14 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de chevron down.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ChevronDownIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <svg
@@ -463,6 +553,13 @@ function ChevronDownIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de clipboard.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ClipboardIcon() {
   return (
     <svg
@@ -485,6 +582,13 @@ function ClipboardIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de save.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SaveIcon() {
   return (
     <svg

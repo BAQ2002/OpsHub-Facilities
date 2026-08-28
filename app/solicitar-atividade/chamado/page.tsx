@@ -11,6 +11,15 @@ type ChamadoRequestPageProps = {
   }>;
 };
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de chamado request.
+ * Durante o fluxo, aciona `getChamadoRequestFormPageData`, `isInteger`, `notFound`, `bind`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function ChamadoRequestPage({ searchParams }: ChamadoRequestPageProps) {
   const params = await searchParams;
   const serviceTypeId = Number(params.service_type_id);

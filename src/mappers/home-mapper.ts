@@ -1,6 +1,15 @@
 import type { ActivityRecord, EquipmentCard } from "@/src/domain/entities/activity";
 import type { ActivityMarkerViewModel, PlannedRequestFilterViewModel, HandlingTimeClockViewModel } from "@/src/presentation/view-models/home-view-model";
 
+/**
+ * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
+ *
+ * Map activity record to marker para o formato esperado pelo fluxo.
+ *
+ * @param record Dados necessários para executar esta função.
+ * @param categoryColorMap Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function mapActivityRecordToMarker(
   record: ActivityRecord,
   categoryColorMap: Record<string, string>,
@@ -14,6 +23,16 @@ export function mapActivityRecordToMarker(
   };
 }
 
+/**
+ * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
+ *
+ * Map activities to business unit filters para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `from`, `map`, `filter`.
+ *
+ * @param records Dados necessários para executar esta função.
+ * @param selectedBusiness Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function mapActivitiesToBusinessUnitFilters(
   records: ActivityRecord[],
   selectedBusiness = "all",
@@ -36,6 +55,15 @@ export function mapActivitiesToBusinessUnitFilters(
   ];
 }
 
+/**
+ * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
+ *
+ * Map equipment cards to totals para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `reduce`.
+ *
+ * @param equipmentCards Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
   return equipmentCards.reduce(
     (acc, card) => ({
@@ -47,6 +75,15 @@ export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
   );
 }
 
+/**
+ * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
+ *
+ * Map handling time samples to clock para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `round`, `reduce`, `floor`, `padStart`.
+ *
+ * @param samplesInMinutes Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function mapHandlingTimeSamplesToClock(samplesInMinutes: number[]): HandlingTimeClockViewModel {
   const averageInMinutes = samplesInMinutes.length > 0
     ? Math.round(samplesInMinutes.reduce((acc, minutes) => acc + minutes, 0) / samplesInMinutes.length)

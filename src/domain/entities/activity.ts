@@ -25,6 +25,14 @@ export const activityCategoryStylesById: Readonly<Record<number, ActivityCategor
   10: { accent: "text-teal-500", iconBg: "bg-teal-50", color: "#14b8a6" },
 };
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Obtém activity category style para uso pelo fluxo solicitante.
+ *
+ * @param categoryId Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function getActivityCategoryStyle(categoryId: number | null | undefined): ActivityCategoryStyle {
   if (categoryId === null || categoryId === undefined) return defaultActivityCategoryStyle;
   return activityCategoryStylesById[categoryId] ?? defaultActivityCategoryStyle;
