@@ -1,8 +1,7 @@
 import "server-only";
 
 import type { ActivityRequestField, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
-import { getOrganizationRepository } from "@/src/server/repositories/organization/organization-repository-provider";
-import { getServiceCatalogRepository } from "@/src/server/repositories/service-catalog/service-catalog-repository-provider";
+import { getOrganizationRepository, getServiceCatalogRepository } from "@/src/server/repositories/repositories";
 import type { ServiceCatalogCategory } from "@/src/server/repositories/service-catalog/service-catalog-repository";
 
 export type ActivityRequestFormPageData = {

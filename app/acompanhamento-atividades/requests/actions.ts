@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getRequestTaskRepository } from "@/src/server/repositories/request-task/request-task-repository-provider";
-import { getChecklistRepository } from "@/src/server/repositories/checklist/checklist-repository-provider";
+import { getChecklistRepository, getRequestTaskRepository } from "@/src/server/repositories/repositories";
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };

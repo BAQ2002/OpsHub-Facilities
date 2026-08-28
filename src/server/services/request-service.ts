@@ -2,7 +2,7 @@ import "server-only";
 
 import { mapRequestEntityToViewModel } from "@/src/mappers/request-mapper";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
-import { getRequestRepository } from "@/src/server/repositories/request/request-repository-provider";
+import { getRequestRepository } from "@/src/server/repositories/repositories";
 import type { CreateRequestInput, RequestFieldValue } from "@/src/server/repositories/request/request-repository";
 
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {

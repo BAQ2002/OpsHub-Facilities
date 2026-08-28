@@ -1,4 +1,4 @@
-import { getRequestServiceMediaRepository } from "@/src/server/repositories/service-catalog/request-service-media-repository-provider";
+import { getRequestServiceMediaRepository } from "@/src/server/repositories/repositories";
 
 export const dynamic = "force-dynamic";
 

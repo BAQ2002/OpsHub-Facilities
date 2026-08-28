@@ -1,8 +1,7 @@
 import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
 import { TrackingTabs } from "../_components/TrackingTabs";
 import { RequestBoard } from "./_components/RequestBoard";
-import { getMembershipRepository } from "@/src/server/repositories/membership/membership-repository-provider";
-import { getChecklistRepository } from "@/src/server/repositories/checklist/checklist-repository-provider";
+import { getChecklistRepository, getMembershipRepository } from "@/src/server/repositories/repositories";
 
 export const dynamic = "force-dynamic";
 
