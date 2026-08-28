@@ -2,7 +2,7 @@ import "server-only";
 
 import type { RequestBoardData, RequestBoardItem, RequestBoardStatus } from "@/src/domain/entities/request-board";
 import { getPostgresPool } from "@/src/server/db/postgres";
-import type { RequestBoardQuery } from "@/src/server/queries/request-board/request-board-query";
+import type { RequestBoardFilters, RequestBoardQuery } from "@/src/server/queries/request-board/request-board-query";
 
 type RequestBoardRow = {
   id: string | number;
@@ -60,7 +60,7 @@ export const postgresRequestBoardQuery: RequestBoardQuery = {
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
-export async function findRequestBoardData(): Promise<RequestBoardData> {
+export async function findRequestBoardData(filters: RequestBoardFilters): Promise<RequestBoardData> {
   const pool = await getPostgresPool();
   const [statusResult, requestResult, fieldResult, mediaResult, visitResult] = await Promise.all([
     pool.query<RequestStatusRow>(
@@ -85,7 +85,10 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
          LEFT JOIN region ON region.id = location.id_region
          LEFT JOIN business ON business.id = region.id_business
          LEFT JOIN service_type ON service_type.id = r.id_service_type
+        WHERE r.created_date >= $1::date
+          AND r.created_date < ($2::date + INTERVAL '1 day')
         ORDER BY r.id`,
+      [filters.startDate, filters.endDate],
     ),
     pool.query<FieldValueRow>(
       `SELECT

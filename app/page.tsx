@@ -1,6 +1,7 @@
 import Link from "next/link";
 import FacilitiesMap from "./_components/FacilitiesMap";
-import DateRangeFilters from "./_components/DateRangeFilters";
+import { cookies } from "next/headers";
+import HomeDateRange from "./_components/HomeDateRange";
 
 import { getHomePageData } from "@/src/server/services/home-service";
 import { activityStatuses } from "@/src/domain/entities/activity";
@@ -53,6 +54,7 @@ export default async function Home({
   searchParams?: Promise<HomeSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
+  const cookieStore = await cookies();
   const selectedStatuses = normalizeStatuses(resolvedSearchParams?.status);
   const effectiveStatuses = selectedStatuses.length
     ? selectedStatuses
@@ -60,8 +62,8 @@ export default async function Home({
   const selectedBusiness = resolvedSearchParams?.business ?? "all";
   const today = new Date().toISOString().slice(0, 10);
   const dateRange = {
-    startDate: resolvedSearchParams?.startDate ?? today,
-    endDate: resolvedSearchParams?.endDate ?? today,
+    startDate: cookieStore.get("facilities-start-date")?.value ?? today,
+    endDate: cookieStore.get("facilities-end-date")?.value ?? today,
     statuses: effectiveStatuses,
   };
 
@@ -121,10 +123,7 @@ export default async function Home({
         <section className="mb-4 space-y-3">
           <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
             <div className="flex flex-wrap items-center gap-2">
-              <DateRangeFilters
-                startDate={dateRange.startDate}
-                endDate={dateRange.endDate}
-              />
+              <HomeDateRange startDate={dateRange.startDate} endDate={dateRange.endDate} statuses={effectiveStatuses} selectedBusiness={selectedBusiness} />
 
             </div>
           </div>
@@ -397,8 +396,6 @@ function buildBusinessFilterHref(
 ) {
   const params = new URLSearchParams();
 
-  if (searchParams?.startDate) params.set("startDate", searchParams.startDate);
-  if (searchParams?.endDate) params.set("endDate", searchParams.endDate);
   for (const status of normalizeParam(searchParams?.status)) {
     params.append("status", status);
   }
