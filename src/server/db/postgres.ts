@@ -24,6 +24,13 @@ declare global {
   var __opshubPgPool: PgPool | undefined;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Obtém database url para uso pelo fluxo solicitante.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export function getDatabaseUrl() {
   const databaseUrl = process.env.DATABASE_URL;
 
@@ -34,6 +41,14 @@ export function getDatabaseUrl() {
   return databaseUrl;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Obtém postgres pool para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `assertPostgresDataSource`, `Function`, `getDatabaseUrl`.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getPostgresPool() {
   assertPostgresDataSource();
 

@@ -7,6 +7,17 @@ import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
 export type UpdateVisitState = AddVisitState;
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa a Server Action InsertRequestTask com os dados enviados pela interface.
+ * Durante o fluxo, aciona `map`, `getAll`, `filter`, `createVisit` e outras rotinas auxiliares.
+ *
+ * @param requestId Dados necessários para executar esta função.
+ * @param _previousState Dados necessários para executar esta função.
+ * @param formData Dados necessários para executar esta função.
+ * @returns O estado da operação para atualização da interface.
+ */
 export async function InsertRequestTask(
   requestId: number,
   _previousState: AddVisitState,
@@ -31,6 +42,17 @@ export async function InsertRequestTask(
   }
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa a Server Action UpdateRequestTask com os dados enviados pela interface.
+ * Durante o fluxo, aciona `updateVisit`, `getRequestTaskRepository`, `trim`, `get` e outras rotinas auxiliares.
+ *
+ * @param visitId Dados necessários para executar esta função.
+ * @param _previousState Dados necessários para executar esta função.
+ * @param formData Dados necessários para executar esta função.
+ * @returns O estado da operação para atualização da interface.
+ */
 export async function UpdateRequestTask(visitId: number, _previousState: UpdateVisitState, formData: FormData): Promise<UpdateVisitState> {
   try {
     await getRequestTaskRepository().updateVisit({
@@ -49,6 +71,17 @@ export async function UpdateRequestTask(visitId: number, _previousState: UpdateV
   }
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa a Server Action InsertRequestTaskChecklist com os dados enviados pela interface.
+ * Durante o fluxo, aciona `parseChecklistSubmissions`, `get`, `addToVisit`, `getChecklistRepository` e outras rotinas auxiliares.
+ *
+ * @param visitId Dados necessários para executar esta função.
+ * @param _previousState Dados necessários para executar esta função.
+ * @param formData Dados necessários para executar esta função.
+ * @returns O estado da operação para atualização da interface.
+ */
 export async function InsertRequestTaskChecklist(visitId: number, _previousState: AddVisitState, formData: FormData): Promise<AddVisitState> {
   try {
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
@@ -61,6 +94,15 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
   }
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa a Server Action DeleteRequestTaskChecklist com os dados enviados pela interface.
+ * Durante o fluxo, aciona `deleteFromVisit`, `getChecklistRepository`, `revalidatePath`.
+ *
+ * @param checklistId Dados necessários para executar esta função.
+ * @returns O estado da operação para atualização da interface.
+ */
 export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
     await getChecklistRepository().deleteFromVisit(checklistId);
@@ -71,6 +113,15 @@ export async function DeleteRequestTaskChecklist(checklistId: number): Promise<A
   }
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Parse checklist submissions para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `trim`, `parse`, `isArray`, `map` e outras rotinas auxiliares.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseChecklistSubmissions(value: FormDataEntryValue | null): ChecklistSubmission[] {
   if (typeof value !== "string" || !value.trim()) return [];
   let parsed: unknown;
@@ -94,6 +145,18 @@ function parseChecklistSubmissions(value: FormDataEntryValue | null): ChecklistS
   });
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa optional text no fluxo atual.
+ * Durante o fluxo, aciona `trim`.
+ *
+ * @param item Dados necessários para executar esta função.
+ * @param property Dados necessários para executar esta função.
+ * @param maximum Dados necessários para executar esta função.
+ * @param label Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function optionalText(item: object, property: string, maximum: number, label: string): string | null {
   const value = (item as Record<string, unknown>)[property];
   if (value == null || value === "") return null;
@@ -104,6 +167,16 @@ function optionalText(item: object, property: string, maximum: number, label: st
   return normalized;
 }
 
+/**
+ * Acionada como Server Action pelo formulário ou controle de interface associado.
+ *
+ * Executa optional boolean no fluxo atual.
+ *
+ * @param item Dados necessários para executar esta função.
+ * @param property Dados necessários para executar esta função.
+ * @param label Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function optionalBoolean(item: object, property: string, label: string): boolean | null {
   const value = (item as Record<string, unknown>)[property];
   if (value == null || value === "") return null;

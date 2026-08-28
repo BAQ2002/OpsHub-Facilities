@@ -36,6 +36,14 @@ export const postgresServiceCatalogRepository: ServiceCatalogRepository = {
   findRequestFormData: getActivityRequestFormData,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém service catalog para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `get`, `push` e outras rotinas auxiliares.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getServiceCatalog(): Promise<ServiceCatalogCategory[]> {
   const pool = await getPostgresPool();
   const result = await pool.query<ServiceCatalogRow>(
@@ -71,6 +79,15 @@ export async function getServiceCatalog(): Promise<ServiceCatalogCategory[]> {
   return [...categories.values()];
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém activity request form data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`, `find`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getActivityRequestFormData({
   serviceCategory,
   serviceType,
@@ -122,6 +139,15 @@ export async function getActivityRequestFormData({
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map service field type row to field para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `mapDatabaseFieldType`, `mapMediaOptions`, `mapOptions`.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapServiceFieldTypeRowToField(row: ServiceFieldTypeRow): ActivityRequestField {
   const type = mapDatabaseFieldType(row.type);
   const mediaOptions = type === "file" ? mapMediaOptions(row.options) : undefined;
@@ -137,6 +163,15 @@ function mapServiceFieldTypeRowToField(row: ServiceFieldTypeRow): ActivityReques
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map database field type para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `toUpperCase`.
+ *
+ * @param type Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapDatabaseFieldType(type: string): ActivityRequestField["type"] {
   const normalizedType = type.toUpperCase();
 
@@ -150,6 +185,15 @@ function mapDatabaseFieldType(type: string): ActivityRequestField["type"] {
   return "text";
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map media options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parseJsonOptions`, `isArray`, `map`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapMediaOptions(options: unknown): NonNullable<ActivityRequestField["mediaOptions"]> {
   const parsedOptions = typeof options === "string" ? parseJsonOptions(options) : options;
 
@@ -164,6 +208,15 @@ function mapMediaOptions(options: unknown): NonNullable<ActivityRequestField["me
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parseJsonOptions`, `isArray`, `map`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapOptions(options: unknown): FormOption[] | undefined {
   const parsedOptions = typeof options === "string" ? parseJsonOptions(options) : options;
 
@@ -172,6 +225,15 @@ function mapOptions(options: unknown): FormOption[] | undefined {
   return parsedOptions.map(String).map((value) => ({ label: value, value }));
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse json options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parse`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseJsonOptions(options: string): unknown {
   try {
     return JSON.parse(options);

@@ -17,6 +17,14 @@ const facilitiesSubItems = [
   },
 ];
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente Sidebar com os dados recebidos.
+ * Durante o fluxo, aciona `usePathname`, `map`, `startsWith`.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default function Sidebar() {
   const pathname = usePathname();
   const isFacilitiesHome = pathname === "/";
@@ -79,6 +87,13 @@ export default function Sidebar() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de facilities.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function FacilitiesIcon() {
   return (
     <svg
@@ -106,6 +121,13 @@ function FacilitiesIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de activity.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ActivityIcon() {
   return (
     <svg
@@ -125,6 +147,13 @@ function ActivityIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de requests.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestsIcon() {
   return (
     <svg
@@ -144,6 +173,13 @@ function RequestsIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de chevron up.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ChevronUpIcon() {
   return (
     <svg

@@ -18,6 +18,15 @@ export const postgresActivityTrackingQuery: ActivityTrackingQuery = {
   findData: findActivityTrackingData,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém activity tracking data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `all`, `query`, `mapChartRows` e outras rotinas auxiliares.
+ *
+ * @param filters Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findActivityTrackingData(filters: ActivityTrackingFilters): Promise<ActivityTrackingData> {
   const pool = await getPostgresPool();
   const params = [filters.startDate, filters.endDate, filters.businessId ?? null, filters.serviceCategoryId ?? null];
@@ -68,11 +77,47 @@ export async function findActivityTrackingData(filters: ActivityTrackingFilters)
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map chart rows para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `map`.
+ *
+ * @param rows Dados necessários para executar esta função.
+ * @param colors Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapChartRows(rows: CountRow[], colors: string[]): ChartItem[] {
   return rows.map((row, index) => ({ label: row.label ?? "Não informado", value: Number(row.value), color: colors[index % colors.length] }));
 }
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map option para o formato esperado pelo fluxo.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapOption(row: OptionRow) { return { id: Number(row.id), name: row.name ?? "Não informado" }; }
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Capitalize para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `toUpperCase`, `charAt`, `slice`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function capitalize(value: string) { return value.charAt(0).toUpperCase() + value.slice(1); }
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format minutes para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `max`, `round`, `floor`, `padStart`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatMinutes(value: string | number | null) {
   const minutes = Math.max(0, Math.round(Number(value ?? 0)));
   return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, "0")}min`;

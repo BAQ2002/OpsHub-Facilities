@@ -8,6 +8,15 @@ export const postgresRequestTaskMediaRepository: RequestTaskMediaRepository = {
   findById: findRequestTaskMediaById,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém request task media by id para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`.
+ *
+ * @param id Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findRequestTaskMediaById(id: number): Promise<RequestTaskMediaContent | null> {
   const pool = await getPostgresPool();
   const result = await pool.query<{ content: Buffer; file_name: string | null; mime_type: string | null }>(

@@ -49,6 +49,14 @@ export const postgresRequestRepository: RequestRepository = {
   create: insertActivityRequest,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém requests by current user para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 async function findRequestsByCurrentUser(): Promise<RequestEntity[]> {
   const pool = await getPostgresPool();
   const requesterMemberId = process.env.CURRENT_MEMBER_ID ? Number(process.env.CURRENT_MEMBER_ID) : null;
@@ -74,6 +82,15 @@ async function findRequestsByCurrentUser(): Promise<RequestEntity[]> {
   return result.rows.map(mapRequestRowToEntity);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map request row to entity para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `formatDateTime`.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapRequestRowToEntity(row: RequestRow): RequestEntity {
   return {
     id: Number(row.id),
@@ -84,11 +101,29 @@ function mapRequestRowToEntity(row: RequestRow): RequestEntity {
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format date time para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `replace`, `format`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatDateTime(value: Date | string | null) {
   if (!value) return "Data não informada";
   return dateTimeFormatter.format(new Date(value)).replace(",", "");
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de insert activity request e preserva as validações do domínio.
+ * Durante o fluxo, aciona `validateRequestInput`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ *
+ * @param input Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function insertActivityRequest(input: CreateRequestInput) {
   validateRequestInput(input);
   const pool = await getPostgresPool();
@@ -162,6 +197,16 @@ export async function insertActivityRequest(input: CreateRequestInput) {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse media files para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `filter`, `toUpperCase`, `getAll`, `parseMediaOptions` e outras rotinas auxiliares.
+ *
+ * @param fieldDefinitions Dados necessários para executar esta função.
+ * @param additionalFields Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 async function parseMediaFiles(
   fieldDefinitions: ServiceFieldDefinition[],
   additionalFields: CreateRequestInput["additionalFields"],
@@ -208,6 +253,17 @@ async function parseMediaFiles(
   return mediaFiles;
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate media file e preserva as validações do domínio.
+ * Durante o fluxo, aciona `matchesAcceptedType`.
+ *
+ * @param fieldId Dados necessários para executar esta função.
+ * @param file Dados necessários para executar esta função.
+ * @param acceptedTypes Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 function validateMediaFile(fieldId: number, file: File, acceptedTypes: string[]) {
   if (!file.name || file.name.length > 255) {
     throw new Error(`Um arquivo do campo ${fieldId} possui nome inválido.`);
@@ -220,6 +276,16 @@ function validateMediaFile(fieldId: number, file: File, acceptedTypes: string[])
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa matches accepted type no fluxo atual.
+ * Durante o fluxo, aciona `some`, `toLowerCase`, `trim`, `endsWith` e outras rotinas auxiliares.
+ *
+ * @param mimeType Dados necessários para executar esta função.
+ * @param acceptedTypes Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function matchesAcceptedType(mimeType: string, acceptedTypes: string[]) {
   if (acceptedTypes.length === 0) return false;
   return acceptedTypes.some((acceptedType) => {
@@ -229,6 +295,15 @@ function matchesAcceptedType(mimeType: string, acceptedTypes: string[]) {
   });
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse media options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parseJson`, `isArray`, `map`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseMediaOptions(options: unknown): { accept: string[]; multiple: boolean } {
   const parsedOptions = typeof options === "string" ? parseJson(options) : options;
   if (!parsedOptions || typeof parsedOptions !== "object" || Array.isArray(parsedOptions)) {
@@ -242,6 +317,15 @@ function parseMediaOptions(options: unknown): { accept: string[]; multiple: bool
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse json para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parse`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseJson(value: string): unknown {
   try {
     return JSON.parse(value);
@@ -250,6 +334,15 @@ function parseJson(value: string): unknown {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de synchronize request id sequence e preserva as validações do domínio.
+ * Durante o fluxo, aciona `query`.
+ *
+ * @param client Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 async function synchronizeRequestIdSequence(client: PgClient) {
   // The legacy import populates REQUEST.ID explicitly, which does not advance the
   // identity sequence. Locking prevents two request creations from repairing and
@@ -265,6 +358,15 @@ async function synchronizeRequestIdSequence(client: PgClient) {
   );
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate request input e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isInteger`.
+ *
+ * @param input Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 function validateRequestInput(input: CreateRequestInput) {
   if (!input.description || input.description.length > 300) {
     throw new Error("A descrição deve possuir entre 1 e 300 caracteres.");
@@ -279,6 +381,16 @@ function validateRequestInput(input: CreateRequestInput) {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate location hierarchy e preserva as validações do domínio.
+ * Durante o fluxo, aciona `query`.
+ *
+ * @param client Dados necessários para executar esta função.
+ * @param input Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 async function validateLocationHierarchy(client: PgClient, input: CreateRequestInput) {
   const result = await client.query<{ valid: boolean }>(
     `SELECT TRUE AS valid
@@ -294,6 +406,16 @@ async function validateLocationHierarchy(client: PgClient, input: CreateRequestI
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém field definitions para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `query`.
+ *
+ * @param client Dados necessários para executar esta função.
+ * @param serviceTypeId Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 async function getFieldDefinitions(client: PgClient, serviceTypeId: number) {
   const serviceType = await client.query<{ id: number }>(
     `SELECT id FROM service_type WHERE id = $1`,
@@ -315,6 +437,16 @@ async function getFieldDefinitions(client: PgClient, serviceTypeId: number) {
   return result.rows;
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse field value para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `getAll`, `some`, `filter`, `toUpperCase` e outras rotinas auxiliares.
+ *
+ * @param field Dados necessários para executar esta função.
+ * @param additionalFields Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseFieldValue(field: ServiceFieldDefinition, additionalFields: CreateRequestInput["additionalFields"]) {
   const name = `service_field_${field.id}`;
   const entries = getAll(additionalFields, name);
@@ -345,6 +477,16 @@ function parseFieldValue(field: ServiceFieldDefinition, additionalFields: Create
   return [{ fieldId: field.id, value }];
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate field value e preserva as validações do domínio.
+ * Durante o fluxo, aciona `toUpperCase`, `parseOptions`, `test`, `isArray` e outras rotinas auxiliares.
+ *
+ * @param field Dados necessários para executar esta função.
+ * @param value Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 function validateFieldValue(field: ServiceFieldDefinition, value: string | number | boolean | string[]) {
   const type = field.type.toUpperCase();
   const options = parseOptions(field.options);
@@ -361,6 +503,15 @@ function validateFieldValue(field: ServiceFieldDefinition, value: string | numbe
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`, `map`, `parse`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseOptions(options: unknown): string[] {
   if (Array.isArray(options)) return options.map(String);
   if (typeof options !== "string") return [];
@@ -373,12 +524,31 @@ function parseOptions(options: unknown): string[] {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Parse number para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isFinite`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @param fieldName Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function parseNumber(value: string, fieldName: string) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) throw new Error(`O campo ${fieldName} deve conter um número válido.`);
   return parsed;
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém all para uso pelo fluxo solicitante.
+ *
+ * @param fields Dados necessários para executar esta função.
+ * @param name Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function getAll(fields: CreateRequestInput["additionalFields"], name: string): RequestFieldValue[] {
   return fields[name] ?? [];
 }

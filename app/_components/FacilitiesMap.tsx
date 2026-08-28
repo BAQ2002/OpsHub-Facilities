@@ -38,10 +38,32 @@ const minZoom = 1;
 const maxZoom = 2;
 const zoomStep = 0.25;
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Clamp para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `min`, `max`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @param min Dados necessários para executar esta função.
+ * @param max Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Clamp map view para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `clamp`.
+ *
+ * @param view Dados necessários para executar esta função.
+ * @param width Dados necessários para executar esta função.
+ * @param height Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function clampMapView(view: MapView, width: number, height: number): MapView {
   const minX = width * (1 - view.scale);
   const minY = height * (1 - view.scale);
@@ -53,6 +75,15 @@ function clampMapView(view: MapView, width: number, height: number): MapView {
   };
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente FacilitiesMap com os dados recebidos.
+ * Durante o fluxo, aciona `useRef`, `useState`, `useMemo`, `join` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default function FacilitiesMap({
   image,
   markers = [],

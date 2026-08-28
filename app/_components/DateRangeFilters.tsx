@@ -7,6 +7,15 @@ type DateRangeFiltersProps = {
   endDate: string;
 };
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente DateRangeFilters com os dados recebidos.
+ * Durante o fluxo, aciona `usePathname`, `useRouter`, `useSearchParams`, `toString` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default function DateRangeFilters({
   startDate,
   endDate,
@@ -15,12 +24,30 @@ export default function DateRangeFilters({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Executa a operação de update date e preserva as validações do domínio.
+   * Durante o fluxo, aciona `toString`, `set`, `replace`.
+   *
+   * @param name Dados necessários para executar esta função.
+   * @param value Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   function updateDate(name: "startDate" | "endDate", value: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Atualiza o estado da interface para select today.
+   * Durante o fluxo, aciona `formatLocalDate`, `toString`, `set`, `replace`.
+   *
+   * @returns Não retorna valor.
+   */
   function selectToday() {
     const formattedToday = formatLocalDate(new Date());
     const params = new URLSearchParams(searchParams.toString());
@@ -30,6 +57,15 @@ export default function DateRangeFilters({
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
+  /**
+   * Acionada internamente pela função ou pelo componente que a declara.
+   *
+   * Atualiza o estado da interface para shift date range.
+   * Durante o fluxo, aciona `toString`, `set`, `addDays`, `replace`.
+   *
+   * @param days Dados necessários para executar esta função.
+   * @returns Não retorna valor.
+   */
   function shiftDateRange(days: number) {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -81,6 +117,16 @@ export default function DateRangeFilters({
   );
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Executa add days no fluxo atual.
+ * Durante o fluxo, aciona `map`, `split`, `setDate`, `getDate` e outras rotinas auxiliares.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @param days Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function addDays(value: string, days: number) {
   const [year, month, day] = value.split("-").map(Number);
   const date = new Date(year, month - 1, day);
@@ -89,6 +135,15 @@ function addDays(value: string, days: number) {
   return formatLocalDate(date);
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Format local date para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `join`, `getFullYear`, `padStart`, `getMonth` e outras rotinas auxiliares.
+ *
+ * @param date Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatLocalDate(date: Date) {
   return [
     date.getFullYear(),
@@ -97,6 +152,13 @@ function formatLocalDate(date: Date) {
   ].join("-");
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de chevron left.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ChevronLeftIcon() {
   return (
     <svg
@@ -116,6 +178,13 @@ function ChevronLeftIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de chevron right.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function ChevronRightIcon() {
   return (
     <svg
@@ -135,6 +204,15 @@ function ChevronRightIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente DateInput com os dados recebidos.
+ * Durante o fluxo, aciona `onChange`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function DateInput({
   label,
   ariaLabel,

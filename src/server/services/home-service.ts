@@ -10,6 +10,16 @@ import {
 } from "@/src/mappers/home-mapper";
 import type { HomePageViewModel } from "@/src/presentation/view-models/home-view-model";
 
+/**
+ * Acionada pela página ou Server Action que solicita este caso de uso.
+ *
+ * Obtém home page data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getHomeDashboardQuery`, `all`, `findEquipmentCards`, `findActivityRecords` e outras rotinas auxiliares.
+ *
+ * @param dateRange Dados necessários para executar esta função.
+ * @param selectedBusiness Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function getHomePageData(
   dateRange: HomeDateRange,
   selectedBusiness = "all",

@@ -6,6 +6,15 @@ export const dynamic = "force-dynamic";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de activity tracking.
+ * Durante o fluxo, aciona `slice`, `toISOString`, `readDate`, `readPositiveInteger` e outras rotinas auxiliares.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function ActivityTrackingPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const today = new Date().toISOString().slice(0, 10);
@@ -114,6 +123,14 @@ export default async function ActivityTrackingPage({ searchParams }: { searchPar
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente FilterField com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function FilterField({ label, name, value, min }: { label: string; name: string; value: string; min?: string }) {
   return (
     <label className="block">
@@ -130,6 +147,15 @@ function FilterField({ label, name, value, min }: { label: string; name: string;
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente SelectField com os dados recebidos.
+ * Durante o fluxo, aciona `toString`, `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function SelectField({ label, name, value, placeholder, options }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[] }) {
   return (
     <label className="block">
@@ -147,6 +173,14 @@ function SelectField({ label, name, value, placeholder, options }: { label: stri
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente ChartCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <article className="min-h-[280px] rounded-[20px] border border-slate-200 bg-white p-5 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
@@ -156,6 +190,15 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente DonutChart com os dados recebidos.
+ * Durante o fluxo, aciona `reduce`, `at`, `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function DonutChart({ data }: { data: ChartItem[] }) {
   const total = data.reduce((acc, item) => acc + item.value, 0);
   if (total === 0) {
@@ -218,6 +261,15 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MonthlyBarChart com os dados recebidos.
+ * Durante o fluxo, aciona `round`, `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function MonthlyBarChart({
   data,
   maxMonthlyValue,
@@ -269,21 +321,56 @@ function MonthlyBarChart({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente EmptyState com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function EmptyState({ message }: { message: string }) {
   return <p className="flex min-h-48 items-center justify-center rounded-xl bg-slate-50 px-6 text-center text-sm text-slate-500">{message}</p>;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Read date para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`, `test`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @param fallback Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function readDate(value: string | string[] | undefined, fallback: string) {
   const candidate = Array.isArray(value) ? value[0] : value;
   return candidate && /^\d{4}-\d{2}-\d{2}$/.test(candidate) ? candidate : fallback;
 }
 
+/**
+ * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
+ *
+ * Read positive integer para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`, `isInteger`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function readPositiveInteger(value: string | string[] | undefined) {
   const candidate = Array.isArray(value) ? value[0] : value;
   const parsed = Number(candidate);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : undefined;
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente LegendItem com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function LegendItem({ color, label }: { color: string; label: string }) {
   return (
     <span className="inline-flex items-center gap-2">
@@ -293,6 +380,14 @@ function LegendItem({ color, label }: { color: string; label: string }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de activity.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function ActivityIcon({ className }: { className: string }) {
   return (
     <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -302,6 +397,13 @@ function ActivityIcon({ className }: { className: string }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

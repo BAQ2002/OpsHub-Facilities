@@ -52,6 +52,14 @@ export const postgresRequestBoardQuery: RequestBoardQuery = {
   findData: findRequestBoardData,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém request board data para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `all`, `query`, `groupByRequest` e outras rotinas auxiliares.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findRequestBoardData(): Promise<RequestBoardData> {
   const pool = await getPostgresPool();
   const [statusResult, requestResult, fieldResult, mediaResult, visitResult] = await Promise.all([
@@ -162,6 +170,14 @@ export async function findRequestBoardData(): Promise<RequestBoardData> {
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map status para o formato esperado pelo fluxo.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapStatus(row: RequestStatusRow): RequestBoardStatus {
   return {
     id: Number(row.id),
@@ -169,6 +185,18 @@ function mapStatus(row: RequestStatusRow): RequestBoardStatus {
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map request para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `formatDate`, `map`, `formatFieldValue`, `formatVisitDate` e outras rotinas auxiliares.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @param fieldValues Dados necessários para executar esta função.
+ * @param media Dados necessários para executar esta função.
+ * @param visits Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: MediaRow[], visits: VisitRow[]): RequestBoardItem {
   return {
     id: Number(row.id),
@@ -217,6 +245,15 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format visit input date para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `getTime`, `getTimezoneOffset`, `slice`, `toISOString`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatVisitInputDate(value: Date | string | null): string {
   if (!value) return "";
   const date = value instanceof Date ? value : new Date(value);
@@ -225,6 +262,15 @@ function formatVisitInputDate(value: Date | string | null): string {
   return localDate.toISOString().slice(0, 16);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format visit date para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `getTime`, `format`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatVisitDate(value: Date | string | null): string {
   if (!value) return "dd/mm/yyyy";
   const date = value instanceof Date ? value : new Date(value);
@@ -232,6 +278,15 @@ function formatVisitDate(value: Date | string | null): string {
   return new Intl.DateTimeFormat("pt-BR").format(date);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format field value para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isArray`, `join`, `map`, `stringify`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatFieldValue(value: unknown): string {
   if (value == null || value === "") return "Não informado";
   if (typeof value === "boolean") return value ? "Sim" : "Não";
@@ -240,6 +295,15 @@ function formatFieldValue(value: unknown): string {
   return String(value);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format date para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `getTime`, `format`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatDate(value: Date | string | null): string {
   if (!value) return "Não informada";
   const date = value instanceof Date ? value : new Date(value);
@@ -247,6 +311,15 @@ function formatDate(value: Date | string | null): string {
   return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" }).format(date);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Group by request para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `set`, `get`.
+ *
+ * @param rows Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function groupByRequest<T extends { request_id: string | number }>(rows: T[]): Map<number, T[]> {
   const grouped = new Map<number, T[]>();
   for (const row of rows) {

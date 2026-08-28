@@ -51,6 +51,15 @@ export const postgresHomeDashboardQuery: HomeDashboardQuery = {
   findHandlingTimeSamplesInMinutes,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém equipment cards para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`.
+ *
+ * @param dateRange Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findEquipmentCards(dateRange: HomeDateRange): Promise<EquipmentCard[]> {
   const pool = await getPostgresPool();
   const result = await pool.query<CategoryCountRow>(
@@ -83,6 +92,15 @@ export async function findEquipmentCards(dateRange: HomeDateRange): Promise<Equi
   return result.rows.map(mapCategoryCountRowToEquipmentCard);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém activity records para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `flatMap`, `query`, `map`.
+ *
+ * @param dateRange Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
   const pool = await getPostgresPool();
   const selectedStatuses = dateRange.statuses?.length
@@ -139,6 +157,14 @@ export async function findActivityRecords(dateRange: HomeDateRange): Promise<Act
   return result.rows.map(mapActivityRecordRowToEntity);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém category color map para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `fromEntries`, `map`, `entries`.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findCategoryColorMap(): Promise<Record<string, string>> {
   return Object.fromEntries([
     ...Object.entries(activityCategoryStylesById).map(([id, style]) => [id, style.color]),
@@ -146,6 +172,13 @@ export async function findCategoryColorMap(): Promise<Record<string, string>> {
   ]);
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém map image para uso pelo fluxo solicitante.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findMapImage(): Promise<MapImage> {
   return {
     src: process.env.FACILITIES_MAP_SRC ?? facilitiesMap.src,
@@ -155,6 +188,15 @@ export async function findMapImage(): Promise<MapImage> {
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém handling time samples in minutes para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `filter`, `map` e outras rotinas auxiliares.
+ *
+ * @param dateRange Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findHandlingTimeSamplesInMinutes(dateRange: HomeDateRange): Promise<number[]> {
   const pool = await getPostgresPool();
   const result = await pool.query<HandlingTimeSampleRow>(
@@ -174,6 +216,15 @@ export async function findHandlingTimeSamplesInMinutes(dateRange: HomeDateRange)
   return samples.length > 0 ? samples : [0];
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map category count row to equipment card para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `getActivityCategoryStyle`, `isFinite`.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCard {
   const categoryId = Number(row.category_id);
   const style = getActivityCategoryStyle(Number.isFinite(categoryId) ? categoryId : null);
@@ -192,6 +243,15 @@ function mapCategoryCountRowToEquipmentCard(row: CategoryCountRow): EquipmentCar
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Map activity record row to entity para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `normalizeActivityStatus`, `normalizeActivityType`, `toNullableNumber`, `formatDateTime`.
+ *
+ * @param row Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
   const status = normalizeActivityStatus(row.status_description);
   return {
@@ -212,21 +272,55 @@ function mapActivityRecordRowToEntity(row: ActivityRecordRow): ActivityRecord {
   };
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Normalize activity status para o formato esperado pelo fluxo.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeActivityStatus(value: string): ActivityStatus {
   if (value === "Em andamento" || value === "Cancelada" || value === "Programada") return value;
   return "Concluída";
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * To nullable number para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `isFinite`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function toNullableNumber(value: string | number | null): number | null {
   if (value === null) return null;
   const parsedValue = Number(value);
   return Number.isFinite(parsedValue) ? parsedValue : null;
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Normalize activity type para o formato esperado pelo fluxo.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeActivityType(value: string | null): ActivityType {
   return value === "Atividade no Pátio" ? "Atividade no Pátio" : "Chamado";
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Format date time para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `replace`, `format`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function formatDateTime(value: Date | string | null) {
   if (!value) {
     return "Não informado";

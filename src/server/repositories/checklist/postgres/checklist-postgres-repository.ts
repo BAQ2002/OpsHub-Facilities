@@ -24,6 +24,14 @@ export const postgresChecklistRepository: ChecklistRepository = {
   deleteFromVisit: deleteVisitChecklist,
 };
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Obtém active checklist definitions para uso pelo fluxo solicitante.
+ * Durante o fluxo, aciona `getPostgresPool`, `query`, `get`, `toUpperCase` e outras rotinas auxiliares.
+ *
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 export async function findActiveChecklistDefinitions(): Promise<ChecklistDefinition[]> {
   const pool = await getPostgresPool();
   const result = await pool.query<DefinitionRow>(
@@ -64,6 +72,16 @@ export async function findActiveChecklistDefinitions(): Promise<ChecklistDefinit
   return [...definitions.values()];
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de insert checklist for visit e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isSafeInteger`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ *
+ * @param visitId Dados necessários para executar esta função.
+ * @param submission Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 export async function insertChecklistForVisit(visitId: number, submission: ChecklistSubmission): Promise<void> {
   if (!Number.isSafeInteger(visitId) || visitId <= 0) throw new Error("Visita inválida.");
   const pool = await getPostgresPool();
@@ -82,6 +100,17 @@ export async function insertChecklistForVisit(visitId: number, submission: Check
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de insert checklist submissions e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isSafeInteger`, `query`, `map`, `has` e outras rotinas auxiliares.
+ *
+ * @param client Dados necessários para executar esta função.
+ * @param visitId Dados necessários para executar esta função.
+ * @param submissions Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 export async function insertChecklistSubmissions(client: PgClient, visitId: number, submissions: ChecklistSubmission[]) {
   for (const submission of submissions) {
     const typeId = Number(submission.checklistTypeId);
@@ -139,6 +168,15 @@ export async function insertChecklistSubmissions(client: PgClient, visitId: numb
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de delete visit checklist e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isSafeInteger`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ *
+ * @param checklistId Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 export async function deleteVisitChecklist(checklistId: number): Promise<void> {
   if (!Number.isSafeInteger(checklistId) || checklistId <= 0) throw new Error("Checklist inválido.");
   const pool = await getPostgresPool();
@@ -157,6 +195,16 @@ export async function deleteVisitChecklist(checklistId: number): Promise<void> {
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa a operação de validate field value e preserva as validações do domínio.
+ * Durante o fluxo, aciona `isEmpty`, `toUpperCase`, `isFinite`, `isArray` e outras rotinas auxiliares.
+ *
+ * @param field Dados necessários para executar esta função.
+ * @param value Dados necessários para executar esta função.
+ * @returns Não retorna valor.
+ */
 function validateFieldValue(field: { id: number; type: string; options: unknown; required: boolean }, value: unknown) {
   if (isEmpty(value)) {
     if (field.required) throw new Error(`Preencha o campo obrigatório ${field.id}.`);
@@ -174,6 +222,15 @@ function validateFieldValue(field: { id: number; type: string; options: unknown;
   }
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Normalize options para o formato esperado pelo fluxo.
+ * Durante o fluxo, aciona `parse`, `isArray`, `map`.
+ *
+ * @param options Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function normalizeOptions(options: unknown): { label: string; value: string }[] {
   let parsed = options;
   if (typeof parsed === "string") {
@@ -190,6 +247,15 @@ function normalizeOptions(options: unknown): { label: string; value: string }[] 
   });
 }
 
+/**
+ * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
+ *
+ * Executa is empty no fluxo atual.
+ * Durante o fluxo, aciona `isArray`.
+ *
+ * @param value Dados necessários para executar esta função.
+ * @returns O resultado produzido para continuidade do fluxo chamador.
+ */
 function isEmpty(value: unknown) {
   return value == null || value === "" || (Array.isArray(value) && value.length === 0);
 }

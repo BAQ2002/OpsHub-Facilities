@@ -3,6 +3,14 @@ import { getMyRequestsPageData } from "@/src/server/services/request-service";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de my requests.
+ * Durante o fluxo, aciona `getMyRequestsPageData`.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function MyRequestsPage() {
   const { openRequests, closedRequests } = await getMyRequestsPageData();
 
@@ -55,6 +63,15 @@ export default async function MyRequestsPage() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestGroup com os dados recebidos.
+ * Durante o fluxo, aciona `toLowerCase`, `map`.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestGroup({
   title,
   requests,
@@ -84,6 +101,14 @@ function RequestGroup({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestCard({ request }: { request: RequestViewModel }) {
   const isOpen = request.status === "Aberto";
 
@@ -124,6 +149,13 @@ function RequestCard({ request }: { request: RequestViewModel }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MessageIndicator com os dados recebidos.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MessageIndicator() {
   return (
     <span className="relative inline-flex text-slate-400" aria-label="Mensagem não lida">
@@ -133,6 +165,13 @@ function MessageIndicator() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de alert.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function AlertIcon() {
   return (
     <svg
@@ -153,6 +192,13 @@ function AlertIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() {
   return (
     <svg
@@ -172,6 +218,13 @@ function SearchIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de filter.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function FilterIcon() {
   return (
     <svg
@@ -186,6 +239,13 @@ function FilterIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de more.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MoreIcon() {
   return (
     <svg
@@ -202,6 +262,13 @@ function MoreIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de message.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MessageIcon() {
   return (
     <svg
