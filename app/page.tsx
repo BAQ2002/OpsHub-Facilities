@@ -42,7 +42,7 @@ type HomeSearchParams = {
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Renderiza o componente Home com os dados recebidos.
- * Durante o fluxo, aciona `normalizeStatuses`, `slice`, `toISOString`, `getHomePageData` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link normalizeStatuses}, {@link slice}, {@link toISOString}, {@link getHomePageData} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -385,7 +385,7 @@ export default async function Home({
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Build business filter href para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `set`, `normalizeParam`, `append`, `toString`.
+ * Durante o fluxo, aciona {@link set}, {@link normalizeParam}, {@link append}, {@link toString}.
  *
  * @param searchParams Dados necessários para executar esta função.
  * @param business Dados necessários para executar esta função.
@@ -412,7 +412,7 @@ function buildBusinessFilterHref(
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Normalize param para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isArray`.
+ * Durante o fluxo, aciona {@link isArray}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -426,7 +426,7 @@ function normalizeParam(value: string | string[] | undefined) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Normalize statuses para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `normalizeParam`, `filter`, `includes`.
+ * Durante o fluxo, aciona {@link normalizeParam}, {@link filter}, {@link includes}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -441,7 +441,7 @@ function normalizeStatuses(value: string | string[] | undefined) {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente HandlingTimeDisplay com os dados recebidos.
- * Durante o fluxo, aciona `split`.
+ * Durante o fluxo, aciona {@link split}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -515,7 +515,7 @@ function BlinkingColon() {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente SevenSegmentDigit com os dados recebidos.
- * Durante o fluxo, aciona `map`, `includes`.
+ * Durante o fluxo, aciona {@link map}, {@link includes}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

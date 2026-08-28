@@ -28,7 +28,7 @@ export const postgresChecklistRepository: ChecklistRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém active checklist definitions para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `get`, `toUpperCase` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link get}, {@link toUpperCase} e outras rotinas auxiliares.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -76,7 +76,7 @@ export async function findActiveChecklistDefinitions(): Promise<ChecklistDefinit
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de insert checklist for visit e preserva as validações do domínio.
- * Durante o fluxo, aciona `isSafeInteger`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link isSafeInteger}, {@link getPostgresPool}, {@link connect}, {@link query} e outras rotinas auxiliares.
  *
  * @param visitId Dados necessários para executar esta função.
  * @param submission Dados necessários para executar esta função.
@@ -104,7 +104,7 @@ export async function insertChecklistForVisit(visitId: number, submission: Check
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de insert checklist submissions e preserva as validações do domínio.
- * Durante o fluxo, aciona `isSafeInteger`, `query`, `map`, `has` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link isSafeInteger}, {@link query}, {@link map}, {@link has} e outras rotinas auxiliares.
  *
  * @param client Dados necessários para executar esta função.
  * @param visitId Dados necessários para executar esta função.
@@ -172,7 +172,7 @@ export async function insertChecklistSubmissions(client: PgClient, visitId: numb
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de delete visit checklist e preserva as validações do domínio.
- * Durante o fluxo, aciona `isSafeInteger`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link isSafeInteger}, {@link getPostgresPool}, {@link connect}, {@link query} e outras rotinas auxiliares.
  *
  * @param checklistId Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -199,7 +199,7 @@ export async function deleteVisitChecklist(checklistId: number): Promise<void> {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate field value e preserva as validações do domínio.
- * Durante o fluxo, aciona `isEmpty`, `toUpperCase`, `isFinite`, `isArray` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link isEmpty}, {@link toUpperCase}, {@link isFinite}, {@link isArray} e outras rotinas auxiliares.
  *
  * @param field Dados necessários para executar esta função.
  * @param value Dados necessários para executar esta função.
@@ -226,7 +226,7 @@ function validateFieldValue(field: { id: number; type: string; options: unknown;
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Normalize options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parse`, `isArray`, `map`.
+ * Durante o fluxo, aciona {@link parse}, {@link isArray}, {@link map}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -251,7 +251,7 @@ function normalizeOptions(options: unknown): { label: string; value: string }[] 
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa is empty no fluxo atual.
- * Durante o fluxo, aciona `isArray`.
+ * Durante o fluxo, aciona {@link isArray}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

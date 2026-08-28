@@ -10,7 +10,7 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Monta os dados e a interface da página de activity tracking.
- * Durante o fluxo, aciona `slice`, `toISOString`, `readDate`, `readPositiveInteger` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link slice}, {@link toISOString}, {@link readDate}, {@link readPositiveInteger} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -151,7 +151,7 @@ function FilterField({ label, name, value, min }: { label: string; name: string;
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente SelectField com os dados recebidos.
- * Durante o fluxo, aciona `toString`, `map`.
+ * Durante o fluxo, aciona {@link toString}, {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -194,7 +194,7 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente DonutChart com os dados recebidos.
- * Durante o fluxo, aciona `reduce`, `at`, `map`.
+ * Durante o fluxo, aciona {@link reduce}, {@link at}, {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -265,7 +265,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente MonthlyBarChart com os dados recebidos.
- * Durante o fluxo, aciona `round`, `map`.
+ * Durante o fluxo, aciona {@link round}, {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -337,7 +337,7 @@ function EmptyState({ message }: { message: string }) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Read date para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isArray`, `test`.
+ * Durante o fluxo, aciona {@link isArray}, {@link test}.
  *
  * @param value Dados necessários para executar esta função.
  * @param fallback Dados necessários para executar esta função.
@@ -352,7 +352,7 @@ function readDate(value: string | string[] | undefined, fallback: string) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Read positive integer para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isArray`, `isInteger`.
+ * Durante o fluxo, aciona {@link isArray}, {@link isInteger}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

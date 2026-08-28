@@ -4,7 +4,7 @@ import Link from "next/link";
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente TrackingTabs com os dados recebidos.
- * Durante o fluxo, aciona `map`.
+ * Durante o fluxo, aciona {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.

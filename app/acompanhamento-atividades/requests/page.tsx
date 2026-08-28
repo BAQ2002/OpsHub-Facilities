@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
  * Acionada pelo Next.js durante a renderização da rota correspondente.
  *
  * Monta os dados e a interface da página de requests.
- * Durante o fluxo, aciona `getMembershipRepository`, `getChecklistRepository`, `all`, `getRequestBoardPageData` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getMembershipRepository}, {@link getChecklistRepository}, {@link all}, {@link getRequestBoardPageData} e outras rotinas auxiliares.
  *
  * @returns O elemento React que representa esta interface.
  */

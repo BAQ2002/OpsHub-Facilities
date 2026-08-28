@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
  * Acionada pelo Next.js ao receber uma requisição HTTP GET nesta rota.
  *
  * Valida o identificador, consulta a mídia solicitada e monta a resposta HTTP correspondente.
- * Durante o fluxo, aciona `isSafeInteger`, `findById`, `getRequestTaskMediaRepository`.
+ * Durante o fluxo, aciona {@link isSafeInteger}, {@link findById}, {@link getRequestTaskMediaRepository}.
  *
  * @param _request Dados necessários para executar esta função.
  * @param context Dados necessários para executar esta função.

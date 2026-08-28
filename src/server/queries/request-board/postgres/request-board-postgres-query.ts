@@ -56,7 +56,7 @@ export const postgresRequestBoardQuery: RequestBoardQuery = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém request board data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `all`, `query`, `groupByRequest` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link all}, {@link query}, {@link groupByRequest} e outras rotinas auxiliares.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -189,7 +189,7 @@ function mapStatus(row: RequestStatusRow): RequestBoardStatus {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map request para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `formatDate`, `map`, `formatFieldValue`, `formatVisitDate` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link formatDate}, {@link map}, {@link formatFieldValue}, {@link formatVisitDate} e outras rotinas auxiliares.
  *
  * @param row Dados necessários para executar esta função.
  * @param fieldValues Dados necessários para executar esta função.
@@ -249,7 +249,7 @@ function mapRequest(row: RequestBoardRow, fieldValues: FieldValueRow[], media: M
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format visit input date para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `getTime`, `getTimezoneOffset`, `slice`, `toISOString`.
+ * Durante o fluxo, aciona {@link getTime}, {@link getTimezoneOffset}, {@link slice}, {@link toISOString}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -266,7 +266,7 @@ function formatVisitInputDate(value: Date | string | null): string {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format visit date para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `getTime`, `format`.
+ * Durante o fluxo, aciona {@link getTime}, {@link format}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -282,7 +282,7 @@ function formatVisitDate(value: Date | string | null): string {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format field value para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isArray`, `join`, `map`, `stringify`.
+ * Durante o fluxo, aciona {@link isArray}, {@link join}, {@link map}, {@link stringify}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -299,7 +299,7 @@ function formatFieldValue(value: unknown): string {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format date para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `getTime`, `format`.
+ * Durante o fluxo, aciona {@link getTime}, {@link format}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -315,7 +315,7 @@ function formatDate(value: Date | string | null): string {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Group by request para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `set`, `get`.
+ * Durante o fluxo, aciona {@link set}, {@link get}.
  *
  * @param rows Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

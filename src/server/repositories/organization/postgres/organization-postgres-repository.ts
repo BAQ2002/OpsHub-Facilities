@@ -12,7 +12,7 @@ export const postgresOrganizationRepository: OrganizationRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém location hierarchy para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `all`, `query`, `map`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link all}, {@link query}, {@link map}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */

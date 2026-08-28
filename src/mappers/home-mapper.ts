@@ -27,7 +27,7 @@ export function mapActivityRecordToMarker(
  * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
  *
  * Map activities to business unit filters para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `from`, `map`, `filter`.
+ * Durante o fluxo, aciona {@link from}, {@link map}, {@link filter}.
  *
  * @param records Dados necessários para executar esta função.
  * @param selectedBusiness Dados necessários para executar esta função.
@@ -59,7 +59,7 @@ export function mapActivitiesToBusinessUnitFilters(
  * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
  *
  * Map equipment cards to totals para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `reduce`.
+ * Durante o fluxo, aciona {@link reduce}.
  *
  * @param equipmentCards Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -79,7 +79,7 @@ export function mapEquipmentCardsToTotals(equipmentCards: EquipmentCard[]) {
  * Acionada pela camada de serviço ao converter dados entre domínio e apresentação.
  *
  * Map handling time samples to clock para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `round`, `reduce`, `floor`, `padStart`.
+ * Durante o fluxo, aciona {@link round}, {@link reduce}, {@link floor}, {@link padStart}.
  *
  * @param samplesInMinutes Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

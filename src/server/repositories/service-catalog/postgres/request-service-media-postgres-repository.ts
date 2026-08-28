@@ -12,7 +12,7 @@ export const postgresRequestServiceMediaRepository: RequestServiceMediaRepositor
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém request media by id para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}.
  *
  * @param id Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.

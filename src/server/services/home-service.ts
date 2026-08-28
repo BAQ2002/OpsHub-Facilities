@@ -14,7 +14,7 @@ import type { HomePageViewModel } from "@/src/presentation/view-models/home-view
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém home page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getHomeDashboardQuery`, `all`, `findEquipmentCards`, `findActivityRecords` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getHomeDashboardQuery}, {@link all}, {@link findEquipmentCards}, {@link findActivityRecords} e outras rotinas auxiliares.
  *
  * @param dateRange Dados necessários para executar esta função.
  * @param selectedBusiness Dados necessários para executar esta função.

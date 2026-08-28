@@ -53,7 +53,7 @@ export const postgresRequestRepository: RequestRepository = {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém requests by current user para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getPostgresPool`, `query`, `map`.
+ * Durante o fluxo, aciona {@link getPostgresPool}, {@link query}, {@link map}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -86,7 +86,7 @@ async function findRequestsByCurrentUser(): Promise<RequestEntity[]> {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Map request row to entity para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `formatDateTime`.
+ * Durante o fluxo, aciona {@link formatDateTime}.
  *
  * @param row Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -105,7 +105,7 @@ function mapRequestRowToEntity(row: RequestRow): RequestEntity {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Format date time para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `replace`, `format`.
+ * Durante o fluxo, aciona {@link replace}, {@link format}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -119,7 +119,7 @@ function formatDateTime(value: Date | string | null) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de insert activity request e preserva as validações do domínio.
- * Durante o fluxo, aciona `validateRequestInput`, `getPostgresPool`, `connect`, `query` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link validateRequestInput}, {@link getPostgresPool}, {@link connect}, {@link query} e outras rotinas auxiliares.
  *
  * @param input Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -201,7 +201,7 @@ export async function insertActivityRequest(input: CreateRequestInput) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse media files para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `filter`, `toUpperCase`, `getAll`, `parseMediaOptions` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link filter}, {@link toUpperCase}, {@link getAll}, {@link parseMediaOptions} e outras rotinas auxiliares.
  *
  * @param fieldDefinitions Dados necessários para executar esta função.
  * @param additionalFields Dados necessários para executar esta função.
@@ -257,7 +257,7 @@ async function parseMediaFiles(
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate media file e preserva as validações do domínio.
- * Durante o fluxo, aciona `matchesAcceptedType`.
+ * Durante o fluxo, aciona {@link matchesAcceptedType}.
  *
  * @param fieldId Dados necessários para executar esta função.
  * @param file Dados necessários para executar esta função.
@@ -280,7 +280,7 @@ function validateMediaFile(fieldId: number, file: File, acceptedTypes: string[])
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa matches accepted type no fluxo atual.
- * Durante o fluxo, aciona `some`, `toLowerCase`, `trim`, `endsWith` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link some}, {@link toLowerCase}, {@link trim}, {@link endsWith} e outras rotinas auxiliares.
  *
  * @param mimeType Dados necessários para executar esta função.
  * @param acceptedTypes Dados necessários para executar esta função.
@@ -299,7 +299,7 @@ function matchesAcceptedType(mimeType: string, acceptedTypes: string[]) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse media options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parseJson`, `isArray`, `map`.
+ * Durante o fluxo, aciona {@link parseJson}, {@link isArray}, {@link map}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -321,7 +321,7 @@ function parseMediaOptions(options: unknown): { accept: string[]; multiple: bool
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse json para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `parse`.
+ * Durante o fluxo, aciona {@link parse}.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -338,7 +338,7 @@ function parseJson(value: string): unknown {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de synchronize request id sequence e preserva as validações do domínio.
- * Durante o fluxo, aciona `query`.
+ * Durante o fluxo, aciona {@link query}.
  *
  * @param client Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -362,7 +362,7 @@ async function synchronizeRequestIdSequence(client: PgClient) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate request input e preserva as validações do domínio.
- * Durante o fluxo, aciona `isInteger`.
+ * Durante o fluxo, aciona {@link isInteger}.
  *
  * @param input Dados necessários para executar esta função.
  * @returns Não retorna valor.
@@ -385,7 +385,7 @@ function validateRequestInput(input: CreateRequestInput) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate location hierarchy e preserva as validações do domínio.
- * Durante o fluxo, aciona `query`.
+ * Durante o fluxo, aciona {@link query}.
  *
  * @param client Dados necessários para executar esta função.
  * @param input Dados necessários para executar esta função.
@@ -410,7 +410,7 @@ async function validateLocationHierarchy(client: PgClient, input: CreateRequestI
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Obtém field definitions para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `query`.
+ * Durante o fluxo, aciona {@link query}.
  *
  * @param client Dados necessários para executar esta função.
  * @param serviceTypeId Dados necessários para executar esta função.
@@ -441,7 +441,7 @@ async function getFieldDefinitions(client: PgClient, serviceTypeId: number) {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse field value para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `getAll`, `some`, `filter`, `toUpperCase` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link getAll}, {@link some}, {@link filter}, {@link toUpperCase} e outras rotinas auxiliares.
  *
  * @param field Dados necessários para executar esta função.
  * @param additionalFields Dados necessários para executar esta função.
@@ -481,7 +481,7 @@ function parseFieldValue(field: ServiceFieldDefinition, additionalFields: Create
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Executa a operação de validate field value e preserva as validações do domínio.
- * Durante o fluxo, aciona `toUpperCase`, `parseOptions`, `test`, `isArray` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link toUpperCase}, {@link parseOptions}, {@link test}, {@link isArray} e outras rotinas auxiliares.
  *
  * @param field Dados necessários para executar esta função.
  * @param value Dados necessários para executar esta função.
@@ -507,7 +507,7 @@ function validateFieldValue(field: ServiceFieldDefinition, value: string | numbe
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse options para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isArray`, `map`, `parse`.
+ * Durante o fluxo, aciona {@link isArray}, {@link map}, {@link parse}.
  *
  * @param options Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -528,7 +528,7 @@ function parseOptions(options: unknown): string[] {
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
  *
  * Parse number para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `isFinite`.
+ * Durante o fluxo, aciona {@link isFinite}.
  *
  * @param value Dados necessários para executar esta função.
  * @param fieldName Dados necessários para executar esta função.

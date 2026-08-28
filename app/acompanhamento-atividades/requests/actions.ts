@@ -11,7 +11,7 @@ export type UpdateVisitState = AddVisitState;
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action InsertRequestTask com os dados enviados pela interface.
- * Durante o fluxo, aciona `map`, `getAll`, `filter`, `createVisit` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link map}, {@link getAll}, {@link filter}, {@link createVisit} e outras rotinas auxiliares.
  *
  * @param requestId Dados necessários para executar esta função.
  * @param _previousState Dados necessários para executar esta função.
@@ -46,7 +46,7 @@ export async function InsertRequestTask(
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action UpdateRequestTask com os dados enviados pela interface.
- * Durante o fluxo, aciona `updateVisit`, `getRequestTaskRepository`, `trim`, `get` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link updateVisit}, {@link getRequestTaskRepository}, {@link trim}, {@link get} e outras rotinas auxiliares.
  *
  * @param visitId Dados necessários para executar esta função.
  * @param _previousState Dados necessários para executar esta função.
@@ -75,7 +75,7 @@ export async function UpdateRequestTask(visitId: number, _previousState: UpdateV
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action InsertRequestTaskChecklist com os dados enviados pela interface.
- * Durante o fluxo, aciona `parseChecklistSubmissions`, `get`, `addToVisit`, `getChecklistRepository` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link parseChecklistSubmissions}, {@link get}, {@link addToVisit}, {@link getChecklistRepository} e outras rotinas auxiliares.
  *
  * @param visitId Dados necessários para executar esta função.
  * @param _previousState Dados necessários para executar esta função.
@@ -98,7 +98,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action DeleteRequestTaskChecklist com os dados enviados pela interface.
- * Durante o fluxo, aciona `deleteFromVisit`, `getChecklistRepository`, `revalidatePath`.
+ * Durante o fluxo, aciona {@link deleteFromVisit}, {@link getChecklistRepository}, {@link revalidatePath}.
  *
  * @param checklistId Dados necessários para executar esta função.
  * @returns O estado da operação para atualização da interface.
@@ -117,7 +117,7 @@ export async function DeleteRequestTaskChecklist(checklistId: number): Promise<A
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Parse checklist submissions para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `trim`, `parse`, `isArray`, `map` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link trim}, {@link parse}, {@link isArray}, {@link map} e outras rotinas auxiliares.
  *
  * @param value Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -149,7 +149,7 @@ function parseChecklistSubmissions(value: FormDataEntryValue | null): ChecklistS
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa optional text no fluxo atual.
- * Durante o fluxo, aciona `trim`.
+ * Durante o fluxo, aciona {@link trim}.
  *
  * @param item Dados necessários para executar esta função.
  * @param property Dados necessários para executar esta função.

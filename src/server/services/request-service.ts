@@ -9,7 +9,7 @@ import type { CreateRequestInput, RequestFieldValue } from "@/src/server/reposit
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém my requests page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `map`, `findByCurrentUser`, `getRequestRepository`, `filter`.
+ * Durante o fluxo, aciona {@link map}, {@link findByCurrentUser}, {@link getRequestRepository}, {@link filter}.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
@@ -26,7 +26,7 @@ export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> 
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Executa a operação de create activity request e preserva as validações do domínio.
- * Durante o fluxo, aciona `create`, `getRequestRepository`, `parseCreateRequestInput`.
+ * Durante o fluxo, aciona {@link create}, {@link getRequestRepository}, {@link parseCreateRequestInput}.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -39,7 +39,7 @@ export async function createActivityRequest(formData: FormData) {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Executa a operação de create chamado request e preserva as validações do domínio.
- * Durante o fluxo, aciona `create`, `getRequestRepository`, `parseCreateRequestInput`.
+ * Durante o fluxo, aciona {@link create}, {@link getRequestRepository}, {@link parseCreateRequestInput}.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -52,7 +52,7 @@ export async function createChamadoRequest(formData: FormData) {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Parse create request input para o formato esperado pelo fluxo.
- * Durante o fluxo, aciona `entries`, `startsWith`, `getPositiveInteger`, `trim` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link entries}, {@link startsWith}, {@link getPositiveInteger}, {@link trim} e outras rotinas auxiliares.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
@@ -78,7 +78,7 @@ function parseCreateRequestInput(formData: FormData): CreateRequestInput {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém positive integer para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `getRequiredString`, `isInteger`.
+ * Durante o fluxo, aciona {@link getRequiredString}, {@link isInteger}.
  *
  * @param formData Dados necessários para executar esta função.
  * @param name Dados necessários para executar esta função.
@@ -94,7 +94,7 @@ function getPositiveInteger(formData: FormData, name: string): number {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém required string para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona `get`.
+ * Durante o fluxo, aciona {@link get}.
  *
  * @param formData Dados necessários para executar esta função.
  * @param name Dados necessários para executar esta função.

@@ -21,7 +21,7 @@ type ActivityRequestFormProps = {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente ActivityRequestForm com os dados recebidos.
- * Durante o fluxo, aciona `map`.
+ * Durante o fluxo, aciona {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -111,7 +111,7 @@ export default function ActivityRequestForm({
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente LocationFields com os dados recebidos.
- * Durante o fluxo, aciona `useState`, `useMemo`, `filter`, `map` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link useState}, {@link useMemo}, {@link filter}, {@link map} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -173,7 +173,7 @@ function LocationFields({ hierarchy }: { hierarchy: LocationHierarchy }) {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente SelectField com os dados recebidos.
- * Durante o fluxo, aciona `onChange`, `map`.
+ * Durante o fluxo, aciona {@link onChange}, {@link map}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -228,7 +228,7 @@ function SelectField({
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente FormField com os dados recebidos.
- * Durante o fluxo, aciona `renderField`.
+ * Durante o fluxo, aciona {@link renderField}.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -268,7 +268,7 @@ function FormField({ field }: { field: Field }) {
  * Acionada pelos módulos que importam esta função ou pelo fluxo interno deste arquivo.
  *
  * Executa render field no fluxo atual.
- * Durante o fluxo, aciona `map`, `join`.
+ * Durante o fluxo, aciona {@link map}, {@link join}.
  *
  * @param field Dados necessários para executar esta função.
  * @param fieldId Dados necessários para executar esta função.
@@ -363,7 +363,7 @@ function renderField(field: Field, fieldId: string) {
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
  * Renderiza o componente MultiSelectDropdown com os dados recebidos.
- * Durante o fluxo, aciona `useState`, `useRef`, `useEffect`, `contains` e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link useState}, {@link useRef}, {@link useEffect}, {@link contains} e outras rotinas auxiliares.
  *
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
@@ -386,7 +386,7 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
      * Acionada internamente pela função ou pelo componente que a declara.
      *
      * Atualiza o estado da interface para close on outside click.
-     * Durante o fluxo, aciona `contains`, `setIsOpen`.
+     * Durante o fluxo, aciona {@link contains}, {@link setIsOpen}.
      *
      * @param event Dados necessários para executar esta função.
      * @returns Não retorna valor.
@@ -399,7 +399,7 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
      * Acionada internamente pela função ou pelo componente que a declara.
      *
      * Atualiza o estado da interface para close on escape.
-     * Durante o fluxo, aciona `setIsOpen`, `focus`.
+     * Durante o fluxo, aciona {@link setIsOpen}, {@link focus}.
      *
      * @param event Dados necessários para executar esta função.
      * @returns Não retorna valor.
@@ -422,7 +422,7 @@ function MultiSelectDropdown({ field, fieldId }: { field: Field; fieldId: string
    * Acionada internamente pela função ou pelo componente que a declara.
    *
    * Toggle option para o formato esperado pelo fluxo.
-   * Durante o fluxo, aciona `setSelectedValues`, `includes`, `filter`, `setShowRequiredError`.
+   * Durante o fluxo, aciona {@link setSelectedValues}, {@link includes}, {@link filter}, {@link setShowRequiredError}.
    *
    * @param value Dados necessários para executar esta função.
    * @returns Não retorna valor.
