@@ -3,6 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { getChecklistRepository, getRequestTaskRepository } from "@/src/server/repositories/repositories";
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
+import type { DateRange } from "@/src/server/validation/date-range";
+import { validateDateRange } from "@/src/server/validation/date-range";
+import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
+
+export async function filterRequestBoard(range: DateRange) {
+  return getRequestBoardPageData(validateDateRange(range));
+}
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
 export type UpdateVisitState = AddVisitState;

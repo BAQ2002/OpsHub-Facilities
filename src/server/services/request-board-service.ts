@@ -2,6 +2,7 @@ import "server-only";
 
 import { mapRequestBoardDataToViewModel } from "@/src/mappers/request-board-mapper";
 import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
+import type { RequestBoardFilters } from "@/src/server/queries/request-board/request-board-query";
 import { getRequestBoardQuery } from "@/src/server/queries/request-board/request-board-query-provider";
 
 /**
@@ -12,6 +13,6 @@ import { getRequestBoardQuery } from "@/src/server/queries/request-board/request
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
-export async function getRequestBoardPageData(): Promise<RequestBoardPageViewModel> {
-  return mapRequestBoardDataToViewModel(await getRequestBoardQuery().findData());
+export async function getRequestBoardPageData(filters: RequestBoardFilters): Promise<RequestBoardPageViewModel> {
+  return mapRequestBoardDataToViewModel(await getRequestBoardQuery().findData(filters));
 }
