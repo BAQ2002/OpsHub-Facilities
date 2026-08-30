@@ -27,9 +27,9 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
   }
 
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto max-w-[1620px]">
-        <header className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <section data-ui="activity-dashboard-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="activity-dashboard-content" className="mx-auto max-w-[1620px]">
+        <header data-ui="activity-dashboard-header" className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-teal-600">
               Administração
@@ -51,12 +51,12 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           </button>
         </header>
 
-        <div className="mb-3">
+        <div data-ui="activity-dashboard-navigation" className="mb-3">
           <TrackingTabs active="dashboard" />
         </div>
 
-        <section className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
-          <div className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
+        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
+          <div data-ui="activity-dashboard-filter-fields" className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
             <div className="flex flex-wrap items-center gap-2 lg:col-span-2">
               <DateRange {...filters} disabled={isPending} onChange={(range: DateRangeValue) => setFilters((current) => ({ ...current, ...range }))} />
             </div>
@@ -73,9 +73,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           </div>
         </section>
 
-        <section className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do período">
+        <section data-ui="activity-dashboard-summary" className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do período">
           {summaryCards.map((card) => (
             <article
+              data-ui="summary-card"
               key={card.label}
               className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
             >
@@ -89,7 +90,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           ))}
         </section>
 
-        <section id="dashboard" className="grid gap-4 xl:grid-cols-2">
+        <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
           <ChartCard title="Requests por service_category">
             <DonutChart data={categoryData} />
           </ChartCard>
@@ -98,7 +99,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           </ChartCard>
         </section>
 
-        <section className="mt-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-labelledby="monthly-chart-title">
+        <section data-ui="monthly-requests-chart" className="mt-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-labelledby="monthly-chart-title">
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
@@ -156,7 +157,7 @@ function SelectField({ label, name, value, placeholder, options, onChange }: { l
  */
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <article className="min-h-[280px] rounded-[20px] border border-slate-200 bg-white p-5 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+    <article data-ui="chart-card" className="min-h-[280px] rounded-[20px] border border-slate-200 bg-white p-5 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
       <h2 className="text-base font-bold leading-tight text-slate-950">{title}</h2>
       <div className="mt-6">{children}</div>
     </article>
@@ -197,7 +198,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   }, []);
 
   return (
-    <div className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
+    <div data-ui="donut-chart" className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
       <div className="relative mx-auto h-[210px] w-[210px]">
         <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} requests`}>
           <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#eef2f7" strokeWidth="6" />
@@ -255,7 +256,7 @@ function MonthlyBarChart({
   }
   const ticks = [maxMonthlyValue, Math.round(maxMonthlyValue * 0.75), Math.round(maxMonthlyValue * 0.5), Math.round(maxMonthlyValue * 0.25), 0];
   return (
-    <div className="overflow-x-auto">
+    <div data-ui="bar-chart" className="overflow-x-auto">
       <div className="grid min-w-[980px] grid-cols-[42px_1fr] gap-3">
         <div className="flex h-[260px] flex-col justify-between pb-8 text-right text-[11px] text-slate-400">
           {ticks.map((tick, index) => (

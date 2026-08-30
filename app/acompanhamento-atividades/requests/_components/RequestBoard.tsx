@@ -27,7 +27,7 @@ export function RequestBoard({ columns, executors, checklistDefinitions }: { col
 
   return (
     <>
-      <section className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
+      <section data-ui="request-board" className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
         {columns.map((column) => (
           <RequestColumn key={column.id} column={column} onOpen={(request) => setSelectedRequestId(request.id)} />
         ))}
@@ -56,14 +56,14 @@ function RequestColumn({
   onOpen: (request: RequestBoardCardViewModel) => void;
 }) {
   return (
-    <section className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
-      <header className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
+    <section data-ui="request-board-column" className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
+      <header data-ui="request-board-column-header" className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
         <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
         <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
       </header>
-      <div className="max-h-[620px] space-y-2 overflow-y-auto">
+      <div data-ui="request-board-column-list" className="max-h-[620px] space-y-2 overflow-y-auto">
         {column.requests.map((request) => (
-          <article className="rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm transition-shadow hover:shadow-md" key={request.id}>
+          <article data-ui="request-board-card" className="rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-700 shadow-sm transition-shadow hover:shadow-md" key={request.id}>
             <div className="mb-3 flex items-start justify-between gap-2 border-b border-slate-100 pb-2">
               <strong className="min-w-0 break-words rounded-md bg-blue-50 px-2 py-1 text-sm font-bold text-blue-700">
                 #{request.id} - {request.serviceTypeName}
@@ -145,17 +145,19 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-[2px]"
+      data-ui="request-details-overlay"
       role="presentation"
       onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
     >
       <section
+        data-ui="request-details-dialog"
         aria-labelledby="request-modal-title"
         aria-modal="true"
         className="max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl"
         role="dialog"
       >
         <div className="max-h-[90vh] overflow-y-auto">
-        <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
+        <header data-ui="request-details-header" className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da request</p>
             <h2 className="mt-1 text-xl font-bold text-slate-900" id="request-modal-title">
@@ -190,7 +192,7 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
           </button>
         </div>
 
-        <div className="space-y-7 p-5 sm:p-7">
+        <div data-ui="request-details-content" className="space-y-7 p-5 sm:p-7">
           <dl className="grid gap-x-8 gap-y-5 border-b border-slate-200 pb-7 sm:grid-cols-2">
             <ModalDetail label="Solicitante" value={request.requesterName} />
             <ModalDetail
@@ -281,10 +283,12 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/65 p-4"
+      data-ui="request-visits-overlay"
       role="presentation"
       onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}
     >
       <section
+        data-ui="request-visits-dialog"
         className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl"
         role="dialog"
         aria-modal="true"
@@ -381,8 +385,8 @@ function VisitDetailsModal({ visit, executors, checklistDefinitions, onClose }: 
   }, [state.status]);
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
-      <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
+    <div data-ui="visit-details-overlay" className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 p-4" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}>
+      <section data-ui="visit-details-dialog" className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-details-title">
         <div className="max-h-[92vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-5">
           <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da visita</p><h2 id="visit-details-title" className="mt-1 text-xl font-bold text-slate-900">Visita #{visit.id}</h2></div>

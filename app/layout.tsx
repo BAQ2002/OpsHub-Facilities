@@ -26,10 +26,10 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body>
-        <div className="app-shell">
+        <div data-ui="app-shell" className="app-shell">
           <Sidebar />
 
-          <main className="app-content">
+          <main data-ui="app-content" className="app-content">
             {children}
           </main>
         </div>

@@ -82,14 +82,14 @@ export default async function Home({
     : activityRecords.filter((record) => record.businessUnit === selectedBusiness);
 
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto max-w-[1620px]">
-        <header className="mb-[18px] grid grid-cols-[1fr_auto] items-start gap-4 pt-2">
+    <section data-ui="facilities-home-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="facilities-home-content" className="mx-auto max-w-[1620px]">
+        <header data-ui="facilities-home-header" className="mb-[18px] grid grid-cols-[1fr_auto] items-start gap-4 pt-2">
           <h1 className="mt-[57px] text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
             Facilities
           </h1>
 
-          <div className="flex flex-col items-end gap-[22px]">
+          <div data-ui="facilities-home-controls" className="flex flex-col items-end gap-[22px]">
             <button
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 bg-white text-base shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
               type="button"
@@ -120,16 +120,16 @@ export default async function Home({
           </div>
         </header>
 
-        <section className="mb-4 space-y-3">
-          <div className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+        <section data-ui="facilities-home-overview" className="mb-4 space-y-3">
+          <div data-ui="facilities-home-date-filter" className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
             <div className="flex flex-wrap items-center gap-2">
               <HomeDateRange startDate={dateRange.startDate} endDate={dateRange.endDate} statuses={effectiveStatuses} selectedBusiness={selectedBusiness} />
 
             </div>
           </div>
 
-          <div className="grid gap-3 lg:grid-cols-3">
-            <div className="lg:col-span-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+          <div data-ui="facilities-home-summary" className="grid gap-3 lg:grid-cols-3">
+            <div data-ui="facilities-summary-cards" className="lg:col-span-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <SummaryCard
                   value={String(totals.Completed)}
@@ -156,7 +156,7 @@ export default async function Home({
               </div>
             </div>
 
-            <div className="lg:col-span-1 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
+            <div data-ui="facilities-quick-actions" className="lg:col-span-1 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
               <div className="grid gap-3 sm:grid-cols-1">
                 <ActionCard
                   href="/solicitar-atividade"
@@ -171,9 +171,10 @@ export default async function Home({
           </div>
         </section>
 
-        <section className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9">
+        <section data-ui="equipment-summary" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9">
           {equipmentCards.map((card) => (
             <article
+              data-ui="equipment-card"
               key={card.title}
               className="min-h-[132px] rounded-2xl border border-slate-200 bg-white px-2.5 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
@@ -211,6 +212,7 @@ export default async function Home({
         </section>
 
         <section
+          data-ui="facilities-map-section"
           className="mt-4 rounded-[20px] border border-slate-200 bg-white p-3 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
           aria-labelledby="map-title"
         >
@@ -224,6 +226,7 @@ export default async function Home({
           <FacilitiesMap image={mapImage} markers={activityMarkers} />
 
           <div
+            data-ui="activity-record-filters"
             className="mt-4 flex flex-wrap items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             aria-label="Filtros de business das requests planejadas"
           >
@@ -277,7 +280,7 @@ export default async function Home({
             </div>
           </div>
           
-          <div className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div data-ui="activity-records" className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
             <form id="activity-filters" method="get">
               {selectedBusiness !== "all" && (
                 <input type="hidden" name="business" value={selectedBusiness} />
@@ -300,7 +303,7 @@ export default async function Home({
               </span>
             </div>
 
-            <div className="overflow-x-auto">
+            <div data-ui="activity-records-table" className="overflow-x-auto">
               <table className="min-w-[900px] w-full border-collapse text-left text-xs">
                 <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
                   <tr>

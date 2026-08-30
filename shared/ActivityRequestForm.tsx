@@ -35,9 +35,9 @@ export default function ActivityRequestForm({
   action,
 }: ActivityRequestFormProps) {
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto max-w-[1620px]">
-        <div className="mb-4 flex justify-end">
+    <section data-ui="activity-request-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="activity-request-content" className="mx-auto max-w-[1620px]">
+        <div data-ui="activity-request-toolbar" className="mb-4 flex justify-end">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700 bg-white text-base shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
             type="button"
@@ -47,7 +47,7 @@ export default function ActivityRequestForm({
           </button>
         </div>
 
-        <header className="mb-4 flex items-center gap-4 rounded-[20px] border border-slate-100 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]">
+        <header data-ui="activity-request-header" className="mb-4 flex items-center gap-4 rounded-[20px] border border-slate-100 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]">
           <Link
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl leading-none text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
             href="/solicitar-atividade"
@@ -72,6 +72,7 @@ export default function ActivityRequestForm({
         </header>
 
         <form
+          data-ui="activity-request-form"
           action={action}
           className="rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]"
         >
@@ -79,14 +80,14 @@ export default function ActivityRequestForm({
             {sectionTitle}
           </h2>
 
-          <div className="grid gap-x-4 gap-y-5 md:grid-cols-2">
+          <div data-ui="activity-request-fields" className="grid gap-x-4 gap-y-5 md:grid-cols-2">
             {locationHierarchy ? <LocationFields hierarchy={locationHierarchy} /> : null}
             {fields.map((field) => (
               <FormField key={field.name} field={field} />
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <div data-ui="activity-request-actions" className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <Link
               className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
               href="/solicitar-atividade"
