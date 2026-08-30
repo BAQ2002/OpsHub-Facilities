@@ -1,5 +1,5 @@
 import { createChamadoRequestAction } from "../actions";
-import ActivityRequestForm from "../_components/ActivityRequestForm";
+import ActivityRequestForm from "@/shared/ActivityRequestForm";
 import { getChamadoRequestFormPageData } from "@/src/server/services/activity-request-form-service";
 import { notFound } from "next/navigation";
 

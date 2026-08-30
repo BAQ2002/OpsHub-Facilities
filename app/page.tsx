@@ -1,7 +1,7 @@
 import Link from "next/link";
-import FacilitiesMap from "./_components/FacilitiesMap";
+import FacilitiesMap from "./home/_components/FacilitiesMap";
 import { cookies } from "next/headers";
-import HomeDateRange from "./_components/HomeDateRange";
+import HomeDateRange from "./home/_components/HomeDateRange";
 
 import { getHomePageData } from "@/src/server/services/home-service";
 import { activityStatuses } from "@/src/domain/entities/activity";

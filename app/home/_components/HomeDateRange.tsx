@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import DateRange, { type DateRangeValue } from "@/components/DateRange";
-import { applyHomeDateRange } from "../actions";
+import DateRange, { type DateRangeValue } from "@/shared/DateRange";
+import { applyHomeDateRange } from "../../actions";
 
 export default function HomeDateRange({ startDate, endDate, statuses, selectedBusiness }: DateRangeValue & { statuses: string[]; selectedBusiness: string }) {
   const [range, setRange] = useState<DateRangeValue>({ startDate, endDate });
