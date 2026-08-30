@@ -11,8 +11,8 @@ import Link from "next/link";
  */
 export function TrackingTabs({ active }: { active: "dashboard" | "requests" }) {
   const tabs = [
-    { key: "requests" as const, label: "Chamados", href: "/acompanhamento-atividades/requests" },
-    { key: "dashboard" as const, label: "Dashboard", href: "/acompanhamento-atividades" },
+    { key: "requests" as const, label: "Chamados", href: "/chamados/kanbanboard" },
+    { key: "dashboard" as const, label: "Dashboard", href: "/chamados/dashboard" },
   ];
 
   return (

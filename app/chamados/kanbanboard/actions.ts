@@ -42,7 +42,7 @@ export async function InsertRequestTask(
       photos,
       checklists: parseChecklistSubmissions(formData.get("checklists_json")),
     });
-    revalidatePath("/acompanhamento-atividades/requests");
+    revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Visita adicionada com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível adicionar a visita." };
@@ -71,7 +71,7 @@ export async function UpdateRequestTask(visitId: number, _previousState: UpdateV
       photos: formData.getAll("photos").filter((value): value is File => value instanceof File && value.size > 0),
       checklists: [],
     });
-    revalidatePath("/acompanhamento-atividades/requests");
+    revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Visita atualizada com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível atualizar a visita." };
@@ -94,7 +94,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
     if (submissions.length !== 1) throw new Error("Selecione um checklist para adicionar.");
     await getChecklistRepository().addToVisit(visitId, submissions[0]);
-    revalidatePath("/acompanhamento-atividades/requests");
+    revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Checklist adicionado com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível adicionar o checklist." };
@@ -113,7 +113,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
 export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
     await getChecklistRepository().deleteFromVisit(checklistId);
-    revalidatePath("/acompanhamento-atividades/requests");
+    revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Checklist excluído com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível excluir o checklist." };
