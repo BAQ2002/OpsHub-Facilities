@@ -59,9 +59,9 @@ O projeto separa a interpretação dos registros do banco em camadas:
 
 ## Onde os registros do banco viram entidades utilizáveis
 
-### Home (`/`)
+### Home (`/home`)
 
-A página `app/page.tsx` lê `startDate` e `endDate` de `searchParams`, aplica valores padrão por variável de ambiente e chama `getHomePageData(dateRange)`.
+A página `app/home/page.tsx` lê `startDate` e `endDate` de `searchParams`, aplica valores padrão por variável de ambiente e chama `getHomePageData(dateRange)`.
 
 A interpretação dos registros PostgreSQL acontece em `src/server/repositories/postgres/home-postgres-repository.ts`:
 
@@ -113,7 +113,7 @@ Como a carga histórica de `REQUEST` informa IDs explicitamente, o script de car
 
 ## Onde e como são feitos os filtros/consultas do banco por página
 
-### `/` — Dashboard/Home
+### `/home` — Dashboard/Home
 
 Arquivo principal de consulta: `src/server/repositories/postgres/home-postgres-repository.ts`.
 
@@ -122,7 +122,7 @@ Consultas e filtros:
 - Cards por categoria: filtra status em `trackedStatusDescriptions` (`Concluída`, `Programada`, `Em andamento`, `Em aberto`) com `rs.description = ANY($1)` e filtra período por `r.agreed_date >= $2::date` e `r.agreed_date < ($3::date + INTERVAL '1 day')`.
 - Lista de atividades e marcadores: usa o mesmo filtro de status e período, com joins para `request_type`, `service_type`, `service_category`, `location`, `region` e `business`.
 - SLA: usa o mesmo filtro de status/período e exige `r.created_date IS NOT NULL`; calcula minutos por `EXTRACT(EPOCH FROM (COALESCE(r.finished_date, NOW()) - r.created_date)) / 60`.
-- As datas chegam de `app/page.tsx` por `searchParams.startDate` e `searchParams.endDate`; se ausentes, usam `HOME_REQUEST_START_DATE`, `HOME_REQUEST_END_DATE` ou `2026-06-05`.
+- As datas chegam de `app/home/page.tsx` por `searchParams.startDate` e `searchParams.endDate`; se ausentes, usam `HOME_REQUEST_START_DATE`, `HOME_REQUEST_END_DATE` ou `2026-06-05`.
 
 ### `/minhas-solicitacoes` — Minhas requests
 
@@ -156,7 +156,7 @@ Comportamento:
 - Para `MULTI_SELECT`, todas as opções escolhidas são validadas, deduplicadas e armazenadas juntas em um único array JSONB, por exemplo `["Microondas", "Geladeira"]`.
 - Não há envio para FastAPI nem retorno simulado: uma fonte inválida gera erro explícito.
 
-### `/acompanhamento-atividades`
+### `/chamados/dashboard`
 
 A página chama `getActivityTrackingPageData()`, que consulta exclusivamente `src/server/repositories/postgres/activity-tracking-postgres-repository.ts`.
 
@@ -174,7 +174,7 @@ Considerando conexão direta PostgreSQL (`DATA_SOURCE=postgres`):
 
 | Rota | Conecta ao PostgreSQL? | Local da conexão/consulta | Observações |
 | --- | --- | --- | --- |
-| `/` | Sim | `app/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
+| `/home` | Sim | `app/home/page.tsx` -> `src/server/services/home-service.ts` -> `src/server/repositories/home-repository.ts` -> `src/server/repositories/postgres/home-postgres-repository.ts` | Lê cards, atividades/marcadores e SLA por período. |
 | `/minhas-solicitacoes` | Sim | `app/minhas-solicitacoes/page.tsx` -> `src/server/services/request-service.ts` -> `src/server/repositories/request-repository.ts` -> `src/server/repositories/postgres/request-postgres-repository.ts` | Lê requests diretamente do PostgreSQL. |
 | `/solicitar-atividade` | Sim | `app/solicitar-atividade/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> `src/server/repositories/activity-request-form-repository.ts` -> `src/server/repositories/postgres/activity-request-form-postgres-repository.ts` | Lê e agrupa todas as categorias e tipos de serviço diretamente do PostgreSQL, sem mock. |
 | `/solicitar-atividade/chamado` | Sim | `app/solicitar-atividade/chamado/page.tsx` -> `src/server/services/activity-request-form-service.ts` -> repositórios PostgreSQL | Lê os três níveis de localização, o tipo de serviço e seus campos dinâmicos. |

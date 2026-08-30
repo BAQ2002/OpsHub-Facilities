@@ -7,7 +7,7 @@ import styles from "./Sidebar.module.css";
 const facilitiesSubItems = [
   {
     label: "Acompanhamento",
-    href: "/acompanhamento-atividades",
+    href: "/chamados/dashboard",
     icon: <ActivityIcon />,
   },
   {
@@ -27,7 +27,7 @@ const facilitiesSubItems = [
  */
 export default function Sidebar() {
   const pathname = usePathname();
-  const isFacilitiesHome = pathname === "/";
+  const isFacilitiesHome = pathname === "/home";
 
   return (
     <aside data-ui="sidebar" className={styles.sidebar}>
@@ -51,7 +51,7 @@ export default function Sidebar() {
       <nav data-ui="sidebar-navigation" className={styles.nav} aria-label="Menu principal">
         <section data-ui="sidebar-module" className={styles.moduleGroup} aria-label="Módulo Facilities">
           <Link
-            href="/"
+            href="/home"
             className={`${styles.moduleHeader} ${isFacilitiesHome ? styles.moduleHeaderActive : ""}`}
             aria-current={isFacilitiesHome ? "page" : undefined}
           >
@@ -66,7 +66,10 @@ export default function Sidebar() {
 
           <div data-ui="sidebar-subnavigation" className={styles.subNav}>
             {facilitiesSubItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              const isActive =
+                item.href === "/chamados/dashboard"
+                  ? pathname.startsWith("/chamados/")
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <Link
