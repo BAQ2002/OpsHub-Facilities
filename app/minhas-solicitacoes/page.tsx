@@ -15,9 +15,9 @@ export default async function MyRequestsPage() {
   const { openRequests, closedRequests } = await getMyRequestsPageData();
 
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto w-full max-w-[980px]">
-        <header className="mb-9 flex items-center gap-4 pt-1">
+    <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="my-requests-content" className="mx-auto w-full max-w-[980px]">
+        <header data-ui="my-requests-header" className="mb-9 flex items-center gap-4 pt-1">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
             <AlertIcon />
           </span>
@@ -32,6 +32,7 @@ export default async function MyRequestsPage() {
         </header>
 
         <section
+          data-ui="my-requests-filters"
           className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
           aria-label="Busca e filtros das minhas requests"
         >
@@ -82,8 +83,8 @@ function RequestGroup({
   className?: string;
 }) {
   return (
-    <section className={className} aria-labelledby={`${title.toLowerCase()}-title`}>
-      <div className="mb-5 flex items-center justify-between gap-4 px-3">
+    <section data-ui="request-group" className={className} aria-labelledby={`${title.toLowerCase()}-title`}>
+      <div data-ui="request-group-header" className="mb-5 flex items-center justify-between gap-4 px-3">
         <h2 id={`${title.toLowerCase()}-title`} className="text-base font-bold text-slate-950">
           {title}
         </h2>
@@ -92,7 +93,7 @@ function RequestGroup({
         </span>
       </div>
 
-      <div className="space-y-3">
+      <div data-ui="request-group-list" className="space-y-3">
         {requests.map((request) => (
           <RequestCard key={request.id} request={request} />
         ))}
@@ -113,9 +114,9 @@ function RequestCard({ request }: { request: RequestViewModel }) {
   const isOpen = request.status === "Aberto";
 
   return (
-    <article className="group rounded-[16px] border border-slate-200 bg-white px-4 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] sm:px-5">
-      <div className="grid min-h-[64px] grid-cols-[1fr_auto] gap-4">
-        <div className="min-w-0 self-center">
+    <article data-ui="request-card" className="group rounded-[16px] border border-slate-200 bg-white px-4 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] sm:px-5">
+      <div data-ui="request-card-content" className="grid min-h-[64px] grid-cols-[1fr_auto] gap-4">
+        <div data-ui="request-card-details" className="min-w-0 self-center">
           <h3 className="truncate text-sm font-bold leading-tight text-slate-950">
             #{request.id} - {request.title}
           </h3>
@@ -124,7 +125,7 @@ function RequestCard({ request }: { request: RequestViewModel }) {
           </time>
         </div>
 
-        <div className="flex min-w-[92px] flex-col items-end justify-between gap-3">
+        <div data-ui="request-card-actions" className="flex min-w-[92px] flex-col items-end justify-between gap-3">
           <button
             className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-950 transition hover:bg-slate-100"
             type="button"

@@ -30,8 +30,8 @@ export default function Sidebar() {
   const isFacilitiesHome = pathname === "/";
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.sidebarHeader}>
+    <aside data-ui="sidebar" className={styles.sidebar}>
+      <div data-ui="sidebar-header" className={styles.sidebarHeader}>
         <button className={styles.collapseButton} type="button" aria-label="Recolher menu">
           <svg
             width="18"
@@ -48,8 +48,8 @@ export default function Sidebar() {
         </button>
       </div>
 
-      <nav className={styles.nav} aria-label="Menu principal">
-        <section className={styles.moduleGroup} aria-label="Módulo Facilities">
+      <nav data-ui="sidebar-navigation" className={styles.nav} aria-label="Menu principal">
+        <section data-ui="sidebar-module" className={styles.moduleGroup} aria-label="Módulo Facilities">
           <Link
             href="/"
             className={`${styles.moduleHeader} ${isFacilitiesHome ? styles.moduleHeaderActive : ""}`}
@@ -64,7 +64,7 @@ export default function Sidebar() {
             </span>
           </Link>
 
-          <div className={styles.subNav}>
+          <div data-ui="sidebar-subnavigation" className={styles.subNav}>
             {facilitiesSubItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 

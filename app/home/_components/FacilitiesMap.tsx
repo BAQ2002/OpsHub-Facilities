@@ -258,8 +258,9 @@ export default function FacilitiesMap({
   }, []);
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-sky-50">
+    <div data-ui="facilities-map" className="relative overflow-hidden rounded-xl border border-slate-200 bg-sky-50">
       <div
+        data-ui="facilities-map-zoom-controls"
         className="pointer-events-none absolute left-3 top-3 z-10 overflow-hidden rounded border border-slate-300 bg-white text-slate-950 shadow-[0_1px_4px_rgba(15,23,42,0.20)]"
         aria-hidden="true"
       >
@@ -272,6 +273,7 @@ export default function FacilitiesMap({
       </div>
 
       <div
+        data-ui="facilities-map-viewport"
         ref={viewportRef}
         className={`relative overflow-hidden touch-none select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
         onPointerCancel={stopDragging}
@@ -283,7 +285,7 @@ export default function FacilitiesMap({
           overscrollBehavior: "contain",
         }}
       >
-        <div className={mapLayerClassName} style={mapStyle}>
+        <div data-ui="facilities-map-layer" className={mapLayerClassName} style={mapStyle}>
           <Image
             src={image.src}
             alt={image.alt}
@@ -296,11 +298,13 @@ export default function FacilitiesMap({
           />
 
           <div
+            data-ui="facilities-map-markers"
             className="pointer-events-none absolute inset-0"
             aria-label="Localização das requests programadas"
           >
             {markers.map((marker) => (
               <span
+                data-ui="facilities-map-marker"
                 key={marker.id}
                 className="pointer-events-auto absolute flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-help items-center justify-center rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(15,23,42,0.18),0_2px_6px_rgba(15,23,42,0.28)]"
                 style={{

@@ -20,9 +20,9 @@ export function RequestsWorkspace({ initialData, initialRange, executors, checkl
   }
 
   return (
-    <section className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
-      <div className="mx-auto max-w-[1800px]">
-        <div className="flex items-start justify-between border-b border-slate-300/70">
+    <section data-ui="requests-workspace-page" className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
+      <div data-ui="requests-workspace-content" className="mx-auto max-w-[1800px]">
+        <div data-ui="requests-workspace-header" className="flex items-start justify-between border-b border-slate-300/70">
           <TrackingTabs active="requests" />
           <div className="flex overflow-hidden rounded-lg border border-blue-500 bg-white text-blue-600">
             <IconButton label="Baixar chamados"><DownloadIcon /></IconButton>
@@ -30,7 +30,7 @@ export function RequestsWorkspace({ initialData, initialRange, executors, checkl
           </div>
         </div>
 
-        <section className="mt-5 flex flex-wrap items-center gap-3 rounded-md bg-white/80 px-4 py-3" aria-label="Busca de chamados">
+        <section data-ui="requests-workspace-filters" className="mt-5 flex flex-wrap items-center gap-3 rounded-md bg-white/80 px-4 py-3" aria-label="Busca de chamados">
           <DateRange {...range} disabled={isPending} onChange={setRange} />
           <label className="min-w-64 flex-1 text-xs font-medium uppercase text-slate-500">
             <span className="sr-only">Buscar chamado</span>
@@ -40,7 +40,7 @@ export function RequestsWorkspace({ initialData, initialRange, executors, checkl
           <button className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-8 py-3 text-sm font-semibold text-white disabled:opacity-60" type="button" disabled={isPending} onClick={applyFilters}><SearchIcon /> {isPending ? "Buscando..." : "Buscar"}</button>
         </section>
 
-        <div className="my-4 flex flex-wrap items-center justify-between gap-3">
+        <div data-ui="requests-workspace-view-options" className="my-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex overflow-hidden rounded border border-slate-300">
             <button className="bg-blue-100 px-5 py-2 text-blue-600" type="button" aria-label="Visualização em quadro"><BoardIcon /></button>
             <button className="border-l border-slate-300 bg-white px-5 py-2 text-slate-500" type="button" aria-label="Visualização em lista"><ListIcon /></button>

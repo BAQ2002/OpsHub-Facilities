@@ -16,7 +16,7 @@ export function TrackingTabs({ active }: { active: "dashboard" | "requests" }) {
   ];
 
   return (
-    <nav className="flex border-b border-slate-200" aria-label="Seções do acompanhamento">
+    <nav data-ui="tracking-tabs" className="flex border-b border-slate-200" aria-label="Seções do acompanhamento">
       {tabs.map((tab) => {
         const selected = active === tab.key;
 
