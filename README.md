@@ -55,7 +55,7 @@ O projeto separa a interpretação dos registros do banco em camadas:
 3. **Repositórios em `src/server/repositories/`**: encaminham as operações para as implementações PostgreSQL e executam as consultas.
 4. **Repositórios PostgreSQL em `src/server/repositories/postgres/`**: executam SQL parametrizado com `pool.query<T>(sql, params)` e mapeiam linhas do banco para entidades de domínio.
 5. **Entidades em `src/domain/entities/`**: definem os formatos utilizáveis no aplicativo, como `ActivityRecord`, `EquipmentCard`, `RequestEntity` e `ActivityRequestField`.
-6. **Mappers em `src/mappers/`**: convertem entidades de domínio em view models de apresentação quando a página precisa de um formato específico.
+6. **Mapeamentos privados nos serviços em `src/server/services/`**: convertem entidades de domínio em view models de apresentação junto ao caso de uso que consome cada transformação.
 
 ## Onde os registros do banco viram entidades utilizáveis
 
@@ -71,12 +71,12 @@ A interpretação dos registros PostgreSQL acontece em `src/server/repositories/
 - `findMapImage()` não consulta o banco; monta um `MapImage` a partir de variáveis `FACILITIES_MAP_*` ou do arquivo público padrão.
 - `findCategoryColorMap()` não consulta o banco; monta o mapa de cores a partir de `categoryStyleMap`.
 
-Depois, `src/server/services/home-service.ts` converte esses dados para apresentação:
+Depois, as funções privadas de `src/server/services/home-service.ts` convertem esses dados para apresentação:
 
 - `mapEquipmentCardsToTotals()` soma os totais dos cards.
 - `mapActivityRecordToMarker()` converte cada `ActivityRecord` em marcador do mapa.
 - `mapActivitiesToBusinessUnitFilters()` cria opções de filtro de business unit com base nas atividades retornadas.
-- `mapSlaSamplesToClock()` formata a média de SLA para exibição.
+- `mapHandlingTimeSamplesToClock()` formata o tempo médio de atendimento para exibição.
 
 ### Minhas solicitações (`/minhas-solicitacoes`)
 
@@ -88,7 +88,7 @@ A interpretação PostgreSQL acontece em `src/server/repositories/postgres/reque
 - O SQL gera `title`, normaliza `status` para `Aberto` ou `Fechado`, define `has_unread_message` como `FALSE` e traz `created_date` como `created_at`.
 - `mapRequestRowToEntity()` converte cada linha em `RequestEntity`, transformando `id` em número e formatando `createdAt` em `pt-BR`.
 
-Em seguida, `src/server/services/request-service.ts` aplica `mapRequestEntityToViewModel()` e separa os registros em `openRequests` e `closedRequests` conforme `request.status`.
+Em seguida, a função privada `mapRequestEntityToViewModel()` de `src/server/services/request-service.ts` converte os registros, que são separados em `openRequests` e `closedRequests` conforme `request.status`.
 
 ### Formulário de chamado (`/solicitar-atividade/chamado`)
 

@@ -1,7 +1,8 @@
 import "server-only";
 
-import { mapRequestEntityToViewModel } from "@/src/mappers/request-mapper";
+import type { RequestEntity } from "@/src/domain/entities/request";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
+import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
 import { getRequestRepository } from "@/src/server/repositories/repositories";
 import type { CreateRequestInput, RequestFieldValue } from "@/src/server/repositories/request/request-repository";
 
@@ -19,6 +20,16 @@ export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> 
   return {
     openRequests: requests.filter((request) => request.status === "Aberto"),
     closedRequests: requests.filter((request) => request.status === "Fechado"),
+  };
+}
+
+function mapRequestEntityToViewModel(request: RequestEntity): RequestViewModel {
+  return {
+    id: request.id,
+    title: request.title,
+    createdAt: request.createdAt,
+    status: request.status,
+    hasUnreadMessage: request.hasUnreadMessage,
   };
 }
 
