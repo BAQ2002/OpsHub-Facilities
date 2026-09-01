@@ -1,13 +1,23 @@
 import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
 import { getMyRequestsPageData } from "@/src/server/services/request-service";
 
+export const dynamic = "force-dynamic";
+
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de my requests.
+ * Durante o fluxo, aciona {@link getMyRequestsPageData}.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function MyRequestsPage() {
   const { openRequests, closedRequests } = await getMyRequestsPageData();
 
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto w-full max-w-[980px]">
-        <header className="mb-9 flex items-center gap-4 pt-1">
+    <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="my-requests-content" className="mx-auto w-full max-w-[980px]">
+        <header data-ui="my-requests-header" className="mb-9 flex items-center gap-4 pt-1">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
             <AlertIcon />
           </span>
@@ -22,6 +32,7 @@ export default async function MyRequestsPage() {
         </header>
 
         <section
+          data-ui="my-requests-filters"
           className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
           aria-label="Busca e filtros das minhas requests"
         >
@@ -53,6 +64,15 @@ export default async function MyRequestsPage() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestGroup com os dados recebidos.
+ * Durante o fluxo, aciona {@link toLowerCase}, {@link map}.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestGroup({
   title,
   requests,
@@ -63,8 +83,8 @@ function RequestGroup({
   className?: string;
 }) {
   return (
-    <section className={className} aria-labelledby={`${title.toLowerCase()}-title`}>
-      <div className="mb-5 flex items-center justify-between gap-4 px-3">
+    <section data-ui="request-group" className={className} aria-labelledby={`${title.toLowerCase()}-title`}>
+      <div data-ui="request-group-header" className="mb-5 flex items-center justify-between gap-4 px-3">
         <h2 id={`${title.toLowerCase()}-title`} className="text-base font-bold text-slate-950">
           {title}
         </h2>
@@ -73,7 +93,7 @@ function RequestGroup({
         </span>
       </div>
 
-      <div className="space-y-3">
+      <div data-ui="request-group-list" className="space-y-3">
         {requests.map((request) => (
           <RequestCard key={request.id} request={request} />
         ))}
@@ -82,13 +102,21 @@ function RequestGroup({
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
 function RequestCard({ request }: { request: RequestViewModel }) {
   const isOpen = request.status === "Aberto";
 
   return (
-    <article className="group rounded-[16px] border border-slate-200 bg-white px-4 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] sm:px-5">
-      <div className="grid min-h-[64px] grid-cols-[1fr_auto] gap-4">
-        <div className="min-w-0 self-center">
+    <article data-ui="request-card" className="group rounded-[16px] border border-slate-200 bg-white px-4 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] sm:px-5">
+      <div data-ui="request-card-content" className="grid min-h-[64px] grid-cols-[1fr_auto] gap-4">
+        <div data-ui="request-card-details" className="min-w-0 self-center">
           <h3 className="truncate text-sm font-bold leading-tight text-slate-950">
             #{request.id} - {request.title}
           </h3>
@@ -97,7 +125,7 @@ function RequestCard({ request }: { request: RequestViewModel }) {
           </time>
         </div>
 
-        <div className="flex min-w-[92px] flex-col items-end justify-between gap-3">
+        <div data-ui="request-card-actions" className="flex min-w-[92px] flex-col items-end justify-between gap-3">
           <button
             className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-950 transition hover:bg-slate-100"
             type="button"
@@ -122,6 +150,13 @@ function RequestCard({ request }: { request: RequestViewModel }) {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MessageIndicator com os dados recebidos.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MessageIndicator() {
   return (
     <span className="relative inline-flex text-slate-400" aria-label="Mensagem não lida">
@@ -131,6 +166,13 @@ function MessageIndicator() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de alert.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function AlertIcon() {
   return (
     <svg
@@ -151,6 +193,13 @@ function AlertIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() {
   return (
     <svg
@@ -170,6 +219,13 @@ function SearchIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de filter.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function FilterIcon() {
   return (
     <svg
@@ -184,6 +240,13 @@ function FilterIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de more.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MoreIcon() {
   return (
     <svg
@@ -200,6 +263,13 @@ function MoreIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de message.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function MessageIcon() {
   return (
     <svg
