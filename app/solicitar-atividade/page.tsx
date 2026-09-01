@@ -3,12 +3,20 @@ import { getServiceCatalogPageData } from "@/src/server/services/activity-reques
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de solicitar atividade.
+ * Durante o fluxo, aciona {@link getServiceCatalogPageData}, {@link map}.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 export default async function SolicitarAtividadePage() {
   const serviceCategories = await getServiceCatalogPageData();
   return (
-    <section className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div className="mx-auto w-full max-w-[980px]">
-        <header className="mb-6">
+    <section data-ui="service-catalog-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="service-catalog-content" className="mx-auto w-full max-w-[980px]">
+        <header data-ui="service-catalog-header" className="mb-6">
           <div className="flex items-center gap-4">
             <span
               className="flex h-9 w-9 items-center justify-center text-slate-950"
@@ -26,7 +34,7 @@ export default async function SolicitarAtividadePage() {
             </div>
           </div>
 
-          <label className="relative mt-6 block" htmlFor="service-search">
+          <label data-ui="service-catalog-search" className="relative mt-6 block" htmlFor="service-search">
             <span className="sr-only">Busque por nome ou categoria do chamado</span>
             <span
               className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -44,9 +52,10 @@ export default async function SolicitarAtividadePage() {
           </label>
         </header>
 
-        <div className="space-y-6">
+        <div data-ui="service-category-list" className="space-y-6">
           {serviceCategories.map((category) => (
             <section
+              data-ui="service-category"
               className="border-b border-slate-200 pb-4 last:border-b-0"
               key={category.id}
               aria-labelledby={`category-${category.id}`}
@@ -58,9 +67,10 @@ export default async function SolicitarAtividadePage() {
                 {category.name}
               </h2>
 
-              <div className="grid gap-3 md:grid-cols-2">
+              <div data-ui="service-type-list" className="grid gap-3 md:grid-cols-2">
                 {category.serviceTypes.map((serviceType) => (
                   <Link
+                    data-ui="service-type-link"
                     className="group flex min-h-11 items-center justify-between gap-4 rounded-[4px] border border-slate-100 bg-white px-4 py-3 text-sm font-medium text-slate-800 no-underline shadow-[0_4px_14px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-teal-200 hover:text-teal-700 hover:shadow-[0_8px_22px_rgba(15,23,42,0.14)] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                     href={`/solicitar-atividade/chamado?service_category=${encodeURIComponent(category.name)}&service_type=${encodeURIComponent(serviceType.name)}&service_type_id=${serviceType.id}`}
                     key={serviceType.id}
@@ -84,6 +94,13 @@ export default async function SolicitarAtividadePage() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de alert diamond.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function AlertDiamondIcon() {
   return (
     <svg width="31" height="31" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -94,6 +111,13 @@ function AlertDiamondIcon() {
   );
 }
 
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
 function SearchIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
