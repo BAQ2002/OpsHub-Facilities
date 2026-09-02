@@ -164,7 +164,7 @@ export default async function Home({
                 />
                 <ActionCard
                   href="/minhas-solicitacoes"
-                  label="Minhas requests"
+                  label="Meus chamados"
                 />
               </div>
             </div>
@@ -228,7 +228,7 @@ export default async function Home({
           <div
             data-ui="activity-record-filters"
             className="mt-4 flex flex-wrap items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
-            aria-label="Filtros de business das requests planejadas"
+            aria-label="Filtros de business dos chamados planejados"
           >
             <span className="mr-1 text-xs font-medium text-slate-500">
               Mostrar:
@@ -299,7 +299,7 @@ export default async function Home({
                 </p>
               </div>
               <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-                {filteredActivityRecords.length} requests
+                {filteredActivityRecords.length} chamados
               </span>
             </div>
 
@@ -308,7 +308,7 @@ export default async function Home({
                 <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
                   <tr>
                     <th className="px-4 py-3">ID</th>
-                    <th className="px-4 py-3">Request type</th>
+                    <th className="px-4 py-3">Tipo de chamado</th>
                     <th className="px-4 py-3">Unidade</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Service category</th>

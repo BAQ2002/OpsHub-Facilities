@@ -35,10 +35,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
               Administração
             </p>
             <h1 className="mt-2 text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
-              Acompanhamento de requests
+              Acompanhamento de chamados
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-              Monitore registros da tabela request por status, service_category e evolução mensal.
+              Monitore os chamados por status, categoria de serviço e evolução mensal.
             </p>
           </div>
 
@@ -55,7 +55,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <TrackingTabs active="dashboard" />
         </div>
 
-        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
+        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de chamados">
           <div data-ui="activity-dashboard-filter-fields" className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
             <div className="flex flex-wrap items-center gap-2 lg:col-span-2">
               <DateRange {...filters} disabled={isPending} onChange={(range: DateRangeValue) => setFilters((current) => ({ ...current, ...range }))} />
@@ -91,10 +91,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
         </section>
 
         <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
-          <ChartCard title="Requests por service_category">
+          <ChartCard title="Chamados por categoria de serviço">
             <DonutChart data={categoryData} />
           </ChartCard>
-          <ChartCard title="Requests por request_status">
+          <ChartCard title="Chamados por status">
             <DonutChart data={statusData} />
           </ChartCard>
         </section>
@@ -103,7 +103,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
-                Requests por mês
+                Chamados por mês
               </h2>
               <p className="mt-1 text-xs text-slate-500">Comparativo mensal no período selecionado.</p>
             </div>
@@ -200,7 +200,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   return (
     <div data-ui="donut-chart" className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
       <div className="relative mx-auto h-[210px] w-[210px]">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} requests`}>
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} chamados`}>
           <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#eef2f7" strokeWidth="6" />
           {segments.map((item) => (
             <circle
@@ -219,7 +219,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
           <strong className="text-3xl font-bold text-slate-950">{total}</strong>
-          <span className="mt-1 text-xs font-medium text-slate-500">requests</span>
+          <span className="mt-1 text-xs font-medium text-slate-500">chamados</span>
         </div>
       </div>
 
@@ -277,12 +277,12 @@ function MonthlyBarChart({
                   <span
                     className="w-4 rounded-t-md bg-orange-500"
                     style={{ height: `${(item.open / maxMonthlyValue) * 100}%` }}
-                    title={`${item.open} requests abertos`}
+                    title={`${item.open} chamados abertos`}
                   />
                   <span
                     className="w-4 rounded-t-md bg-lime-500"
                     style={{ height: `${(item.closed / maxMonthlyValue) * 100}%` }}
-                    title={`${item.closed} requests fechados`}
+                    title={`${item.closed} chamados fechados`}
                   />
                 </div>
                 <span className="text-center text-xs font-medium text-slate-500">{item.month}</span>

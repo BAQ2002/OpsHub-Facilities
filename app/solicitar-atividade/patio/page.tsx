@@ -45,7 +45,7 @@ const patioFields = [
     fullWidth: true,
   },
   {
-    label: "Request attachment",
+    label: "Anexo do chamado",
     name: "request_attachment",
     type: "file" as const,
     fullWidth: true,
@@ -62,9 +62,9 @@ const patioFields = [
 export default function PatioRequestPage() {
   return (
     <ActivityRequestForm
-      title="Nova request: Atividade de Pátio"
-      subtitle="request_type Atividade de Pátio"
-      sectionTitle="Dados da request"
+      title="Novo chamado: Atividade de Pátio"
+      subtitle="Tipo de chamado: Atividade de Pátio"
+      sectionTitle="Dados do chamado"
       fields={patioFields}
       action={createActivityRequestAction}
     />

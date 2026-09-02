@@ -59,7 +59,7 @@ function RequestColumn({
     <section data-ui="request-board-column" className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
       <header data-ui="request-board-column-header" className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
         <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
-        <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
+        <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} chamados`}>{column.requests.length}</span>
       </header>
       <div data-ui="request-board-column-list" className="max-h-[620px] space-y-2 overflow-y-auto">
         {column.requests.map((request) => (
@@ -71,7 +71,7 @@ function RequestColumn({
               <button
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-xl font-bold leading-none text-slate-500 transition hover:bg-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 type="button"
-                aria-label={`Ver detalhes da request #${request.id}`}
+                aria-label={`Ver detalhes do chamado #${request.id}`}
                 onClick={() => onOpen(request)}
               >
                 <span aria-hidden="true">•••</span>
@@ -159,7 +159,7 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
         <div className="max-h-[90vh] overflow-y-auto">
         <header data-ui="request-details-header" className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da request</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes do chamado</p>
             <h2 className="mt-1 text-xl font-bold text-slate-900" id="request-modal-title">
               #{request.id} - {request.serviceTypeName}
             </h2>
@@ -168,7 +168,7 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
             ref={closeButtonRef}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
             type="button"
-            aria-label="Fechar detalhes da request"
+            aria-label="Fechar detalhes do chamado"
             onClick={onClose}
           >
             ×
@@ -297,7 +297,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
         <div className="max-h-[90vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{request.id}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Chamado #{request.id}</p>
             <h2 className="mt-1 text-xl font-bold text-slate-900" id="visits-modal-title">Visitas vinculadas</h2>
           </div>
           <button
@@ -329,7 +329,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
               <p className="text-sm font-semibold text-slate-700">Nenhuma visita vinculada</p>
-              <p className="mt-1 text-sm text-slate-500">Esta request ainda não possui registros de visita.</p>
+              <p className="mt-1 text-sm text-slate-500">Este chamado ainda não possui registros de visita.</p>
             </div>
           )}
         </div>
@@ -512,7 +512,7 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
       <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
         <div className="max-h-[92vh] overflow-y-auto">
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
+          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Chamado #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
         </header>
         <form action={formAction} className="space-y-5 p-6">

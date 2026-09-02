@@ -46,8 +46,8 @@ export async function getChamadoRequestFormPageData(params: {
   const serviceCategoryName = dynamicData.serviceCategoryName ?? params.serviceCategory;
 
   return {
-    title: serviceTypeName ? `Nova request: ${serviceTypeName}` : "Nova request: Chamado",
-    subtitle: ["request_type Chamado", serviceCategoryName, serviceTypeName].filter(Boolean).join(" · "),
+    title: serviceTypeName ? `Novo chamado: ${serviceTypeName}` : "Novo chamado: Chamado",
+    subtitle: ["Tipo de chamado: Chamado", serviceCategoryName, serviceTypeName].filter(Boolean).join(" · "),
     serviceTypeId: dynamicData.serviceTypeId,
     locationHierarchy,
     fields: [
