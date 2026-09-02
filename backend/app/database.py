@@ -6,7 +6,7 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 
 class Settings(BaseSettings):
-    database_url: str = "postgresql+psycopg://opshub:opshub_dev_password@localhost:5432/opshub_facilities"
+    database_url: str
     model_config = SettingsConfigDict(env_file=(".env", ".env.local"), extra="ignore")
 
 
@@ -22,3 +22,12 @@ class Base(DeclarativeBase):
 def get_session() -> Generator[Session, None, None]:
     with SessionLocal() as session:
         yield session
+
+
+def commit_session(session: Session) -> None:
+    """Commit a unit of work, rolling it back when persistence fails."""
+    try:
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
