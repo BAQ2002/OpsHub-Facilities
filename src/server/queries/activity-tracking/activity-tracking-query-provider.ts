@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { ActivityTrackingQuery } from "@/src/server/queries/activity-tracking/activity-tracking-query";
-import { postgresActivityTrackingQuery } from "@/src/server/queries/activity-tracking/postgres/activity-tracking-postgres-query";
+import { apiActivityTrackingQuery } from "@/src/server/queries/api/api-activity-tracking-query";
 
 /**
  * Acionada pela camada de serviço, consulta ou repositório que depende desta operação.
@@ -11,5 +11,5 @@ import { postgresActivityTrackingQuery } from "@/src/server/queries/activity-tra
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export function getActivityTrackingQuery(): ActivityTrackingQuery {
-  return postgresActivityTrackingQuery;
+  return apiActivityTrackingQuery;
 }
