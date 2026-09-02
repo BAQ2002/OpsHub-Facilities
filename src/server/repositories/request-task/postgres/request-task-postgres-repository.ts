@@ -50,7 +50,7 @@ export async function insertRequestTaskVisit(input: VisitInput) {
   try {
     await client.query("BEGIN");
     const request = await client.query<{ id: number }>("SELECT id FROM request WHERE id = $1", [input.requestId]);
-    if (!request.rows[0]) throw new Error("A request informada não existe.");
+    if (!request.rows[0]) throw new Error("O chamado informado não existe.");
 
     const memberships = await client.query<{ id: number }>(
       "SELECT id FROM membership WHERE id = ANY($1::integer[])",
@@ -142,7 +142,7 @@ export async function updateRequestTaskVisit(input: UpdateVisitInput) {
  * @returns Não retorna valor.
  */
 function validateVisit(input: VisitInput, requirePhotos = true) {
-  if (!Number.isSafeInteger(input.requestId) || input.requestId <= 0) throw new Error("Request inválida.");
+  if (!Number.isSafeInteger(input.requestId) || input.requestId <= 0) throw new Error("Chamado inválido.");
   if (!input.description || input.description.length > 300) throw new Error("A descrição deve possuir entre 1 e 300 caracteres.");
   const start = new Date(input.startDatetime);
   const stop = new Date(input.stopDatetime);
