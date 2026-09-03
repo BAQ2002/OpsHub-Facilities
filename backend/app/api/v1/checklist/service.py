@@ -1,11 +1,10 @@
-from sqlalchemy import text
-from sqlalchemy.orm import Session
+from ....database import DatabaseConnection, sql
 from .schemas import ChecklistDefinition, ChecklistField, ChecklistSubmission
 
 
-def get_active_definitions(session: Session) -> list[ChecklistDefinition]:
-    rows = session.execute(
-        text(
+def get_active_definitions(connection: DatabaseConnection) -> list[ChecklistDefinition]:
+    rows = connection.execute(
+        sql(
             """SELECT ct.id,ct.name,ct.description,ct.version,cf.id field_id,cf.name field_name,cf.type,cf.options,cf.required FROM checklist_type ct LEFT JOIN checklist_field_type cf ON cf.id_checklist_type=ct.id AND cf.active IS TRUE WHERE ct.active IS TRUE ORDER BY ct.id,cf.display_order NULLS LAST,cf.id"""
         )
     ).mappings()
@@ -35,9 +34,11 @@ def get_active_definitions(session: Session) -> list[ChecklistDefinition]:
     return list(result.values())
 
 
-def add_to_visit(session: Session, visit_id: int, data: ChecklistSubmission) -> None:
-    row = session.execute(
-        text(
+def add_to_visit(
+    connection: DatabaseConnection, visit_id: int, data: ChecklistSubmission
+) -> None:
+    row = connection.execute(
+        sql(
             """INSERT INTO request_task_checklist(id_request_task,id_checklist_type,corporation,equipment_tag,equipment_brand,equipment_model,rented_equipment,serial_number,pt_number) VALUES (:visit,:type,:corporation,:tag,:brand,:model,:rented,:serial,:pt) RETURNING id"""
         ),
         {
@@ -53,8 +54,8 @@ def add_to_visit(session: Session, visit_id: int, data: ChecklistSubmission) -> 
         },
     ).scalar_one()
     for value in data.values:
-        session.execute(
-            text(
+        connection.execute(
+            sql(
                 "INSERT INTO checklist_field_value(id_request_task_checklist,id_checklist_field_type,value) VALUES (:checklist,:field,CAST(:value AS jsonb))"
             ),
             {
@@ -63,15 +64,15 @@ def add_to_visit(session: Session, visit_id: int, data: ChecklistSubmission) -> 
                 "value": __import__("json").dumps(value.value),
             },
         )
-    session.commit()
+    connection.commit()
 
 
-def delete_from_visit(session: Session, checklist_id: int) -> None:
-    session.execute(
-        text("DELETE FROM checklist_field_value WHERE id_request_task_checklist=:id"),
+def delete_from_visit(connection: DatabaseConnection, checklist_id: int) -> None:
+    connection.execute(
+        sql("DELETE FROM checklist_field_value WHERE id_request_task_checklist=:id"),
         {"id": checklist_id},
     )
-    session.execute(
-        text("DELETE FROM request_task_checklist WHERE id=:id"), {"id": checklist_id}
+    connection.execute(
+        sql("DELETE FROM request_task_checklist WHERE id=:id"), {"id": checklist_id}
     )
-    session.commit()
+    connection.commit()

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from ....database import get_session
+from ....database import DatabaseConnection, get_connection
 from .schemas import LocationHierarchy
 from .service import get_location_hierarchy
 
@@ -8,5 +7,5 @@ router = APIRouter()
 
 
 @router.get("/locations", response_model=LocationHierarchy)
-def location_hierarchy(session: Session = Depends(get_session)):
-    return get_location_hierarchy(session)
+def location_hierarchy(connection: DatabaseConnection = Depends(get_connection)):
+    return get_location_hierarchy(connection)

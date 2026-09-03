@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlalchemy.orm import Session
-from ....database import get_session
+from ....database import DatabaseConnection, get_connection
 from .schemas import VisitPayload
 from .service import get_media, save_visit
 
@@ -8,19 +7,25 @@ router = APIRouter()
 
 
 @router.post("", status_code=201)
-def create(data: VisitPayload, session: Session = Depends(get_session)):
-    return {"id": save_visit(session, data)}
+def create(
+    data: VisitPayload, connection: DatabaseConnection = Depends(get_connection)
+):
+    return {"id": save_visit(connection, data)}
 
 
 @router.put("/{visit_id}", status_code=204)
-def update(visit_id: int, data: VisitPayload, session: Session = Depends(get_session)):
-    save_visit(session, data, visit_id)
+def update(
+    visit_id: int,
+    data: VisitPayload,
+    connection: DatabaseConnection = Depends(get_connection),
+):
+    save_visit(connection, data, visit_id)
     return Response(status_code=204)
 
 
 @router.get("/media/{media_id}")
-def media(media_id: int, session: Session = Depends(get_session)):
-    row = get_media(session, media_id)
+def media(media_id: int, connection: DatabaseConnection = Depends(get_connection)):
+    row = get_media(connection, media_id)
     if not row:
         raise HTTPException(404, "Mídia não encontrada.")
     return Response(

@@ -8,7 +8,7 @@ Aplicação Next.js para indicadores de facilities, acompanhamento de chamados e
 Next.js (`app`, `shared`, `src/server`)
   -> cliente HTTP server-side (`src/server/api-client.ts`)
   -> FastAPI (`backend/app/api/v1`)
-  -> SQLAlchemy / PostgreSQL
+  -> psycopg / PostgreSQL
 ```
 
 A API é organizada por domínio em `checklist`, `membership`, `organization`, `request`, `request_task` e `service_catalog`. Cada domínio separa contratos (`schemas.py`), regras e persistência (`service.py`) e HTTP (`router.py`). Os módulos Python usam `_` onde hífens não são identificadores válidos; as URLs públicas preservam `/request-tasks` e `/service-catalog`.

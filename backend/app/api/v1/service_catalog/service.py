@@ -1,5 +1,4 @@
-from sqlalchemy import text
-from sqlalchemy.orm import Session
+from ....database import DatabaseConnection, sql
 from .schemas import (
     CatalogCategory,
     FormField,
@@ -9,9 +8,9 @@ from .schemas import (
 )
 
 
-def get_catalog(session: Session) -> list[CatalogCategory]:
-    rows = session.execute(
-        text(
+def get_catalog(connection: DatabaseConnection) -> list[CatalogCategory]:
+    rows = connection.execute(
+        sql(
             "SELECT sc.id category_id, sc.name category_name, st.id type_id, st.name type_name FROM service_category sc LEFT JOIN service_type st ON st.id_service_category=sc.id ORDER BY sc.name, st.name"
         )
     ).mappings()
@@ -35,14 +34,14 @@ def get_catalog(session: Session) -> list[CatalogCategory]:
 
 
 def get_request_form(
-    session: Session,
+    connection: DatabaseConnection,
     category: str | None,
     service_type: str | None,
     service_type_id: int | None,
 ) -> RequestFormData:
     types = (
-        session.execute(
-            text(
+        connection.execute(
+            sql(
                 "SELECT st.id, st.name, sc.name category FROM service_type st JOIN service_category sc ON sc.id=st.id_service_category WHERE (:category IS NULL OR sc.name=:category) ORDER BY sc.name, st.name"
             ),
             {"category": category},
@@ -57,8 +56,8 @@ def get_request_form(
     )
     if not selected:
         return RequestFormData(serviceTypeOptions=[], fields=[])
-    fields = session.execute(
-        text(
+    fields = connection.execute(
+        sql(
             "SELECT id,name,type,options,required FROM service_field_type WHERE active IS TRUE AND id_service_type=:id ORDER BY display_order NULLS LAST,id"
         ),
         {"id": selected["id"]},
@@ -96,10 +95,10 @@ def get_request_form(
     )
 
 
-def get_request_media(session: Session, media_id: int):
+def get_request_media(connection: DatabaseConnection, media_id: int):
     return (
-        session.execute(
-            text(
+        connection.execute(
+            sql(
                 "SELECT content,file_name,mime_type FROM service_field_media WHERE id=:id"
             ),
             {"id": media_id},
