@@ -165,11 +165,11 @@ def get_tracking(
         "closed": list(CLOSED),
     }
     joins = "FROM request r JOIN request_status rs ON rs.id=r.id_request_status JOIN service_type st ON st.id=r.id_service_type JOIN service_category sc ON sc.id=st.id_service_category LEFT JOIN location l ON l.id=r.id_location LEFT JOIN region rg ON rg.id=l.id_region"
-    where = "WHERE r.created_date>=:start AND r.created_date<(:end+INTERVAL '1 day') AND (:business IS NULL OR rg.id_business=:business) AND (:category IS NULL OR sc.id=:category)"
+    where = "WHERE r.created_date>=:start AND r.created_date<(:end+INTERVAL '1 day') AND (CAST(:business AS integer) IS NULL OR rg.id_business=:business) AND (CAST(:category AS integer) IS NULL OR sc.id=:category)"
     summary = (
         connection.execute(
             sql(
-                "SELECT COUNT(*) total,COUNT(*) FILTER(WHERE rs.description='Em andamento') in_progress,ROUND(AVG(EXTRACT(EPOCH FROM(COALESCE(r.finished_date,r.canceled_date,NOW())-r.created_date))/60))::integer average_minutes,COUNT(*) FILTER(WHERE rs.description <> ALL(:closed) AND r.agreed_date IS NOT NULL AND r.agreed_date<NOW()) critical "
+                "SELECT COUNT(*) total,COUNT(*) FILTER(WHERE rs.description='Em andamento') in_progress,ROUND(AVG(EXTRACT(EPOCH FROM(COALESCE(r.finished_date,r.canceled_date,NOW())-r.created_date))/60))::integer average_minutes,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[])) AND r.agreed_date IS NOT NULL AND r.agreed_date<NOW()) critical "
                 + joins
                 + " "
                 + where
@@ -201,7 +201,7 @@ def get_tracking(
     ).mappings()
     months = connection.execute(
         sql(
-            "SELECT TO_CHAR(date_trunc('month',r.created_date),'Mon') month,COUNT(*) FILTER(WHERE rs.description <> ALL(:closed)) open,COUNT(*) FILTER(WHERE rs.description = ANY(:closed)) closed "
+            "SELECT TO_CHAR(date_trunc('month',r.created_date),'Mon') month,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[]))) open,COUNT(*) FILTER(WHERE rs.description = ANY(CAST(:closed AS text[]))) closed "
             + joins
             + " "
             + where
