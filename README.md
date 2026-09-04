@@ -39,6 +39,12 @@ npm run dev
 
 O frontend fica em `http://localhost:3000`; a documentação OpenAPI fica em `http://localhost:8000/docs`.
 
+O comando de desenvolvimento usa o Webpack para evitar falhas internas do
+Turbopack durante HMR, especialmente depois de renomear ou mover rotas do App
+Router. Para testar o Turbopack explicitamente, execute `npm run dev:turbopack`.
+Se o compilador ainda estiver usando artefatos de uma árvore de rotas anterior,
+execute `npm run clean` antes de reiniciar o servidor.
+
 ## Fluxos atendidos pela API
 
 - `checklist`: definições e checklists vinculados a visitas;
