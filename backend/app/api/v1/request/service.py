@@ -201,7 +201,7 @@ def get_tracking(
     ).mappings()
     months = connection.execute(
         sql(
-            "SELECT TO_CHAR(date_trunc('month',r.created_date),'Mon') month,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[]))) open,COUNT(*) FILTER(WHERE rs.description = ANY(CAST(:closed AS text[]))) closed "
+            "SELECT TO_CHAR(date_trunc('month',r.created_date),'Mon') AS month,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[]))) AS open,COUNT(*) FILTER(WHERE rs.description = ANY(CAST(:closed AS text[]))) AS closed "
             + joins
             + " "
             + where
