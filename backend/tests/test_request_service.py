@@ -59,6 +59,18 @@ class RequestServiceTests(unittest.TestCase):
         self.assertIn("CAST(%(category)s AS integer) IS NULL", executed_sql)
         self.assertIn("ALL(CAST(%(closed)s AS text[]))", executed_sql)
         self.assertIn("ANY(CAST(%(closed)s AS text[]))", executed_sql)
+        self.assertIn(
+            "TO_CHAR(date_trunc('month',r.created_date),'Mon') AS month",
+            executed_sql,
+        )
+        self.assertIn(
+            "FILTER(WHERE rs.description <> ALL(CAST(%(closed)s AS text[]))) AS open",
+            executed_sql,
+        )
+        self.assertIn(
+            "FILTER(WHERE rs.description = ANY(CAST(%(closed)s AS text[]))) AS closed",
+            executed_sql,
+        )
         self.assertEqual(result["summaryCards"][0]["value"], "0")
 
 
