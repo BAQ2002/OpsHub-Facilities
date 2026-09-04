@@ -3,13 +3,20 @@ from .schemas import BusinessOption, LocationHierarchy, LocationOption, RegionOp
 
 
 def get_location_hierarchy(connection: DatabaseConnection) -> LocationHierarchy:
-    businesses = connection.execute("SELECT id,name FROM business ORDER BY name").all()
-    regions = connection.execute(
-        "SELECT id,id_business,name FROM region ORDER BY name"
-    ).all()
-    locations = connection.execute(
-        "SELECT id,id_region,name FROM location ORDER BY name"
-    ).all()
+    businesses = connection.execute("""SELECT ID,
+       NAME
+    FROM BUSINESS
+    ORDER BY NAME""").all()
+    regions = connection.execute("""SELECT ID,
+       ID_BUSINESS,
+       NAME
+    FROM REGION
+    ORDER BY NAME""").all()
+    locations = connection.execute("""SELECT ID,
+       ID_REGION,
+       NAME
+    FROM LOCATION
+    ORDER BY NAME""").all()
     return LocationHierarchy(
         businesses=[
             BusinessOption(id=r["id"], name=r["name"] or "Não informado")

@@ -37,7 +37,14 @@ class RequestServiceTests(unittest.TestCase):
     def test_tracking_casts_optional_and_array_parameters(self):
         connection = RecordingConnection(
             [
-                [{"total": 0, "in_progress": 0, "average_minutes": None, "critical": 0}],
+                [
+                    {
+                        "total": 0,
+                        "in_progress": 0,
+                        "average_minutes": None,
+                        "critical": 0,
+                    }
+                ],
                 [],
                 [],
                 [],
@@ -55,20 +62,20 @@ class RequestServiceTests(unittest.TestCase):
         )
 
         executed_sql = "\n".join(connection.statements)
-        self.assertIn("CAST(%(business)s AS integer) IS NULL", executed_sql)
-        self.assertIn("CAST(%(category)s AS integer) IS NULL", executed_sql)
-        self.assertIn("ALL(CAST(%(closed)s AS text[]))", executed_sql)
-        self.assertIn("ANY(CAST(%(closed)s AS text[]))", executed_sql)
+        self.assertIn("CAST(%(business)s AS INTEGER) IS NULL", executed_sql)
+        self.assertIn("CAST(%(category)s AS INTEGER) IS NULL", executed_sql)
+        self.assertIn("ALL(CAST(%(closed)s AS TEXT[]))", executed_sql)
+        self.assertIn("ANY(CAST(%(closed)s AS TEXT[]))", executed_sql)
         self.assertIn(
-            "TO_CHAR(date_trunc('month',r.created_date),'Mon') AS month",
+            "TO_CHAR(DATE_TRUNC('month',R.CREATED_DATE),'Mon') AS MONTH",
             executed_sql,
         )
         self.assertIn(
-            "FILTER(WHERE rs.description <> ALL(CAST(%(closed)s AS text[]))) AS open",
+            "FILTER(WHERE RS.DESCRIPTION <> ALL(CAST(%(closed)s AS TEXT[]))) AS OPEN",
             executed_sql,
         )
         self.assertIn(
-            "FILTER(WHERE rs.description = ANY(CAST(%(closed)s AS text[]))) AS closed",
+            "FILTER(WHERE RS.DESCRIPTION = ANY(CAST(%(closed)s AS TEXT[]))) AS CLOSED",
             executed_sql,
         )
         self.assertEqual(result["summaryCards"][0]["value"], "0")

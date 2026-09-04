@@ -12,9 +12,17 @@ def get_my_requests(
     connection: DatabaseConnection, member_id: int | None
 ) -> list[RequestItem]:
     rows = connection.execute(
-        sql(
-            """SELECT r.id,COALESCE(st.name,'Solicitação') title,r.created_date,rs.description status FROM request r JOIN request_status rs ON rs.id=r.id_request_status LEFT JOIN service_type st ON st.id=r.id_service_type WHERE (:member IS NULL OR r.id_member_requester=:member) ORDER BY r.created_date DESC NULLS LAST,r.id DESC"""
-        ),
+        sql("""SELECT R.ID,
+       COALESCE(ST.NAME,'Solicitação') TITLE,
+       R.CREATED_DATE,
+       RS.DESCRIPTION STATUS
+    FROM REQUEST R
+        JOIN REQUEST_STATUS RS
+            ON RS.ID=R.ID_REQUEST_STATUS
+        LEFT JOIN SERVICE_TYPE ST
+            ON ST.ID=R.ID_SERVICE_TYPE
+    WHERE (:member IS NULL OR R.ID_MEMBER_REQUESTER=:member)
+    ORDER BY R.CREATED_DATE DESC NULLS LAST,R.ID DESC"""),
         {"member": member_id},
     ).mappings()
     return [
@@ -32,26 +40,41 @@ def get_my_requests(
 
 def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
     location = connection.execute(
-        sql(
-            "SELECT rg.id_business FROM location l JOIN region rg ON rg.id=l.id_region WHERE l.id=:location AND rg.id=:region"
-        ),
+        sql("""SELECT RG.ID_BUSINESS
+    FROM LOCATION L
+        JOIN REGION RG
+            ON RG.ID=L.ID_REGION
+    WHERE L.ID=:location AND RG.ID=:region"""),
         {"location": data.locationId, "region": data.regionId},
     ).scalar_one_or_none()
     if location != data.businessId:
         raise ValueError("A localização não pertence à organização informada.")
-    status_id = (
-        connection.execute(
-            sql(
-                "SELECT id FROM request_status WHERE description IN ('Em aberto','Aberto') ORDER BY id LIMIT 1"
-            )
-        ).scalar_one_or_none()
-        or 1
-    )
+    status_id = connection.execute(sql("""SELECT ID
+    FROM REQUEST_STATUS
+    WHERE DESCRIPTION IN ('Em aberto','Aberto')
+    ORDER BY ID
+    LIMIT 1""")).scalar_one_or_none() or 1
     requester = int(os.getenv("CURRENT_MEMBER_ID", "8"))
     request_id = connection.execute(
-        sql(
-            """INSERT INTO request(id_request_type,id_member_requester,id_location,id_service_type,id_request_status,created_date,description) VALUES (1,:member,:location,:service,:status,CURRENT_TIMESTAMP,:description) RETURNING id"""
-        ),
+        sql("""INSERT INTO REQUEST (
+    ID_REQUEST_TYPE,
+    ID_MEMBER_REQUESTER,
+    ID_LOCATION,
+    ID_SERVICE_TYPE,
+    ID_REQUEST_STATUS,
+    CREATED_DATE,
+    DESCRIPTION
+)
+VALUES (
+    1,
+    :member,
+    :location,
+    :service,
+    :status,
+    CURRENT_TIMESTAMP,
+    :description
+)
+RETURNING ID"""),
         {
             "member": requester,
             "location": data.locationId,
@@ -69,9 +92,22 @@ def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
             else:
                 content = base64.b64decode(value.contentBase64)
                 connection.execute(
-                    sql(
-                        "INSERT INTO service_field_media(id_service_field_type,id_request,content,file_name,mime_type,file_size) VALUES (:field,:request,:content,:name,:mime,:size)"
-                    ),
+                    sql("""INSERT INTO SERVICE_FIELD_MEDIA (
+    ID_SERVICE_FIELD_TYPE,
+    ID_REQUEST,
+    CONTENT,
+    FILE_NAME,
+    MIME_TYPE,
+    FILE_SIZE
+)
+VALUES (
+    :field,
+    :request,
+    :content,
+    :name,
+    :mime,
+    :size
+)"""),
                     {
                         "field": field_id,
                         "request": request_id,
@@ -83,9 +119,16 @@ def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
                 )
         if strings:
             connection.execute(
-                sql(
-                    "INSERT INTO service_field_value(id_service_field_type,id_request,value) VALUES (:field,:request,CAST(:value AS jsonb))"
-                ),
+                sql("""INSERT INTO SERVICE_FIELD_VALUE (
+    ID_SERVICE_FIELD_TYPE,
+    ID_REQUEST,
+    VALUE
+)
+VALUES (
+    :field,
+    :request,
+    CAST(:value AS JSONB)
+)"""),
                 {
                     "field": field_id,
                     "request": request_id,
@@ -103,9 +146,35 @@ def get_activities(
     statuses: list[str],
     businesses: list[int],
 ) -> list[Activity]:
-    query = sql(
-        """SELECT r.id,rt.name request_type,b.name business_unit,sc.id category_id,sc.name category,st.name service,l.name location,rs.description status,CASE WHEN rs.description='Programada' THEN r.agreed_date WHEN rs.description='Em andamento' THEN r.started_date WHEN rs.description IN ('Concluída','Concluida') THEN r.finished_date WHEN rs.description='Cancelada' THEN r.canceled_date END status_date,r.agreed_date,l.location_x map_x,l.location_y map_y FROM request r JOIN request_status rs ON rs.id=r.id_request_status LEFT JOIN request_type rt ON rt.id=r.id_request_type LEFT JOIN service_type st ON st.id=r.id_service_type LEFT JOIN service_category sc ON sc.id=st.id_service_category LEFT JOIN location l ON l.id=r.id_location LEFT JOIN region rg ON rg.id=l.id_region LEFT JOIN business b ON b.id=rg.id_business WHERE (:all_status OR rs.description = ANY(:statuses)) AND (:all_business OR b.id = ANY(:businesses)) AND CASE WHEN rs.description='Programada' THEN r.agreed_date WHEN rs.description='Em andamento' THEN r.started_date WHEN rs.description IN ('Concluída','Concluida') THEN r.finished_date WHEN rs.description='Cancelada' THEN r.canceled_date END >= :start AND CASE WHEN rs.description='Programada' THEN r.agreed_date WHEN rs.description='Em andamento' THEN r.started_date WHEN rs.description IN ('Concluída','Concluida') THEN r.finished_date WHEN rs.description='Cancelada' THEN r.canceled_date END < (:end + INTERVAL '1 day') ORDER BY status_date,r.id"""
-    )
+    query = sql("""SELECT R.ID,
+       RT.NAME REQUEST_TYPE,
+       B.NAME BUSINESS_UNIT,
+       SC.ID CATEGORY_ID,
+       SC.NAME CATEGORY,
+       ST.NAME SERVICE,
+       L.NAME LOCATION,
+       RS.DESCRIPTION STATUS,
+       CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END STATUS_DATE,
+       R.AGREED_DATE,
+       L.LOCATION_X MAP_X,
+       L.LOCATION_Y MAP_Y
+    FROM REQUEST R
+        JOIN REQUEST_STATUS RS
+            ON RS.ID=R.ID_REQUEST_STATUS
+        LEFT JOIN REQUEST_TYPE RT
+            ON RT.ID=R.ID_REQUEST_TYPE
+        LEFT JOIN SERVICE_TYPE ST
+            ON ST.ID=R.ID_SERVICE_TYPE
+        LEFT JOIN SERVICE_CATEGORY SC
+            ON SC.ID=ST.ID_SERVICE_CATEGORY
+        LEFT JOIN LOCATION L
+            ON L.ID=R.ID_LOCATION
+        LEFT JOIN REGION RG
+            ON RG.ID=L.ID_REGION
+        LEFT JOIN BUSINESS B
+            ON B.ID=RG.ID_BUSINESS
+    WHERE (:all_status OR RS.DESCRIPTION = ANY(:statuses)) AND (:all_business OR B.ID = ANY(:businesses)) AND CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END >= :start AND CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END < (:end + INTERVAL '1 day')
+    ORDER BY STATUS_DATE,R.ID""")
     return [
         Activity(**r)
         for r in connection.execute(
@@ -124,14 +193,25 @@ def get_activities(
 
 def get_home_metrics(connection: DatabaseConnection, start: date, end: date):
     rows = connection.execute(
-        sql(
-            """SELECT sc.id,sc.name,COUNT(r.id) FILTER(WHERE r.id_request_status=2 AND r.agreed_date>=:start AND r.agreed_date<(:end+INTERVAL '1 day')) planned,COUNT(r.id) FILTER(WHERE r.id_request_status=3 AND r.started_date>=:start AND r.started_date<(:end+INTERVAL '1 day')) in_progress,COUNT(r.id) FILTER(WHERE r.id_request_status=4 AND r.finished_date>=:start AND r.finished_date<(:end+INTERVAL '1 day')) completed FROM service_category sc JOIN service_type st ON st.id_service_category=sc.id LEFT JOIN request r ON r.id_service_type=st.id GROUP BY sc.id,sc.name ORDER BY sc.name"""
-        ),
+        sql("""SELECT SC.ID,
+       SC.NAME,
+       COUNT(R.ID) FILTER(WHERE R.ID_REQUEST_STATUS=2 AND R.AGREED_DATE>=:start AND R.AGREED_DATE<(:end+INTERVAL '1 day')) PLANNED,
+       COUNT(R.ID) FILTER(WHERE R.ID_REQUEST_STATUS=3 AND R.STARTED_DATE>=:start AND R.STARTED_DATE<(:end+INTERVAL '1 day')) IN_PROGRESS,
+       COUNT(R.ID) FILTER(WHERE R.ID_REQUEST_STATUS=4 AND R.FINISHED_DATE>=:start AND R.FINISHED_DATE<(:end+INTERVAL '1 day')) COMPLETED
+    FROM SERVICE_CATEGORY SC
+        JOIN SERVICE_TYPE ST
+            ON ST.ID_SERVICE_CATEGORY=SC.ID
+        LEFT JOIN REQUEST R
+            ON R.ID_SERVICE_TYPE=ST.ID
+    GROUP BY SC.ID,SC.NAME
+    ORDER BY SC.NAME"""),
         {"start": start, "end": end},
     ).mappings()
     samples = connection.execute(
         sql(
-            "SELECT EXTRACT(EPOCH FROM(finished_date-started_date))/60 minutes FROM request WHERE finished_date>=:start AND finished_date<(:end+INTERVAL '1 day') AND started_date IS NOT NULL"
+            """SELECT EXTRACT(EPOCH FROM(FINISHED_DATE-STARTED_DATE))/60 MINUTES
+    FROM REQUEST
+    WHERE FINISHED_DATE>=:start AND FINISHED_DATE<(:end+INTERVAL '1 day') AND STARTED_DATE IS NOT NULL"""
         ),
         {"start": start, "end": end},
     ).scalars()
@@ -164,14 +244,28 @@ def get_tracking(
         "category": category,
         "closed": list(CLOSED),
     }
-    joins = "FROM request r JOIN request_status rs ON rs.id=r.id_request_status JOIN service_type st ON st.id=r.id_service_type JOIN service_category sc ON sc.id=st.id_service_category LEFT JOIN location l ON l.id=r.id_location LEFT JOIN region rg ON rg.id=l.id_region"
-    where = "WHERE r.created_date>=:start AND r.created_date<(:end+INTERVAL '1 day') AND (CAST(:business AS integer) IS NULL OR rg.id_business=:business) AND (CAST(:category AS integer) IS NULL OR sc.id=:category)"
+    joins = """    FROM REQUEST R
+        JOIN REQUEST_STATUS RS
+            ON RS.ID=R.ID_REQUEST_STATUS
+        JOIN SERVICE_TYPE ST
+            ON ST.ID=R.ID_SERVICE_TYPE
+        JOIN SERVICE_CATEGORY SC
+            ON SC.ID=ST.ID_SERVICE_CATEGORY
+        LEFT JOIN LOCATION L
+            ON L.ID=R.ID_LOCATION
+        LEFT JOIN REGION RG
+            ON RG.ID=L.ID_REGION"""
+    where = """    WHERE R.CREATED_DATE>=:start AND R.CREATED_DATE<(:end+INTERVAL '1 day') AND (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business) AND (CAST(:category AS INTEGER) IS NULL OR SC.ID=:category)"""
     summary = (
         connection.execute(
             sql(
-                "SELECT COUNT(*) total,COUNT(*) FILTER(WHERE rs.description='Em andamento') in_progress,ROUND(AVG(EXTRACT(EPOCH FROM(COALESCE(r.finished_date,r.canceled_date,NOW())-r.created_date))/60))::integer average_minutes,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[])) AND r.agreed_date IS NOT NULL AND r.agreed_date<NOW()) critical "
+                """SELECT COUNT(*) TOTAL,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION='Em andamento') IN_PROGRESS,
+       ROUND(AVG(EXTRACT(EPOCH FROM(COALESCE(R.FINISHED_DATE,R.CANCELED_DATE,NOW())-R.CREATED_DATE))/60))::INTEGER AVERAGE_MINUTES,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION <> ALL(CAST(:closed AS TEXT[])) AND R.AGREED_DATE IS NOT NULL AND R.AGREED_DATE<NOW()) CRITICAL"""
+                + "\n"
                 + joins
-                + " "
+                + "\n"
                 + where
             ),
             p,
@@ -181,40 +275,55 @@ def get_tracking(
     )
     cats = connection.execute(
         sql(
-            "SELECT COALESCE(sc.name,'Não informado') label,COUNT(*) value "
+            """SELECT COALESCE(SC.NAME,'Não informado') LABEL,
+       COUNT(*) VALUE"""
+            + "\n"
             + joins
-            + " "
+            + "\n"
             + where
-            + " GROUP BY sc.id,sc.name ORDER BY value DESC"
+            + "\n"
+            + """    GROUP BY SC.ID,SC.NAME
+    ORDER BY VALUE DESC"""
         ),
         p,
     ).mappings()
     statuses = connection.execute(
         sql(
-            "SELECT COALESCE(rs.description,'Não informado') label,COUNT(*) value "
+            """SELECT COALESCE(RS.DESCRIPTION,'Não informado') LABEL,
+       COUNT(*) VALUE"""
+            + "\n"
             + joins
-            + " "
+            + "\n"
             + where
-            + " GROUP BY rs.id,rs.description ORDER BY rs.id"
+            + "\n"
+            + """    GROUP BY RS.ID,RS.DESCRIPTION
+    ORDER BY RS.ID"""
         ),
         p,
     ).mappings()
     months = connection.execute(
         sql(
-            "SELECT TO_CHAR(date_trunc('month',r.created_date),'Mon') AS month,COUNT(*) FILTER(WHERE rs.description <> ALL(CAST(:closed AS text[]))) AS open,COUNT(*) FILTER(WHERE rs.description = ANY(CAST(:closed AS text[]))) AS closed "
+            """SELECT TO_CHAR(DATE_TRUNC('month',R.CREATED_DATE),'Mon') AS MONTH,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION <> ALL(CAST(:closed AS TEXT[]))) AS OPEN,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION = ANY(CAST(:closed AS TEXT[]))) AS CLOSED"""
+            + "\n"
             + joins
-            + " "
+            + "\n"
             + where
-            + " GROUP BY date_trunc('month',r.created_date) ORDER BY date_trunc('month',r.created_date)"
+            + "\n"
+            + """    GROUP BY DATE_TRUNC('month',R.CREATED_DATE)
+    ORDER BY DATE_TRUNC('month',R.CREATED_DATE)"""
         ),
         p,
     ).mappings()
-    businesses = connection.execute(
-        sql("SELECT id,name FROM business ORDER BY name")
-    ).mappings()
-    categories = connection.execute(
-        sql("SELECT id,name FROM service_category ORDER BY name")
-    ).mappings()
+    businesses = connection.execute(sql("""SELECT ID,
+       NAME
+    FROM BUSINESS
+    ORDER BY NAME""")).mappings()
+    categories = connection.execute(sql("""SELECT ID,
+       NAME
+    FROM SERVICE_CATEGORY
+    ORDER BY NAME""")).mappings()
     colors = ["#14b8a6", "#38bdf8", "#f59e0b", "#8b5cf6", "#ec4899", "#64748b"]
     scolors = ["#f97316", "#0ea5e9", "#84cc16", "#8b5cf6", "#64748b"]
 
@@ -274,34 +383,52 @@ def get_tracking(
 
 
 def get_board(connection: DatabaseConnection, start: date, end: date):
-    statuses = [
-        dict(r)
-        for r in connection.execute(
-            sql("SELECT id,description FROM request_status ORDER BY id")
-        ).mappings()
-    ]
+    statuses = [dict(r) for r in connection.execute(sql("""SELECT ID,
+       DESCRIPTION
+    FROM REQUEST_STATUS
+    ORDER BY ID""")).mappings()]
     rows = connection.execute(
-        sql(
-            """SELECT r.id,r.id_request_status status_id,COALESCE(st.name,'Não informado') service_type_name,COALESCE(m.name,'Não informado') requester_name,COALESCE(l.name,'Não informado') location_name,r.description FROM request r LEFT JOIN service_type st ON st.id=r.id_service_type LEFT JOIN membership m ON m.id=r.id_member_requester LEFT JOIN location l ON l.id=r.id_location WHERE r.created_date>=:start AND r.created_date<(:end+INTERVAL '1 day') ORDER BY r.created_date,r.id"""
-        ),
+        sql("""SELECT R.ID,
+       R.ID_REQUEST_STATUS STATUS_ID,
+       COALESCE(ST.NAME,'Não informado') SERVICE_TYPE_NAME,
+       COALESCE(M.NAME,'Não informado') REQUESTER_NAME,
+       COALESCE(L.NAME,'Não informado') LOCATION_NAME,
+       R.DESCRIPTION
+    FROM REQUEST R
+        LEFT JOIN SERVICE_TYPE ST
+            ON ST.ID=R.ID_SERVICE_TYPE
+        LEFT JOIN MEMBERSHIP M
+            ON M.ID=R.ID_MEMBER_REQUESTER
+        LEFT JOIN LOCATION L
+            ON L.ID=R.ID_LOCATION
+    WHERE R.CREATED_DATE>=:start AND R.CREATED_DATE<(:end+INTERVAL '1 day')
+    ORDER BY R.CREATED_DATE,R.ID"""),
         {"start": start, "end": end},
     ).mappings()
     result = []
     for r in rows:
         visits = []
         tasks = connection.execute(
-            sql(
-                "SELECT id,start_datetime,stop_datetime,description FROM request_task WHERE id_request=:id ORDER BY start_datetime,id"
-            ),
+            sql("""SELECT ID,
+       START_DATETIME,
+       STOP_DATETIME,
+       DESCRIPTION
+    FROM REQUEST_TASK
+    WHERE ID_REQUEST=:id
+    ORDER BY START_DATETIME,ID"""),
             {"id": r["id"]},
         ).mappings()
         for t in tasks:
             members = [
                 dict(x)
                 for x in connection.execute(
-                    sql(
-                        "SELECT m.id,m.name FROM task_member_occurrence o JOIN membership m ON m.id=o.id_membership WHERE o.id_task=:id ORDER BY m.name"
-                    ),
+                    sql("""SELECT M.ID,
+       M.NAME
+    FROM TASK_MEMBER_OCCURRENCE O
+        JOIN MEMBERSHIP M
+            ON M.ID=O.ID_MEMBERSHIP
+    WHERE O.ID_TASK=:id
+    ORDER BY M.NAME"""),
                     {"id": t["id"]},
                 ).mappings()
             ]
@@ -313,21 +440,33 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                     "url": f'/api/request-task-media/{x["id"]}',
                 }
                 for x in connection.execute(
-                    sql(
-                        "SELECT id,file_name,mime_type FROM request_task_media WHERE id_request_task=:id"
-                    ),
+                    sql("""SELECT ID,
+       FILE_NAME,
+       MIME_TYPE
+    FROM REQUEST_TASK_MEDIA
+    WHERE ID_REQUEST_TASK=:id"""),
                     {"id": t["id"]},
                 ).mappings()
             ]
             checklists = []
             for checklist in connection.execute(
-                sql("""SELECT rtc.id, ct.id checklist_type_id, ct.name, ct.description,
-                              ct.version, rtc.corporation, rtc.equipment_tag,
-                              rtc.equipment_brand, rtc.equipment_model,
-                              rtc.rented_equipment, rtc.serial_number, rtc.pt_number
-                         FROM request_task_checklist rtc
-                         JOIN checklist_type ct ON ct.id=rtc.id_checklist_type
-                        WHERE rtc.id_request_task=:id ORDER BY rtc.id"""),
+                sql("""SELECT RTC.ID,
+       CT.ID CHECKLIST_TYPE_ID,
+       CT.NAME,
+       CT.DESCRIPTION,
+       CT.VERSION,
+       RTC.CORPORATION,
+       RTC.EQUIPMENT_TAG,
+       RTC.EQUIPMENT_BRAND,
+       RTC.EQUIPMENT_MODEL,
+       RTC.RENTED_EQUIPMENT,
+       RTC.SERIAL_NUMBER,
+       RTC.PT_NUMBER
+    FROM REQUEST_TASK_CHECKLIST RTC
+        JOIN CHECKLIST_TYPE CT
+            ON CT.ID=RTC.ID_CHECKLIST_TYPE
+    WHERE RTC.ID_REQUEST_TASK=:id
+    ORDER BY RTC.ID"""),
                 {"id": t["id"]},
             ).mappings():
                 values = [
@@ -339,13 +478,16 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                         "value": value["value"],
                     }
                     for value in connection.execute(
-                        sql(
-                            """SELECT cfv.id, cft.id field_id, cft.name, cft.type, cfv.value
-                                 FROM checklist_field_value cfv
-                                 JOIN checklist_field_type cft ON cft.id=cfv.id_checklist_field_type
-                                WHERE cfv.id_request_task_checklist=:id
-                                ORDER BY cft.display_order,cft.id"""
-                        ),
+                        sql("""SELECT CFV.ID,
+       CFT.ID FIELD_ID,
+       CFT.NAME,
+       CFT.TYPE,
+       CFV.VALUE
+    FROM CHECKLIST_FIELD_VALUE CFV
+        JOIN CHECKLIST_FIELD_TYPE CFT
+            ON CFT.ID=CFV.ID_CHECKLIST_FIELD_TYPE
+    WHERE CFV.ID_REQUEST_TASK_CHECKLIST=:id
+    ORDER BY CFT.DISPLAY_ORDER,CFT.ID"""),
                         {"id": checklist["id"]},
                     ).mappings()
                 ]
@@ -386,9 +528,14 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                 }
             )
         values = connection.execute(
-            sql(
-                "SELECT sfv.id,sft.name,sfv.value FROM service_field_value sfv JOIN service_field_type sft ON sft.id=sfv.id_service_field_type WHERE sfv.id_request=:id ORDER BY sft.display_order NULLS LAST,sfv.id"
-            ),
+            sql("""SELECT SFV.ID,
+       SFT.NAME,
+       SFV.VALUE
+    FROM SERVICE_FIELD_VALUE SFV
+        JOIN SERVICE_FIELD_TYPE SFT
+            ON SFT.ID=SFV.ID_SERVICE_FIELD_TYPE
+    WHERE SFV.ID_REQUEST=:id
+    ORDER BY SFT.DISPLAY_ORDER NULLS LAST,SFV.ID"""),
             {"id": r["id"]},
         ).mappings()
         details = [
@@ -418,9 +565,15 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                 "url": f'/api/request-media/{x["id"]}',
             }
             for x in connection.execute(
-                sql(
-                    "SELECT m.id,sft.name field_label,m.file_name,m.mime_type,m.file_size FROM service_field_media m JOIN service_field_type sft ON sft.id=m.id_service_field_type WHERE m.id_request=:id"
-                ),
+                sql("""SELECT M.ID,
+       SFT.NAME FIELD_LABEL,
+       M.FILE_NAME,
+       M.MIME_TYPE,
+       M.FILE_SIZE
+    FROM SERVICE_FIELD_MEDIA M
+        JOIN SERVICE_FIELD_TYPE SFT
+            ON SFT.ID=M.ID_SERVICE_FIELD_TYPE
+    WHERE M.ID_REQUEST=:id"""),
                 {"id": r["id"]},
             ).mappings()
         ]

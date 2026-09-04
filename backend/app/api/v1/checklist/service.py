@@ -3,11 +3,20 @@ from .schemas import ChecklistDefinition, ChecklistField, ChecklistSubmission
 
 
 def get_active_definitions(connection: DatabaseConnection) -> list[ChecklistDefinition]:
-    rows = connection.execute(
-        sql(
-            """SELECT ct.id,ct.name,ct.description,ct.version,cf.id field_id,cf.name field_name,cf.type,cf.options,cf.required FROM checklist_type ct LEFT JOIN checklist_field_type cf ON cf.id_checklist_type=ct.id AND cf.active IS TRUE WHERE ct.active IS TRUE ORDER BY ct.id,cf.display_order NULLS LAST,cf.id"""
-        )
-    ).mappings()
+    rows = connection.execute(sql("""SELECT CT.ID,
+       CT.NAME,
+       CT.DESCRIPTION,
+       CT.VERSION,
+       CF.ID FIELD_ID,
+       CF.NAME FIELD_NAME,
+       CF.TYPE,
+       CF.OPTIONS,
+       CF.REQUIRED
+    FROM CHECKLIST_TYPE CT
+        LEFT JOIN CHECKLIST_FIELD_TYPE CF
+            ON CF.ID_CHECKLIST_TYPE=CT.ID AND CF.ACTIVE IS TRUE
+    WHERE CT.ACTIVE IS TRUE
+    ORDER BY CT.ID,CF.DISPLAY_ORDER NULLS LAST,CF.ID""")).mappings()
     result = {}
     for r in rows:
         item = result.setdefault(
@@ -38,9 +47,29 @@ def add_to_visit(
     connection: DatabaseConnection, visit_id: int, data: ChecklistSubmission
 ) -> None:
     row = connection.execute(
-        sql(
-            """INSERT INTO request_task_checklist(id_request_task,id_checklist_type,corporation,equipment_tag,equipment_brand,equipment_model,rented_equipment,serial_number,pt_number) VALUES (:visit,:type,:corporation,:tag,:brand,:model,:rented,:serial,:pt) RETURNING id"""
-        ),
+        sql("""INSERT INTO REQUEST_TASK_CHECKLIST (
+    ID_REQUEST_TASK,
+    ID_CHECKLIST_TYPE,
+    CORPORATION,
+    EQUIPMENT_TAG,
+    EQUIPMENT_BRAND,
+    EQUIPMENT_MODEL,
+    RENTED_EQUIPMENT,
+    SERIAL_NUMBER,
+    PT_NUMBER
+)
+VALUES (
+    :visit,
+    :type,
+    :corporation,
+    :tag,
+    :brand,
+    :model,
+    :rented,
+    :serial,
+    :pt
+)
+RETURNING ID"""),
         {
             "visit": visit_id,
             "type": data.checklistTypeId,
@@ -55,9 +84,16 @@ def add_to_visit(
     ).scalar_one()
     for value in data.values:
         connection.execute(
-            sql(
-                "INSERT INTO checklist_field_value(id_request_task_checklist,id_checklist_field_type,value) VALUES (:checklist,:field,CAST(:value AS jsonb))"
-            ),
+            sql("""INSERT INTO CHECKLIST_FIELD_VALUE (
+    ID_REQUEST_TASK_CHECKLIST,
+    ID_CHECKLIST_FIELD_TYPE,
+    VALUE
+)
+VALUES (
+    :checklist,
+    :field,
+    CAST(:value AS JSONB)
+)"""),
             {
                 "checklist": row,
                 "field": value.fieldId,
@@ -69,10 +105,15 @@ def add_to_visit(
 
 def delete_from_visit(connection: DatabaseConnection, checklist_id: int) -> None:
     connection.execute(
-        sql("DELETE FROM checklist_field_value WHERE id_request_task_checklist=:id"),
+        sql("""DELETE
+    FROM CHECKLIST_FIELD_VALUE
+    WHERE ID_REQUEST_TASK_CHECKLIST=:id"""),
         {"id": checklist_id},
     )
     connection.execute(
-        sql("DELETE FROM request_task_checklist WHERE id=:id"), {"id": checklist_id}
+        sql("""DELETE
+    FROM REQUEST_TASK_CHECKLIST
+    WHERE ID=:id"""),
+        {"id": checklist_id},
     )
     connection.commit()
