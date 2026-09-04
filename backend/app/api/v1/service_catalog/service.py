@@ -9,11 +9,14 @@ from .schemas import (
 
 
 def get_catalog(connection: DatabaseConnection) -> list[CatalogCategory]:
-    rows = connection.execute(
-        sql(
-            "SELECT sc.id category_id, sc.name category_name, st.id type_id, st.name type_name FROM service_category sc LEFT JOIN service_type st ON st.id_service_category=sc.id ORDER BY sc.name, st.name"
-        )
-    ).mappings()
+    rows = connection.execute(sql("""SELECT SC.ID CATEGORY_ID,
+       SC.NAME CATEGORY_NAME,
+       ST.ID TYPE_ID,
+       ST.NAME TYPE_NAME
+    FROM SERVICE_CATEGORY SC
+        LEFT JOIN SERVICE_TYPE ST
+            ON ST.ID_SERVICE_CATEGORY=SC.ID
+    ORDER BY SC.NAME, ST.NAME""")).mappings()
     grouped = {}
     for r in rows:
         item = grouped.setdefault(
@@ -41,9 +44,14 @@ def get_request_form(
 ) -> RequestFormData:
     types = (
         connection.execute(
-            sql(
-                "SELECT st.id, st.name, sc.name category FROM service_type st JOIN service_category sc ON sc.id=st.id_service_category WHERE (:category IS NULL OR sc.name=:category) ORDER BY sc.name, st.name"
-            ),
+            sql("""SELECT ST.ID,
+       ST.NAME,
+       SC.NAME CATEGORY
+    FROM SERVICE_TYPE ST
+        JOIN SERVICE_CATEGORY SC
+            ON SC.ID=ST.ID_SERVICE_CATEGORY
+    WHERE (:category IS NULL OR SC.NAME=:category)
+    ORDER BY SC.NAME, ST.NAME"""),
             {"category": category},
         )
         .mappings()
@@ -57,9 +65,14 @@ def get_request_form(
     if not selected:
         return RequestFormData(serviceTypeOptions=[], fields=[])
     fields = connection.execute(
-        sql(
-            "SELECT id,name,type,options,required FROM service_field_type WHERE active IS TRUE AND id_service_type=:id ORDER BY display_order NULLS LAST,id"
-        ),
+        sql("""SELECT ID,
+       NAME,
+       TYPE,
+       OPTIONS,
+       REQUIRED
+    FROM SERVICE_FIELD_TYPE
+    WHERE ACTIVE IS TRUE AND ID_SERVICE_TYPE=:id
+    ORDER BY DISPLAY_ORDER NULLS LAST,ID"""),
         {"id": selected["id"]},
     ).mappings()
     mapped = []
@@ -98,9 +111,11 @@ def get_request_form(
 def get_request_media(connection: DatabaseConnection, media_id: int):
     return (
         connection.execute(
-            sql(
-                "SELECT content,file_name,mime_type FROM service_field_media WHERE id=:id"
-            ),
+            sql("""SELECT CONTENT,
+       FILE_NAME,
+       MIME_TYPE
+    FROM SERVICE_FIELD_MEDIA
+    WHERE ID=:id"""),
             {"id": media_id},
         )
         .mappings()
