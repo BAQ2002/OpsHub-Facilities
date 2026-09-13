@@ -2,12 +2,12 @@
 
 import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
 import { DeleteRequestTaskChecklist, InsertRequestTask, InsertRequestTaskChecklist, UpdateRequestTask, type AddVisitState } from "../actions";
-import type { ChecklistDefinition, ChecklistSubmission } from "@/src/domain/entities/checklist";
+import type { ChecklistDefinition, ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
 
 import type {
   RequestBoardCardViewModel,
   RequestBoardColumnViewModel,
-} from "@/src/presentation/view-models/request-board-view-model";
+} from "@/app/types/navigation_entities/request-board";
 
 type Executor = { id: number; name: string };
 type Visit = RequestBoardCardViewModel["visits"][number];

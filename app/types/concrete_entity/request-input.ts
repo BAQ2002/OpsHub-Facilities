@@ -1,5 +1,3 @@
-import type { RequestEntity } from "@/src/domain/entities/request";
-
 export type RequestFieldValue = string | File;
 
 export type CreateRequestInput = {
@@ -10,8 +8,3 @@ export type CreateRequestInput = {
   description: string;
   additionalFields: Readonly<Record<string, RequestFieldValue[]>>;
 };
-
-export interface RequestRepository {
-  findByCurrentUser(): Promise<RequestEntity[]>;
-  create(input: CreateRequestInput): Promise<number>;
-}

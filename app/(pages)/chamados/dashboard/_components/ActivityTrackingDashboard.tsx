@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
-import type { ActivityTrackingFilters, ChartItem } from "@/src/domain/entities/dashboard";
-import type { ActivityTrackingPageViewModel } from "@/src/presentation/view-models/activity-tracking-view-model";
+import type { ActivityTrackingFilters, ChartItem } from "@/app/types/concrete_entity/dashboard";
+import type { ActivityTrackingPageViewModel } from "@/app/types/navigation_entities/activity-tracking";
 import { filterActivityTracking } from "../actions";
 import { TrackingTabs } from "@/app/componentes/TrackingTabs";
 

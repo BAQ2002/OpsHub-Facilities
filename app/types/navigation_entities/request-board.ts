@@ -1,3 +1,6 @@
+import type { ChecklistDefinition } from "@/app/types/concrete_entity/checklist";
+import type { MembershipOption } from "@/app/types/concrete_entity/membership";
+
 export type RequestBoardCardViewModel = {
   id: number;
   serviceTypeName: string;
@@ -21,7 +24,7 @@ export type RequestBoardCardViewModel = {
     description: string;
     executors: { id: number; name: string }[];
     photos: { id: number; fileName: string; mimeType: string; url: string }[];
-    checklists: import("@/src/domain/entities/checklist").VisitChecklist[];
+    checklists: import("@/app/types/concrete_entity/checklist").VisitChecklist[];
   }[];
 };
 
@@ -33,4 +36,10 @@ export type RequestBoardColumnViewModel = {
 
 export type RequestBoardPageViewModel = {
   columns: RequestBoardColumnViewModel[];
+};
+
+export type RequestBoardWorkspaceData = {
+  initialData: RequestBoardPageViewModel;
+  executors: MembershipOption[];
+  checklistDefinitions: ChecklistDefinition[];
 };

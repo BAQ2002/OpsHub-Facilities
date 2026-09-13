@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
-import type { ChecklistDefinition } from "@/src/domain/entities/checklist";
-import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
+import type { ChecklistDefinition } from "@/app/types/concrete_entity/checklist";
+import type { RequestBoardPageViewModel } from "@/app/types/navigation_entities/request-board";
 import { TrackingTabs } from "@/app/componentes/TrackingTabs";
 import { filterRequestBoard } from "../actions";
 import { RequestBoard } from "./RequestBoard";

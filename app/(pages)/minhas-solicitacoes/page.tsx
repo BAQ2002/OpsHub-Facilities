@@ -1,4 +1,4 @@
-import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
+import type { RequestEntity } from "@/app/types/concrete_entity/request";
 import { getMyRequestsPageData } from "@/src/server/services/request-service";
 
 export const dynamic = "force-dynamic";
@@ -79,7 +79,7 @@ function RequestGroup({
   className = "",
 }: {
   title: string;
-  requests: RequestViewModel[];
+  requests: RequestEntity[];
   className?: string;
 }) {
   return (
@@ -110,7 +110,7 @@ function RequestGroup({
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
-function RequestCard({ request }: { request: RequestViewModel }) {
+function RequestCard({ request }: { request: RequestEntity }) {
   const isOpen = request.status === "Aberto";
 
   return (

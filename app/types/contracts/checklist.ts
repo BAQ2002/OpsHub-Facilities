@@ -1,4 +1,4 @@
-import type { ChecklistDefinition, ChecklistSubmission } from "@/src/domain/entities/checklist";
+import type { ChecklistDefinition, ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
 
 export interface ChecklistRepository {
   findActiveDefinitions(): Promise<ChecklistDefinition[]>;

@@ -1,4 +1,4 @@
-import type { ActivityRequestField } from "@/src/domain/entities/activity-request-form";
+import type { ActivityRequestField } from "@/app/types/concrete_entity/activity-request-form";
 
 export type ActivityRequestFormFilters = {
   serviceCategory?: string;
@@ -19,8 +19,3 @@ export type ServiceCatalogCategory = {
   name: string;
   serviceTypes: { id: number; name: string }[];
 };
-
-export interface ServiceCatalogRepository {
-  findCatalog(): Promise<ServiceCatalogCategory[]>;
-  findRequestFormData(filters: ActivityRequestFormFilters): Promise<ActivityRequestFormData>;
-}
