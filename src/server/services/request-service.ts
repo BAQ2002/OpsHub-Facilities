@@ -3,19 +3,19 @@ import "server-only";
 import type { RequestEntity } from "@/src/domain/entities/request";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
 import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
-import { getRequestRepository } from "@/src/server/repositories/repositories";
+import { apiRequestRepository } from "@/src/server/repositories/api/api-repositories";
 import type { CreateRequestInput, RequestFieldValue } from "@/src/server/repositories/request/request-repository";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Obtém my requests page data para uso pelo fluxo solicitante.
- * Durante o fluxo, aciona {@link map}, {@link findByCurrentUser}, {@link getRequestRepository}, {@link filter}.
+ * Durante o fluxo, consulta as solicitações pela implementação HTTP e as transforma para apresentação.
  *
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {
-  const requests = (await getRequestRepository().findByCurrentUser()).map(mapRequestEntityToViewModel);
+  const requests = (await apiRequestRepository.findByCurrentUser()).map(mapRequestEntityToViewModel);
 
   return {
     openRequests: requests.filter((request) => request.status === "Aberto"),
@@ -37,26 +37,26 @@ function mapRequestEntityToViewModel(request: RequestEntity): RequestViewModel {
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Executa a operação de create activity request e preserva as validações do domínio.
- * Durante o fluxo, aciona {@link create}, {@link getRequestRepository}, {@link parseCreateRequestInput}.
+ * Durante o fluxo, valida os dados recebidos e cria a solicitação pela implementação HTTP.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function createActivityRequest(formData: FormData) {
-  return getRequestRepository().create(parseCreateRequestInput(formData));
+  return apiRequestRepository.create(parseCreateRequestInput(formData));
 }
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
  *
  * Executa a operação de create chamado request e preserva as validações do domínio.
- * Durante o fluxo, aciona {@link create}, {@link getRequestRepository}, {@link parseCreateRequestInput}.
+ * Durante o fluxo, valida os dados recebidos e cria a solicitação pela implementação HTTP.
  *
  * @param formData Dados necessários para executar esta função.
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function createChamadoRequest(formData: FormData) {
-  return getRequestRepository().create(parseCreateRequestInput(formData));
+  return apiRequestRepository.create(parseCreateRequestInput(formData));
 }
 
 /**

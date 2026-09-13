@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getChecklistRepository, getRequestTaskRepository } from "@/src/server/repositories/repositories";
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 import type { DateRange } from "@/src/server/validation/date-range";
 import { validateDateRange } from "@/src/server/validation/date-range";
 import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
+import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/src/server/services/request-task-service";
 
 export async function filterRequestBoard(range: DateRange) {
   return getRequestBoardPageData(validateDateRange(range));
@@ -33,7 +33,7 @@ export async function InsertRequestTask(
   try {
     const memberIds = [...new Set(formData.getAll("member_ids").map(Number))];
     const photos = formData.getAll("photos").filter((value): value is File => value instanceof File && value.size > 0);
-    await getRequestTaskRepository().createVisit({
+    await createVisit({
       requestId,
       description: String(formData.get("description") ?? "").trim(),
       startDatetime: String(formData.get("start_datetime") ?? ""),
@@ -53,7 +53,7 @@ export async function InsertRequestTask(
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action UpdateRequestTask com os dados enviados pela interface.
- * Durante o fluxo, aciona {@link updateVisit}, {@link getRequestTaskRepository}, {@link trim}, {@link get} e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link updateVisit}, {@link trim}, {@link get} e outras rotinas auxiliares.
  *
  * @param visitId Dados necessários para executar esta função.
  * @param _previousState Dados necessários para executar esta função.
@@ -62,7 +62,7 @@ export async function InsertRequestTask(
  */
 export async function UpdateRequestTask(visitId: number, _previousState: UpdateVisitState, formData: FormData): Promise<UpdateVisitState> {
   try {
-    await getRequestTaskRepository().updateVisit({
+    await updateVisit({
       visitId,
       description: String(formData.get("description") ?? "").trim(),
       startDatetime: String(formData.get("start_datetime") ?? ""),
@@ -82,7 +82,7 @@ export async function UpdateRequestTask(visitId: number, _previousState: UpdateV
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action InsertRequestTaskChecklist com os dados enviados pela interface.
- * Durante o fluxo, aciona {@link parseChecklistSubmissions}, {@link get}, {@link addToVisit}, {@link getChecklistRepository} e outras rotinas auxiliares.
+ * Durante o fluxo, aciona {@link parseChecklistSubmissions}, {@link get}, {@link addChecklistToVisit} e outras rotinas auxiliares.
  *
  * @param visitId Dados necessários para executar esta função.
  * @param _previousState Dados necessários para executar esta função.
@@ -93,7 +93,7 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
   try {
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
     if (submissions.length !== 1) throw new Error("Selecione um checklist para adicionar.");
-    await getChecklistRepository().addToVisit(visitId, submissions[0]);
+    await addChecklistToVisit(visitId, submissions[0]);
     revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Checklist adicionado com sucesso." };
   } catch (error) {
@@ -105,14 +105,14 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
  * Acionada como Server Action pelo formulário ou controle de interface associado.
  *
  * Executa a Server Action DeleteRequestTaskChecklist com os dados enviados pela interface.
- * Durante o fluxo, aciona {@link deleteFromVisit}, {@link getChecklistRepository}, {@link revalidatePath}.
+ * Durante o fluxo, aciona {@link deleteChecklistFromVisit}, {@link revalidatePath}.
  *
  * @param checklistId Dados necessários para executar esta função.
  * @returns O estado da operação para atualização da interface.
  */
 export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
-    await getChecklistRepository().deleteFromVisit(checklistId);
+    await deleteChecklistFromVisit(checklistId);
     revalidatePath("/chamados/kanbanboard");
     return { status: "success", message: "Checklist excluído com sucesso." };
   } catch (error) {
