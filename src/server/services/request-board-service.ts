@@ -3,8 +3,31 @@ import "server-only";
 import type { RequestBoardData } from "@/src/domain/entities/request-board";
 import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
 import { backendJson } from "@/src/server/api-client";
+import { apiChecklistRepository, apiMembershipRepository } from "@/src/server/repositories/api/api-repositories";
 
 export type RequestBoardFilters = { startDate: string; endDate: string };
+
+export type RequestBoardWorkspaceData = {
+  initialData: RequestBoardPageViewModel;
+  executors: Awaited<ReturnType<typeof apiMembershipRepository.findExecutorOptions>>;
+  checklistDefinitions: Awaited<ReturnType<typeof apiChecklistRepository.findActiveDefinitions>>;
+};
+
+/**
+ * Obtém em paralelo o quadro, os executores e as definições de checklist necessários à página.
+ *
+ * @param filters Intervalo usado para consultar o quadro inicial.
+ * @returns Os dados necessários para renderizar o workspace de chamados.
+ */
+export async function getRequestBoardWorkspaceData(filters: RequestBoardFilters): Promise<RequestBoardWorkspaceData> {
+  const [initialData, executors, checklistDefinitions] = await Promise.all([
+    getRequestBoardPageData(filters),
+    apiMembershipRepository.findExecutorOptions(),
+    apiChecklistRepository.findActiveDefinitions(),
+  ]);
+
+  return { initialData, executors, checklistDefinitions };
+}
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
