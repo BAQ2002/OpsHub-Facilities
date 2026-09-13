@@ -1,6 +1,6 @@
 import "server-only";
 
-import facilitiesMap from "@/public_resources/facilities-map.png";
+import facilitiesMap from "@/app/assets/facilities-map.png";
 import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/src/domain/entities/activity";
 import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/src/domain/entities/activity";
 import { backendJson } from "@/src/server/api-client";

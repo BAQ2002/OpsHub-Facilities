@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import DateRange, { type DateRangeValue } from "@/shared/DateRange";
+import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ActivityTrackingFilters, ChartItem } from "@/src/domain/entities/dashboard";
 import type { ActivityTrackingPageViewModel } from "@/src/presentation/view-models/activity-tracking-view-model";
 import { filterActivityTracking } from "../actions";
-import { TrackingTabs } from "@/shared/TrackingTabs";
+import { TrackingTabs } from "@/app/componentes/TrackingTabs";
 
 /**
  * Acionada pelo Next.js durante a renderização da rota correspondente.
