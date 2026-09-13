@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from ....database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection
 from .schemas import CatalogCategory, RequestFormData
 from .service import get_catalog, get_request_form
 

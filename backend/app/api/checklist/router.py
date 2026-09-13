@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response, status
-from ....database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection
 from .schemas import ChecklistDefinition, ChecklistSubmission
 from .service import add_to_visit, delete_from_visit, get_active_definitions
 

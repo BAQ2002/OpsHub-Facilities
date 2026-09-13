@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from ....database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection
 from .schemas import MembershipOption
 from .service import get_executor_options
 

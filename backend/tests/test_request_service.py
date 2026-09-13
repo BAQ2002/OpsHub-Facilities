@@ -6,7 +6,7 @@ from typing import Any
 os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
 
 from backend.app.database import QueryResult
-from backend.app.api.v1.request.service import get_tracking
+from backend.app.api.request.service import get_tracking
 
 
 class FakeCursor:

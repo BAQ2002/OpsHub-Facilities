@@ -1,4 +1,4 @@
-from ....database import DatabaseConnection
+from ...database import DatabaseConnection
 from .schemas import MembershipOption
 
 

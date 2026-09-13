@@ -2,7 +2,7 @@ import base64
 import json
 import os
 from datetime import date
-from ....database import DatabaseConnection, sql
+from ...database import DatabaseConnection, sql
 from .schemas import Activity, CreateRequest, RequestItem
 
 CLOSED = ("Concluída", "Concluida", "Cancelada")
