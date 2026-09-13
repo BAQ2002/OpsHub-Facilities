@@ -1,4 +1,4 @@
-import type { ActivityRecord, EquipmentCard, MapImage } from "@/src/domain/entities/activity";
+import type { ActivityRecord, EquipmentCard, MapImage } from "@/app/types/concrete_entity/activity";
 
 export type ActivityMarkerViewModel = {
   id: string;

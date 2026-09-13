@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   ActivityRequestField as Field,
   LocationHierarchy,
-} from "@/src/domain/entities/activity-request-form";
+} from "@/app/types/concrete_entity/activity-request-form";
 
 type ActivityRequestFormProps = {
   title: string;

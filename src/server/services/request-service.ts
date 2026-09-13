@@ -1,10 +1,9 @@
 import "server-only";
 
-import type { RequestEntity } from "@/src/domain/entities/request";
-import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
-import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
+import type { RequestEntity } from "@/app/types/concrete_entity/request";
+import type { MyRequestsPageViewModel } from "@/app/types/navigation_entities/my-requests";
 import { apiRequestRepository } from "@/src/server/repositories/api/api-repositories";
-import type { CreateRequestInput, RequestFieldValue } from "@/app/types/request";
+import type { CreateRequestInput, RequestFieldValue } from "@/app/types/concrete_entity/request-input";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
@@ -23,7 +22,7 @@ export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> 
   };
 }
 
-function mapRequestEntityToViewModel(request: RequestEntity): RequestViewModel {
+function mapRequestEntityToViewModel(request: RequestEntity): RequestEntity {
   return {
     id: request.id,
     title: request.title,

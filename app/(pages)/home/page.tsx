@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import HomeDateRange from "./_components/HomeDateRange";
 
 import { getHomePageData } from "@/src/server/services/home-service";
-import { activityStatuses } from "@/src/domain/entities/activity";
+import { activityStatuses } from "@/app/types/concrete_entity/activity";
 
 const sevenSegmentPaths = [
   { id: "a", x: 5, y: 0, width: 18, height: 4 },

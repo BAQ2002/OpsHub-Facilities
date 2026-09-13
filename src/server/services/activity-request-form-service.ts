@@ -1,16 +1,8 @@
 import "server-only";
 
-import type { ActivityRequestField, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
+import type { ActivityRequestFormPageData } from "@/app/types/navigation_entities/activity-request-form";
 import { apiOrganizationRepository, apiServiceCatalogRepository } from "@/src/server/repositories/api/api-repositories";
-import type { ServiceCatalogCategory } from "@/app/types/service-catalog";
-
-export type ActivityRequestFormPageData = {
-  title: string;
-  subtitle: string;
-  serviceTypeId?: number;
-  fields: ActivityRequestField[];
-  locationHierarchy: LocationHierarchy;
-};
+import type { ServiceCatalogCategory } from "@/app/types/concrete_entity/service-catalog";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.

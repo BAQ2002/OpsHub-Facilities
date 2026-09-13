@@ -1,15 +1,15 @@
 import "server-only";
 
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/src/domain/entities/activity";
-import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/src/domain/entities/activity";
+import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/app/types/concrete_entity/activity";
+import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/types/concrete_entity/activity";
 import { backendJson } from "@/src/server/api-client";
 import type {
   ActivityMarkerViewModel,
   HandlingTimeClockViewModel,
   HomePageViewModel,
   PlannedRequestFilterViewModel,
-} from "@/src/presentation/view-models/home-view-model";
+} from "@/app/types/navigation_entities/home";
 
 type HomeDateRange = {
   startDate: string;

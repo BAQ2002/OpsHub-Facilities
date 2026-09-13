@@ -1,17 +1,11 @@
 import "server-only";
 
-import type { RequestBoardData } from "@/src/domain/entities/request-board";
-import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
+import type { RequestBoardData } from "@/app/types/concrete_entity/request-board";
+import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app/types/navigation_entities/request-board";
 import { backendJson } from "@/src/server/api-client";
 import { apiChecklistRepository, apiMembershipRepository } from "@/src/server/repositories/api/api-repositories";
 
 export type RequestBoardFilters = { startDate: string; endDate: string };
-
-export type RequestBoardWorkspaceData = {
-  initialData: RequestBoardPageViewModel;
-  executors: Awaited<ReturnType<typeof apiMembershipRepository.findExecutorOptions>>;
-  checklistDefinitions: Awaited<ReturnType<typeof apiChecklistRepository.findActiveDefinitions>>;
-};
 
 /**
  * Obtém em paralelo o quadro, os executores e as definições de checklist necessários à página.

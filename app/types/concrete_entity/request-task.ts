@@ -1,4 +1,4 @@
-import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
+import type { ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
 
 export type VisitInput = {
   requestId: number;
@@ -11,8 +11,3 @@ export type VisitInput = {
 };
 
 export type UpdateVisitInput = Omit<VisitInput, "requestId"> & { visitId: number };
-
-export interface RequestTaskRepository {
-  createVisit(input: VisitInput): Promise<void>;
-  updateVisit(input: UpdateVisitInput): Promise<void>;
-}

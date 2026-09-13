@@ -1,12 +1,15 @@
 import "server-only";
-import type { ChecklistRepository } from "@/app/types/checklist";
-import type { MembershipRepository } from "@/app/types/membership";
-import type { OrganizationRepository } from "@/app/types/organization";
-import type { CreateRequestInput, RequestRepository } from "@/app/types/request";
-import type { RequestTaskMediaRepository } from "@/app/types/request-task-media";
-import type { RequestTaskRepository, UpdateVisitInput, VisitInput } from "@/app/types/request-task";
-import type { RequestServiceMediaRepository } from "@/app/types/request-service-media";
-import type { ActivityRequestFormFilters, ServiceCatalogRepository } from "@/app/types/service-catalog";
+import type { ChecklistRepository } from "@/app/types/contracts/checklist";
+import type { MembershipRepository } from "@/app/types/contracts/membership";
+import type { OrganizationRepository } from "@/app/types/contracts/organization";
+import type { CreateRequestInput } from "@/app/types/concrete_entity/request-input";
+import type { RequestRepository } from "@/app/types/contracts/request";
+import type { RequestTaskMediaRepository } from "@/app/types/contracts/request-task-media";
+import type { UpdateVisitInput, VisitInput } from "@/app/types/concrete_entity/request-task";
+import type { RequestTaskRepository } from "@/app/types/contracts/request-task";
+import type { RequestServiceMediaRepository } from "@/app/types/contracts/request-service-media";
+import type { ActivityRequestFormFilters } from "@/app/types/concrete_entity/service-catalog";
+import type { ServiceCatalogRepository } from "@/app/types/contracts/service-catalog";
 import { backendJson, backendResponse, serializeFile } from "@/src/server/api-client";
 
 const json = (body: unknown, method = "POST"): RequestInit => ({ method, body: JSON.stringify(body) });

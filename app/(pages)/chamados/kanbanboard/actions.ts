@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
+import type { ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
 import type { DateRange } from "@/src/server/validation/date-range";
 import { validateDateRange } from "@/src/server/validation/date-range";
 import { getRequestBoardPageData } from "@/src/server/services/request-board-service";
