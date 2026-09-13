@@ -1,5 +1,5 @@
 import { createActivityRequestAction } from "../actions";
-import ActivityRequestForm from "@/shared/ActivityRequestForm";
+import ActivityRequestForm from "@/app/componentes/ActivityRequestForm";
 
 const patioFields = [
   {

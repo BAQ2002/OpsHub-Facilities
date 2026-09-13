@@ -2,7 +2,7 @@ import "server-only";
 
 import type { ActivityRequestField, LocationHierarchy } from "@/src/domain/entities/activity-request-form";
 import { apiOrganizationRepository, apiServiceCatalogRepository } from "@/src/server/repositories/api/api-repositories";
-import type { ServiceCatalogCategory } from "@/src/server/repositories/service-catalog/service-catalog-repository";
+import type { ServiceCatalogCategory } from "@/app/types/service-catalog";
 
 export type ActivityRequestFormPageData = {
   title: string;

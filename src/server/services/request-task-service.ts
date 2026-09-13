@@ -2,7 +2,7 @@ import "server-only";
 
 import type { ChecklistSubmission } from "@/src/domain/entities/checklist";
 import { apiChecklistRepository, apiRequestTaskRepository } from "@/src/server/repositories/api/api-repositories";
-import type { UpdateVisitInput, VisitInput } from "@/src/server/repositories/request-task/request-task-repository";
+import type { UpdateVisitInput, VisitInput } from "@/app/types/request-task";
 
 /** Cria uma visita por meio da implementação HTTP de tarefas de solicitação. */
 export function createVisit(input: VisitInput): Promise<void> {

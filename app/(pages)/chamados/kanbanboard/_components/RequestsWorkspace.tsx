@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import DateRange, { type DateRangeValue } from "@/shared/DateRange";
+import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ChecklistDefinition } from "@/src/domain/entities/checklist";
 import type { RequestBoardPageViewModel } from "@/src/presentation/view-models/request-board-view-model";
-import { TrackingTabs } from "@/shared/TrackingTabs";
+import { TrackingTabs } from "@/app/componentes/TrackingTabs";
 import { filterRequestBoard } from "../actions";
 import { RequestBoard } from "./RequestBoard";
 

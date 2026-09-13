@@ -4,7 +4,7 @@ import type { RequestEntity } from "@/src/domain/entities/request";
 import type { MyRequestsPageViewModel } from "@/src/presentation/view-models/request-view-model";
 import type { RequestViewModel } from "@/src/presentation/view-models/request-view-model";
 import { apiRequestRepository } from "@/src/server/repositories/api/api-repositories";
-import type { CreateRequestInput, RequestFieldValue } from "@/src/server/repositories/request/request-repository";
+import type { CreateRequestInput, RequestFieldValue } from "@/app/types/request";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
