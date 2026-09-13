@@ -1,7 +1,7 @@
 import os
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from ....database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection
 from .schemas import Activity, CreateRequest, RequestItem
 from .service import create_request, get_activities, get_my_requests
 

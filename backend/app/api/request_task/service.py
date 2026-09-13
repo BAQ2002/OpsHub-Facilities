@@ -1,5 +1,5 @@
 import base64
-from ....database import DatabaseConnection, sql
+from ...database import DatabaseConnection, sql
 
 from ..checklist.schemas import ChecklistSubmission
 from ..checklist.service import add_to_visit

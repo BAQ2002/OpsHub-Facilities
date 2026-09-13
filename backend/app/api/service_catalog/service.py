@@ -1,4 +1,4 @@
-from ....database import DatabaseConnection, sql
+from ...database import DatabaseConnection, sql
 from .schemas import (
     CatalogCategory,
     FormField,

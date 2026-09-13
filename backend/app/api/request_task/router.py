@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
-from ....database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection
 from .schemas import VisitPayload
 from .service import get_media, save_visit
 
