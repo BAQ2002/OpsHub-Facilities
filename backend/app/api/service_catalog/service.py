@@ -85,16 +85,27 @@ def get_request_form(
         "MEDIA": "file",
     }
     for r in fields:
-        options = r["options"] if isinstance(r["options"], list) else []
+        field_type = str(r["type"] or "TEXT").upper()
+        raw_options = r["options"]
+        select_options = raw_options if isinstance(raw_options, list) else []
+        media_options = (
+            raw_options
+            if field_type == "MEDIA" and isinstance(raw_options, dict)
+            else None
+        )
         mapped.append(
             FormField(
-                label=r["name"],
+                label=r["name"] or "Campo adicional",
                 name=f'service_field_{r["id"]}',
-                type=type_map.get(r["type"].upper(), "text"),
-                options=[FormOption(label=str(v), value=str(v)) for v in options]
+                type=type_map.get(field_type, "text"),
+                options=[
+                    FormOption(label=str(value), value=str(value))
+                    for value in select_options
+                ]
                 or None,
                 required=bool(r["required"]),
-                fullWidth=r["type"].upper() in ("TEXT", "MEDIA"),
+                fullWidth=field_type in ("TEXT", "MEDIA"),
+                mediaOptions=media_options,
             )
         )
     return RequestFormData(
