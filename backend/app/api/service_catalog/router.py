@@ -13,12 +13,10 @@ def catalog(connection: DatabaseConnection = Depends(get_connection)):
 
 @router.get("/request-form", response_model=RequestFormData)
 def request_form(
-    service_category: str | None = None,
-    service_type: str | None = None,
-    service_type_id: int | None = None,
+    service_type_id: int,
     connection: DatabaseConnection = Depends(get_connection),
 ):
-    return get_request_form(connection, service_category, service_type, service_type_id)
+    return get_request_form(connection, service_type_id)
 
 
 @router.get("/media/{media_id}")

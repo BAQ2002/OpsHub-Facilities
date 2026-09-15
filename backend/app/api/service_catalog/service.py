@@ -38,11 +38,9 @@ def get_catalog(connection: DatabaseConnection) -> list[CatalogCategory]:
 
 def get_request_form(
     connection: DatabaseConnection,
-    category: str | None,
-    service_type: str | None,
-    service_type_id: int | None,
+    service_type_id: int,
 ) -> RequestFormData:
-    types = (
+    selected = (
         connection.execute(
             sql("""SELECT ST.ID,
        ST.NAME,
@@ -50,20 +48,14 @@ def get_request_form(
     FROM SERVICE_TYPE ST
         JOIN SERVICE_CATEGORY SC
             ON SC.ID=ST.ID_SERVICE_CATEGORY
-    WHERE (:category IS NULL OR SC.NAME=:category)
-    ORDER BY SC.NAME, ST.NAME"""),
-            {"category": category},
+    WHERE ST.ID=:service_type_id"""),
+            {"service_type_id": service_type_id},
         )
         .mappings()
-        .all()
-    )
-    selected = (
-        next((r for r in types if service_type_id and r["id"] == service_type_id), None)
-        or next((r for r in types if service_type and r["name"] == service_type), None)
-        or (types[0] if types else None)
+        .one_or_none()
     )
     if not selected:
-        return RequestFormData(serviceTypeOptions=[], fields=[])
+        return RequestFormData(fields=[])
     fields = connection.execute(
         sql("""SELECT ID,
        NAME,
@@ -112,9 +104,6 @@ def get_request_form(
         serviceCategoryName=selected["category"],
         serviceTypeId=selected["id"],
         serviceTypeName=selected["name"],
-        serviceTypeOptions=[
-            FormOption(label=r["name"], value=r["name"]) for r in types
-        ],
         fields=mapped,
     )
 

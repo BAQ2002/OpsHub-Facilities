@@ -5,8 +5,6 @@ import { notFound } from "next/navigation";
 
 type ChamadoRequestPageProps = {
   searchParams: Promise<{
-    service_category?: string;
-    service_type?: string;
     service_type_id?: string;
   }>;
 };
@@ -23,11 +21,9 @@ type ChamadoRequestPageProps = {
 export default async function ChamadoRequestPage({ searchParams }: ChamadoRequestPageProps) {
   const params = await searchParams;
   const serviceTypeId = Number(params.service_type_id);
-  const formData = await getChamadoRequestFormPageData({
-    serviceCategory: params.service_category,
-    serviceType: params.service_type,
-    serviceTypeId: Number.isInteger(serviceTypeId) && serviceTypeId > 0 ? serviceTypeId : undefined,
-  });
+  if (!Number.isInteger(serviceTypeId) || serviceTypeId <= 0) notFound();
+
+  const formData = await getChamadoRequestFormPageData({ serviceTypeId });
 
   if (!formData.serviceTypeId) notFound();
 

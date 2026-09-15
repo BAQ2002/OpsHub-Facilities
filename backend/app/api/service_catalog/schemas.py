@@ -32,5 +32,4 @@ class RequestFormData(BaseModel):
     serviceCategoryName: str | None = None
     serviceTypeId: int | None = None
     serviceTypeName: str | None = None
-    serviceTypeOptions: list[FormOption]
     fields: list[FormField]

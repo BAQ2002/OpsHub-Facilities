@@ -26,20 +26,18 @@ export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategor
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getChamadoRequestFormPageData(params: {
-  serviceCategory?: string;
-  serviceType?: string;
-  serviceTypeId?: number;
+  serviceTypeId: number;
 }): Promise<ActivityRequestFormPageData> {
   const [dynamicData, locationHierarchy] = await Promise.all([
     apiServiceCatalogRepository.findRequestFormData(params),
     apiOrganizationRepository.findLocationHierarchy(),
   ]);
-  const serviceTypeName = dynamicData.serviceTypeName ?? params.serviceType;
-  const serviceCategoryName = dynamicData.serviceCategoryName ?? params.serviceCategory;
 
   return {
-    title: serviceTypeName ? `Nova request: ${serviceTypeName}` : "Nova request: Chamado",
-    subtitle: ["request_type Chamado", serviceCategoryName, serviceTypeName].filter(Boolean).join(" · "),
+    title: dynamicData.serviceTypeName ? `Nova request: ${dynamicData.serviceTypeName}` : "Nova request: Chamado",
+    subtitle: ["request_type Chamado", dynamicData.serviceCategoryName, dynamicData.serviceTypeName]
+      .filter(Boolean)
+      .join(" · "),
     serviceTypeId: dynamicData.serviceTypeId,
     locationHierarchy,
     fields: [
