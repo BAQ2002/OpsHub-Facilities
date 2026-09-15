@@ -87,9 +87,7 @@ export const apiServiceCatalogRepository = {
   findCatalog: (): Promise<ServiceCatalogCategory[]> => backendJson("/service-catalog"),
   findRequestFormData: (filters: ActivityRequestFormFilters): Promise<ActivityRequestFormData> => {
     const query = new URLSearchParams();
-    if (filters.serviceCategory) query.set("service_category", filters.serviceCategory);
-    if (filters.serviceType) query.set("service_type", filters.serviceType);
-    if (filters.serviceTypeId) query.set("service_type_id", String(filters.serviceTypeId));
+    query.set("service_type_id", String(filters.serviceTypeId));
     return backendJson(`/service-catalog/request-form?${query}`);
   },
 };

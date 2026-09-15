@@ -18,12 +18,17 @@ class FakeCursor:
     def fetchall(self):
         return list(self.rows)
 
+    def fetchone(self):
+        return next(self.rows, None)
+
 
 class RecordingConnection:
     def __init__(self, result_sets: list[list[dict[str, Any]]]) -> None:
         self.result_sets = iter(result_sets)
+        self.executions = []
 
     def execute(self, statement: str, parameters=None) -> QueryResult:
+        self.executions.append((statement, parameters))
         return QueryResult(FakeCursor(next(self.result_sets)))
 
 
@@ -44,9 +49,11 @@ class ServiceCatalogServiceTests(unittest.TestCase):
             ]
         )
 
-        result = get_request_form(connection, "ARTÍFICE", "Outros", 2)
+        result = get_request_form(connection, 2)
 
         self.assertEqual(result.serviceTypeId, 2)
+        self.assertIn("WHERE ST.ID=%(service_type_id)s", connection.executions[0][0])
+        self.assertEqual(connection.executions[0][1], {"service_type_id": 2})
         self.assertEqual(result.fields[0].type, "file")
         self.assertEqual(
             result.fields[0].mediaOptions,
@@ -70,11 +77,20 @@ class ServiceCatalogServiceTests(unittest.TestCase):
             ]
         )
 
-        result = get_request_form(connection, "ARTÍFICE", "Outros", 2)
+        result = get_request_form(connection, 2)
 
         self.assertEqual(result.fields[0].label, "Campo adicional")
         self.assertEqual(result.fields[0].type, "text")
         self.assertFalse(result.fields[0].required)
+
+    def test_request_form_does_not_fall_back_when_service_type_is_missing(self):
+        connection = RecordingConnection([[]])
+
+        result = get_request_form(connection, 999)
+
+        self.assertIsNone(result.serviceTypeId)
+        self.assertEqual(result.fields, [])
+        self.assertEqual(len(connection.executions), 1)
 
 
 if __name__ == "__main__":
