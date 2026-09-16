@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from ...database import DatabaseConnection, get_connection
+from ..media_response import media_response
 from .schemas import CatalogCategory, RequestFormData
-from .service import get_catalog, get_request_form
+from .service import get_catalog, get_request_form, get_request_media
 
 router = APIRouter()
 
@@ -23,14 +24,10 @@ def request_form(
 def request_media(
     media_id: int, connection: DatabaseConnection = Depends(get_connection)
 ):
-    from fastapi import HTTPException, Response
-    from .service import get_request_media
+    if media_id <= 0:
+        raise HTTPException(400, "Identificador de mídia inválido.")
 
     row = get_request_media(connection, media_id)
     if not row:
         raise HTTPException(404, "Mídia não encontrada.")
-    return Response(
-        content=row["content"],
-        media_type=row["mime_type"],
-        headers={"Content-Disposition": f'inline; filename="{row["file_name"]}"'},
-    )
+    return media_response(row, max_age=300)

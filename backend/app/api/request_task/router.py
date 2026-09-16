@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from ...database import DatabaseConnection, get_connection
+from ..media_response import media_response
 from .schemas import VisitPayload
 from .service import get_media, save_visit
 
@@ -25,11 +26,10 @@ def update(
 
 @router.get("/media/{media_id}")
 def media(media_id: int, connection: DatabaseConnection = Depends(get_connection)):
+    if media_id <= 0:
+        raise HTTPException(400, "Identificador de mídia inválido.")
+
     row = get_media(connection, media_id)
     if not row:
         raise HTTPException(404, "Mídia não encontrada.")
-    return Response(
-        content=row["content"],
-        media_type=row["mime_type"],
-        headers={"Content-Disposition": f'inline; filename="{row["file_name"]}"'},
-    )
+    return media_response(row, max_age=3600)
