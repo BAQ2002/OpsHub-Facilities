@@ -7,12 +7,12 @@ import styles from "./Sidebar.module.css";
 const facilitiesSubItems = [
   {
     label: "Acompanhamento",
-    href: "/chamados/dashboard",
+    href: "/pages/chamados/dashboard",
     icon: <ActivityIcon />,
   },
   {
     label: "Minhas solicitações",
-    href: "/minhas-solicitacoes",
+    href: "/pages/minhas-solicitacoes",
     icon: <RequestsIcon />,
   },
 ];
@@ -27,7 +27,7 @@ const facilitiesSubItems = [
  */
 export default function Sidebar() {
   const pathname = usePathname();
-  const isFacilitiesHome = pathname === "/home";
+  const isFacilitiesHome = pathname === "/pages/home";
 
   return (
     <aside data-ui="sidebar" className={styles.sidebar}>
@@ -51,7 +51,7 @@ export default function Sidebar() {
       <nav data-ui="sidebar-navigation" className={styles.nav} aria-label="Menu principal">
         <section data-ui="sidebar-module" className={styles.moduleGroup} aria-label="Módulo Facilities">
           <Link
-            href="/home"
+            href="/pages/home"
             className={`${styles.moduleHeader} ${isFacilitiesHome ? styles.moduleHeaderActive : ""}`}
             aria-current={isFacilitiesHome ? "page" : undefined}
           >
@@ -67,8 +67,8 @@ export default function Sidebar() {
           <div data-ui="sidebar-subnavigation" className={styles.subNav}>
             {facilitiesSubItems.map((item) => {
               const isActive =
-                item.href === "/chamados/dashboard"
-                  ? pathname.startsWith("/chamados/")
+                item.href === "/pages/chamados/dashboard"
+                  ? pathname.startsWith("/pages/chamados/")
                   : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (

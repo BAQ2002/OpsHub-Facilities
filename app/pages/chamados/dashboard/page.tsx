@@ -1,4 +1,4 @@
-import { getActivityTrackingPageData } from "@/src/server/services/activity-tracking-service";
+import { getActivityTrackingPageData } from "@/app/pages/services/activity-tracking-service";
 import { ActivityTrackingDashboard } from "./_components/ActivityTrackingDashboard";
 
 export const dynamic = "force-dynamic";

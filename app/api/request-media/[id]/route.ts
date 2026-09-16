@@ -1,4 +1,4 @@
-import { getRequestMedia } from "@/src/server/services/media-service";
+import { getRequestMedia } from "@/app/pages/services/media-service";
 
 export const dynamic = "force-dynamic";
 

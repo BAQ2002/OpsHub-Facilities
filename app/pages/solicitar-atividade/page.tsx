@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getServiceCatalogPageData } from "@/src/server/services/activity-request-form-service";
+import { getServiceCatalogPageData } from "@/app/pages/services/activity-request-form-service";
 
 export const dynamic = "force-dynamic";
 
@@ -72,7 +72,7 @@ export default async function SolicitarAtividadePage() {
                   <Link
                     data-ui="service-type-link"
                     className="group flex min-h-11 items-center justify-between gap-4 rounded-[4px] border border-slate-100 bg-white px-4 py-3 text-sm font-medium text-slate-800 no-underline shadow-[0_4px_14px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-teal-200 hover:text-teal-700 hover:shadow-[0_8px_22px_rgba(15,23,42,0.14)] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                    href={`/solicitar-atividade/chamado?service_type_id=${serviceType.id}`}
+                    href={`/pages/solicitar-atividade/chamado?service_type_id=${serviceType.id}`}
                     key={serviceType.id}
                     title={serviceType.name}
                   >

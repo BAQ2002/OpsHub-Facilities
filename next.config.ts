@@ -3,15 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      { source: "/", destination: "/home", permanent: true },
+      { source: "/", destination: "/pages/home", permanent: true },
       {
         source: "/acompanhamento-atividades",
-        destination: "/chamados/dashboard",
+        destination: "/pages/chamados/dashboard",
         permanent: true,
       },
       {
         source: "/acompanhamento-atividades/requests",
-        destination: "/chamados/kanbanboard",
+        destination: "/pages/chamados/kanbanboard",
         permanent: true,
       },
     ];

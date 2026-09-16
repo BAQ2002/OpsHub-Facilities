@@ -3,7 +3,7 @@ import FacilitiesMap from "./_components/FacilitiesMap";
 import { cookies } from "next/headers";
 import HomeDateRange from "./_components/HomeDateRange";
 
-import { getHomePageData } from "@/src/server/services/home-service";
+import { getHomePageData } from "@/app/pages/services/home-service";
 import { activityStatuses } from "@/app/types/concrete_entity/activity";
 
 const sevenSegmentPaths = [
@@ -159,11 +159,11 @@ export default async function Home({
             <div data-ui="facilities-quick-actions" className="lg:col-span-1 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]">
               <div className="grid gap-3 sm:grid-cols-1">
                 <ActionCard
-                  href="/solicitar-atividade"
+                  href="/pages/solicitar-atividade"
                   label="Nova solicitação"
                 />
                 <ActionCard
-                  href="/minhas-solicitacoes"
+                  href="/pages/minhas-solicitacoes"
                   label="Minhas requests"
                 />
               </div>
@@ -405,7 +405,7 @@ function buildBusinessFilterHref(
   if (business !== "all") params.set("business", business);
 
   const query = params.toString();
-  return query ? `/home?${query}` : "/home";
+  return query ? `/pages/home?${query}` : "/pages/home";
 }
 
 /**
