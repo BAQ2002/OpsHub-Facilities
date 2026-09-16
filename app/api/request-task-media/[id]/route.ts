@@ -1,4 +1,4 @@
-import { getRequestTaskMedia } from "@/src/server/services/media-service";
+import { getRequestTaskMedia } from "@/app/pages/services/media-service";
 
 export const dynamic = "force-dynamic";
 

@@ -50,7 +50,7 @@ export default function ActivityRequestForm({
         <header data-ui="activity-request-header" className="mb-4 flex items-center gap-4 rounded-[20px] border border-slate-100 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]">
           <Link
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl leading-none text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-            href="/solicitar-atividade"
+            href="/pages/solicitar-atividade"
             aria-label="Voltar para nova request"
           >
             ‹
@@ -90,7 +90,7 @@ export default function ActivityRequestForm({
           <div data-ui="activity-request-actions" className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <Link
               className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
-              href="/solicitar-atividade"
+              href="/pages/solicitar-atividade"
             >
               Cancelar
             </Link>

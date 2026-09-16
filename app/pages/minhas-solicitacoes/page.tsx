@@ -1,5 +1,5 @@
 import type { RequestEntity } from "@/app/types/concrete_entity/request";
-import { getMyRequestsPageData } from "@/src/server/services/request-service";
+import { getMyRequestsPageData } from "@/app/pages/services/request-service";
 
 export const dynamic = "force-dynamic";
 

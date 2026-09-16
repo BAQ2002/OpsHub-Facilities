@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getHomePageData } from "@/src/server/services/home-service";
+import { getHomePageData } from "@/app/pages/services/home-service";
 import { validateDateRange, type DateRange } from "@/src/server/validation/date-range";
 
 export async function applyHomeDateRange(range: DateRange, statuses: string[], selectedBusiness: string) {
