@@ -437,7 +437,7 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                     "id": x["id"],
                     "fileName": x["file_name"] or "media",
                     "mimeType": x["mime_type"],
-                    "url": f'/api/request-task-media/{x["id"]}',
+                    "url": f'/api/v1/request-tasks/media/{x["id"]}',
                 }
                 for x in connection.execute(
                     sql("""SELECT ID,
@@ -562,7 +562,7 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
                 "fileName": x["file_name"] or "media",
                 "mimeType": x["mime_type"],
                 "fileSize": x["file_size"],
-                "url": f'/api/request-media/{x["id"]}',
+                "url": f'/api/v1/service-catalog/media/{x["id"]}',
             }
             for x in connection.execute(
                 sql("""SELECT M.ID,

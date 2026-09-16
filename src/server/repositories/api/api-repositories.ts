@@ -5,15 +5,13 @@ import type { LocationHierarchy } from "@/app/types/concrete_entity/activity-req
 import type { MembershipOption } from "@/app/types/concrete_entity/membership";
 import type { CreateRequestInput } from "@/app/types/concrete_entity/request-input";
 import type { RequestEntity } from "@/app/types/concrete_entity/request";
-import type { RequestMediaContent } from "@/app/types/concrete_entity/request-service-media";
-import type { RequestTaskMediaContent } from "@/app/types/concrete_entity/request-task-media";
 import type { UpdateVisitInput, VisitInput } from "@/app/types/concrete_entity/request-task";
 import type {
   ActivityRequestFormData,
   ActivityRequestFormFilters,
   ServiceCatalogCategory,
 } from "@/app/types/concrete_entity/service-catalog";
-import { backendJson, backendResponse, serializeFile } from "@/src/server/api-client";
+import { backendJson, serializeFile } from "@/src/server/api-client";
 
 const json = (body: unknown, method = "POST"): RequestInit => ({ method, body: JSON.stringify(body) });
 
@@ -63,24 +61,6 @@ export const apiRequestTaskRepository = {
   updateVisit: async (input: UpdateVisitInput): Promise<void> => {
     await backendJson(`/request-tasks/${input.visitId}`, json(await visitBody(input), "PUT"));
   },
-};
-
-async function media(path: string): Promise<RequestMediaContent | RequestTaskMediaContent | null> {
-  const response = await backendResponse(path);
-  if (!response.ok) return null;
-  return {
-    content: new Uint8Array(await response.arrayBuffer()),
-    fileName: "media",
-    mimeType: response.headers.get("content-type") ?? "application/octet-stream",
-  };
-}
-
-export const apiRequestTaskMediaRepository = {
-  findById: (id: number): Promise<RequestTaskMediaContent | null> => media(`/request-tasks/media/${id}`),
-};
-
-export const apiRequestServiceMediaRepository = {
-  findById: (id: number): Promise<RequestMediaContent | null> => media(`/service-catalog/media/${id}`),
 };
 
 export const apiServiceCatalogRepository = {

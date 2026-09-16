@@ -20,12 +20,6 @@ export async function backendJson<T>(path: string, init?: RequestInit): Promise<
   return response.json() as Promise<T>;
 }
 
-export async function backendResponse(path: string): Promise<Response> {
-  const response = await fetch(`${getBackendUrl()}/api/v1${path}`, { cache: "no-store" });
-  if (!response.ok) return new Response(null, { status: response.status });
-  return response;
-}
-
 export async function serializeFile(file: File) {
   return { fileName: file.name, mimeType: file.type || "application/octet-stream", contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64") };
 }

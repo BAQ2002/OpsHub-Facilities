@@ -11,6 +11,8 @@ Next.js (`app`, `shared`, `src/server`)
   -> psycopg / PostgreSQL
 ```
 
+As mídias são servidas diretamente pelo FastAPI em URLs de mesma origem sob `/api/v1`. Em desenvolvimento, o Next.js encaminha somente essas rotas ao endereço interno configurado em `BACKEND_API_URL`; em produção, o proxy de borda pode aplicar o mesmo roteamento.
+
 A API mantém os módulos de domínio diretamente em `backend/app/api` e é organizada em `checklist`, `membership`, `organization`, `request`, `request_task` e `service_catalog`. Cada domínio separa contratos (`schemas.py`), regras e persistência (`service.py`) e HTTP (`router.py`). Os módulos Python usam `_` onde hífens não são identificadores válidos; as URLs públicas preservam `/request-tasks` e `/service-catalog`.
 
 ## Configuração
