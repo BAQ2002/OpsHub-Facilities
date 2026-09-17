@@ -6,7 +6,7 @@ from typing import Any
 os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
 
 from backend.app.database import QueryResult
-from backend.app.api.request.service import get_tracking
+from backend.app.api.request.service import get_my_requests, get_tracking
 
 
 class FakeCursor:
@@ -27,13 +27,25 @@ class RecordingConnection:
     def __init__(self, result_sets: list[list[dict[str, Any]]]) -> None:
         self.result_sets = iter(result_sets)
         self.statements: list[str] = []
+        self.parameters: list[dict[str, Any] | None] = []
 
     def execute(self, statement: str, parameters=None) -> QueryResult:
         self.statements.append(statement)
+        self.parameters.append(parameters)
         return QueryResult(FakeCursor(next(self.result_sets)))
 
 
 class RequestServiceTests(unittest.TestCase):
+    def test_my_requests_requires_member_filter(self):
+        connection = RecordingConnection([[]])
+
+        result = get_my_requests(connection, 1)
+
+        self.assertEqual(result, [])
+        self.assertIn("WHERE R.ID_MEMBER_REQUESTER=%(member)s", connection.statements[0])
+        self.assertNotIn("%(member)s IS NULL", connection.statements[0])
+        self.assertEqual(connection.parameters[0], {"member": 1})
+
     def test_tracking_casts_optional_and_array_parameters(self):
         connection = RecordingConnection(
             [

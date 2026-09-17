@@ -1,7 +1,6 @@
-import os
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from ...database import DatabaseConnection, get_connection
+from ...database import DatabaseConnection, get_connection, settings
 from .schemas import Activity, CreateRequest, RequestItem
 from .service import create_request, get_activities, get_my_requests
 
@@ -10,14 +9,7 @@ router = APIRouter()
 
 @router.get("/mine", response_model=list[RequestItem])
 def mine(connection: DatabaseConnection = Depends(get_connection)):
-    return get_my_requests(
-        connection,
-        (
-            int(os.environ["CURRENT_MEMBER_ID"])
-            if os.getenv("CURRENT_MEMBER_ID")
-            else None
-        ),
-    )
+    return get_my_requests(connection, settings.current_member_id)
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
