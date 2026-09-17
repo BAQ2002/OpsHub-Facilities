@@ -5,7 +5,7 @@ import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ActivityTrackingFilters, ChartItem } from "@/app/types/concrete_entity/dashboard";
 import type { ActivityTrackingPageViewModel } from "@/app/types/navigation_entities/activity-tracking";
 import { filterActivityTracking } from "../actions";
-import { TrackingTabs } from "@/app/componentes/TrackingTabs";
+import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
 
 /**
  * Acionada pelo Next.js durante a renderização da rota correspondente.
