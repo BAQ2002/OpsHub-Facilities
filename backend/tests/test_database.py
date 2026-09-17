@@ -1,10 +1,13 @@
 import os
 import unittest
 from typing import Any
+from unittest.mock import patch
+
+from pydantic import ValidationError
 
 os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
 
-from backend.app.database import DatabaseConnection, QueryResult, sql
+from backend.app.database import DatabaseConnection, QueryResult, Settings, sql
 
 
 class FakeCursor:
@@ -38,6 +41,23 @@ class FakeConnection:
 
 
 class DatabaseTests(unittest.TestCase):
+    def test_settings_default_to_member_one(self):
+        with patch.dict(os.environ, {}, clear=True):
+            settings = Settings(
+                database_url="postgresql://test:test@localhost/test",
+                _env_file=None,
+            )
+
+        self.assertEqual(settings.current_member_id, 1)
+
+    def test_settings_reject_non_positive_member_id(self):
+        with self.assertRaises(ValidationError):
+            Settings(
+                database_url="postgresql://test:test@localhost/test",
+                current_member_id=0,
+                _env_file=None,
+            )
+
     def test_sql_translates_named_parameters_without_changing_postgres_casts(self):
         statement = sql("SELECT :value::integer, :other_value")
 

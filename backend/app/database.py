@@ -4,11 +4,13 @@ from typing import Any
 
 from psycopg import Connection
 from psycopg.rows import dict_row
+from pydantic import PositiveInt
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     database_url: str
+    current_member_id: PositiveInt = 1
     model_config = SettingsConfigDict(env_file=(".env", ".env.local"), extra="ignore")
 
 

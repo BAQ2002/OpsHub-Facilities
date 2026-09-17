@@ -1,15 +1,14 @@
 import base64
 import json
-import os
 from datetime import date
-from ...database import DatabaseConnection, sql
+from ...database import DatabaseConnection, settings, sql
 from .schemas import Activity, CreateRequest, RequestItem
 
 CLOSED = ("Concluída", "Concluida", "Cancelada")
 
 
 def get_my_requests(
-    connection: DatabaseConnection, member_id: int | None
+    connection: DatabaseConnection, member_id: int
 ) -> list[RequestItem]:
     rows = connection.execute(
         sql("""SELECT R.ID,
@@ -21,7 +20,7 @@ def get_my_requests(
             ON RS.ID=R.ID_REQUEST_STATUS
         LEFT JOIN SERVICE_TYPE ST
             ON ST.ID=R.ID_SERVICE_TYPE
-    WHERE (:member IS NULL OR R.ID_MEMBER_REQUESTER=:member)
+    WHERE R.ID_MEMBER_REQUESTER=:member
     ORDER BY R.CREATED_DATE DESC NULLS LAST,R.ID DESC"""),
         {"member": member_id},
     ).mappings()
@@ -54,7 +53,7 @@ def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
     WHERE DESCRIPTION IN ('Em aberto','Aberto')
     ORDER BY ID
     LIMIT 1""")).scalar_one_or_none() or 1
-    requester = int(os.getenv("CURRENT_MEMBER_ID", "8"))
+    requester = settings.current_member_id
     request_id = connection.execute(
         sql("""INSERT INTO REQUEST (
     ID_REQUEST_TYPE,
