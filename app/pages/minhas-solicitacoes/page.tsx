@@ -11,8 +11,21 @@ export const dynamic = "force-dynamic";
  *
  * @returns O elemento React que representa esta interface.
  */
-export default async function MyRequestsPage() {
+export default async function MyRequestsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ busca?: string | string[]; status?: string | string[] }>;
+}) {
   const { openRequests, closedRequests } = await getMyRequestsPageData();
+  const params = await searchParams;
+  const search = singleParam(params?.busca).trim();
+  const status = singleParam(params?.status);
+  const matchesSearch = (request: RequestEntity) => {
+    const term = normalizeSearch(search);
+    return !term || normalizeSearch(`#${request.id} ${request.title}`).includes(term);
+  };
+  const filteredOpenRequests = status === "closed" ? [] : openRequests.filter(matchesSearch);
+  const filteredClosedRequests = status === "open" ? [] : closedRequests.filter(matchesSearch);
 
   return (
     <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
@@ -31,9 +44,11 @@ export default async function MyRequestsPage() {
           </div>
         </header>
 
-        <section
+        <form
+          action="/pages/minhas-solicitacoes"
+          method="get"
           data-ui="my-requests-filters"
-          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
+          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto_auto]"
           aria-label="Busca e filtros das minhas requests"
         >
           <label className="relative block">
@@ -44,24 +59,36 @@ export default async function MyRequestsPage() {
             <input
               className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
               type="search"
+              name="busca"
+              defaultValue={search}
               placeholder="Buscar por request"
             />
           </label>
 
-          <button
-            className="inline-flex h-11 items-center justify-center gap-3 rounded-xl bg-teal-600 px-7 text-sm font-bold uppercase text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 md:min-w-[250px]"
-            type="button"
-          >
-            <FilterIcon />
-            Filtrar por request_status
-          </button>
-        </section>
+          <label className="flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+            <span className="sr-only">Filtrar por request status</span>
+            <select className="cursor-pointer bg-transparent outline-none" name="status" defaultValue={status}>
+              <option className="text-slate-900" value="">Todos os status</option>
+              <option className="text-slate-900" value="open">Requests abertas</option>
+              <option className="text-slate-900" value="closed">Requests fechadas</option>
+            </select>
+          </label>
+          <button className="inline-flex h-11 items-center justify-center gap-3 rounded-xl bg-teal-600 px-7 text-sm font-bold uppercase text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" type="submit"><FilterIcon /> Filtrar</button>
+        </form>
 
-        <RequestGroup title="Requests abertas" requests={openRequests} />
-        <RequestGroup title="Requests fechadas" requests={closedRequests} className="mt-10" />
+        <RequestGroup title="Requests abertas" requests={filteredOpenRequests} />
+        <RequestGroup title="Requests fechadas" requests={filteredClosedRequests} className="mt-10" />
       </div>
     </section>
   );
+}
+
+function singleParam(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
+}
+
+function normalizeSearch(value: string): string {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
 }
 
 /**
@@ -97,6 +124,11 @@ function RequestGroup({
         {requests.map((request) => (
           <RequestCard key={request.id} request={request} />
         ))}
+        {requests.length === 0 ? (
+          <p className="rounded-[16px] border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
+            Nenhuma request encontrada com os filtros informados.
+          </p>
+        ) : null}
       </div>
     </section>
   );

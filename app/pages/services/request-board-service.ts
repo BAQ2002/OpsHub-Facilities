@@ -5,7 +5,7 @@ import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app
 import { backendJson } from "@/src/server/api-client";
 import { apiChecklistRepository, apiMembershipRepository } from "@/src/server/repositories/api/api-repositories";
 
-export type RequestBoardFilters = { startDate: string; endDate: string };
+export type RequestBoardFilters = { startDate: string; endDate: string; search?: string };
 
 /**
  * Obtém em paralelo o quadro, os executores e as definições de checklist necessários à página.
@@ -36,6 +36,8 @@ export async function getRequestBoardPageData(filters: RequestBoardFilters): Pro
     start_date: filters.startDate,
     end_date: filters.endDate,
   });
+  const search = filters.search?.trim();
+  if (search) query.set("search", search);
   const data = await backendJson<RequestBoardData>(`/requests/board?${query}`);
   return mapRequestBoardDataToViewModel(data);
 }

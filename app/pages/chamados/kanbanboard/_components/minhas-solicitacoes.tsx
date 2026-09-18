@@ -23,11 +23,18 @@ type Executor = { id: number; name: string };
 export function MinhasSolicitacoes({ initialData, initialRange, executors, checklistDefinitions }: { initialData: RequestBoardPageViewModel; initialRange: DateRangeValue; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
   const [data, setData] = useState(initialData);
   const [range, setRange] = useState(initialRange);
+  const [search, setSearch] = useState("");
+  const [selectedStatusIds, setSelectedStatusIds] = useState<number[]>([]);
+  const [showStatusFilters, setShowStatusFilters] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function applyFilters() {
-    startTransition(async () => setData(await filterRequestBoard(range)));
+    startTransition(async () => setData(await filterRequestBoard({ ...range, search })));
   }
+
+  const visibleColumns = selectedStatusIds.length
+    ? data.columns.filter((column) => selectedStatusIds.includes(column.id))
+    : data.columns;
 
   return (
     <section data-ui="requests-workspace-page" className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
@@ -40,14 +47,20 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
           </div>
         </div>
 
-        <section data-ui="requests-workspace-filters" className="mt-5 flex flex-wrap items-center gap-3 rounded-md bg-white/80 px-4 py-3" aria-label="Busca de chamados">
+        <section data-ui="requests-workspace-filters" className="relative mt-5 flex flex-wrap items-center gap-3 rounded-md bg-white/80 px-4 py-3" aria-label="Busca de chamados">
           <DateRange {...range} disabled={isPending} onChange={setRange} />
           <label className="min-w-64 flex-1 text-xs font-medium uppercase text-slate-500">
             <span className="sr-only">Buscar chamado</span>
-            <input className="w-full bg-transparent outline-none placeholder:text-slate-500" placeholder="BUSCAR CHAMADO" />
+            <input className="w-full bg-transparent outline-none placeholder:text-slate-500" name="search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") applyFilters(); }} placeholder="BUSCAR CHAMADO" />
           </label>
-          <button className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-6 py-3 text-sm text-blue-600" type="button"><FilterIcon /> Filtros</button>
+          <button className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-6 py-3 text-sm text-blue-600" type="button" aria-expanded={showStatusFilters} onClick={() => setShowStatusFilters((visible) => !visible)}><FilterIcon /> Filtros{selectedStatusIds.length ? ` (${selectedStatusIds.length})` : ""}</button>
           <button className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-8 py-3 text-sm font-semibold text-white disabled:opacity-60" type="button" disabled={isPending} onClick={applyFilters}><SearchIcon /> {isPending ? "Buscando..." : "Buscar"}</button>
+          {showStatusFilters ? (
+            <fieldset className="w-full rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+              <legend className="px-1 text-xs font-semibold uppercase text-slate-500">Status exibidos</legend>
+              <div className="flex flex-wrap gap-4">{data.columns.map((column) => <label className="flex items-center gap-2 text-sm" key={column.id}><input className="h-4 w-4 accent-blue-600" type="checkbox" checked={selectedStatusIds.includes(column.id)} onChange={() => setSelectedStatusIds((ids) => ids.includes(column.id) ? ids.filter((id) => id !== column.id) : [...ids, column.id])} />{column.title}</label>)}</div>
+            </fieldset>
+          ) : null}
         </section>
 
         <div data-ui="requests-workspace-view-options" className="my-4 flex flex-wrap items-center justify-between gap-3">
@@ -58,7 +71,7 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
           <label className="flex items-center gap-6 text-sm text-slate-500">Ordenar por:<select className="min-w-48 border-b border-slate-300 bg-transparent px-2 py-2 outline-none" defaultValue="recent"><option value="recent">Últimos Chamados</option></select></label>
         </div>
 
-        {data.columns.length > 0 ? <RequestBoard columns={data.columns} executors={executors} checklistDefinitions={checklistDefinitions} /> : <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">Nenhum chamado encontrado no período selecionado.</p>}
+        {visibleColumns.length > 0 ? <RequestBoard columns={visibleColumns} executors={executors} checklistDefinitions={checklistDefinitions} /> : <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">Nenhum chamado encontrado para os filtros informados.</p>}
       </div>
     </section>
   );

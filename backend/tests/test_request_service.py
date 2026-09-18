@@ -6,7 +6,7 @@ from typing import Any
 os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
 
 from backend.app.database import QueryResult
-from backend.app.api.request.service import get_my_requests, get_tracking
+from backend.app.api.request.service import get_board, get_my_requests, get_tracking
 
 
 class FakeCursor:
@@ -91,6 +91,22 @@ class RequestServiceTests(unittest.TestCase):
             executed_sql,
         )
         self.assertEqual(result["summaryCards"][0]["value"], "0")
+
+    def test_board_applies_search_to_request_fields(self):
+        connection = RecordingConnection([[], []])
+
+        result = get_board(
+            connection,
+            date(2026, 1, 1),
+            date(2026, 9, 18),
+            "  bomba  ",
+        )
+
+        self.assertEqual(result, {"statuses": [], "requests": []})
+        self.assertIn("CAST(R.ID AS TEXT) ILIKE %(search_pattern)s", connection.statements[1])
+        self.assertIn("COALESCE(ST.NAME,'') ILIKE %(search_pattern)s", connection.statements[1])
+        self.assertEqual(connection.parameters[1]["search"], "bomba")
+        self.assertEqual(connection.parameters[1]["search_pattern"], "%bomba%")
 
 
 if __name__ == "__main__":
