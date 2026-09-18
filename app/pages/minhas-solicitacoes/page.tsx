@@ -1,0 +1,317 @@
+import type { RequestEntity } from "@/app/types/concrete_entity/request";
+import { getMyRequestsPageData } from "@/app/pages/services/request-service";
+
+export const dynamic = "force-dynamic";
+
+/**
+ * Acionada pelo Next.js durante a renderização da rota correspondente.
+ *
+ * Monta os dados e a interface da página de my requests.
+ * Durante o fluxo, aciona {@link getMyRequestsPageData}.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+export default async function MyRequestsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ busca?: string | string[]; status?: string | string[] }>;
+}) {
+  const { openRequests, closedRequests } = await getMyRequestsPageData();
+  const params = await searchParams;
+  const search = singleParam(params?.busca).trim();
+  const status = singleParam(params?.status);
+  const matchesSearch = (request: RequestEntity) => {
+    const term = normalizeSearch(search);
+    return !term || normalizeSearch(`#${request.id} ${request.title}`).includes(term);
+  };
+  const filteredOpenRequests = status === "closed" ? [] : openRequests.filter(matchesSearch);
+  const filteredClosedRequests = status === "open" ? [] : closedRequests.filter(matchesSearch);
+
+  return (
+    <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="my-requests-content" className="mx-auto w-full max-w-[980px]">
+        <header data-ui="my-requests-header" className="mb-9 flex items-center gap-4 pt-1">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
+            <AlertIcon />
+          </span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-teal-600">
+              Acompanhamento
+            </p>
+            <h1 className="mt-1 text-[30px] font-bold leading-none tracking-[-0.03em] text-slate-950 md:text-[34px]">
+              Minhas requests
+            </h1>
+          </div>
+        </header>
+
+        <form
+          action="/pages/minhas-solicitacoes"
+          method="get"
+          data-ui="my-requests-filters"
+          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto_auto]"
+          aria-label="Busca e filtros das minhas requests"
+        >
+          <label className="relative block">
+            <span className="sr-only">Buscar por request</span>
+            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+              <SearchIcon />
+            </span>
+            <input
+              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+              type="search"
+              name="busca"
+              defaultValue={search}
+              placeholder="Buscar por request"
+            />
+          </label>
+
+          <label className="flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+            <span className="sr-only">Filtrar por request status</span>
+            <select className="cursor-pointer bg-transparent outline-none" name="status" defaultValue={status}>
+              <option className="text-slate-900" value="">Todos os status</option>
+              <option className="text-slate-900" value="open">Requests abertas</option>
+              <option className="text-slate-900" value="closed">Requests fechadas</option>
+            </select>
+          </label>
+          <button className="inline-flex h-11 items-center justify-center gap-3 rounded-xl bg-teal-600 px-7 text-sm font-bold uppercase text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" type="submit"><FilterIcon /> Filtrar</button>
+        </form>
+
+        <RequestGroup title="Requests abertas" requests={filteredOpenRequests} />
+        <RequestGroup title="Requests fechadas" requests={filteredClosedRequests} className="mt-10" />
+      </div>
+    </section>
+  );
+}
+
+function singleParam(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
+}
+
+function normalizeSearch(value: string): string {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestGroup com os dados recebidos.
+ * Durante o fluxo, aciona {@link toLowerCase}, {@link map}.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
+function RequestGroup({
+  title,
+  requests,
+  className = "",
+}: {
+  title: string;
+  requests: RequestEntity[];
+  className?: string;
+}) {
+  return (
+    <section data-ui="request-group" className={className} aria-labelledby={`${title.toLowerCase()}-title`}>
+      <div data-ui="request-group-header" className="mb-5 flex items-center justify-between gap-4 px-3">
+        <h2 id={`${title.toLowerCase()}-title`} className="text-base font-bold text-slate-950">
+          {title}
+        </h2>
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
+          {requests.length} requests
+        </span>
+      </div>
+
+      <div data-ui="request-group-list" className="space-y-3">
+        {requests.map((request) => (
+          <RequestCard key={request.id} request={request} />
+        ))}
+        {requests.length === 0 ? (
+          <p className="rounded-[16px] border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
+            Nenhuma request encontrada com os filtros informados.
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente RequestCard com os dados recebidos.
+ *
+ * @param props Dados necessários para executar esta função.
+ * @returns O elemento React que representa esta interface.
+ */
+function RequestCard({ request }: { request: RequestEntity }) {
+  const isOpen = request.status === "Aberto";
+
+  return (
+    <article data-ui="request-card" className="group rounded-[16px] border border-slate-200 bg-white px-4 py-4 shadow-[0_1px_4px_rgba(15,23,42,0.12)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_8px_20px_rgba(15,23,42,0.12)] sm:px-5">
+      <div data-ui="request-card-content" className="grid min-h-[64px] grid-cols-[1fr_auto] gap-4">
+        <div data-ui="request-card-details" className="min-w-0 self-center">
+          <h3 className="truncate text-sm font-bold leading-tight text-slate-950">
+            #{request.id} - {request.title}
+          </h3>
+          <time className="mt-2 block text-sm font-medium leading-none text-slate-600">
+            {request.createdAt}
+          </time>
+        </div>
+
+        <div data-ui="request-card-actions" className="flex min-w-[92px] flex-col items-end justify-between gap-3">
+          <button
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-950 transition hover:bg-slate-100"
+            type="button"
+            aria-label={`Abrir ações da request ${request.id}`}
+          >
+            <MoreIcon />
+          </button>
+
+          <div className="flex items-center gap-2">
+            {request.hasUnreadMessage ? <MessageIndicator /> : null}
+            <span
+              className={`rounded-full px-3 py-1 text-[11px] font-bold uppercase leading-none text-white ${
+                isOpen ? "bg-teal-600" : "bg-slate-400"
+              }`}
+            >
+              {request.status}
+            </span>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o componente MessageIndicator com os dados recebidos.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function MessageIndicator() {
+  return (
+    <span className="relative inline-flex text-slate-400" aria-label="Mensagem não lida">
+      <MessageIcon />
+      <span className="absolute -right-0.5 -top-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose-500" />
+    </span>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de alert.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function AlertIcon() {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M10.6 2.8a2 2 0 0 1 2.8 0l7.8 7.8a2 2 0 0 1 0 2.8l-7.8 7.8a2 2 0 0 1-2.8 0l-7.8-7.8a2 2 0 0 1 0-2.8l7.8-7.8Z" />
+      <path d="M12 7.5v6" />
+      <path d="M12 16.5h.01" />
+    </svg>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de search.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function SearchIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-4.1-4.1" />
+    </svg>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de filter.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function FilterIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M4 5a1 1 0 0 1 .9-.55h14.2a1 1 0 0 1 .78 1.63L14 13.42V19a1 1 0 0 1-.45.84l-3 2A1 1 0 0 1 9 21v-7.58L4.12 6.08A1 1 0 0 1 4 5Z" />
+    </svg>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de more.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function MoreIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="5" r="1.8" />
+      <circle cx="12" cy="12" r="1.8" />
+      <circle cx="12" cy="19" r="1.8" />
+    </svg>
+  );
+}
+
+/**
+ * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
+ *
+ * Renderiza o ícone visual de message.
+ *
+ * @returns O elemento React que representa esta interface.
+ */
+function MessageIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M5 5.5A2.5 2.5 0 0 1 7.5 3h9A2.5 2.5 0 0 1 19 5.5v7A2.5 2.5 0 0 1 16.5 15H9.6L5 19v-3.8A2.5 2.5 0 0 1 3 12.75V5.5Z" />
+    </svg>
+  );
+}
