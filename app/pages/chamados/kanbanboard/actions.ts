@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import type { ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
-import type { DateRange } from "@/src/server/validation/date-range";
 import { validateDateRange } from "@/src/server/validation/date-range";
+import type { RequestBoardFilters } from "@/app/pages/services/request-board-service";
 import { getRequestBoardPageData } from "@/app/pages/services/request-board-service";
 import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/app/pages/services/request-task-service";
 
-export async function filterRequestBoard(range: DateRange) {
-  return getRequestBoardPageData(validateDateRange(range));
+export async function filterRequestBoard(filters: RequestBoardFilters) {
+  return getRequestBoardPageData({ ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) });
 }
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };

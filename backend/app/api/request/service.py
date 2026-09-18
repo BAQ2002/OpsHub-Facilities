@@ -381,7 +381,12 @@ def get_tracking(
     }
 
 
-def get_board(connection: DatabaseConnection, start: date, end: date):
+def get_board(
+    connection: DatabaseConnection,
+    start: date,
+    end: date,
+    search: str | None = None,
+):
     statuses = [dict(r) for r in connection.execute(sql("""SELECT ID,
        DESCRIPTION
     FROM REQUEST_STATUS
@@ -401,8 +406,19 @@ def get_board(connection: DatabaseConnection, start: date, end: date):
         LEFT JOIN LOCATION L
             ON L.ID=R.ID_LOCATION
     WHERE R.CREATED_DATE>=:start AND R.CREATED_DATE<(:end+INTERVAL '1 day')
+      AND (CAST(:search AS TEXT) IS NULL
+        OR CAST(R.ID AS TEXT) ILIKE :search_pattern
+        OR COALESCE(ST.NAME,'') ILIKE :search_pattern
+        OR COALESCE(M.NAME,'') ILIKE :search_pattern
+        OR COALESCE(L.NAME,'') ILIKE :search_pattern
+        OR COALESCE(R.DESCRIPTION,'') ILIKE :search_pattern)
     ORDER BY R.CREATED_DATE,R.ID"""),
-        {"start": start, "end": end},
+        {
+            "start": start,
+            "end": end,
+            "search": search.strip() if search and search.strip() else None,
+            "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,
+        },
     ).mappings()
     result = []
     for r in rows:

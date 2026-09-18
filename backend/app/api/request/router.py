@@ -63,8 +63,9 @@ def activity_tracking(
 def board(
     start_date: date,
     end_date: date,
+    search: str | None = Query(default=None, max_length=200),
     connection: DatabaseConnection = Depends(get_connection),
 ):
     from .service import get_board
 
-    return get_board(connection, start_date, end_date)
+    return get_board(connection, start_date, end_date, search)

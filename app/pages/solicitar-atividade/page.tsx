@@ -11,8 +11,20 @@ export const dynamic = "force-dynamic";
  *
  * @returns O elemento React que representa esta interface.
  */
-export default async function SolicitarAtividadePage() {
+export default async function SolicitarAtividadePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ busca?: string | string[] }>;
+}) {
   const serviceCategories = await getServiceCatalogPageData();
+  const params = await searchParams;
+  const search = (Array.isArray(params?.busca) ? params.busca[0] : params?.busca)?.trim() ?? "";
+  const normalizedSearch = normalizeSearch(search);
+  const filteredCategories = serviceCategories.flatMap((category) => {
+    if (!normalizedSearch || normalizeSearch(category.name).includes(normalizedSearch)) return [category];
+    const serviceTypes = category.serviceTypes.filter((serviceType) => normalizeSearch(serviceType.name).includes(normalizedSearch));
+    return serviceTypes.length ? [{ ...category, serviceTypes }] : [];
+  });
   return (
     <section data-ui="service-catalog-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="service-catalog-content" className="mx-auto w-full max-w-[980px]">
@@ -34,26 +46,30 @@ export default async function SolicitarAtividadePage() {
             </div>
           </div>
 
-          <label data-ui="service-catalog-search" className="relative mt-6 block" htmlFor="service-search">
-            <span className="sr-only">Busque por nome ou categoria do chamado</span>
-            <span
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-              aria-hidden="true"
-            >
-              <SearchIcon />
-            </span>
-            <input
-              className="h-10 w-full rounded-[4px] border border-slate-100 bg-slate-100 pl-11 pr-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-500 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
-              id="service-search"
-              name="busca"
-              placeholder="Busque por nome ou categoria do chamado"
-              type="search"
-            />
-          </label>
+          <form action="/pages/solicitar-atividade" method="get" className="relative mt-6 block" data-ui="service-catalog-search">
+            <label className="block" htmlFor="service-search">
+              <span className="sr-only">Busque por nome ou categoria do chamado</span>
+              <span
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                aria-hidden="true"
+              >
+                <SearchIcon />
+              </span>
+              <input
+                className="h-10 w-full rounded-[4px] border border-slate-100 bg-slate-100 pl-11 pr-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-500 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+                id="service-search"
+                name="busca"
+                defaultValue={search}
+                placeholder="Busque por nome ou categoria do chamado"
+                type="search"
+              />
+            </label>
+            <button className="sr-only" type="submit">Buscar serviços</button>
+          </form>
         </header>
 
         <div data-ui="service-category-list" className="space-y-6">
-          {serviceCategories.map((category) => (
+          {filteredCategories.map((category) => (
             <section
               data-ui="service-category"
               className="border-b border-slate-200 pb-4 last:border-b-0"
@@ -88,10 +104,19 @@ export default async function SolicitarAtividadePage() {
               </div>
             </section>
           ))}
+          {filteredCategories.length === 0 ? (
+            <p className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
+              Nenhum serviço ou categoria encontrado para “{search}”.
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
   );
+}
+
+function normalizeSearch(value: string): string {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
 }
 
 /**
