@@ -1,47 +1,22 @@
 import "server-only";
 
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/app/types/concrete_entity/activity";
-import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/types/concrete_entity/activity";
+import type { ActivityEntity, HomeMetrics } from "@/app/types/concrete_entity/activity";
+import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/app/types/navigation_entities/home_viewModels";
+import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/types/navigation_entities/home_viewModels";
 import { backendJson } from "@/src/server/api-client";
 import type {
   ActivityMarkerViewModel,
   HandlingTimeClockViewModel,
   HomePageViewModel,
   PlannedRequestFilterViewModel,
-} from "@/app/types/navigation_entities/home";
+} from "@/app/types/navigation_entities/home_viewModels";
 
 type HomeDateRange = {
   startDate: string;
   endDate: string;
   statuses?: string[];
   businessUnits?: number[];
-};
-
-type RawActivity = {
-  id: number;
-  request_type: string | null;
-  business_unit: string | null;
-  category_id: number | null;
-  category: string | null;
-  service: string | null;
-  location: string | null;
-  status: string;
-  status_date: string | null;
-  agreed_date: string | null;
-  map_x: number | null;
-  map_y: number | null;
-};
-
-type HomeMetrics = {
-  equipment: Array<{
-    categoryId: number;
-    categoryName: string;
-    planned: number;
-    inProgress: number;
-    completed: number;
-  }>;
-  handlingMinutes: number[];
 };
 
 const activityDateFormatter = new Intl.DateTimeFormat("pt-BR", {
@@ -104,7 +79,7 @@ function homeDateRangeQuery(dateRange: HomeDateRange): URLSearchParams {
 }
 
 async function getActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
-  const records = await backendJson<RawActivity[]>(`/requests/activities?${homeDateRangeQuery(dateRange)}`);
+  const records = await backendJson<ActivityEntity[]>(`/requests/activities?${homeDateRangeQuery(dateRange)}`);
   return records.map((record) => ({
     id: String(record.id),
     activityType: (record.request_type === "Atividade no Pátio" ? "Atividade no Pátio" : "Chamado") as ActivityType,

@@ -8,7 +8,7 @@ import type {
   RequestBoardCardViewModel,
   RequestBoardColumnViewModel,
   RequestBoardPageViewModel,
-} from "@/app/types/navigation_entities/request-board";
+} from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
 import {
   DeleteRequestTaskChecklist,
   filterRequestBoard,

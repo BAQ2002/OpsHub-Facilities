@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ActivityRequestFormPageData } from "@/app/types/navigation_entities/activity-request-form";
+import type { ActivityRequestFormPageData } from "@/app/types/navigation_entities/solicitar_atividade_chamado_viewModels";
 import { backendJson } from "@/src/server/api-client";
 import type { LocationHierarchy } from "@/app/types/concrete_entity/activity-request-form";
 import type { ActivityRequestFormData, ServiceCatalogCategory } from "@/app/types/concrete_entity/service-catalog";
