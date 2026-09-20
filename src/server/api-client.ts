@@ -20,6 +20,10 @@ export async function backendJson<T>(path: string, init?: RequestInit): Promise<
   return response.json() as Promise<T>;
 }
 
+export function jsonRequest(body: unknown, method: RequestInit["method"] = "POST"): RequestInit {
+  return { method, body: JSON.stringify(body) };
+}
+
 export async function serializeFile(file: File) {
   return { fileName: file.name, mimeType: file.type || "application/octet-stream", contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64") };
 }

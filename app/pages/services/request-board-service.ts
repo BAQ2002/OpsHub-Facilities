@@ -3,7 +3,8 @@ import "server-only";
 import type { RequestBoardData } from "@/app/types/concrete_entity/request-board";
 import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app/types/navigation_entities/request-board";
 import { backendJson } from "@/src/server/api-client";
-import { apiChecklistRepository, apiMembershipRepository } from "@/src/server/repositories/api/api-repositories";
+import type { ChecklistDefinition } from "@/app/types/concrete_entity/checklist";
+import type { MembershipOption } from "@/app/types/concrete_entity/membership";
 
 export type RequestBoardFilters = { startDate: string; endDate: string; search?: string };
 
@@ -16,8 +17,8 @@ export type RequestBoardFilters = { startDate: string; endDate: string; search?:
 export async function getRequestBoardWorkspaceData(filters: RequestBoardFilters): Promise<RequestBoardWorkspaceData> {
   const [initialData, executors, checklistDefinitions] = await Promise.all([
     getRequestBoardPageData(filters),
-    apiMembershipRepository.findExecutorOptions(),
-    apiChecklistRepository.findActiveDefinitions(),
+    backendJson<MembershipOption[]>("/memberships/executors"),
+    backendJson<ChecklistDefinition[]>("/checklists"),
   ]);
 
   return { initialData, executors, checklistDefinitions };

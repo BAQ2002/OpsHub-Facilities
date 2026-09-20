@@ -2,7 +2,7 @@ import "server-only";
 
 import type { RequestEntity } from "@/app/types/concrete_entity/request";
 import type { MyRequestsPageViewModel } from "@/app/types/navigation_entities/my-requests";
-import { apiRequestRepository } from "@/src/server/repositories/api/api-repositories";
+import { backendJson, jsonRequest, serializeFile } from "@/src/server/api-client";
 import type { CreateRequestInput, RequestFieldValue } from "@/app/types/concrete_entity/request-input";
 
 /**
@@ -14,7 +14,7 @@ import type { CreateRequestInput, RequestFieldValue } from "@/app/types/concrete
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {
-  const requests = (await apiRequestRepository.findByCurrentUser()).map(mapRequestEntityToViewModel);
+  const requests = (await backendJson<RequestEntity[]>("/requests/mine")).map(mapRequestEntityToViewModel);
 
   return {
     openRequests: requests.filter((request) => request.status === "Aberto"),
@@ -42,7 +42,7 @@ function mapRequestEntityToViewModel(request: RequestEntity): RequestEntity {
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function createActivityRequest(formData: FormData) {
-  return apiRequestRepository.create(parseCreateRequestInput(formData));
+  return createRequest(parseCreateRequestInput(formData));
 }
 
 /**
@@ -55,7 +55,21 @@ export async function createActivityRequest(formData: FormData) {
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function createChamadoRequest(formData: FormData) {
-  return apiRequestRepository.create(parseCreateRequestInput(formData));
+  return createRequest(parseCreateRequestInput(formData));
+}
+
+async function createRequest(input: CreateRequestInput): Promise<number> {
+  const additionalFields = await Promise.all(
+    Object.entries(input.additionalFields).map(async ([name, items]) => ({
+      name,
+      values: await Promise.all(items.map((value) => (typeof value === "string" ? value : serializeFile(value)))),
+    })),
+  );
+  const result = await backendJson<{ id: number }>(
+    "/requests",
+    jsonRequest({ ...input, additionalFields }),
+  );
+  return result.id;
 }
 
 /**

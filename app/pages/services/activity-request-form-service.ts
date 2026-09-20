@@ -1,8 +1,9 @@
 import "server-only";
 
 import type { ActivityRequestFormPageData } from "@/app/types/navigation_entities/activity-request-form";
-import { apiOrganizationRepository, apiServiceCatalogRepository } from "@/src/server/repositories/api/api-repositories";
-import type { ServiceCatalogCategory } from "@/app/types/concrete_entity/service-catalog";
+import { backendJson } from "@/src/server/api-client";
+import type { LocationHierarchy } from "@/app/types/concrete_entity/activity-request-form";
+import type { ActivityRequestFormData, ServiceCatalogCategory } from "@/app/types/concrete_entity/service-catalog";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
@@ -13,7 +14,7 @@ import type { ServiceCatalogCategory } from "@/app/types/concrete_entity/service
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
-  return apiServiceCatalogRepository.findCatalog();
+  return backendJson<ServiceCatalogCategory[]>("/service-catalog");
 }
 
 /**
@@ -28,9 +29,10 @@ export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategor
 export async function getChamadoRequestFormPageData(params: {
   serviceTypeId: number;
 }): Promise<ActivityRequestFormPageData> {
+  const query = new URLSearchParams({ service_type_id: String(params.serviceTypeId) });
   const [dynamicData, locationHierarchy] = await Promise.all([
-    apiServiceCatalogRepository.findRequestFormData(params),
-    apiOrganizationRepository.findLocationHierarchy(),
+    backendJson<ActivityRequestFormData>(`/service-catalog/request-form?${query}`),
+    backendJson<LocationHierarchy>("/organization/locations"),
   ]);
 
   return {
