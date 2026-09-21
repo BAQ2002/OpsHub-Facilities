@@ -3,12 +3,8 @@
 import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
-import type { ChecklistDefinition, ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
-import type {
-  RequestBoardCardViewModel,
-  RequestBoardColumnViewModel,
-  RequestBoardPageViewModel,
-} from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+import type { ChecklistDefinition, ChecklistSubmission, RequestBoardCardViewModel, RequestBoardColumnViewModel, RequestBoardPageViewModel } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+
 import {
   DeleteRequestTaskChecklist,
   filterRequestBoard,

@@ -1,7 +1,7 @@
 import "server-only";
 
-import type { ActivityTrackingPageViewModel } from "@/app/types/navigation_entities/chamados_dashboard_viewModels";
-import type { ActivityTrackingData, ActivityTrackingFilters } from "@/app/types/concrete_entity/dashboard";
+import type { ActivityTrackingPageViewModel, ActivityTrackingData, ActivityTrackingFilters } from "@/app/types/navigation_entities/chamados_dashboard_viewModels";
+
 import { backendJson } from "@/src/server/api-client";
 
 /**

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
+import type { ChecklistSubmission } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
 import { validateDateRange } from "@/src/server/validation/date-range";
 import type { RequestBoardFilters } from "@/app/pages/services/request-board-service";
 import { getRequestBoardPageData } from "@/app/pages/services/request-board-service";

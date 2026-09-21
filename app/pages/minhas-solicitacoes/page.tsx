@@ -1,4 +1,4 @@
-import type { RequestEntity } from "@/app/types/concrete_entity/request";
+import type { RequestEntity } from "@/app/types/navigation_entities/minhas_solicitacoes_viewModels";
 import { getMyRequestsPageData } from "@/app/pages/services/request-service";
 
 export const dynamic = "force-dynamic";

@@ -1,10 +1,8 @@
 import "server-only";
 
-import type { RequestBoardData } from "@/app/types/concrete_entity/request-board";
-import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+import type { RequestBoardData, RequestBoardPageViewModel, RequestBoardWorkspaceData, ChecklistDefinition, MembershipOption } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+
 import { backendJson } from "@/src/server/api-client";
-import type { ChecklistDefinition } from "@/app/types/concrete_entity/checklist";
-import type { MembershipOption } from "@/app/types/concrete_entity/membership";
 
 export type RequestBoardFilters = { startDate: string; endDate: string; search?: string };
 

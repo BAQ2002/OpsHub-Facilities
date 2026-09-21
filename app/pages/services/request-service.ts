@@ -1,9 +1,9 @@
 import "server-only";
 
-import type { RequestEntity } from "@/app/types/concrete_entity/request";
-import type { MyRequestsPageViewModel } from "@/app/types/navigation_entities/minhas_solicitacoes_viewModels";
+import type { RequestEntity, MyRequestsPageViewModel } from "@/app/types/navigation_entities/minhas_solicitacoes_viewModels";
+
 import { backendJson, jsonRequest, serializeFile } from "@/src/server/api-client";
-import type { CreateRequestInput, RequestFieldValue } from "@/app/types/concrete_entity/request-input";
+import type { CreateRequestInput, RequestFieldValue } from "@/app/types/navigation_entities/solicitar_atividade_viewModels";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.

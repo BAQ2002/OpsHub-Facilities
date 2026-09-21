@@ -1,8 +1,7 @@
 import "server-only";
 
-import type { ChecklistSubmission } from "@/app/types/concrete_entity/checklist";
+import type { ChecklistSubmission, UpdateVisitInput, VisitInput } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
 import { backendJson, jsonRequest, serializeFile } from "@/src/server/api-client";
-import type { UpdateVisitInput, VisitInput } from "@/app/types/concrete_entity/request-task";
 
 /** Cria uma visita por meio da implementação HTTP de tarefas de solicitação. */
 export async function createVisit(input: VisitInput): Promise<void> {

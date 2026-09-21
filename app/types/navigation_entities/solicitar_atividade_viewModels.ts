@@ -1,3 +1,4 @@
+// Catálogo e tipos compartilhados pelos formulários de Chamado e Pátio.
 export type FormOption = {
   label: string;
   value: string;
@@ -52,4 +53,21 @@ export type LocationHierarchy = {
   businesses: BusinessOption[];
   regions: RegionOption[];
   locations: LocationOption[];
+};
+
+export type RequestFieldValue = string | File;
+
+export type CreateRequestInput = {
+  businessId: number;
+  regionId: number;
+  locationId: number;
+  serviceTypeId: number;
+  description: string;
+  additionalFields: Readonly<Record<string, RequestFieldValue[]>>;
+};
+
+export type ServiceCatalogCategory = {
+  id: number;
+  name: string;
+  serviceTypes: { id: number; name: string }[];
 };

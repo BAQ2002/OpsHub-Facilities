@@ -1,16 +1,10 @@
 import "server-only";
 
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { ActivityEntity, HomeMetrics } from "@/app/types/concrete_entity/activity";
-import type { ActivityRecord, ActivityStatus, ActivityType, EquipmentCard } from "@/app/types/navigation_entities/home_viewModels";
+import type { ActivityEntity, HomeMetrics, ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, ActivityMarkerViewModel, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/types/navigation_entities/home_viewModels";
+
 import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/types/navigation_entities/home_viewModels";
 import { backendJson } from "@/src/server/api-client";
-import type {
-  ActivityMarkerViewModel,
-  HandlingTimeClockViewModel,
-  HomePageViewModel,
-  PlannedRequestFilterViewModel,
-} from "@/app/types/navigation_entities/home_viewModels";
 
 type HomeDateRange = {
   startDate: string;
