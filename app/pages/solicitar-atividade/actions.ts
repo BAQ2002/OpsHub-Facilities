@@ -1,6 +1,6 @@
 "use server";
 
-import { createActivityRequest, createChamadoRequest } from "@/app/pages/services/request-service";
+import { createActivityRequest, createChamadoRequest } from "@/app/services/request-service";
 import { redirect } from "next/navigation";
 
 /**

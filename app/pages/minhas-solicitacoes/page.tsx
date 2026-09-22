@@ -1,5 +1,5 @@
-import type { RequestEntity } from "@/app/types/navigation_entities/minhas_solicitacoes_viewModels";
-import { getMyRequestsPageData } from "@/app/pages/services/request-service";
+import type { RequestCardViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
+import { getMyRequestsPageData } from "@/app/services/request-service";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,7 @@ export default async function MyRequestsPage({
   const params = await searchParams;
   const search = singleParam(params?.busca).trim();
   const status = singleParam(params?.status);
-  const matchesSearch = (request: RequestEntity) => {
+  const matchesSearch = (request: RequestCardViewModel) => {
     const term = normalizeSearch(search);
     return !term || normalizeSearch(`#${request.id} ${request.title}`).includes(term);
   };
@@ -106,7 +106,7 @@ function RequestGroup({
   className = "",
 }: {
   title: string;
-  requests: RequestEntity[];
+  requests: RequestCardViewModel[];
   className?: string;
 }) {
   return (
@@ -142,7 +142,7 @@ function RequestGroup({
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
-function RequestCard({ request }: { request: RequestEntity }) {
+function RequestCard({ request }: { request: RequestCardViewModel }) {
   const isOpen = request.status === "Aberto";
 
   return (

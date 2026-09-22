@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, Response, status
 from ...database import DatabaseConnection, get_connection
-from .schemas import ChecklistDefinition, ChecklistSubmission
+from .schemas import ChecklistSubmission
+from ..entities import ChecklistEntities
 from .service import add_to_visit, delete_from_visit, get_active_definitions
 
 router = APIRouter()
 
 
-@router.get("", response_model=list[ChecklistDefinition])
+@router.get("", response_model=list[ChecklistEntities])
 def definitions(connection: DatabaseConnection = Depends(get_connection)):
     return get_active_definitions(connection)
 

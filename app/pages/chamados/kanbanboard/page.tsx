@@ -1,4 +1,4 @@
-import { getRequestBoardWorkspaceData } from "@/app/pages/services/request-board-service";
+import { getRequestBoardWorkspaceData } from "@/app/services/request-board-service";
 import { MinhasSolicitacoes } from "./_components/minhas-solicitacoes";
 
 export const dynamic = "force-dynamic";

@@ -1,0 +1,362 @@
+{
+  "context": {
+    "request": {
+      "id": 42,
+      "idRequestType": 1,
+      "idMemberRequester": 7,
+      "idMemberResponder": null,
+      "idLocation": 3,
+      "idServiceType": 2,
+      "idRequestStatus": 4,
+      "createdDate": "2026-09-20T00:30:00",
+      "agreedDate": "2026-09-21T08:00:00",
+      "startedDate": "2026-09-21T08:00:00",
+      "finishedDate": "2026-09-21T10:00:00",
+      "canceledDate": null,
+      "description": "Trocar bomba"
+    },
+    "requestStatus": {
+      "id": 4,
+      "description": "Concluida"
+    },
+    "requestType": {
+      "id": 1,
+      "name": "Chamado"
+    },
+    "serviceType": {
+      "id": 2,
+      "idServiceCategory": 1,
+      "name": "Bomba",
+      "description": null
+    },
+    "category": {
+      "id": 1,
+      "name": "Manutenção"
+    },
+    "location": {
+      "id": 3,
+      "idRegion": 2,
+      "name": null,
+      "locationX": "12.12345678",
+      "locationY": "123.12345678"
+    },
+    "region": {
+      "id": 2,
+      "idBusiness": 1,
+      "name": null
+    },
+    "business": {
+      "id": 1,
+      "name": null
+    },
+    "requester": {
+      "id": 7,
+      "name": "Ana"
+    }
+  },
+  "board": {
+    "statuses": [
+      {
+        "id": 4,
+        "description": "Concluida"
+      }
+    ],
+    "requests": [
+      {
+        "request": {
+          "id": 42,
+          "idRequestType": 1,
+          "idMemberRequester": 7,
+          "idMemberResponder": null,
+          "idLocation": 3,
+          "idServiceType": 2,
+          "idRequestStatus": 4,
+          "createdDate": "2026-09-20T00:30:00",
+          "agreedDate": "2026-09-21T08:00:00",
+          "startedDate": "2026-09-21T08:00:00",
+          "finishedDate": "2026-09-21T10:00:00",
+          "canceledDate": null,
+          "description": "Trocar bomba"
+        },
+        "requestStatus": {
+          "id": 4,
+          "description": "Concluida"
+        },
+        "requestType": {
+          "id": 1,
+          "name": "Chamado"
+        },
+        "serviceType": {
+          "id": 2,
+          "idServiceCategory": 1,
+          "name": "Bomba",
+          "description": null
+        },
+        "category": {
+          "id": 1,
+          "name": "Manutenção"
+        },
+        "location": {
+          "id": 3,
+          "idRegion": 2,
+          "name": null,
+          "locationX": "12.12345678",
+          "locationY": "123.12345678"
+        },
+        "region": {
+          "id": 2,
+          "idBusiness": 1,
+          "name": null
+        },
+        "business": {
+          "id": 1,
+          "name": null
+        },
+        "requester": {
+          "id": 7,
+          "name": "Ana"
+        },
+        "visits": [
+          {
+            "task": {
+              "id": 9,
+              "idRequest": 42,
+              "startDatetime": "2026-09-21T00:30:00",
+              "stopDatetime": null,
+              "description": null
+            },
+            "executors": [
+              {
+                "occurrence": {
+                  "id": 1,
+                  "idTask": 9,
+                  "idMembership": 7
+                },
+                "member": {
+                  "id": 7,
+                  "name": null
+                }
+              }
+            ],
+            "photos": [
+              {
+                "id": 8,
+                "fileName": null,
+                "mimeType": "image/png",
+                "url": "/api/v1/request-tasks/media/8"
+              }
+            ],
+            "checklists": [
+              {
+                "checklist": {
+                  "id": 5,
+                  "idChecklistType": 1,
+                  "idRequestTask": 9,
+                  "corporation": null,
+                  "equipmentTag": "B-1",
+                  "equipmentBrand": null,
+                  "equipmentModel": null,
+                  "rentedEquipment": false,
+                  "serialNumber": null,
+                  "ptNumber": null
+                },
+                "definition": {
+                  "id": 1,
+                  "name": "Inspeção",
+                  "description": null,
+                  "version": "1",
+                  "active": true
+                },
+                "values": [
+                  {
+                    "value": {
+                      "id": 6,
+                      "idChecklistFieldType": 2,
+                      "idRequestTaskChecklist": 5,
+                      "value": false
+                    },
+                    "field": {
+                      "id": 2,
+                      "idChecklistType": 1,
+                      "name": "Equipamento seguro",
+                      "type": "BOOL",
+                      "options": null,
+                      "required": true,
+                      "active": true,
+                      "displayOrder": 1
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "values": [
+          {
+            "value": {
+              "id": 11,
+              "idServiceFieldType": 10,
+              "idRequest": 42,
+              "value": 0
+            },
+            "field": {
+              "id": 10,
+              "idServiceType": 2,
+              "name": "Foto",
+              "type": "MEDIA",
+              "options": {
+                "multiple": true,
+                "accept": [
+                  "image/*",
+                  "video/*"
+                ],
+                "custom_key": "preservada"
+              },
+              "required": true,
+              "active": true,
+              "displayOrder": 1
+            }
+          },
+          {
+            "value": {
+              "id": 12,
+              "idServiceFieldType": 10,
+              "idRequest": 42,
+              "value": false
+            },
+            "field": {
+              "id": 10,
+              "idServiceType": 2,
+              "name": "Foto",
+              "type": "MEDIA",
+              "options": {
+                "multiple": true,
+                "accept": [
+                  "image/*",
+                  "video/*"
+                ],
+                "custom_key": "preservada"
+              },
+              "required": true,
+              "active": true,
+              "displayOrder": 1
+            }
+          }
+        ],
+        "media": [
+          {
+            "id": 3,
+            "fieldLabel": null,
+            "fileName": null,
+            "mimeType": "image/png",
+            "fileSize": null,
+            "url": "/api/v1/service-catalog/media/3"
+          }
+        ]
+      }
+    ]
+  },
+  "organization": {
+    "businesses": [
+      {
+        "id": 1,
+        "name": null
+      }
+    ],
+    "regions": [
+      {
+        "id": 2,
+        "idBusiness": 1,
+        "name": null
+      },
+      {
+        "id": 8,
+        "idBusiness": null,
+        "name": "Sem negócio"
+      }
+    ],
+    "locations": [
+      {
+        "id": 3,
+        "idRegion": 2,
+        "name": null,
+        "locationX": "12.12345678",
+        "locationY": "123.12345678"
+      }
+    ]
+  },
+  "catalog": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Manutenção"
+      },
+      {
+        "id": 9,
+        "name": null
+      }
+    ],
+    "serviceTypes": [
+      {
+        "id": 2,
+        "idServiceCategory": 1,
+        "name": "Bomba",
+        "description": null
+      }
+    ]
+  },
+  "form": {
+    "serviceType": {
+      "id": 2,
+      "idServiceCategory": 1,
+      "name": "Bomba",
+      "description": null
+    },
+    "category": {
+      "id": 1,
+      "name": "Manutenção"
+    },
+    "fields": [
+      {
+        "id": 10,
+        "idServiceType": 2,
+        "name": "Foto",
+        "type": "MEDIA",
+        "options": {
+          "multiple": true,
+          "accept": [
+            "image/*",
+            "video/*"
+          ],
+          "custom_key": "preservada"
+        },
+        "required": true,
+        "active": true,
+        "displayOrder": 1
+      }
+    ]
+  },
+  "checklists": [
+    {
+      "checklist": {
+        "id": 1,
+        "name": "Inspeção",
+        "description": null,
+        "version": "1",
+        "active": true
+      },
+      "fields": [
+        {
+          "id": 2,
+          "idChecklistType": 1,
+          "name": "Equipamento seguro",
+          "type": "BOOL",
+          "options": null,
+          "required": true,
+          "active": true,
+          "displayOrder": 1
+        }
+      ]
+    }
+  ]
+}

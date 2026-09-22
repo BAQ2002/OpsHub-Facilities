@@ -33,13 +33,16 @@ class RecordingConnection:
 
 
 class ServiceCatalogServiceTests(unittest.TestCase):
-    def test_request_form_maps_media_configuration(self):
+    def test_request_form_preserves_persisted_media_configuration(self):
         connection = RecordingConnection(
             [
-                [{"id": 2, "name": "Outros", "category": "ARTÍFICE"}],
+                [{"service_type": {"id": 2, "id_service_category": 1, "name": "Outros", "description": None}, "category": {"id": 1, "name": "ARTÍFICE"}}],
                 [
                     {
                         "id": 2,
+                        "id_service_type": 2,
+                        "active": True,
+                        "display_order": 1,
                         "name": "Foto da necessidade",
                         "type": "MEDIA",
                         "options": {"multiple": True, "accept": ["image/*", "video/*"]},
@@ -51,23 +54,26 @@ class ServiceCatalogServiceTests(unittest.TestCase):
 
         result = get_request_form(connection, 2)
 
-        self.assertEqual(result.serviceTypeId, 2)
+        self.assertEqual(result.service_type.id, 2)
         self.assertIn("WHERE ST.ID=%(service_type_id)s", connection.executions[0][0])
         self.assertEqual(connection.executions[0][1], {"service_type_id": 2})
-        self.assertEqual(result.fields[0].type, "file")
+        self.assertEqual(result.fields[0].type, "MEDIA")
         self.assertEqual(
-            result.fields[0].mediaOptions,
+            result.fields[0].options,
             {"multiple": True, "accept": ["image/*", "video/*"]},
         )
-        self.assertIsNone(result.fields[0].options)
+        self.assertEqual(result.fields[0].id_service_type, 2)
 
     def test_request_form_tolerates_nullable_legacy_metadata(self):
         connection = RecordingConnection(
             [
-                [{"id": 2, "name": "Outros", "category": "ARTÍFICE"}],
+                [{"service_type": {"id": 2, "id_service_category": 1, "name": "Outros", "description": None}, "category": {"id": 1, "name": "ARTÍFICE"}}],
                 [
                     {
                         "id": 2,
+                        "id_service_type": 2,
+                        "active": True,
+                        "display_order": 1,
                         "name": None,
                         "type": None,
                         "options": None,
@@ -79,16 +85,16 @@ class ServiceCatalogServiceTests(unittest.TestCase):
 
         result = get_request_form(connection, 2)
 
-        self.assertEqual(result.fields[0].label, "Campo adicional")
-        self.assertEqual(result.fields[0].type, "text")
-        self.assertFalse(result.fields[0].required)
+        self.assertIsNone(result.fields[0].name)
+        self.assertIsNone(result.fields[0].type)
+        self.assertIsNone(result.fields[0].required)
 
     def test_request_form_does_not_fall_back_when_service_type_is_missing(self):
         connection = RecordingConnection([[]])
 
         result = get_request_form(connection, 999)
 
-        self.assertIsNone(result.serviceTypeId)
+        self.assertIsNone(result.service_type)
         self.assertEqual(result.fields, [])
         self.assertEqual(len(connection.executions), 1)
 

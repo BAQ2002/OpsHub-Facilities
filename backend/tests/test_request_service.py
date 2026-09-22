@@ -102,7 +102,7 @@ class RequestServiceTests(unittest.TestCase):
             "  bomba  ",
         )
 
-        self.assertEqual(result, {"statuses": [], "requests": []})
+        self.assertEqual(result.model_dump(by_alias=True), {"statuses": [], "requests": []})
         self.assertIn("CAST(R.ID AS TEXT) ILIKE %(search_pattern)s", connection.statements[1])
         self.assertIn("COALESCE(ST.NAME,'') ILIKE %(search_pattern)s", connection.statements[1])
         self.assertEqual(connection.parameters[1]["search"], "bomba")

@@ -1,9 +1,12 @@
 import "server-only";
 
-import type { RequestEntity, MyRequestsPageViewModel } from "@/app/types/navigation_entities/minhas_solicitacoes_viewModels";
+import type { MyRequestsPageViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
 
+import type { RequestEntity } from "@/app/entities/concrete_entity";
+import type { RequestContext } from "@/app/entities/api/entity-responses";
+import { mapRequestCard } from "./mappers/entity-view-models";
 import { backendJson, jsonRequest, serializeFile } from "@/src/server/api-client";
-import type { CreateRequestInput, RequestFieldValue } from "@/app/types/navigation_entities/solicitar_atividade_viewModels";
+import type { CreateRequestInput, RequestFieldValue } from "@/app/entities/navigation_entities/solicitar_atividade_viewModels";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
@@ -14,21 +17,11 @@ import type { CreateRequestInput, RequestFieldValue } from "@/app/types/navigati
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getMyRequestsPageData(): Promise<MyRequestsPageViewModel> {
-  const requests = (await backendJson<RequestEntity[]>("/requests/mine")).map(mapRequestEntityToViewModel);
+  const requests = (await backendJson<RequestContext[]>("/requests/mine")).map(mapRequestCard);
 
   return {
     openRequests: requests.filter((request) => request.status === "Aberto"),
     closedRequests: requests.filter((request) => request.status === "Fechado"),
-  };
-}
-
-function mapRequestEntityToViewModel(request: RequestEntity): RequestEntity {
-  return {
-    id: request.id,
-    title: request.title,
-    createdAt: request.createdAt,
-    status: request.status,
-    hasUnreadMessage: request.hasUnreadMessage,
   };
 }
 
@@ -65,7 +58,7 @@ async function createRequest(input: CreateRequestInput): Promise<number> {
       values: await Promise.all(items.map((value) => (typeof value === "string" ? value : serializeFile(value)))),
     })),
   );
-  const result = await backendJson<{ id: number }>(
+  const result = await backendJson<Pick<RequestEntity, "id">>(
     "/requests",
     jsonRequest({ ...input, additionalFields }),
   );

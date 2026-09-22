@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getServiceCatalogPageData } from "@/app/pages/services/activity-request-form-service";
+import { getServiceCatalogPageData } from "@/app/services/activity-request-form-service";
 
 export const dynamic = "force-dynamic";
 

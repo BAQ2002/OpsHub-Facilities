@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { ChecklistSubmission, UpdateVisitInput, VisitInput } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+import type { ChecklistSubmission, UpdateVisitInput, VisitInput } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 import { backendJson, jsonRequest, serializeFile } from "@/src/server/api-client";
 
 /** Cria uma visita por meio da implementação HTTP de tarefas de solicitação. */

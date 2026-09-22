@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { ChecklistSubmission } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+import type { ChecklistSubmission } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 import { validateDateRange } from "@/src/server/validation/date-range";
-import type { RequestBoardFilters } from "@/app/pages/services/request-board-service";
-import { getRequestBoardPageData } from "@/app/pages/services/request-board-service";
-import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/app/pages/services/request-task-service";
+import type { RequestBoardFilters } from "@/app/services/request-board-service";
+import { getRequestBoardPageData } from "@/app/services/request-board-service";
+import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/app/services/request-task-service";
 
 export async function filterRequestBoard(filters: RequestBoardFilters) {
   return getRequestBoardPageData({ ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) });

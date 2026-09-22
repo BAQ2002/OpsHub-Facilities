@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import type { ActivityRequestField as Field, LocationHierarchy } from "@/app/types/navigation_entities/solicitar_atividade_viewModels";
+import type { ActivityRequestField as Field, LocationHierarchy } from "@/app/entities/navigation_entities/solicitar_atividade_viewModels";
 
 type ActivityRequestFormProps = {
   title: string;

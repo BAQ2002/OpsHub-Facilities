@@ -1,6 +1,9 @@
 import "server-only";
 
-import type { RequestBoardData, RequestBoardPageViewModel, RequestBoardWorkspaceData, ChecklistDefinition, MembershipOption } from "@/app/types/navigation_entities/chamados_kanbanboard_viewModels";
+import type { BoardEntities, ChecklistEntities, MemberSummary } from "@/app/entities/api/entity-responses";
+import { mapBoardCard, mapChecklistDefinition } from "./mappers/entity-view-models";
+
+import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 
 import { backendJson } from "@/src/server/api-client";
 
@@ -15,11 +18,15 @@ export type RequestBoardFilters = { startDate: string; endDate: string; search?:
 export async function getRequestBoardWorkspaceData(filters: RequestBoardFilters): Promise<RequestBoardWorkspaceData> {
   const [initialData, executors, checklistDefinitions] = await Promise.all([
     getRequestBoardPageData(filters),
-    backendJson<MembershipOption[]>("/memberships/executors"),
-    backendJson<ChecklistDefinition[]>("/checklists"),
+    backendJson<MemberSummary[]>("/memberships/executors"),
+    backendJson<ChecklistEntities[]>("/checklists"),
   ]);
 
-  return { initialData, executors, checklistDefinitions };
+  return {
+    initialData,
+    executors: executors.map((member) => ({ id: member.id, name: member.name || "Não informado" })),
+    checklistDefinitions: checklistDefinitions.map(mapChecklistDefinition),
+  };
 }
 
 /**
@@ -37,26 +44,15 @@ export async function getRequestBoardPageData(filters: RequestBoardFilters): Pro
   });
   const search = filters.search?.trim();
   if (search) query.set("search", search);
-  const data = await backendJson<RequestBoardData>(`/requests/board?${query}`);
-  return mapRequestBoardDataToViewModel(data);
+  const data = await backendJson<BoardEntities>(`/requests/board?${query}`);
+  return mapBoardEntitiesToViewModel(data);
 }
 
-function mapRequestBoardDataToViewModel(data: RequestBoardData): RequestBoardPageViewModel {
+function mapBoardEntitiesToViewModel(data: BoardEntities): RequestBoardPageViewModel {
   return {
     columns: data.statuses.map((status) => ({
-      id: status.id,
-      title: status.description,
-      requests: data.requests
-        .filter((request) => request.statusId === status.id)
-        .map((request) => ({
-          id: request.id,
-          serviceTypeName: request.serviceTypeName,
-          requesterName: request.requesterName,
-          locationName: request.locationName,
-          details: request.details,
-          media: request.media,
-          visits: request.visits,
-        })),
+      id: status.id, title: status.description ?? "Não informado",
+      requests: data.requests.filter((item) => item.request.idRequestStatus === status.id).map(mapBoardCard),
     })),
   };
 }

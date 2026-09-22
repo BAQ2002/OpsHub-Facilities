@@ -1,18 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from ...database import DatabaseConnection, get_connection
 from ..media_response import media_response
-from .schemas import CatalogCategory, RequestFormData
+from ..entities import CatalogEntities, RequestFormEntities
 from .service import get_catalog, get_request_form, get_request_media
 
 router = APIRouter()
 
 
-@router.get("", response_model=list[CatalogCategory])
+@router.get("", response_model=CatalogEntities)
 def catalog(connection: DatabaseConnection = Depends(get_connection)):
     return get_catalog(connection)
 
 
-@router.get("/request-form", response_model=RequestFormData)
+@router.get("/request-form", response_model=RequestFormEntities)
 def request_form(
     service_type_id: int,
     connection: DatabaseConnection = Depends(get_connection),

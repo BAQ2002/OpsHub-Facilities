@@ -2,39 +2,45 @@ import base64
 import json
 from datetime import date
 from ...database import DatabaseConnection, settings, sql
-from .schemas import Activity, CreateRequest, RequestItem
+from .schemas import CreateRequest
+from ..entities import BoardEntities, BoardRequestEntities, RequestContext, RequestStatusEntity
 
 CLOSED = ("Concluída", "Concluida", "Cancelada")
 
 
-def get_my_requests(
-    connection: DatabaseConnection, member_id: int
-) -> list[RequestItem]:
-    rows = connection.execute(
-        sql("""SELECT R.ID,
-       COALESCE(ST.NAME,'Solicitação') TITLE,
-       R.CREATED_DATE,
-       RS.DESCRIPTION STATUS
+# Full records remain distinct from page view models. Keep optional joins nullable.
+REQUEST_SELECT = """SELECT to_jsonb(R) AS request,
+    to_jsonb(RS) AS request_status, to_jsonb(RT) AS request_type,
+    to_jsonb(ST) AS service_type, to_jsonb(SC) AS category,
+    CASE WHEN L.ID IS NULL THEN NULL ELSE to_jsonb(L) ||
+        jsonb_build_object('location_x', L.LOCATION_X::text, 'location_y', L.LOCATION_Y::text)
+    END AS location,
+    to_jsonb(RG) AS region, to_jsonb(B) AS business,
+    CASE WHEN M.ID IS NULL THEN NULL ELSE jsonb_build_object('id', M.ID, 'name', M.NAME) END AS requester
     FROM REQUEST R
-        JOIN REQUEST_STATUS RS
-            ON RS.ID=R.ID_REQUEST_STATUS
-        LEFT JOIN SERVICE_TYPE ST
-            ON ST.ID=R.ID_SERVICE_TYPE
-    WHERE R.ID_MEMBER_REQUESTER=:member
-    ORDER BY R.CREATED_DATE DESC NULLS LAST,R.ID DESC"""),
+    JOIN REQUEST_STATUS RS ON RS.ID=R.ID_REQUEST_STATUS
+    LEFT JOIN REQUEST_TYPE RT ON RT.ID=R.ID_REQUEST_TYPE
+    LEFT JOIN SERVICE_TYPE ST ON ST.ID=R.ID_SERVICE_TYPE
+    LEFT JOIN SERVICE_CATEGORY SC ON SC.ID=ST.ID_SERVICE_CATEGORY
+    LEFT JOIN LOCATION L ON L.ID=R.ID_LOCATION
+    LEFT JOIN REGION RG ON RG.ID=L.ID_REGION
+    LEFT JOIN BUSINESS B ON B.ID=RG.ID_BUSINESS
+    LEFT JOIN MEMBERSHIP M ON M.ID=R.ID_MEMBER_REQUESTER
+"""
+
+STATUS_DATE = """CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE
+    WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE
+    WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE
+    WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END"""
+
+
+def get_my_requests(connection: DatabaseConnection, member_id: int) -> list[RequestContext]:
+    rows = connection.execute(
+        sql(REQUEST_SELECT + """WHERE R.ID_MEMBER_REQUESTER=:member
+        ORDER BY R.CREATED_DATE DESC NULLS LAST,R.ID DESC"""),
         {"member": member_id},
     ).mappings()
-    return [
-        RequestItem(
-            id=r["id"],
-            title=r["title"],
-            createdAt=(
-                r["created_date"].strftime("%d/%m/%Y") if r["created_date"] else ""
-            ),
-            status="Fechado" if r["status"] in CLOSED else "Aberto",
-        )
-        for r in rows
-    ]
+    return [RequestContext.model_validate(row) for row in rows]
 
 
 def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
@@ -144,50 +150,16 @@ def get_activities(
     end: date,
     statuses: list[str],
     businesses: list[int],
-) -> list[Activity]:
-    query = sql("""SELECT R.ID,
-       RT.NAME REQUEST_TYPE,
-       B.NAME BUSINESS_UNIT,
-       SC.ID CATEGORY_ID,
-       SC.NAME CATEGORY,
-       ST.NAME SERVICE,
-       L.NAME LOCATION,
-       RS.DESCRIPTION STATUS,
-       CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END STATUS_DATE,
-       R.AGREED_DATE,
-       L.LOCATION_X MAP_X,
-       L.LOCATION_Y MAP_Y
-    FROM REQUEST R
-        JOIN REQUEST_STATUS RS
-            ON RS.ID=R.ID_REQUEST_STATUS
-        LEFT JOIN REQUEST_TYPE RT
-            ON RT.ID=R.ID_REQUEST_TYPE
-        LEFT JOIN SERVICE_TYPE ST
-            ON ST.ID=R.ID_SERVICE_TYPE
-        LEFT JOIN SERVICE_CATEGORY SC
-            ON SC.ID=ST.ID_SERVICE_CATEGORY
-        LEFT JOIN LOCATION L
-            ON L.ID=R.ID_LOCATION
-        LEFT JOIN REGION RG
-            ON RG.ID=L.ID_REGION
-        LEFT JOIN BUSINESS B
-            ON B.ID=RG.ID_BUSINESS
-    WHERE (:all_status OR RS.DESCRIPTION = ANY(:statuses)) AND (:all_business OR B.ID = ANY(:businesses)) AND CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END >= :start AND CASE WHEN RS.DESCRIPTION='Programada' THEN R.AGREED_DATE WHEN RS.DESCRIPTION='Em andamento' THEN R.STARTED_DATE WHEN RS.DESCRIPTION IN ('Concluída','Concluida') THEN R.FINISHED_DATE WHEN RS.DESCRIPTION='Cancelada' THEN R.CANCELED_DATE END < (:end + INTERVAL '1 day')
-    ORDER BY STATUS_DATE,R.ID""")
-    return [
-        Activity(**r)
-        for r in connection.execute(
-            query,
-            {
-                "start": start,
-                "end": end,
-                "statuses": statuses,
-                "all_status": not statuses,
-                "businesses": businesses,
-                "all_business": not businesses,
-            },
-        ).mappings()
-    ]
+) -> list[RequestContext]:
+    query = sql(REQUEST_SELECT + f"""WHERE
+        (:all_status OR RS.DESCRIPTION = ANY(CAST(:statuses AS TEXT[])))
+        AND (:all_business OR B.ID = ANY(CAST(:businesses AS INTEGER[])))
+        AND ({STATUS_DATE}) >= :start AND ({STATUS_DATE}) < (:end + INTERVAL '1 day')
+        ORDER BY ({STATUS_DATE}),R.ID""")
+    return [RequestContext.model_validate(row) for row in connection.execute(query, {
+        "start": start, "end": end, "statuses": statuses, "all_status": not statuses,
+        "businesses": businesses, "all_business": not businesses,
+    }).mappings()]
 
 
 def get_home_metrics(connection: DatabaseConnection, start: date, end: date):
@@ -382,226 +354,60 @@ def get_tracking(
 
 
 def get_board(
-    connection: DatabaseConnection,
-    start: date,
-    end: date,
-    search: str | None = None,
-):
-    statuses = [dict(r) for r in connection.execute(sql("""SELECT ID,
-       DESCRIPTION
-    FROM REQUEST_STATUS
-    ORDER BY ID""")).mappings()]
-    rows = connection.execute(
-        sql("""SELECT R.ID,
-       R.ID_REQUEST_STATUS STATUS_ID,
-       COALESCE(ST.NAME,'Não informado') SERVICE_TYPE_NAME,
-       COALESCE(M.NAME,'Não informado') REQUESTER_NAME,
-       COALESCE(L.NAME,'Não informado') LOCATION_NAME,
-       R.DESCRIPTION
-    FROM REQUEST R
-        LEFT JOIN SERVICE_TYPE ST
-            ON ST.ID=R.ID_SERVICE_TYPE
-        LEFT JOIN MEMBERSHIP M
-            ON M.ID=R.ID_MEMBER_REQUESTER
-        LEFT JOIN LOCATION L
-            ON L.ID=R.ID_LOCATION
-    WHERE R.CREATED_DATE>=:start AND R.CREATED_DATE<(:end+INTERVAL '1 day')
-      AND (CAST(:search AS TEXT) IS NULL
-        OR CAST(R.ID AS TEXT) ILIKE :search_pattern
-        OR COALESCE(ST.NAME,'') ILIKE :search_pattern
-        OR COALESCE(M.NAME,'') ILIKE :search_pattern
-        OR COALESCE(L.NAME,'') ILIKE :search_pattern
-        OR COALESCE(R.DESCRIPTION,'') ILIKE :search_pattern)
-    ORDER BY R.CREATED_DATE,R.ID"""),
-        {
-            "start": start,
-            "end": end,
-            "search": search.strip() if search and search.strip() else None,
-            "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,
-        },
-    ).mappings()
-    result = []
-    for r in rows:
+    connection: DatabaseConnection, start: date, end: date, search: str | None = None,
+) -> BoardEntities:
+    statuses = [RequestStatusEntity.model_validate(row) for row in connection.execute(
+        "SELECT ID, DESCRIPTION FROM REQUEST_STATUS ORDER BY ID"
+    ).mappings()]
+    rows = connection.execute(sql(REQUEST_SELECT + """WHERE
+        R.CREATED_DATE>=:start AND R.CREATED_DATE<(:end+INTERVAL '1 day')
+        AND (CAST(:search AS TEXT) IS NULL
+            OR CAST(R.ID AS TEXT) ILIKE :search_pattern
+            OR COALESCE(ST.NAME,'') ILIKE :search_pattern
+            OR COALESCE(M.NAME,'') ILIKE :search_pattern
+            OR COALESCE(L.NAME,'') ILIKE :search_pattern
+            OR COALESCE(R.DESCRIPTION,'') ILIKE :search_pattern)
+        ORDER BY R.CREATED_DATE,R.ID"""), {
+        "start": start, "end": end,
+        "search": search.strip() if search and search.strip() else None,
+        "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,
+    }).mappings()
+    requests = []
+    for row in rows:
+        request_id = row["request"]["id"]
         visits = []
-        tasks = connection.execute(
-            sql("""SELECT ID,
-       START_DATETIME,
-       STOP_DATETIME,
-       DESCRIPTION
-    FROM REQUEST_TASK
-    WHERE ID_REQUEST=:id
-    ORDER BY START_DATETIME,ID"""),
-            {"id": r["id"]},
-        ).mappings()
-        for t in tasks:
-            members = [
-                dict(x)
-                for x in connection.execute(
-                    sql("""SELECT M.ID,
-       M.NAME
-    FROM TASK_MEMBER_OCCURRENCE O
-        JOIN MEMBERSHIP M
-            ON M.ID=O.ID_MEMBERSHIP
-    WHERE O.ID_TASK=:id
-    ORDER BY M.NAME"""),
-                    {"id": t["id"]},
-                ).mappings()
-            ]
-            photos = [
-                {
-                    "id": x["id"],
-                    "fileName": x["file_name"] or "media",
-                    "mimeType": x["mime_type"],
-                    "url": f'/api/v1/request-tasks/media/{x["id"]}',
-                }
-                for x in connection.execute(
-                    sql("""SELECT ID,
-       FILE_NAME,
-       MIME_TYPE
-    FROM REQUEST_TASK_MEDIA
-    WHERE ID_REQUEST_TASK=:id"""),
-                    {"id": t["id"]},
-                ).mappings()
-            ]
+        tasks = connection.execute(sql("""SELECT * FROM REQUEST_TASK
+            WHERE ID_REQUEST=:id ORDER BY START_DATETIME,ID"""), {"id": request_id}).mappings()
+        for task in tasks:
+            task_params = {"id": task["id"]}
+            executors = list(connection.execute(sql("""SELECT to_jsonb(O) AS occurrence,
+                jsonb_build_object('id', M.ID, 'name', M.NAME) AS member
+                FROM TASK_MEMBER_OCCURRENCE O JOIN MEMBERSHIP M ON M.ID=O.ID_MEMBERSHIP
+                WHERE O.ID_TASK=:id ORDER BY M.NAME"""), task_params).mappings())
+            photos = [dict(photo, url=f'/api/v1/request-tasks/media/{photo["id"]}')
+                for photo in connection.execute(sql("""SELECT ID, FILE_NAME, MIME_TYPE
+                    FROM REQUEST_TASK_MEDIA WHERE ID_REQUEST_TASK=:id"""), task_params).mappings()]
             checklists = []
-            for checklist in connection.execute(
-                sql("""SELECT RTC.ID,
-       CT.ID CHECKLIST_TYPE_ID,
-       CT.NAME,
-       CT.DESCRIPTION,
-       CT.VERSION,
-       RTC.CORPORATION,
-       RTC.EQUIPMENT_TAG,
-       RTC.EQUIPMENT_BRAND,
-       RTC.EQUIPMENT_MODEL,
-       RTC.RENTED_EQUIPMENT,
-       RTC.SERIAL_NUMBER,
-       RTC.PT_NUMBER
-    FROM REQUEST_TASK_CHECKLIST RTC
-        JOIN CHECKLIST_TYPE CT
-            ON CT.ID=RTC.ID_CHECKLIST_TYPE
-    WHERE RTC.ID_REQUEST_TASK=:id
-    ORDER BY RTC.ID"""),
-                {"id": t["id"]},
-            ).mappings():
-                values = [
-                    {
-                        "id": value["id"],
-                        "fieldId": value["field_id"],
-                        "name": value["name"],
-                        "type": value["type"],
-                        "value": value["value"],
-                    }
-                    for value in connection.execute(
-                        sql("""SELECT CFV.ID,
-       CFT.ID FIELD_ID,
-       CFT.NAME,
-       CFT.TYPE,
-       CFV.VALUE
-    FROM CHECKLIST_FIELD_VALUE CFV
-        JOIN CHECKLIST_FIELD_TYPE CFT
-            ON CFT.ID=CFV.ID_CHECKLIST_FIELD_TYPE
-    WHERE CFV.ID_REQUEST_TASK_CHECKLIST=:id
-    ORDER BY CFT.DISPLAY_ORDER,CFT.ID"""),
-                        {"id": checklist["id"]},
-                    ).mappings()
-                ]
-                checklists.append(
-                    {
-                        "id": checklist["id"],
-                        "checklistTypeId": checklist["checklist_type_id"],
-                        "name": checklist["name"],
-                        "description": checklist["description"] or "",
-                        "version": checklist["version"],
-                        "corporation": checklist["corporation"],
-                        "equipmentTag": checklist["equipment_tag"],
-                        "equipmentBrand": checklist["equipment_brand"],
-                        "equipmentModel": checklist["equipment_model"],
-                        "rentedEquipment": checklist["rented_equipment"],
-                        "serialNumber": checklist["serial_number"],
-                        "ptNumber": checklist["pt_number"],
-                        "values": values,
-                    }
-                )
-            start_dt = t["start_datetime"]
-            stop_dt = t["stop_datetime"]
-            visits.append(
-                {
-                    "id": t["id"],
-                    "startDate": start_dt.strftime("%d/%m/%Y") if start_dt else "",
-                    "endDate": stop_dt.strftime("%d/%m/%Y") if stop_dt else "",
-                    "startDatetime": (
-                        start_dt.isoformat(timespec="minutes") if start_dt else ""
-                    ),
-                    "endDatetime": (
-                        stop_dt.isoformat(timespec="minutes") if stop_dt else ""
-                    ),
-                    "description": t["description"] or "",
-                    "executors": members,
-                    "photos": photos,
-                    "checklists": checklists,
-                }
-            )
-        values = connection.execute(
-            sql("""SELECT SFV.ID,
-       SFT.NAME,
-       SFV.VALUE
-    FROM SERVICE_FIELD_VALUE SFV
-        JOIN SERVICE_FIELD_TYPE SFT
-            ON SFT.ID=SFV.ID_SERVICE_FIELD_TYPE
-    WHERE SFV.ID_REQUEST=:id
-    ORDER BY SFT.DISPLAY_ORDER NULLS LAST,SFV.ID"""),
-            {"id": r["id"]},
-        ).mappings()
-        details = [
-            {
-                "id": str(v["id"]),
-                "label": v["name"],
-                "value": (
-                    ", ".join(map(str, v["value"]))
-                    if isinstance(v["value"], list)
-                    else str(v["value"] or "")
-                ),
-            }
-            for v in values
-        ]
-        if r["description"]:
-            details.insert(
-                0,
-                {"id": "description", "label": "Descrição", "value": r["description"]},
-            )
-        media = [
-            {
-                "id": x["id"],
-                "fieldLabel": x["field_label"],
-                "fileName": x["file_name"] or "media",
-                "mimeType": x["mime_type"],
-                "fileSize": x["file_size"],
-                "url": f'/api/v1/service-catalog/media/{x["id"]}',
-            }
-            for x in connection.execute(
-                sql("""SELECT M.ID,
-       SFT.NAME FIELD_LABEL,
-       M.FILE_NAME,
-       M.MIME_TYPE,
-       M.FILE_SIZE
-    FROM SERVICE_FIELD_MEDIA M
-        JOIN SERVICE_FIELD_TYPE SFT
-            ON SFT.ID=M.ID_SERVICE_FIELD_TYPE
-    WHERE M.ID_REQUEST=:id"""),
-                {"id": r["id"]},
-            ).mappings()
-        ]
-        result.append(
-            {
-                "id": r["id"],
-                "statusId": r["status_id"],
-                "serviceTypeName": r["service_type_name"],
-                "requesterName": r["requester_name"],
-                "locationName": r["location_name"],
-                "details": details,
-                "media": media,
-                "visits": visits,
-            }
-        )
-    return {"statuses": statuses, "requests": result}
+            for checklist in connection.execute(sql("""SELECT to_jsonb(RTC) AS checklist,
+                to_jsonb(CT) AS definition FROM REQUEST_TASK_CHECKLIST RTC
+                JOIN CHECKLIST_TYPE CT ON CT.ID=RTC.ID_CHECKLIST_TYPE
+                WHERE RTC.ID_REQUEST_TASK=:id ORDER BY RTC.ID"""), task_params).mappings():
+                values = list(connection.execute(sql("""SELECT to_jsonb(CFV) AS value,
+                    to_jsonb(CFT) AS field FROM CHECKLIST_FIELD_VALUE CFV
+                    JOIN CHECKLIST_FIELD_TYPE CFT ON CFT.ID=CFV.ID_CHECKLIST_FIELD_TYPE
+                    WHERE CFV.ID_REQUEST_TASK_CHECKLIST=:id ORDER BY CFT.DISPLAY_ORDER,CFT.ID"""),
+                    {"id": checklist["checklist"]["id"]}).mappings())
+                checklists.append(dict(checklist, values=values))
+            visits.append({"task": task, "executors": executors, "photos": photos, "checklists": checklists})
+        values = list(connection.execute(sql("""SELECT to_jsonb(SFV) AS value,
+            to_jsonb(SFT) AS field FROM SERVICE_FIELD_VALUE SFV
+            JOIN SERVICE_FIELD_TYPE SFT ON SFT.ID=SFV.ID_SERVICE_FIELD_TYPE
+            WHERE SFV.ID_REQUEST=:id ORDER BY SFT.DISPLAY_ORDER NULLS LAST,SFV.ID"""),
+            {"id": request_id}).mappings())
+        media = [dict(item, url=f'/api/v1/service-catalog/media/{item["id"]}')
+            for item in connection.execute(sql("""SELECT M.ID, SFT.NAME AS field_label,
+                M.FILE_NAME, M.MIME_TYPE, M.FILE_SIZE FROM SERVICE_FIELD_MEDIA M
+                JOIN SERVICE_FIELD_TYPE SFT ON SFT.ID=M.ID_SERVICE_FIELD_TYPE
+                WHERE M.ID_REQUEST=:id"""), {"id": request_id}).mappings()]
+        requests.append(BoardRequestEntities.model_validate(dict(row, values=values, media=media, visits=visits)))
+    return BoardEntities(statuses=statuses, requests=requests)

@@ -1,13 +1,14 @@
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from ...database import DatabaseConnection, get_connection, settings
-from .schemas import Activity, CreateRequest, RequestItem
+from .schemas import CreateRequest
+from ..entities import BoardEntities, RequestContext
 from .service import create_request, get_activities, get_my_requests
 
 router = APIRouter()
 
 
-@router.get("/mine", response_model=list[RequestItem])
+@router.get("/mine", response_model=list[RequestContext])
 def mine(connection: DatabaseConnection = Depends(get_connection)):
     return get_my_requests(connection, settings.current_member_id)
 
@@ -22,7 +23,7 @@ def create(
         raise HTTPException(422, str(exc)) from exc
 
 
-@router.get("/activities", response_model=list[Activity])
+@router.get("/activities", response_model=list[RequestContext])
 def activities(
     start_date: date,
     end_date: date,
@@ -59,7 +60,7 @@ def activity_tracking(
     )
 
 
-@router.get("/board")
+@router.get("/board", response_model=BoardEntities)
 def board(
     start_date: date,
     end_date: date,

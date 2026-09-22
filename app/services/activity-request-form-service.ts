@@ -1,8 +1,11 @@
 import "server-only";
 
-import type { ActivityRequestFormPageData, ActivityRequestFormData } from "@/app/types/navigation_entities/solicitar_atividade_chamado_viewModels";
+import type { CatalogEntities, RequestFormEntities, OrganizationEntities } from "@/app/entities/api/entity-responses";
+import { mapCatalog, mapOrganization, mapServiceField } from "./mappers/entity-view-models";
+
+import type { ActivityRequestFormPageData } from "@/app/entities/navigation_entities/solicitar_atividade_chamado_viewModels";
 import { backendJson } from "@/src/server/api-client";
-import type { LocationHierarchy, ServiceCatalogCategory } from "@/app/types/navigation_entities/solicitar_atividade_viewModels";
+import type { ServiceCatalogCategory } from "@/app/entities/navigation_entities/solicitar_atividade_viewModels";
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
@@ -13,7 +16,7 @@ import type { LocationHierarchy, ServiceCatalogCategory } from "@/app/types/navi
  * @returns O resultado produzido para continuidade do fluxo chamador.
  */
 export async function getServiceCatalogPageData(): Promise<ServiceCatalogCategory[]> {
-  return backendJson<ServiceCatalogCategory[]>("/service-catalog");
+  return mapCatalog(await backendJson<CatalogEntities>("/service-catalog"));
 }
 
 /**
@@ -30,17 +33,17 @@ export async function getChamadoRequestFormPageData(params: {
 }): Promise<ActivityRequestFormPageData> {
   const query = new URLSearchParams({ service_type_id: String(params.serviceTypeId) });
   const [dynamicData, locationHierarchy] = await Promise.all([
-    backendJson<ActivityRequestFormData>(`/service-catalog/request-form?${query}`),
-    backendJson<LocationHierarchy>("/organization/locations"),
+    backendJson<RequestFormEntities>(`/service-catalog/request-form?${query}`),
+    backendJson<OrganizationEntities>("/organization/locations"),
   ]);
 
   return {
-    title: dynamicData.serviceTypeName ? `Nova request: ${dynamicData.serviceTypeName}` : "Nova request: Chamado",
-    subtitle: ["request_type Chamado", dynamicData.serviceCategoryName, dynamicData.serviceTypeName]
+    title: dynamicData.serviceType?.name ? `Nova request: ${dynamicData.serviceType?.name}` : "Nova request: Chamado",
+    subtitle: ["request_type Chamado", dynamicData.category?.name, dynamicData.serviceType?.name]
       .filter(Boolean)
       .join(" · "),
-    serviceTypeId: dynamicData.serviceTypeId,
-    locationHierarchy,
+    serviceTypeId: dynamicData.serviceType?.id,
+    locationHierarchy: mapOrganization(locationHierarchy),
     fields: [
       {
         label: "Descrição",
@@ -50,7 +53,7 @@ export async function getChamadoRequestFormPageData(params: {
         fullWidth: true,
         required: true,
       },
-      ...dynamicData.fields,
+      ...dynamicData.fields.map(mapServiceField),
     ],
   };
 }

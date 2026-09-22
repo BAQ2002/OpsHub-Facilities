@@ -1,6 +1,6 @@
 export type RequestStatus = "Aberto" | "Fechado";
 
-export type RequestEntity = {
+export type RequestCardViewModel = {
   id: number;
   title: string;
   createdAt: string;
@@ -9,6 +9,6 @@ export type RequestEntity = {
 };
 
 export type MyRequestsPageViewModel = {
-  openRequests: RequestEntity[];
-  closedRequests: RequestEntity[];
+  openRequests: RequestCardViewModel[];
+  closedRequests: RequestCardViewModel[];
 };

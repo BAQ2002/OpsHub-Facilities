@@ -1,9 +1,11 @@
 import "server-only";
 
+import type { RequestContext } from "@/app/entities/api/entity-responses";
+import { mapActivity } from "./mappers/entity-view-models";
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { ActivityEntity, HomeMetrics, ActivityRecord, ActivityStatus, ActivityType, EquipmentCard, ActivityMarkerViewModel, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/types/navigation_entities/home_viewModels";
+import type { HomeMetrics, ActivityRecord, EquipmentCard, ActivityMarkerViewModel, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/entities/navigation_entities/home_viewModels";
 
-import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/types/navigation_entities/home_viewModels";
+import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/entities/navigation_entities/home_viewModels";
 import { backendJson } from "@/src/server/api-client";
 
 type HomeDateRange = {
@@ -12,16 +14,6 @@ type HomeDateRange = {
   statuses?: string[];
   businessUnits?: number[];
 };
-
-const activityDateFormatter = new Intl.DateTimeFormat("pt-BR", {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-  timeZone: "America/Sao_Paulo",
-});
 
 /**
  * Acionada pela página ou Server Action que solicita este caso de uso.
@@ -73,20 +65,8 @@ function homeDateRangeQuery(dateRange: HomeDateRange): URLSearchParams {
 }
 
 async function getActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
-  const records = await backendJson<ActivityEntity[]>(`/requests/activities?${homeDateRangeQuery(dateRange)}`);
-  return records.map((record) => ({
-    id: String(record.id),
-    activityType: (record.request_type === "Atividade no Pátio" ? "Atividade no Pátio" : "Chamado") as ActivityType,
-    businessUnit: record.business_unit ?? "Não informado",
-    categoryId: record.category_id,
-    category: record.category ?? "Não informado",
-    serviceType: record.service ?? "Não informado",
-    location: record.location ?? "Não informado",
-    status: (record.status === "Concluida" ? "Concluída" : record.status) as ActivityStatus,
-    statusDate: record.status_date ? activityDateFormatter.format(new Date(record.status_date)) : "Não informado",
-    plannedAt: record.agreed_date ? activityDateFormatter.format(new Date(record.agreed_date)) : "Não informado",
-    mapPosition: { x: Number(record.map_x ?? 0), y: Number(record.map_y ?? 0) },
-  }));
+  const records = await backendJson<RequestContext[]>(`/requests/activities?${homeDateRangeQuery(dateRange)}`);
+  return records.map(mapActivity);
 }
 
 function getHomeMetrics(dateRange: HomeDateRange): Promise<HomeMetrics> {

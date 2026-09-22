@@ -1,5 +1,3 @@
-import type { RequestStatusEntity } from "@/app/types/concrete_entity/request-status";
-
 export type ChecklistFieldType = "TEXT" | "NUMBER" | "DATE" | "BOOL" | "SINGLE_SELECT" | "MULTI_SELECT";
 
 export type ChecklistOption = { label: string; value: string };
@@ -62,17 +60,6 @@ export type VisitInput = {
 
 export type UpdateVisitInput = Omit<VisitInput, "requestId"> & { visitId: number };
 
-export type RequestBoardItem = {
-  id: number;
-  statusId: number;
-  serviceTypeName: string;
-  requesterName: string;
-  locationName: string;
-  details: RequestBoardDetail[];
-  media: RequestBoardMedia[];
-  visits: RequestBoardVisit[];
-};
-
 export type RequestBoardVisit = {
   id: number;
   startDate: string;
@@ -108,11 +95,6 @@ export type RequestBoardMedia = {
 };
 
 
-
-export type RequestBoardData = {
-  statuses: RequestStatusEntity[];
-  requests: RequestBoardItem[];
-};
 
 export type RequestBoardCardViewModel = {
   id: number;

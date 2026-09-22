@@ -1,13 +1,13 @@
 from ...database import DatabaseConnection
-from .schemas import MembershipOption
+from ..entities import MemberSummary
 
 
-def get_executor_options(connection: DatabaseConnection) -> list[MembershipOption]:
+def get_executor_options(connection: DatabaseConnection) -> list[MemberSummary]:
     rows = connection.execute("""SELECT ID,
        NAME
     FROM MEMBERSHIP
     ORDER BY NAME""").all()
     return [
-        MembershipOption(id=row["id"], name=row["name"] or "Não informado")
+        MemberSummary(id=row["id"], name=row["name"])
         for row in rows
     ]

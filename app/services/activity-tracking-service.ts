@@ -1,6 +1,8 @@
 import "server-only";
 
-import type { ActivityTrackingPageViewModel, ActivityTrackingData, ActivityTrackingFilters } from "@/app/types/navigation_entities/chamados_dashboard_viewModels";
+import type { ActivityTrackingResponse } from "@/app/entities/api/entity-responses";
+
+import type { ActivityTrackingPageViewModel, ActivityTrackingFilters } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
 
 import { backendJson } from "@/src/server/api-client";
 
@@ -21,15 +23,19 @@ export async function getActivityTrackingPageData(filters: ActivityTrackingFilte
   if (filters.businessId) query.set("business_id", String(filters.businessId));
   if (filters.serviceCategoryId) query.set("service_category_id", String(filters.serviceCategoryId));
 
-  const data = await backendJson<ActivityTrackingData>(`/requests/activity-tracking?${query}`);
-  return mapActivityTrackingDataToViewModel(data);
+  const data = await backendJson<ActivityTrackingResponse>(`/requests/activity-tracking?${query}`);
+  return mapActivityTrackingResponseToViewModel(data);
 }
 
-function mapActivityTrackingDataToViewModel(
-  data: ActivityTrackingData,
+function mapActivityTrackingResponseToViewModel(
+  data: ActivityTrackingResponse,
 ): ActivityTrackingPageViewModel {
   return {
     ...data,
+    filterOptions: {
+      businesses: data.filterOptions.businesses.map((item) => ({ id: item.id, name: item.name || "Não informado" })),
+      serviceCategories: data.filterOptions.serviceCategories.map((item) => ({ id: item.id, name: item.name || "Não informado" })),
+    },
     maxMonthlyValue: Math.max(1,
       ...data.monthlyData.flatMap((item) => [item.open, item.closed]),
     ),
