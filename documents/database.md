@@ -29,7 +29,7 @@ Mantenha `DATABASE_URL` sem o prefixo `NEXT_PUBLIC_`: a string deve existir apen
 Fluxo recomendado:
 
 ```text
-app/*/page.tsx -> src/server/services/* -> src/server/repositories/* -> src/server/db/postgres.ts -> Postgres
+app/*/page.tsx -> app/services/* -> src/server/repositories/* -> src/server/db/postgres.ts -> Postgres
 ```
 
 Para ativar o banco real, defina:
