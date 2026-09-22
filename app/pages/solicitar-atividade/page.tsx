@@ -1,3 +1,4 @@
+import AutomaticSearchForm from "@/app/componentes/AutomaticSearchForm";
 import Link from "next/link";
 import { getServiceCatalogPageData } from "@/app/services/activity-request-form-service";
 
@@ -46,8 +47,8 @@ export default async function SolicitarAtividadePage({
             </div>
           </div>
 
-          <form action="/pages/solicitar-atividade" method="get" className="relative mt-6 block" data-ui="service-catalog-search">
-            <label className="block" htmlFor="service-search">
+          <AutomaticSearchForm action="/pages/solicitar-atividade" method="get" className="mt-6 flex flex-wrap items-center gap-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" data-ui="service-catalog-search">
+            <label className="relative block min-w-0 flex-1" htmlFor="service-search">
               <span className="sr-only">Busque por nome ou categoria do chamado</span>
               <span
                 className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -56,7 +57,7 @@ export default async function SolicitarAtividadePage({
                 <SearchIcon />
               </span>
               <input
-                className="h-10 w-full rounded-[4px] border border-slate-100 bg-slate-100 pl-11 pr-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-500 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+                className="h-[30px] w-full rounded-lg border border-slate-200 bg-white pl-11 pr-4 text-xs text-slate-700 outline-none transition placeholder:text-slate-500 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
                 id="service-search"
                 name="busca"
                 defaultValue={search}
@@ -64,8 +65,7 @@ export default async function SolicitarAtividadePage({
                 type="search"
               />
             </label>
-            <button className="sr-only" type="submit">Buscar serviços</button>
-          </form>
+          </AutomaticSearchForm>
         </header>
 
         <div data-ui="service-category-list" className="space-y-6">

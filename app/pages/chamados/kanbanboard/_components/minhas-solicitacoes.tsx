@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
+import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
 import type { ChecklistDefinition, ChecklistSubmission, RequestBoardCardViewModel, RequestBoardColumnViewModel, RequestBoardPageViewModel } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
@@ -17,16 +18,9 @@ import {
 type Executor = { id: number; name: string };
 
 export function MinhasSolicitacoes({ initialData, initialRange, executors, checklistDefinitions }: { initialData: RequestBoardPageViewModel; initialRange: DateRangeValue; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
-  const [data, setData] = useState(initialData);
-  const [range, setRange] = useState(initialRange);
-  const [search, setSearch] = useState("");
+  const { data, filters, update, apply, isPending, error } = useAutomaticFilters({ ...initialRange, search: "" }, initialData, filterRequestBoard);
   const [selectedStatusIds, setSelectedStatusIds] = useState<number[]>([]);
   const [showStatusFilters, setShowStatusFilters] = useState(false);
-  const [isPending, startTransition] = useTransition();
-
-  function applyFilters() {
-    startTransition(async () => setData(await filterRequestBoard({ ...range, search })));
-  }
 
   const visibleColumns = selectedStatusIds.length
     ? data.columns.filter((column) => selectedStatusIds.includes(column.id))
@@ -43,14 +37,15 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
           </div>
         </div>
 
-        <section data-ui="requests-workspace-filters" className="relative mt-5 flex flex-wrap items-center gap-3 rounded-md bg-white/80 px-4 py-3" aria-label="Busca de chamados">
-          <DateRange {...range} disabled={isPending} onChange={setRange} />
-          <label className="min-w-64 flex-1 text-xs font-medium uppercase text-slate-500">
+        <section data-ui="requests-workspace-filters" className="relative mt-5 flex flex-wrap items-center gap-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Busca de chamados">
+          <DateRange commitOnBlur {...filters} onChange={(range) => update({ ...filters, ...range })} />
+          <label className="min-w-0 basis-full sm:basis-48 flex-1 text-xs font-medium text-slate-500">
             <span className="sr-only">Buscar chamado</span>
-            <input className="w-full bg-transparent outline-none placeholder:text-slate-500" name="search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") applyFilters(); }} placeholder="BUSCAR CHAMADO" />
+            <input className="h-[30px] w-full rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-950 shadow-sm outline-none focus:ring-2 focus:ring-teal-100" name="search" type="search" value={filters.search} onChange={(event) => update({ ...filters, search: event.target.value }, event.target.value ? 400 : 0)} onBlur={apply} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); apply(); } }} placeholder="BUSCAR CHAMADO" />
           </label>
-          <button className="inline-flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-6 py-3 text-sm text-blue-600" type="button" aria-expanded={showStatusFilters} onClick={() => setShowStatusFilters((visible) => !visible)}><FilterIcon /> Filtros{selectedStatusIds.length ? ` (${selectedStatusIds.length})` : ""}</button>
-          <button className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-8 py-3 text-sm font-semibold text-white disabled:opacity-60" type="button" disabled={isPending} onClick={applyFilters}><SearchIcon /> {isPending ? "Buscando..." : "Buscar"}</button>
+          <button className="inline-flex h-[30px] items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-950 shadow-sm" type="button" aria-expanded={showStatusFilters} onClick={() => setShowStatusFilters((visible) => !visible)}><FilterIcon /> Filtros{selectedStatusIds.length ? ` (${selectedStatusIds.length})` : ""}</button>
+          <span role="status" className="text-xs text-slate-500">{isPending ? "Atualizando..." : ""}</span>
+          {error && <p role="alert" className="w-full text-xs text-red-600">{error}</p>}
           {showStatusFilters ? (
             <fieldset className="w-full rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
               <legend className="px-1 text-xs font-semibold uppercase text-slate-500">Status exibidos</legend>
@@ -78,7 +73,6 @@ const icon = "h-[18px] w-[18px]";
 function DownloadIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3" /></svg>; }
 function SettingsIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.7-1.7.9-1.9-2.1-2.1-1.9.9-1.7-.7-.7-2h-3l-.7 2-1.7.7-1.9-.9-2.1 2.1.9 1.9-.7 1.7-2 .7v3l2 .7.7 1.7-.9 1.9 2.1 2.1 1.9-.9 1.7.7.7 2h3l.7-2 1.7-.7 1.9.9 2.1-2.1-.9-1.9.7-1.7z"/></svg>; }
 function FilterIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg>; }
-function SearchIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>; }
 function BoardIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18m6-18v18"/></svg>; }
 function ListIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>; }
 

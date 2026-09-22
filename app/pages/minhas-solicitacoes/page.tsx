@@ -1,3 +1,4 @@
+import AutomaticSearchForm from "@/app/componentes/AutomaticSearchForm";
 import type { RequestCardViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
 import { getMyRequestsPageData } from "@/app/services/request-service";
 
@@ -44,11 +45,11 @@ export default async function MyRequestsPage({
           </div>
         </header>
 
-        <form
+        <AutomaticSearchForm
           action="/pages/minhas-solicitacoes"
           method="get"
           data-ui="my-requests-filters"
-          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto_auto]"
+          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
           aria-label="Busca e filtros das minhas requests"
         >
           <label className="relative block">
@@ -57,7 +58,7 @@ export default async function MyRequestsPage({
               <SearchIcon />
             </span>
             <input
-              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+              className="h-[30px] w-full rounded-lg border border-slate-200 bg-white pl-12 pr-4 text-xs font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
               type="search"
               name="busca"
               defaultValue={search}
@@ -65,7 +66,7 @@ export default async function MyRequestsPage({
             />
           </label>
 
-          <label className="flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700">
+          <label className="flex h-[30px] items-center rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700">
             <span className="sr-only">Filtrar por request status</span>
             <select className="cursor-pointer bg-transparent outline-none" name="status" defaultValue={status}>
               <option className="text-slate-900" value="">Todos os status</option>
@@ -73,8 +74,7 @@ export default async function MyRequestsPage({
               <option className="text-slate-900" value="closed">Requests fechadas</option>
             </select>
           </label>
-          <button className="inline-flex h-11 items-center justify-center gap-3 rounded-xl bg-teal-600 px-7 text-sm font-bold uppercase text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" type="submit"><FilterIcon /> Filtrar</button>
-        </form>
+        </AutomaticSearchForm>
 
         <RequestGroup title="Requests abertas" requests={filteredOpenRequests} />
         <RequestGroup title="Requests fechadas" requests={filteredClosedRequests} className="mt-10" />
@@ -247,27 +247,6 @@ function SearchIcon() {
     >
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-4.1-4.1" />
-    </svg>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o ícone visual de filter.
- *
- * @returns O elemento React que representa esta interface.
- */
-function FilterIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M4 5a1 1 0 0 1 .9-.55h14.2a1 1 0 0 1 .78 1.63L14 13.42V19a1 1 0 0 1-.45.84l-3 2A1 1 0 0 1 9 21v-7.58L4.12 6.08A1 1 0 0 1 4 5Z" />
     </svg>
   );
 }

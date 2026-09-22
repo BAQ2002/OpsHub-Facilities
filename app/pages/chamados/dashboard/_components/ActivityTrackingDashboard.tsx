@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ActivityTrackingFilters, ChartItem, ActivityTrackingPageViewModel } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
 
@@ -17,14 +17,8 @@ import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
  * @returns O elemento React que representa esta interface.
  */
 export function ActivityTrackingDashboard({ initialData, initialFilters }: { initialData: ActivityTrackingPageViewModel; initialFilters: ActivityTrackingFilters }) {
-  const [data, setData] = useState(initialData);
-  const [filters, setFilters] = useState(initialFilters);
-  const [isPending, startTransition] = useTransition();
+  const { data, filters, update, isPending, error } = useAutomaticFilters(initialFilters, initialData, filterActivityTracking);
   const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue, filterOptions } = data;
-
-  function applyFilters() {
-    startTransition(async () => setData(await filterActivityTracking(filters)));
-  }
 
   return (
     <section data-ui="activity-dashboard-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
@@ -56,20 +50,15 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
         </div>
 
         <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
-          <div data-ui="activity-dashboard-filter-fields" className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
-            <div className="flex flex-wrap items-center gap-2 lg:col-span-2">
-              <DateRange {...filters} disabled={isPending} onChange={(range: DateRangeValue) => setFilters((current) => ({ ...current, ...range }))} />
+          <div data-ui="activity-dashboard-filter-fields" className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <DateRange commitOnBlur {...filters} onChange={(range: DateRangeValue) => update({ ...filters, ...range })} />
             </div>
-            <SelectField label="Business" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => setFilters((current) => ({ ...current, businessId }))} />
-            <SelectField label="Service category" name="serviceCategoryId" value={filters.serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} onChange={(serviceCategoryId) => setFilters((current) => ({ ...current, serviceCategoryId }))} />
+            <SelectField label="Business" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
+            <SelectField label="Service category" name="serviceCategoryId" value={filters.serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} onChange={(serviceCategoryId) => update({ ...filters, serviceCategoryId })} />
 
-            <button
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700"
-              type="button" disabled={isPending} onClick={applyFilters}
-            >
-              <SearchIcon />
-              {isPending ? "Buscando..." : "Buscar"}
-            </button>
+            <span role="status" className="text-xs text-slate-500">{isPending ? "Atualizando..." : ""}</span>
+            {error && <p role="alert" className="w-full text-xs text-red-600">{error}</p>}
           </div>
         </section>
 
@@ -131,10 +120,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
  */
 function SelectField({ label, name, value, placeholder, options, onChange }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[]; onChange?: (value?: number) => void }) {
   return (
-    <label className="block">
+    <label className="block w-full min-w-0 sm:w-[190px]">
       <span className="sr-only">{label}</span>
       <select
-        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-600 outline-none transition focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+        className="h-[30px] w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-sm outline-none transition focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
         name={name}
         value={value?.toString() ?? ""}
         onChange={(event) => onChange?.(event.target.value ? Number(event.target.value) : undefined)}
@@ -337,22 +326,6 @@ function ActivityIcon({ className }: { className: string }) {
     <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M9 11l3 3L22 4" />
       <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-    </svg>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o ícone visual de search.
- *
- * @returns O elemento React que representa esta interface.
- */
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }
