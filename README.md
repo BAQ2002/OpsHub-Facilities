@@ -17,6 +17,9 @@ A API mantém os módulos de domínio diretamente em `backend/app/api` e é orga
 
 ## Configuração
 
+A correlação visual das categorias na Home e no Dashboard está documentada em
+[Cores das categorias](docs/category-colors.md), com paleta e entidades por página.
+
 Copie `.env.example` para `.env.local` e ajuste:
 
 - `DATABASE_URL`: conexão PostgreSQL usada exclusivamente pelo FastAPI;

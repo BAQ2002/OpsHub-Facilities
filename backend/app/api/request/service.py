@@ -246,7 +246,7 @@ def get_tracking(
     )
     cats = connection.execute(
         sql(
-            """SELECT COALESCE(SC.NAME,'Não informado') LABEL,
+            """SELECT SC.ID CATEGORY_ID, COALESCE(SC.NAME,'Não informado') LABEL,
        COUNT(*) VALUE"""
             + "\n"
             + joins
@@ -295,7 +295,6 @@ def get_tracking(
        NAME
     FROM SERVICE_CATEGORY
     ORDER BY NAME""")).mappings()
-    colors = ["#14b8a6", "#38bdf8", "#f59e0b", "#8b5cf6", "#ec4899", "#64748b"]
     scolors = ["#f97316", "#0ea5e9", "#84cc16", "#8b5cf6", "#64748b"]
 
     def chart(rows, palette):
@@ -310,7 +309,10 @@ def get_tracking(
 
     avg = max(0, int(summary["average_minutes"] or 0))
     return {
-        "categoryData": chart(cats, colors),
+        "categoryData": [
+            {"categoryId": row["category_id"], "label": row["label"], "value": row["value"]}
+            for row in cats
+        ],
         "statusData": chart(statuses, scolors),
         "monthlyData": [
             {"month": r["month"].capitalize(), "open": r["open"], "closed": r["closed"]}

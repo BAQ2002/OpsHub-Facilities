@@ -41,6 +41,7 @@ WHERE r.created_date >= :period_start
 -- 2) Distribuição por categoria.
 -- Mapeia para categoryData[].
 SELECT
+    sc.id AS category_id,
     sc.name AS label,
     COUNT(r.id) AS value
 FROM service_category sc

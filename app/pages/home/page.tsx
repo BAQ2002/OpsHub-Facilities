@@ -75,14 +75,14 @@ export default async function Home({
     plannedRequestFilterOptions,
     averageHandlingTimeClock,
     activityRecords,
-    categoryColorMap,
+    categoryStyleMap,
   } = await getHomePageData(dateRange, selectedBusiness);
   const filteredActivityRecords = selectedBusiness === "all"
     ? activityRecords
     : activityRecords.filter((record) => record.businessUnit === selectedBusiness);
 
   return (
-    <section data-ui="facilities-home-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="facilities-home-page" className="min-h-screen bg-white px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="facilities-home-content" className="mx-auto max-w-[1620px]">
         <header data-ui="facilities-home-header" className="mb-[18px] grid grid-cols-[1fr_auto] items-start gap-4 pt-2">
           <h1 className="mt-[57px] text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
@@ -180,8 +180,12 @@ export default async function Home({
             >
               <div className="flex items-center justify-start gap-2">
                 <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
-                ></div>
+                  className="flex h-8 w-8 items-center justify-center rounded-lg"
+                  style={{ backgroundColor: card.categoryStyle.backgroundColor }}
+                  aria-hidden="true"
+                >
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: card.categoryStyle.color }} />
+                </div>
 
                 <h3 className="min-w-0 whitespace-nowrap text-[13px] font-bold leading-tight text-slate-950">
                   {card.title}
@@ -350,12 +354,15 @@ export default async function Home({
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-4 py-3">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 ring-1 ring-slate-200">
+                        <span
+                          className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700 ring-1 ring-slate-200"
+                          style={{ backgroundColor: (categoryStyleMap[String(record.categoryId)] ?? categoryStyleMap.default).backgroundColor }}
+                        >
                           <span
                             className="h-2 w-2 rounded-full"
                             style={{
                               backgroundColor:
-                                categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
+                                (categoryStyleMap[String(record.categoryId)] ?? categoryStyleMap.default).color,
                             }}
                             aria-hidden="true"
                           />

@@ -27,7 +27,7 @@ export default async function SolicitarAtividadePage({
     return serviceTypes.length ? [{ ...category, serviceTypes }] : [];
   });
   return (
-    <section data-ui="service-catalog-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="service-catalog-page" className="min-h-screen bg-white px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="service-catalog-content" className="mx-auto w-full max-w-[980px]">
         <header data-ui="service-catalog-header" className="mb-6">
           <div className="flex items-center gap-4">

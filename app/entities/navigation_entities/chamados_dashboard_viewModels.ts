@@ -1,8 +1,18 @@
+import { getServiceCategoryStyle, type ServiceCategoryStyle } from "./service_category_styles";
+
 export type ChartItem = {
   label: string;
   value: number;
   color: string;
+  backgroundColor?: string;
 };
+
+// Correlação do Dashboard: fatias e legendas usam o mesmo ID de categoria da Home.
+export type CategoryChartItem = ChartItem & ServiceCategoryStyle & { categoryId: number };
+
+export function mapCategoryChartItem(item: { categoryId: number; label: string; value: number }): CategoryChartItem {
+  return { ...item, ...getServiceCategoryStyle(item.categoryId) };
+}
 
 export type MonthlyActivity = {
   month: string;
@@ -19,7 +29,7 @@ export type SummaryCard = {
 };
 
 export type ActivityTrackingData = {
-  categoryData: ChartItem[];
+  categoryData: CategoryChartItem[];
   statusData: ChartItem[];
   monthlyData: MonthlyActivity[];
   summaryCards: SummaryCard[];

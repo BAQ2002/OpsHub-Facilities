@@ -29,7 +29,7 @@ export default async function MyRequestsPage({
   const filteredClosedRequests = status === "open" ? [] : closedRequests.filter(matchesSearch);
 
   return (
-    <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="my-requests-page" className="min-h-screen bg-white px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="my-requests-content" className="mx-auto w-full max-w-[980px]">
         <header data-ui="my-requests-header" className="mb-9 flex items-center gap-4 pt-1">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">

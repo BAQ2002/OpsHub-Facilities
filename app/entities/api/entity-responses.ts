@@ -74,6 +74,7 @@ export type BoardEntities = {
   requests: BoardRequestEntities[];
 };
 
-export type ActivityTrackingResponse = Omit<ActivityTrackingData, "filterOptions"> & {
+export type ActivityTrackingResponse = Omit<ActivityTrackingData, "filterOptions" | "categoryData"> & {
+  categoryData: { categoryId: number; label: string; value: number }[];
   filterOptions: { businesses: BusinessEntity[]; serviceCategories: ServiceCategoryEntity[] };
 };

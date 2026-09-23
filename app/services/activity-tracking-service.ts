@@ -3,6 +3,7 @@ import "server-only";
 import type { ActivityTrackingResponse } from "@/app/entities/api/entity-responses";
 
 import type { ActivityTrackingPageViewModel, ActivityTrackingFilters } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
+import { mapCategoryChartItem } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
 
 import { backendJson } from "@/src/server/api-client";
 
@@ -32,6 +33,7 @@ function mapActivityTrackingResponseToViewModel(
 ): ActivityTrackingPageViewModel {
   return {
     ...data,
+    categoryData: data.categoryData.map(mapCategoryChartItem),
     filterOptions: {
       businesses: data.filterOptions.businesses.map((item) => ({ id: item.id, name: item.name || "Não informado" })),
       serviceCategories: data.filterOptions.serviceCategories.map((item) => ({ id: item.id, name: item.name || "Não informado" })),

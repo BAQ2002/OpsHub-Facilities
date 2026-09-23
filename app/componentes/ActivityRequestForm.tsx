@@ -32,7 +32,7 @@ export default function ActivityRequestForm({
   action,
 }: ActivityRequestFormProps) {
   return (
-    <section data-ui="activity-request-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="activity-request-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="activity-request-content" className="mx-auto max-w-[1620px]">
         <div data-ui="activity-request-toolbar" className="mb-4 flex justify-end">
           <button

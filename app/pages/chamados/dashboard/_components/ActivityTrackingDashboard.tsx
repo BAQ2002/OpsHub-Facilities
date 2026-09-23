@@ -21,7 +21,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
   const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue, filterOptions } = data;
 
   return (
-    <section data-ui="activity-dashboard-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="activity-dashboard-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="activity-dashboard-content" className="mx-auto max-w-[1620px]">
         <header data-ui="activity-dashboard-header" className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -214,7 +214,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
 
       <div className="space-y-3">
         {data.map((item) => (
-          <div key={item.label} className="flex items-center justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+          <div key={item.label} className="flex items-center justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2" style={{ backgroundColor: item.backgroundColor }}>
             <LegendItem color={item.color} label={item.label} />
             <span className="text-sm font-bold text-slate-950">{item.value}</span>
           </div>

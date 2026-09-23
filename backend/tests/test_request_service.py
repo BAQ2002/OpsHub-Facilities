@@ -92,6 +92,24 @@ class RequestServiceTests(unittest.TestCase):
         )
         self.assertEqual(result["summaryCards"][0]["value"], "0")
 
+    def test_tracking_returns_category_identity_without_presentation_colors(self):
+        connection = RecordingConnection([
+            [{"total": 5, "in_progress": 0, "average_minutes": None, "critical": 0}],
+            [
+                {"category_id": 10, "label": "PMOC", "value": 3},
+                {"category_id": 2, "label": "Refrigeração", "value": 2},
+            ],
+            [], [], [], [],
+        ])
+
+        result = get_tracking(connection, date(2026, 1, 1), date(2026, 9, 22), None, None)
+
+        self.assertIn("SC.ID CATEGORY_ID", connection.statements[1])
+        self.assertEqual(result["categoryData"], [
+            {"categoryId": 10, "label": "PMOC", "value": 3},
+            {"categoryId": 2, "label": "Refrigeração", "value": 2},
+        ])
+
     def test_board_applies_search_to_request_fields(self):
         connection = RecordingConnection([[], []])
 

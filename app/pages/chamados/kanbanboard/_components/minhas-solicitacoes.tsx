@@ -27,7 +27,7 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
     : data.columns;
 
   return (
-    <section data-ui="requests-workspace-page" className="min-h-screen bg-[#eef4ff] p-4 text-slate-700 md:p-6">
+    <section data-ui="requests-workspace-page" className="min-h-screen bg-white p-4 text-slate-700 md:p-6">
       <div data-ui="requests-workspace-content" className="mx-auto max-w-[1800px]">
         <div data-ui="requests-workspace-header" className="flex items-start justify-between border-b border-slate-300/70">
           <TrackingTabs active="requests" />
