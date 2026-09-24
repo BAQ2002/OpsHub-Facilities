@@ -53,8 +53,7 @@ class RequestServiceTests(unittest.TestCase):
                     {
                         "total": 0,
                         "in_progress": 0,
-                        "average_minutes": None,
-                        "critical": 0,
+                        "completed": 0, "open": 0, "canceled": 0,
                     }
                 ],
                 [],
@@ -62,6 +61,7 @@ class RequestServiceTests(unittest.TestCase):
                 [],
                 [],
                 [],
+                [{"handling_minutes": 0, "start_minutes": 0}],
             ]
         )
 
@@ -90,16 +90,38 @@ class RequestServiceTests(unittest.TestCase):
             "FILTER(WHERE RS.DESCRIPTION = ANY(CAST(%(closed)s AS TEXT[]))) AS CLOSED",
             executed_sql,
         )
-        self.assertEqual(result["summaryCards"][0]["value"], "0")
+        self.assertEqual([card["value"] for card in result["summaryCards"]], ["0"] * 5)
+        self.assertEqual(result["averageHandlingMinutes"], 0)
+        self.assertEqual(result["averageStartMinutes"], 0)
+
+    def test_tracking_counts_and_event_date_clocks(self):
+        connection = RecordingConnection([
+            [{"total": 12, "completed": 5, "open": 3, "in_progress": 2, "canceled": 2}],
+            [], [], [], [], [],
+            [{"handling_minutes": 125, "start_minutes": 6001}],
+        ])
+        result = get_tracking(connection, date(2026, 9, 1), date(2026, 9, 30), 2, 3)
+        self.assertEqual([card["value"] for card in result["summaryCards"]], ["12", "5", "3", "2", "2"])
+        self.assertEqual(result["averageHandlingMinutes"], 125)
+        self.assertEqual(result["averageStartMinutes"], 6001)
+        clocks = connection.statements[-1]
+        self.assertNotIn("R.CREATED_DATE>=", clocks)
+        self.assertIn("R.FINISHED_DATE>R.STARTED_DATE", clocks)
+        self.assertIn("R.STARTED_DATE>=R.CREATED_DATE", clocks)
+        self.assertIn("RG.ID_BUSINESS=%(business)s", clocks)
+        self.assertIn("ST.ID_SERVICE_CATEGORY=%(category)s", clocks)
+        self.assertEqual(connection.parameters[-1]["business"], 2)
+        self.assertEqual(connection.parameters[-1]["category"], 3)
 
     def test_tracking_returns_category_identity_without_presentation_colors(self):
         connection = RecordingConnection([
-            [{"total": 5, "in_progress": 0, "average_minutes": None, "critical": 0}],
+            [{"total": 5, "in_progress": 0, "completed": 0, "open": 0, "canceled": 0}],
             [
                 {"category_id": 10, "label": "PMOC", "value": 3},
                 {"category_id": 2, "label": "Refrigeração", "value": 2},
             ],
             [], [], [], [],
+            [{"handling_minutes": 0, "start_minutes": 0}],
         ])
 
         result = get_tracking(connection, date(2026, 1, 1), date(2026, 9, 22), None, None)

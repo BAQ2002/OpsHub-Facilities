@@ -232,8 +232,9 @@ def get_tracking(
             sql(
                 """SELECT COUNT(*) TOTAL,
        COUNT(*) FILTER(WHERE RS.DESCRIPTION='Em andamento') IN_PROGRESS,
-       ROUND(AVG(EXTRACT(EPOCH FROM(COALESCE(R.FINISHED_DATE,R.CANCELED_DATE,NOW())-R.CREATED_DATE))/60))::INTEGER AVERAGE_MINUTES,
-       COUNT(*) FILTER(WHERE RS.DESCRIPTION <> ALL(CAST(:closed AS TEXT[])) AND R.AGREED_DATE IS NOT NULL AND R.AGREED_DATE<NOW()) CRITICAL"""
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION IN ('Concluída','Concluida')) COMPLETED,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION='Em aberto') OPEN,
+       COUNT(*) FILTER(WHERE RS.DESCRIPTION='Cancelada') CANCELED"""
                 + "\n"
                 + joins
                 + "\n"
@@ -307,8 +308,25 @@ def get_tracking(
             for index, row in enumerate(rows)
         ]
 
-    avg = max(0, int(summary["average_minutes"] or 0))
+    # Each clock selects its own event date, independently of the creation-date cards.
+    timing = connection.execute(sql("""SELECT
+       COALESCE(ROUND(AVG(EXTRACT(EPOCH FROM(R.FINISHED_DATE-R.STARTED_DATE))/60)
+           FILTER(WHERE R.FINISHED_DATE>=:start AND R.FINISHED_DATE<(:end+INTERVAL '1 day')
+               AND R.FINISHED_DATE>R.STARTED_DATE)),0)::INTEGER HANDLING_MINUTES,
+       COALESCE(ROUND(AVG(EXTRACT(EPOCH FROM(R.STARTED_DATE-R.CREATED_DATE))/60)
+           FILTER(WHERE R.STARTED_DATE>=:start AND R.STARTED_DATE<(:end+INTERVAL '1 day')
+               AND R.STARTED_DATE>=R.CREATED_DATE)),0)::INTEGER START_MINUTES
+    FROM REQUEST R
+        JOIN SERVICE_TYPE ST ON ST.ID=R.ID_SERVICE_TYPE
+        LEFT JOIN LOCATION L ON L.ID=R.ID_LOCATION
+        LEFT JOIN REGION RG ON RG.ID=L.ID_REGION
+    WHERE (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business)
+        AND (CAST(:category AS INTEGER) IS NULL OR ST.ID_SERVICE_CATEGORY=:category)
+        AND ((R.FINISHED_DATE>=:start AND R.FINISHED_DATE<(:end+INTERVAL '1 day'))
+            OR (R.STARTED_DATE>=:start AND R.STARTED_DATE<(:end+INTERVAL '1 day')))"""), p).mappings().one()
     return {
+        "averageHandlingMinutes": timing["handling_minutes"],
+        "averageStartMinutes": timing["start_minutes"],
         "categoryData": [
             {"categoryId": row["category_id"], "label": row["label"], "value": row["value"]}
             for row in cats
@@ -320,32 +338,39 @@ def get_tracking(
         ],
         "summaryCards": [
             {
-                "label": "Chamados no período",
+                "label": "Chamados criados (todos)",
                 "value": str(summary["total"]),
                 "detail": "Criados no intervalo selecionado",
                 "color": "text-teal-600",
                 "bg": "bg-teal-50",
             },
             {
-                "label": "Em atendimento",
+                "label": "Chamados concluídos",
+                "value": str(summary["completed"]),
+                "detail": "Concluídos entre os criados no período",
+                "color": "text-lime-600",
+                "bg": "bg-lime-50",
+            },
+            {
+                "label": "Chamados em aberto",
+                "value": str(summary["open"]),
+                "detail": "Aguardando início do atendimento",
+                "color": "text-orange-600",
+                "bg": "bg-orange-50",
+            },
+            {
+                "label": "Chamados em atendimento",
                 "value": str(summary["in_progress"]),
                 "detail": "Equipes acionadas",
                 "color": "text-sky-600",
                 "bg": "bg-sky-50",
             },
             {
-                "label": "Tempo médio",
-                "value": f"{avg//60}h {avg%60:02d}min",
-                "detail": "Da abertura à finalização ou agora",
-                "color": "text-violet-600",
-                "bg": "bg-violet-50",
-            },
-            {
-                "label": "Pendentes críticos",
-                "value": str(summary["critical"]),
-                "detail": "Prazo acordado vencido",
-                "color": "text-orange-600",
-                "bg": "bg-orange-50",
+                "label": "Chamados cancelados",
+                "value": str(summary["canceled"]),
+                "detail": "Cancelados entre os criados no período",
+                "color": "text-rose-600",
+                "bg": "bg-rose-50",
             },
         ],
         "filterOptions": {

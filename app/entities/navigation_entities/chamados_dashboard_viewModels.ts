@@ -29,6 +29,8 @@ export type SummaryCard = {
 };
 
 export type ActivityTrackingData = {
+  averageHandlingMinutes: number;
+  averageStartMinutes: number;
   categoryData: CategoryChartItem[];
   statusData: ChartItem[];
   monthlyData: MonthlyActivity[];

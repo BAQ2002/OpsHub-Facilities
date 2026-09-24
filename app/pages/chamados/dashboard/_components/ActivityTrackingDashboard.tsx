@@ -6,6 +6,7 @@ import type { ActivityTrackingFilters, ChartItem, ActivityTrackingPageViewModel 
 
 import { filterActivityTracking } from "../actions";
 import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
+import { HandlingTimeDisplay } from "@/app/componentes/HandlingTimeDisplay";
 
 /**
  * Acionada pelo Next.js durante a renderização da rota correspondente.
@@ -22,7 +23,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
 
   return (
     <section data-ui="activity-dashboard-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div data-ui="activity-dashboard-content" className="mx-auto max-w-[1620px]">
+      <div data-ui="activity-dashboard-content" className="@container mx-auto max-w-[1620px]">
         <header data-ui="activity-dashboard-header" className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-teal-600">
@@ -62,22 +63,29 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           </div>
         </section>
 
-        <section data-ui="activity-dashboard-summary" className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do período">
-          {summaryCards.map((card) => (
-            <article
-              data-ui="summary-card"
-              key={card.label}
-              className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
-            >
-              <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${card.bg}`}>
-                <ActivityIcon className={card.color} />
-              </div>
-              <p className={`text-[25px] font-bold leading-none ${card.color}`}>{card.value}</p>
-              <h2 className="mt-2 text-sm font-bold text-slate-950">{card.label}</h2>
-              <p className="mt-1 text-xs text-slate-500">{card.detail}</p>
-            </article>
-          ))}
-        </section>
+        <div data-ui="activity-dashboard-indicators" className="mb-4 grid items-stretch gap-3 @[1080px]:grid-cols-[minmax(0,3fr)_minmax(420px,2fr)]">
+          <section data-ui="activity-dashboard-summary" className="grid gap-3 sm:grid-cols-6" aria-label="Resumo do período">
+            {summaryCards.map((card, index) => (
+              <article
+                data-ui="summary-card"
+                key={card.label}
+                className={`rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] ${index < 2 ? "sm:col-span-3" : "sm:col-span-2"}`}
+              >
+                <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${card.bg}`}>
+                  <ActivityIcon className={card.color} />
+                </div>
+                <p className={`text-[25px] font-bold leading-none ${card.color}`}>{card.value}</p>
+                <h2 className="mt-2 text-sm font-bold text-slate-950">{card.label}</h2>
+                <p className="mt-1 text-xs text-slate-500">{card.detail}</p>
+              </article>
+            ))}
+          </section>
+
+          <section data-ui="activity-dashboard-times" className="grid items-center gap-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] sm:grid-cols-2" aria-label="Tempos médios de atendimento">
+            <TimeCard title="Tempo médio de duração do atendimento" minutes={data.averageHandlingMinutes} detail="Do início à finalização · Finalizados no período" />
+            <TimeCard title="Tempo médio de início do atendimento" minutes={data.averageStartMinutes} detail="Da abertura ao início · Iniciados no período" />
+          </section>
+        </div>
 
         <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
           <ChartCard title="Requests por service_category">
@@ -109,6 +117,17 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
   );
 }
 
+function TimeCard({ title, minutes, detail }: { title: string; minutes: number; detail: string }) {
+  const hours = Math.floor(minutes / 60);
+  const remainder = String(minutes % 60).padStart(2, "0");
+  return (
+    <article className="min-w-0 [&_h2]:min-h-[22px]">
+      <HandlingTimeDisplay title={title} displayValue={`${String(hours).padStart(2, "0")}:${remainder}`} caption={`${hours}h ${remainder}min`} />
+      <p className="mt-2 min-h-8 text-center text-xs text-slate-500">{detail}</p>
+    </article>
+  );
+}
+
 /**
  * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
  *
@@ -118,6 +137,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
+
 function SelectField({ label, name, value, placeholder, options, onChange }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[]; onChange?: (value?: number) => void }) {
   return (
     <label className="block w-full min-w-0 sm:w-[190px]">
