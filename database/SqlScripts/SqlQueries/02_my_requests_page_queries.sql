@@ -39,7 +39,7 @@ JOIN service_category sc
     ON sc.id = st.id_service_category
 LEFT JOIN location l
     ON l.id = r.id_location
-WHERE r.id_member_requester = :requester_member_id
+WHERE r.id_membership_requester = :requester_member_id
   AND (:status_description IS NULL OR rs.description = :status_description)
   AND (
       :search IS NULL
@@ -64,7 +64,7 @@ SELECT
 FROM request r
 JOIN request_status rs
     ON rs.id = r.id_request_status
-WHERE r.id_member_requester = :requester_member_id
+WHERE r.id_membership_requester = :requester_member_id
 GROUP BY 1
 ORDER BY request_group;
 
@@ -78,8 +78,8 @@ SELECT
     r.finished_date,
     r.canceled_date,
     r.description,
-    r.id_member_requester AS requester_member_id,
-    r.id_member_responder AS responder_member_id,
+    r.id_membership_requester AS requester_member_id,
+    r.id_membership_responder AS responder_member_id,
     rt.name AS request_type,
     rs.description AS status,
     sc.name AS category,
@@ -103,4 +103,4 @@ LEFT JOIN region rg
 LEFT JOIN business b
     ON b.id = rg.id_business
 WHERE r.id = :request_id
-  AND r.id_member_requester = :requester_member_id;
+  AND r.id_membership_requester = :requester_member_id;

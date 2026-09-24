@@ -69,8 +69,8 @@ ORDER BY name;
 -- :planned_datetime TIMESTAMP        -- gravado em agreed_date conforme schema atual
 -- :description VARCHAR(200)
 INSERT INTO request (
-    id_member_requester,
-    id_member_responder,
+    id_membership_requester,
+    id_membership_responder,
     id_location,
     id_request_type,
     id_service_type,
@@ -96,8 +96,8 @@ RETURNING id;
 -- 7) Inserção de solicitação do tipo Atividade de Pátio.
 -- Usa a mesma tabela request, variando id_request_type.
 INSERT INTO request (
-    id_member_requester,
-    id_member_responder,
+    id_membership_requester,
+    id_membership_responder,
     id_location,
     id_request_type,
     id_service_type,
@@ -132,8 +132,8 @@ RETURNING id;
 -- :description VARCHAR(200)
 INSERT INTO request_transaction (
     id_request,
-    id_member_requester,
-    id_member_responder,
+    id_membership_requester,
+    id_membership_responder,
     id_transaction_status,
     requested_date,
     proposed_date,
