@@ -1,6 +1,6 @@
 import type { ServiceCategoryEntity } from "./service-category";
 
-/** Entidade SERVICE_TYPE. Fonte: database/SqlScripts/CreateTables/ServicesTables/CREATE_SERVICE_TYPE.sql */
+/** Entidade OHFC_SERVICE_TYPE. Fonte: database/SqlScripts/CreateTables/ServicesTables/CREATE_SERVICE_TYPE.sql */
 export type ServiceTypeEntity = {
   id: number;
   idServiceCategory: ServiceCategoryEntity["id"] | null;

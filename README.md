@@ -1,14 +1,14 @@
 # OpsHub Facilities
 
-Aplicação Next.js para indicadores de facilities, acompanhamento de chamados e criação de solicitações. O frontend utiliza o FastAPI como backend; somente o processo Python acessa o PostgreSQL.
+Aplicação Next.js para indicadores de facilities, acompanhamento de chamados e criação de solicitações. O frontend utiliza o FastAPI como backend; somente o processo Python acessa o Oracle 19c.
 
 ## Arquitetura
 
 ```text
-Next.js (`app`, `shared`, `src/server`)
+Next.js (`app`, `src/server`)
   -> cliente HTTP server-side (`src/server/api-client.ts`)
   -> FastAPI (`backend/app/api`, com rotas versionadas em `api/v1`)
-  -> psycopg / PostgreSQL
+  -> python-oracledb / Oracle 19c
 ```
 
 As mídias são servidas diretamente pelo FastAPI em URLs de mesma origem sob `/api/v1`. Em desenvolvimento, o Next.js encaminha somente essas rotas ao endereço interno configurado em `BACKEND_API_URL`; em produção, o proxy de borda pode aplicar o mesmo roteamento.
@@ -62,8 +62,8 @@ O arquivo `api/v1/router.py` reúne os routers, e `app/main.py` registra esse co
 ### `service.py` — regras de negócio e persistência
 
 Implementa as operações do domínio, como validar a localização de uma solicitação, calcular indicadores e salvar visitas ou checklists.
-Executa consultas e gravações SQL pela conexão recebida do router, usando a infraestrutura de `backend/app/database.py` e o driver `psycopg`.
-Retorna dados para a camada HTTP e efetiva as gravações conforme a operação; o acesso ao PostgreSQL permanece exclusivamente no backend Python.
+Executa consultas e gravações SQL pela conexão recebida do router, usando a infraestrutura de `backend/app/database.py` e o driver `python-oracledb`.
+Retorna dados para a camada HTTP e efetiva as gravações conforme a operação; o acesso ao Oracle 19c permanece exclusivamente no backend Python.
 
 ## Fluxo da página até o backend Python
 
@@ -76,13 +76,13 @@ sequenceDiagram
     participant T as app/services + api-client
     participant R as FastAPI (router + schemas)
     participant P as service.py
-    participant B as PostgreSQL
+    participant B as Oracle 19c
     U->>N: Abre a página ou envia um formulário
     N->>T: Solicita consulta ou gravação
     T->>R: HTTP/JSON em /api/v1/...
     R->>R: Valida entrada e obtém conexão
     R->>P: Executa operação do domínio
-    P->>B: Consulta ou grava via psycopg
+    P->>B: Consulta ou grava via python-oracledb
     B-->>P: Dados / resultado da gravação
     P-->>R: Resultado da operação
     R-->>T: Resposta HTTP/JSON
@@ -105,47 +105,83 @@ sequenceDiagram
 2. Ao enviar o formulário HTML, o navegador aciona `createChamadoRequestAction()`, em `app/pages/solicitar-atividade/actions.ts`, com os valores em `FormData`.
 3. A Server Action define o tipo de serviço e chama `createChamadoRequest()`. O serviço TypeScript verifica os campos básicos, organiza os campos adicionais e serializa arquivos em base64.
 4. O cliente HTTP envia o JSON para `POST /api/v1/requests`. O FastAPI valida o corpo com `CreateRequest`, definido em `request/schemas.py`.
-5. O router chama `create_request()`, em `request/service.py`, que verifica a relação entre empresa, região e localização e grava a solicitação, os valores adicionais e as mídias no PostgreSQL.
+5. O router chama `create_request()`, em `request/service.py`, que verifica a relação entre empresa, região e localização e grava a solicitação, os valores adicionais e as mídias no Oracle 19c.
 6. Após o `commit`, a API responde com status `201` e o identificador criado. A Server Action redireciona o navegador para `/pages/minhas-solicitacoes`, iniciando a consulta da lista atualizada.
 
 Nesse envio, falhas de validação do contrato e os erros de negócio tratados pelo router retornam HTTP `422`. O cliente `backendJson()` propaga respostas HTTP de erro como exceções, impedindo o redirecionamento de sucesso.
 
 O carregamento de mídias segue um caminho próprio: o navegador usa as URLs `/api/v1/service-catalog/media/{id}` ou `/api/v1/request-tasks/media/{id}`. Os rewrites do Next.js encaminham essas requisições ao FastAPI, que devolve o conteúdo binário.
 
+## Documentação da migração
+
+O código está adaptado para Oracle 19c (versão informada: 19.0.0.0.0). As tabelas usam o prefixo `OHFC_`, os nomes físicos das colunas seguem os scripts SQL e os contratos HTTP mantêm os nomes esperados pelo frontend. Nenhum schema proprietário é especificado nos scripts de criação ou selecionado pela aplicação.
+
+| Documento | Responsabilidade |
+|---|---|
+| [Guia Oracle](documents/database.md) | Conexão, pool, tipos, consultas, transações e operação do backend |
+| [Scripts SQL](database/SqlScripts/README.md) | DDLs Oracle e identificação dos scripts PostgreSQL legados |
+| [Entidades e contratos](app/entities/concrete_entity/README.md) | Correspondência entre tabelas, tipos TypeScript e respostas HTTP |
+
+### Estado dos seis pontos da migração
+
+| Ponto | Implementado no repositório | Trabalho restante |
+|---|---|---|
+| 1. Estrutura e nomes | Colunas alinhadas, 23 definições equivalentes e ausência de schema proprietário explícito | Conferência da estrutura implantada |
+| 2. Conexão | `python-oracledb` Thin, pool, binds, leitura de LOBs e IDs com `RETURNING INTO` | Configuração e validação na instância Oracle |
+| 3. Consultas | SQL executado pela API adaptado para Oracle 19c | Validação no Oracle; converter ou retirar de uso os exemplos históricos de `SqlQueries` |
+| 4. Tipos e cargas | DDLs com NUMBER, VARCHAR2, CLOB, BLOB e regras Oracle de integridade | Converter as cargas e atualizações históricas; preparar preservação dos IDs e ajuste das identities |
+| 5. Transações e contratos | Contratos HTTP preservados; visita e checklists sem commit intermediário | Validação real de gravações, rollback, tipos e datas |
+| 6. Ambiente e documentação | Variáveis Oracle, guias, testes locais e teste de integração opcional | Migrations versionadas, revisão do Compose legado e procedimento de implantação/reversão |
+
+A adaptação do código não significa que uma base foi migrada. Nenhum script de criação, carga ou atualização é executado automaticamente. A validação em Oracle real e o povoamento dos dados permanecem etapas separadas. Mesmo sem essas duas etapas, ainda faltam a conversão ou retirada dos scripts legados e a preparação operacional indicada acima.
+
 ## Configuração
 
-A correlação visual das categorias na Home e no Dashboard está documentada em
-[Cores das categorias](docs/category-colors.md), com paleta e entidades por página.
+Copie [`.env.example`](.env.example) para `.env.local` somente se esse arquivo ainda não existir; caso já exista, atualize os campos necessários. Configure:
 
-Copie `.env.example` para `.env.local` e ajuste:
-
-- `DATABASE_URL`: conexão PostgreSQL usada exclusivamente pelo FastAPI;
+- `ORACLE_USER`, `ORACLE_PASSWORD`, `ORACLE_DSN`: credenciais e serviço Oracle usados apenas pelo FastAPI;
+- `ORACLE_POOL_MIN`, `ORACLE_POOL_MAX`, `ORACLE_CALL_TIMEOUT_MS`: dimensionamento do pool e timeout de chamada;
 - `BACKEND_API_URL`: endereço interno da API usado pelo servidor Next.js;
 - `CURRENT_MEMBER_ID`: identidade temporária enquanto a autenticação corporativa não estiver integrada.
 
+`DATABASE_URL` não é mais utilizada. A inicialização do FastAPI exige configuração Oracle válida. O Next.js não possui driver de banco nem fallback local para os dados.
+
+A correlação visual das categorias na Home e no Dashboard está documentada em [Cores das categorias](docs/category-colors.md). A migração dos dados deve preservar os IDs usados nessa correlação.
+
 ## Execução
 
-Inicie o banco descrito em `database/docker-compose.yml` e, em terminais separados, execute:
+Prepare a instância e as tabelas conforme [o guia Oracle](documents/database.md). O [Compose existente](database/docker-compose.yml) é legado PostgreSQL e não provisiona Oracle.
 
-```bash
+Na raiz do projeto, em PowerShell:
+
+```powershell
 python -m venv .venv
-. .venv/bin/activate
-pip install -r backend/requirements.txt
-uvicorn backend.app.main:app --reload
+.\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload
 ```
 
-```bash
+Em outro terminal:
+
+```powershell
 npm install
 npm run dev
 ```
 
-O frontend fica em `http://localhost:3000`; a documentação OpenAPI fica em `http://localhost:8000/docs`.
+Em Linux/macOS, o executável do ambiente virtual fica em `.venv/bin/python`. O frontend fica em `http://localhost:3000`; a documentação OpenAPI fica em `http://localhost:8000/docs`.
 
-O comando de desenvolvimento usa o Webpack para evitar falhas internas do
-Turbopack durante HMR, especialmente depois de renomear ou mover rotas do App
-Router. Para testar o Turbopack explicitamente, execute `npm run dev:turbopack`.
-Se o compilador ainda estiver usando artefatos de uma árvore de rotas anterior,
-execute `npm run clean` antes de reiniciar o servidor.
+O desenvolvimento usa Webpack. Para testar Turbopack, execute `npm run dev:turbopack`. Se houver artefatos de uma árvore anterior de rotas, execute `npm run clean` antes de reiniciar o servidor.
+
+## Verificações
+
+Na raiz do projeto:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s backend/tests -v
+node --test tests/entity-view-models.test.mjs tests/category-colors.test.mjs
+node node_modules/typescript/bin/tsc --noEmit --incremental false
+```
+
+Os testes locais cobrem a camada de acesso, contratos, consultas geradas e equivalência dos DDLs. O teste de integração é ignorado quando as variáveis `ORACLE_TEST_*` não estão definidas no ambiente do processo; sua configuração e limites estão no [guia Oracle](documents/database.md#teste-de-integração-opcional). `/health` retorna o estado do processo e não executa uma consulta de conectividade.
 
 ## Fluxos atendidos pela API
 
@@ -155,5 +191,3 @@ execute `npm run clean` antes de reiniciar o servidor.
 - `request`: home, dashboard, kanban, listagem e criação de solicitações;
 - `request-task`: criação/edição de visitas e mídia;
 - `service-catalog`: catálogo, formulário dinâmico e mídia de solicitações.
-
-O Next.js não possui driver PostgreSQL e não aceita fallback local: falhas HTTP do backend são propagadas explicitamente pela camada server-side.

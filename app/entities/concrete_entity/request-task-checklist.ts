@@ -1,7 +1,7 @@
 import type { ChecklistTypeEntity } from "./checklist";
 import type { RequestTaskEntity } from "./request-task";
 
-/** Entidade REQUEST_TASK_CHECKLIST. Fonte: database/SqlScripts/CreateTables/ChecklistsTables/CREATE_REQUES_TASK_CHECKLIST.sql */
+/** Entidade OHFC_REQUEST_TASK_CHECKLIST. Fonte: database/SqlScripts/CreateTables/ChecklistsTables/CREATE_REQUES_TASK_CHECKLIST.sql */
 export type RequestTaskChecklistEntity = {
   id: number;
   idChecklistType: ChecklistTypeEntity["id"];

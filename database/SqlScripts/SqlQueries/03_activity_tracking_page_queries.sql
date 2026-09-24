@@ -22,16 +22,16 @@ SELECT
         WHERE rs.description IN ('Aberto', 'Programada', 'Em andamento')
           AND r.created_date < NOW() - INTERVAL '24 hours'
     ) AS critical_pending
-FROM request r
-JOIN request_status rs
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
-JOIN service_type st
+JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-JOIN service_category sc
+JOIN OHFC_SERVICE_CATEGORY sc
     ON sc.id = st.id_service_category
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-LEFT JOIN region rg
+LEFT JOIN OHFC_REGION rg
     ON rg.id = l.id_region
 WHERE r.created_date >= :period_start
   AND r.created_date < :period_end
@@ -44,16 +44,16 @@ SELECT
     sc.id AS category_id,
     sc.name AS label,
     COUNT(r.id) AS value
-FROM service_category sc
-LEFT JOIN service_type st
+FROM OHFC_SERVICE_CATEGORY sc
+LEFT JOIN OHFC_SERVICE_TYPE st
     ON st.id_service_category = sc.id
-LEFT JOIN request r
+LEFT JOIN OHFC_REQUEST r
     ON r.id_service_type = st.id
     AND r.created_date >= :period_start
     AND r.created_date < :period_end
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-LEFT JOIN region rg
+LEFT JOIN OHFC_REGION rg
     ON rg.id = l.id_region
 WHERE (:business_id IS NULL OR rg.id_business = :business_id OR r.id IS NULL)
   AND (:service_category_id IS NULL OR sc.id = :service_category_id)
@@ -65,16 +65,16 @@ ORDER BY sc.name;
 SELECT
     rs.description AS label,
     COUNT(r.id) AS value
-FROM request_status rs
-LEFT JOIN request r
+FROM OHFC_REQUEST_STATUS rs
+LEFT JOIN OHFC_REQUEST r
     ON r.id_request_status = rs.id
     AND r.created_date >= :period_start
     AND r.created_date < :period_end
-LEFT JOIN service_type st
+LEFT JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-LEFT JOIN region rg
+LEFT JOIN OHFC_REGION rg
     ON rg.id = l.id_region
 WHERE (:business_id IS NULL OR rg.id_business = :business_id OR r.id IS NULL)
   AND (:service_category_id IS NULL OR st.id_service_category = :service_category_id OR r.id IS NULL)
@@ -94,16 +94,16 @@ FROM GENERATE_SERIES(
     DATE_TRUNC('month', :year_end::timestamp) - INTERVAL '1 month',
     INTERVAL '1 month'
 ) AS months(month_start)
-LEFT JOIN request r
+LEFT JOIN OHFC_REQUEST r
     ON r.created_date >= months.month_start
     AND r.created_date < months.month_start + INTERVAL '1 month'
-LEFT JOIN request_status rs
+LEFT JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
-LEFT JOIN service_type st
+LEFT JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-LEFT JOIN region rg
+LEFT JOIN OHFC_REGION rg
     ON rg.id = l.id_region
 WHERE (:business_id IS NULL OR rg.id_business = :business_id OR r.id IS NULL)
   AND (:service_category_id IS NULL OR st.id_service_category = :service_category_id OR r.id IS NULL)

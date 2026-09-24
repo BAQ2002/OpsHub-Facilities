@@ -28,16 +28,16 @@ SELECT
     st.name AS service_type,
     l.name AS location,
     r.description
-FROM request r
-JOIN request_status rs
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
-JOIN request_type rt
+JOIN OHFC_REQUEST_TYPE rt
     ON rt.id = r.id_request_type
-JOIN service_type st
+JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-JOIN service_category sc
+JOIN OHFC_SERVICE_CATEGORY sc
     ON sc.id = st.id_service_category
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
 WHERE r.id_membership_requester = :requester_member_id
   AND (:status_description IS NULL OR rs.description = :status_description)
@@ -61,8 +61,8 @@ SELECT
         ELSE 'Aberto'
     END AS request_group,
     COUNT(*) AS total
-FROM request r
-JOIN request_status rs
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
 WHERE r.id_membership_requester = :requester_member_id
 GROUP BY 1
@@ -87,20 +87,20 @@ SELECT
     b.name AS business_unit,
     rg.name AS region,
     l.name AS location
-FROM request r
-JOIN request_type rt
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_TYPE rt
     ON rt.id = r.id_request_type
-JOIN request_status rs
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
-JOIN service_type st
+JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-JOIN service_category sc
+JOIN OHFC_SERVICE_CATEGORY sc
     ON sc.id = st.id_service_category
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-LEFT JOIN region rg
+LEFT JOIN OHFC_REGION rg
     ON rg.id = l.id_region
-LEFT JOIN business b
+LEFT JOIN OHFC_BUSINESS b
     ON b.id = rg.id_business
 WHERE r.id = :request_id
   AND r.id_membership_requester = :requester_member_id;

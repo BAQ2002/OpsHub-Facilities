@@ -8,14 +8,14 @@
 SELECT
     id,
     name
-FROM business
+FROM OHFC_BUSINESS
 ORDER BY name;
 
 -- 2) Categorias de serviço para selects/filtros.
 SELECT
     id,
     name
-FROM service_category
+FROM OHFC_SERVICE_CATEGORY
 ORDER BY name;
 
 -- 3) Tipos de serviço por categoria opcional.
@@ -26,8 +26,8 @@ SELECT
     st.description,
     sc.id AS service_category_id,
     sc.name AS service_category_name
-FROM service_type st
-JOIN service_category sc
+FROM OHFC_SERVICE_TYPE st
+JOIN OHFC_SERVICE_CATEGORY sc
     ON sc.id = st.id_service_category
 WHERE (:service_category_id IS NULL OR sc.id = :service_category_id)
 ORDER BY sc.name, st.name;
@@ -43,10 +43,10 @@ SELECT
     rg.name AS region_name,
     b.id AS business_id,
     b.name AS business_name
-FROM location l
-JOIN region rg
+FROM OHFC_LOCATION l
+JOIN OHFC_REGION rg
     ON rg.id = l.id_region
-JOIN business b
+JOIN OHFC_BUSINESS b
     ON b.id = rg.id_business
 WHERE (:business_id IS NULL OR b.id = :business_id)
 ORDER BY b.name, rg.name, l.name;
@@ -56,7 +56,7 @@ SELECT
     id,
     name,
     access_levels
-FROM sector
+FROM OHFC_SECTOR
 ORDER BY name;
 
 -- 6) Inserção de solicitação do tipo Chamado.
@@ -68,7 +68,7 @@ ORDER BY name;
 -- :status_id INTEGER                 -- normalmente status 'Aberto'
 -- :planned_datetime TIMESTAMP        -- gravado em agreed_date conforme schema atual
 -- :description VARCHAR(200)
-INSERT INTO request (
+INSERT INTO OHFC_REQUEST (
     id_membership_requester,
     id_membership_responder,
     id_location,
@@ -89,13 +89,13 @@ SELECT
     NOW(),
     :planned_datetime,
     :description
-FROM request_type rt
+FROM OHFC_REQUEST_TYPE rt
 WHERE rt.name = 'Chamado'
 RETURNING id;
 
 -- 7) Inserção de solicitação do tipo Atividade de Pátio.
 -- Usa a mesma tabela request, variando id_request_type.
-INSERT INTO request (
+INSERT INTO OHFC_REQUEST (
     id_membership_requester,
     id_membership_responder,
     id_location,
@@ -116,7 +116,7 @@ SELECT
     NOW(),
     :planned_datetime,
     :description
-FROM request_type rt
+FROM OHFC_REQUEST_TYPE rt
 WHERE rt.name = 'Atividade de Pátio'
 RETURNING id;
 
@@ -130,7 +130,7 @@ RETURNING id;
 -- :transaction_status_id INTEGER
 -- :proposed_date TIMESTAMP
 -- :description VARCHAR(200)
-INSERT INTO request_transaction (
+INSERT INTO OHFC_REQUEST_TRANSACTION (
     id_request,
     id_membership_requester,
     id_membership_responder,

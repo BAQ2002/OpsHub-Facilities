@@ -2,7 +2,7 @@ import type { ServiceFieldTypeEntity } from "./service-field-type";
 import type { RequestEntity } from "./request";
 import type { Base64String, TimestampString } from "./database-types";
 
-/** Entidade SERVICE_FIELD_MEDIA. Fonte: database/SqlScripts/CreateTables/ServicesTables/CREATE_SERVICE_FIELD_MEDIA.sql */
+/** Entidade OHFC_SERVICE_FIELD_MEDIA. Fonte: database/SqlScripts/CreateTables/ServicesTables/CREATE_SERVICE_FIELD_MEDIA.sql */
 export type ServiceFieldMediaEntity = {
   id: number;
   idServiceFieldType: ServiceFieldTypeEntity["id"];

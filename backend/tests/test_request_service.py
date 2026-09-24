@@ -3,10 +3,10 @@ import unittest
 from datetime import date
 from typing import Any
 
-os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
+
 
 from backend.app.database import QueryResult
-from backend.app.api.request.service import get_board, get_my_requests, get_tracking
+from backend.app.api.request.service import get_activities, get_board, get_my_requests, get_tracking
 
 
 class FakeCursor:
@@ -29,6 +29,9 @@ class RecordingConnection:
         self.statements: list[str] = []
         self.parameters: list[dict[str, Any] | None] = []
 
+    def insert_id(self, statement, parameters):
+        return self.execute(statement, parameters).scalar_one()
+
     def execute(self, statement: str, parameters=None) -> QueryResult:
         self.statements.append(statement)
         self.parameters.append(parameters)
@@ -36,14 +39,26 @@ class RecordingConnection:
 
 
 class RequestServiceTests(unittest.TestCase):
+    def test_activity_lists_are_bound_and_split_at_oracle_limit(self):
+        connection = RecordingConnection([[]])
+        status = "Aberto' OR 1=1 --"
+        get_activities(connection, date(2026, 9, 1), date(2026, 9, 30), [status], list(range(1001)))
+        statement = connection.statements[0]
+        parameters = connection.parameters[0]
+        self.assertNotIn(status, statement)
+        self.assertEqual(parameters["status_0"], status)
+        self.assertEqual(statement.count("B.ID IN ("), 2)
+        self.assertEqual(parameters["business_1000"], 1000)
+        self.assertEqual(parameters["range_end"].date(), date(2026, 10, 1))
+
     def test_my_requests_requires_member_filter(self):
         connection = RecordingConnection([[]])
 
         result = get_my_requests(connection, 1)
 
         self.assertEqual(result, [])
-        self.assertIn("WHERE R.ID_MEMBER_REQUESTER=%(member)s", connection.statements[0])
-        self.assertNotIn("%(member)s IS NULL", connection.statements[0])
+        self.assertIn("WHERE R.ID_MEMBERSHIP_REQUESTER=:member", connection.statements[0])
+        self.assertNotIn(":member IS NULL", connection.statements[0])
         self.assertEqual(connection.parameters[0], {"member": 1})
 
     def test_tracking_casts_optional_and_array_parameters(self):
@@ -74,22 +89,12 @@ class RequestServiceTests(unittest.TestCase):
         )
 
         executed_sql = "\n".join(connection.statements)
-        self.assertIn("CAST(%(business)s AS INTEGER) IS NULL", executed_sql)
-        self.assertIn("CAST(%(category)s AS INTEGER) IS NULL", executed_sql)
-        self.assertIn("ALL(CAST(%(closed)s AS TEXT[]))", executed_sql)
-        self.assertIn("ANY(CAST(%(closed)s AS TEXT[]))", executed_sql)
-        self.assertIn(
-            "TO_CHAR(DATE_TRUNC('month',R.CREATED_DATE),'Mon') AS MONTH",
-            executed_sql,
-        )
-        self.assertIn(
-            "FILTER(WHERE RS.DESCRIPTION <> ALL(CAST(%(closed)s AS TEXT[]))) AS OPEN",
-            executed_sql,
-        )
-        self.assertIn(
-            "FILTER(WHERE RS.DESCRIPTION = ANY(CAST(%(closed)s AS TEXT[]))) AS CLOSED",
-            executed_sql,
-        )
+        self.assertIn("CAST(:business AS INTEGER) IS NULL", executed_sql)
+        self.assertIn("CAST(:category AS INTEGER) IS NULL", executed_sql)
+        self.assertIn("NOT IN (:closed_0,:closed_1,:closed_2)", executed_sql)
+        self.assertIn("TRUNC(R.CREATED_DATE,'MM')", executed_sql)
+        self.assertIn("NLS_DATE_LANGUAGE=PORTUGUESE", executed_sql)
+        self.assertNotIn("FILTER(", executed_sql)
         self.assertEqual([card["value"] for card in result["summaryCards"]], ["0"] * 5)
         self.assertEqual(result["averageHandlingMinutes"], 0)
         self.assertEqual(result["averageStartMinutes"], 0)
@@ -108,8 +113,8 @@ class RequestServiceTests(unittest.TestCase):
         self.assertNotIn("R.CREATED_DATE>=", clocks)
         self.assertIn("R.FINISHED_DATE>R.STARTED_DATE", clocks)
         self.assertIn("R.STARTED_DATE>=R.CREATED_DATE", clocks)
-        self.assertIn("RG.ID_BUSINESS=%(business)s", clocks)
-        self.assertIn("ST.ID_SERVICE_CATEGORY=%(category)s", clocks)
+        self.assertIn("RG.ID_BUSINESS=:business", clocks)
+        self.assertIn("ST.ID_SERVICE_CATEGORY=:category", clocks)
         self.assertEqual(connection.parameters[-1]["business"], 2)
         self.assertEqual(connection.parameters[-1]["category"], 3)
 
@@ -143,8 +148,8 @@ class RequestServiceTests(unittest.TestCase):
         )
 
         self.assertEqual(result.model_dump(by_alias=True), {"statuses": [], "requests": []})
-        self.assertIn("CAST(R.ID AS TEXT) ILIKE %(search_pattern)s", connection.statements[1])
-        self.assertIn("COALESCE(ST.NAME,'') ILIKE %(search_pattern)s", connection.statements[1])
+        self.assertIn("TO_CHAR(R.ID) LIKE :search_pattern", connection.statements[1])
+        self.assertIn("UPPER(ST.NAME) LIKE UPPER(:search_pattern)", connection.statements[1])
         self.assertEqual(connection.parameters[1]["search"], "bomba")
         self.assertEqual(connection.parameters[1]["search_pattern"], "%bomba%")
 
