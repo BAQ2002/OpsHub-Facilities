@@ -17,6 +17,11 @@ Consulte o [guia Oracle](../../documents/database.md), a [arquitetura](../../REA
 
 O prefixo `OHFC_` nos scripts históricos não os torna compatíveis com Oracle. Cargas e atualizações não são executadas automaticamente pela aplicação.
 
+Para os relatórios XLSX do legado, o [importador de chamados](../import_tickets/README.md)
+oferece prévia, regras de equivalência entre colunas, resolução de localização e carga
+Oracle com correspondência de IDs. É independente dos INSERTs históricos e exige
+instalação das tabelas auxiliares e homologação antes de uso no banco.
+
 ## Criação em Oracle
 
 Use o consolidado **ou** os scripts individuais em uma base sem essas tabelas. O consolidado incorpora as quatro tabelas de checklist e reproduz as definições individuais. Os testes de schema conferem equivalência e ordem de dependências.

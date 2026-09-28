@@ -1,0 +1,232 @@
+[
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Refeitório"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Banheiro masculino Sodexo"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Fundo do refeitório"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Vivência Externa Térreo"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Vivência Masculina Climatizada"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Tubulação do forno"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Estação de Tratamento de Efluentes - Casa de Química"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 1º andar"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Financeiro"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Comercial"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Sala de Elevador Lacerda"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Sala Solar do Unhão"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Diretoria Operacional"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Sala de Reunião Diretoria"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Diretoria Comercial"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º Andar Jurídico"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Área interna (prédio)"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 2º andar"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio ADM 3º andar"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Local exato não especificado"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Almoxarifado",
+    "location": "Local exato não especificado"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Armazém",
+    "location": "Mezanino"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Armazém",
+    "location": "Mariner"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Armazém",
+    "location": "Estante Riffer"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Armazém",
+    "location": "Hidrante - frente do Armazém"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Armazém",
+    "location": "Local exato não especificado"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Manutenção",
+    "location": "ETE - ao lado da Manutenção"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Manutenção",
+    "location": "Local exato não especificado"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "POSTO DE COMBUSTÍVEL"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "ETE"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "GATE IN"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "GATE OUT"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "CAIS"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "SUBESTAÇÕES"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "CANTEIROS"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "CENTRAIS DE RESÍDUOS"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "ESTAÇÃO ELEVATÓRIA DE ESGOTO"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "CASAS DE BOMBAS"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "TRIAGEM"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "Scanner"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "TPA"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "Local exato não especificado"
+  },
+  {
+    "business": "TECON Salvador",
+    "region": "Pàtio Operacional",
+    "location": "Fila A - Lote 12"
+  },
+  {
+    "business": "Centro Logístico Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Prédio Administrativo CLS"
+  },
+  {
+    "business": "Centro Logístico Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Tanque/estacionamento no Prédio ADM CLS"
+  },
+  {
+    "business": "Centro Logístico Salvador",
+    "region": "Prédio Administrativo",
+    "location": "Local exato não especificado"
+  }
+]

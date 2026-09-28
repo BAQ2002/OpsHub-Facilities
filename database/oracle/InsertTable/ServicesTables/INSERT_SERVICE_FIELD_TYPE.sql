@@ -1,0 +1,782 @@
+-- OHFC_SERVICE_FIELD_TYPE: 65 registros. Gerado pelas regras revisadas da importação.
+-- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    1,
+    1,
+    'Possui pt vinculada',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    2,
+    1,
+    'Tipo de pintura',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    3,
+    1,
+    'Data de finalização',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    4,
+    2,
+    'Equipamento que necessita limpeza',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    5,
+    5,
+    'Setor demandante',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    6,
+    5,
+    'Projeto ou readequação de área',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    7,
+    5,
+    'Número da pt e/ou apr',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    8,
+    5,
+    'Tempo',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    9,
+    6,
+    'Ponto afetado',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    10,
+    9,
+    'Tipo do dispenser',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    11,
+    9,
+    'Motivo',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    12,
+    10,
+    'Tipo de ponto afetado',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    13,
+    12,
+    'Problema identificado',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    14,
+    14,
+    'Há necessidade de artificies ?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    15,
+    14,
+    '(editar) qual o nível urgência?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    16,
+    14,
+    'Envolve instalações/modificações elétricas ?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    17,
+    14,
+    'Envolve instalações/modificações hidráulicas ?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    18,
+    14,
+    'Envolve instalações/modificações de refirgeração ?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    19,
+    14,
+    'Há necessidade de materiais de pintura ?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    20,
+    15,
+    'Quantidade de bebedouro',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    21,
+    16,
+    'Problema identificado',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    22,
+    16,
+    'Tipo da porta',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    23,
+    17,
+    'Tipo de item',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    24,
+    17,
+    'Quantidade de itens',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    25,
+    17,
+    'Risco identificado',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    26,
+    19,
+    'Quantidade',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    27,
+    23,
+    'Motivo da troca',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    28,
+    24,
+    'Quase sempre visível (exemplo: ar-57)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    29,
+    27,
+    'Quase sempre visíveis (exemplo: ar-57)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    30,
+    28,
+    'Quase sempre visíveis (exemplo: ar-57)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    31,
+    29,
+    'Quase sempre visíveis (exemplo: ar-57)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    32,
+    31,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    33,
+    32,
+    'Motivo',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    34,
+    32,
+    'Quantidade',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    35,
+    32,
+    'Tipo de tomada',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    36,
+    34,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    37,
+    35,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    38,
+    37,
+    'Pintura',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    39,
+    39,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    40,
+    40,
+    'Obstrução identificada',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    41,
+    40,
+    'Quantidade de caixas',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    42,
+    41,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    43,
+    42,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    44,
+    21,
+    'Itensidade',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    45,
+    43,
+    'Área aproximada afetada (metros quadrados)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    46,
+    44,
+    'Quase sempre visíveis (exemplo: ar-57)',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    47,
+    3,
+    'Está tendo dificuldade em fazer a reserva?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    48,
+    3,
+    'Está conforme?',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    49,
+    35,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    50,
+    39,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    51,
+    48,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    52,
+    31,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    53,
+    49,
+    'Frequencia do vazamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    54,
+    42,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    55,
+    50,
+    'Tag do equipamento',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    56,
+    50,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    57,
+    8,
+    'Tet',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    58,
+    34,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    59,
+    51,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    60,
+    52,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    61,
+    53,
+    'Data da necessidade',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    62,
+    53,
+    'Hora da necessidade',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    63,
+    53,
+    'Itens solicitados',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    64,
+    53,
+    'Quantidade aproximada de pessoas',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_TYPE (ID, ID_SERVICE_TYPE, NAME, TYPE, OPTIONS, REQUIRED, ACTIVE, DISPLAY_ORDER)
+VALUES (
+    65,
+    41,
+    'Técnico responsável',
+    'TEXT',
+    NULL,
+    0,
+    0,
+    NULL
+);

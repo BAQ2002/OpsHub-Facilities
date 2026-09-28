@@ -1,0 +1,36 @@
+-- Oracle 19c. Executar como script SQL*Plus/SQLcl (SQL Developer: F5).
+-- Carga inicial; requer as tabelas existentes e vazias. UTF-8.
+SET DEFINE OFF
+SET SQLBLANKLINES ON
+SET AUTOCOMMIT OFF
+SET ECHO OFF
+WHENEVER OSERROR EXIT FAILURE ROLLBACK
+WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK
+
+@@00_VALIDATE_EMPTY.sql
+@@ServicesTables/INSERT_SLA.sql
+@@ServicesTables/INSERT_SERVICE_CATEGORY.sql
+@@MembersTables/INSERT_SECTOR.sql
+@@MembersTables/INSERT_MEMBERSHIP.sql
+@@LocationsTables/INSERT_BUSINESS.sql
+@@RequestsTables/INSERT_REQUEST_TYPE.sql
+@@RequestsTables/INSERT_REQUEST_STATUS.sql
+@@RequestsTables/INSERT_REQUEST_TRANSACTION_STATUS.sql
+@@ServicesTables/INSERT_SERVICE_TYPE.sql
+@@ServicesTables/INSERT_SERVICE_FIELD_TYPE.sql
+@@LocationsTables/INSERT_REGION.sql
+@@LocationsTables/INSERT_LOCATION.sql
+@@RequestsTables/INSERT_REQUEST.sql
+@@ServicesTables/INSERT_SERVICE_FIELD_VALUE.sql
+@@ServicesTables/INSERT_SERVICE_FIELD_MEDIA.sql
+@@RequestsTables/INSERT_REQUEST_TASK.sql
+@@MembersTables/INSERT_TASK_MEMBER_OCCURRENCE.sql
+@@RequestsTables/INSERT_REQUEST_TASK_MEDIA.sql
+@@RequestsTables/INSERT_REQUEST_TRANSACTION.sql
+@@ChecklistsTables/INSERT_CHECKLIST_TYPE.sql
+@@ChecklistsTables/INSERT_CHECKLIST_FIELD_TYPE.sql
+@@ChecklistsTables/INSERT_REQUEST_TASK_CHECKLIST.sql
+@@ChecklistsTables/INSERT_CHECKLIST_FIELD_VALUE.sql
+@@ImportTables/INSERT_IMPORT_TICKET.sql
+@@ImportTables/INSERT_IMPORT_SNAPSHOT.sql
+@@99_VALIDATE_AND_SYNC_IDENTITIES.sql

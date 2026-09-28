@@ -44,3 +44,6 @@ next-env.d.ts
 __pycache__/
 *.py[cod]
 .venv/
+
+# Relatórios de importação contêm dados reais e URLs de anexos.
+/database/import_tickets/output/
