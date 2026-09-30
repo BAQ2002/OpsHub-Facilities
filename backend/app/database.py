@@ -142,7 +142,7 @@ class DatabaseConnection:
         types = {}
         for key in params:
             if key in ("range_start", "range_end"):
-                types[key] = oracledb.DB_TYPE_TIMESTAMP
+                types[key] = oracledb.DB_TYPE_DATE
             elif key == "value":
                 types[key] = oracledb.DB_TYPE_CLOB
             elif key == "content":

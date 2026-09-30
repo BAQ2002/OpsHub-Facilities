@@ -173,10 +173,10 @@ class MappingTests(unittest.TestCase):
         self.assertEqual(row["request"]["started_date"], "2026-01-03T14:20:00")
         self.assertEqual(row["request"]["requester"]["email"], "pessoa@empresa.com")
 
-    def test_urls_are_preserved_but_never_downloaded_or_saved_as_blob(self):
+    def test_urls_are_mapped_to_media_without_network_during_preview(self):
         row = map_row(raw_row(1, ("Foto", "https://example.test/photo.jpg")), self.config, self.catalog)
-        self.assertEqual(row["request"]["fields"], [])
-        self.assertTrue(any("sem download" in w for w in row["warnings"]))
+        self.assertEqual(row["request"]["fields"][0]["definition"]["type"], "MEDIA")
+        self.assertEqual(row["request"]["fields"][0]["value"], ["https://example.test/photo.jpg"])
         self.assertEqual(row["raw"]["cells"][-1]["value"], "https://example.test/photo.jpg")
 
     def test_bool_zero_and_false_are_not_missing(self):

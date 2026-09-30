@@ -1,12 +1,12 @@
--- OHFC_SERVICE_FIELD_VALUE: 1224 registros. Gerado pelas regras revisadas da importação.
--- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.
+-- OHFC_SERVICE_FIELD_VALUE: 1208 registros. Gerado pelas regras revisadas da importação.
+-- Sem COMMIT individual; executar pelo consolidado correspondente.
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     1,
     1,
     7,
-    TO_CLOB('{"value": "Não"}')
+    TO_CLOB('{"value": false}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
@@ -22,7 +22,7 @@ VALUES (
     3,
     3,
     7,
-    TO_CLOB('{"value": "13/01/2026"}')
+    TO_CLOB('{"value": "2026-01-13T00:00:00"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
@@ -30,7 +30,7 @@ VALUES (
     4,
     4,
     8,
-    TO_CLOB('{"value": "Microondas,Geladeira"}')
+    TO_CLOB('{"value": ["Microondas", "Geladeira"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
@@ -38,52 +38,20 @@ VALUES (
     5,
     4,
     10,
-    TO_CLOB('{"value": "Microondas"}')
+    TO_CLOB('{"value": ["Microondas"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     6,
     5,
-    13,
-    TO_CLOB('{"value": "Manutenção"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    7,
-    6,
-    13,
-    TO_CLOB('{"value": "Reforma do banheiro/copa da Manutenção"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    8,
-    7,
-    13,
-    TO_CLOB('{"value": "11656"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    9,
-    8,
-    13,
-    TO_CLOB('{"value": "Fechado"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    10,
-    9,
     14,
     TO_CLOB('{"value": "Mictório"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    11,
+    7,
     10,
     20,
     TO_CLOB('{"value": "Papel higiênico"}')
@@ -91,7 +59,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    12,
+    8,
     11,
     20,
     TO_CLOB('{"value": "Outro"}')
@@ -99,7 +67,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    13,
+    9,
     10,
     22,
     TO_CLOB('{"value": "Sabão"}')
@@ -107,7 +75,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    14,
+    10,
     11,
     22,
     TO_CLOB('{"value": "Quebrado"}')
@@ -115,7 +83,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    15,
+    11,
     12,
     23,
     TO_CLOB('{"value": "OUTRO"}')
@@ -123,239 +91,191 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    16,
-    13,
+    12,
+    15,
     27,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    17,
+    13,
+    12,
+    30,
+    TO_CLOB('{"value": "OUTRO"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
     14,
-    29,
-    TO_CLOB('{"value": "Sim"}')
+    12,
+    31,
+    TO_CLOB('{"value": "OUTRO"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    15,
+    12,
+    32,
+    TO_CLOB('{"value": "OUTRO"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    16,
+    12,
+    33,
+    TO_CLOB('{"value": "OUTRO"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    17,
+    12,
+    34,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     18,
-    15,
-    29,
-    TO_CLOB('{"value": "Alta (impacta operação)"}')
+    12,
+    35,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     19,
-    16,
-    29,
-    TO_CLOB('{"value": "Sim"}')
+    12,
+    36,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     20,
-    17,
-    29,
-    TO_CLOB('{"value": "Não"}')
+    12,
+    37,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     21,
-    18,
-    29,
-    TO_CLOB('{"value": "Não"}')
+    12,
+    38,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     22,
-    19,
-    29,
-    TO_CLOB('{"value": "Não"}')
+    12,
+    39,
+    TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     23,
     12,
-    30,
+    40,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     24,
-    12,
-    31,
-    TO_CLOB('{"value": "OUTRO"}')
+    5,
+    41,
+    TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     25,
-    12,
-    32,
-    TO_CLOB('{"value": "OUTRO"}')
+    5,
+    42,
+    TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     26,
     12,
-    33,
+    43,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     27,
-    12,
-    34,
-    TO_CLOB('{"value": "OUTRO"}')
+    5,
+    44,
+    TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     28,
     12,
-    35,
+    45,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     29,
-    12,
-    36,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    30,
-    12,
-    37,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    31,
-    12,
-    38,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    32,
-    12,
-    39,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    33,
-    12,
-    40,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    34,
-    9,
-    41,
-    TO_CLOB('{"value": "Outro"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    35,
-    9,
-    42,
-    TO_CLOB('{"value": "Outro"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    36,
-    12,
-    43,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    37,
-    9,
-    44,
-    TO_CLOB('{"value": "Outro"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    38,
-    12,
-    45,
-    TO_CLOB('{"value": "OUTRO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    39,
-    9,
+    5,
     46,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    40,
-    9,
+    30,
+    5,
     47,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    41,
-    9,
+    31,
+    5,
     48,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    42,
-    9,
+    32,
+    5,
     49,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    43,
-    9,
+    33,
+    5,
     50,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    44,
-    9,
+    34,
+    5,
     51,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    45,
+    35,
     12,
     52,
     TO_CLOB('{"value": "OUTRO"}')
@@ -363,7 +283,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    46,
+    36,
     12,
     53,
     TO_CLOB('{"value": "OUTRO"}')
@@ -371,55 +291,55 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    47,
-    9,
+    37,
+    5,
     54,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    48,
-    9,
+    38,
+    5,
     55,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    49,
-    9,
+    39,
+    5,
     56,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    50,
-    20,
+    40,
+    18,
     58,
-    TO_CLOB('{"value": "0"}')
+    TO_CLOB('{"value": 0}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    51,
-    21,
+    41,
+    20,
     59,
-    TO_CLOB('{"value": "Não fecha"}')
+    TO_CLOB('{"value": ["Não fecha"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    52,
-    22,
+    42,
+    21,
     59,
     TO_CLOB('{"value": "Madeira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    53,
+    43,
     23,
     61,
     TO_CLOB('{"value": "Equipamento elétrico"}')
@@ -427,15 +347,15 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    54,
+    44,
     24,
     61,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    55,
+    45,
     25,
     61,
     TO_CLOB('{"value": "Outro"}')
@@ -443,423 +363,391 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    56,
-    26,
+    46,
+    28,
     63,
-    TO_CLOB('{"value": "3"}')
+    TO_CLOB('{"value": 3}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    57,
-    9,
+    47,
+    5,
     65,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    58,
-    27,
+    48,
+    32,
     70,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    59,
-    28,
+    49,
+    33,
     71,
     TO_CLOB('{"value": "AR 14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    60,
-    21,
+    50,
+    20,
     72,
-    TO_CLOB('{"value": "Desalinhada,outro"}')
+    TO_CLOB('{"value": ["Desalinhada", "outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    61,
-    22,
+    51,
+    21,
     72,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    62,
-    29,
+    52,
+    38,
     86,
     TO_CLOB('{"value": "AR-40"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    63,
-    27,
+    53,
+    32,
     90,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    64,
-    30,
+    54,
+    40,
     91,
     TO_CLOB('{"value": "Ar-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    65,
-    31,
+    55,
+    42,
     92,
     TO_CLOB('{"value": "AR-55"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    66,
-    32,
+    56,
+    43,
     105,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    67,
-    32,
+    57,
+    43,
     106,
     TO_CLOB('{"value": "AR-128"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    68,
-    33,
+    58,
+    53,
     107,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    69,
-    34,
+    59,
+    54,
     107,
-    TO_CLOB('{"value": "5"}')
+    TO_CLOB('{"value": 5}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    70,
-    35,
+    60,
+    55,
     107,
     TO_CLOB('{"value": "10A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    71,
-    36,
+    61,
+    56,
     110,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    72,
-    36,
+    62,
+    56,
     111,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
+    63,
     73,
-    37,
     112,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    74,
-    36,
+    64,
+    56,
     116,
     TO_CLOB('{"value": "AR-96"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    75,
-    38,
+    65,
+    74,
     117,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    76,
-    36,
+    66,
+    56,
     119,
     TO_CLOB('{"value": "AR-95"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    77,
-    28,
+    67,
+    33,
     122,
     TO_CLOB('{"value": "AR-42"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    78,
-    20,
+    68,
+    18,
     123,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    79,
-    36,
+    69,
+    56,
     124,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    80,
-    37,
+    70,
+    73,
     126,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    81,
-    37,
+    71,
+    73,
     127,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    82,
-    5,
-    132,
-    TO_CLOB('{"value": "ADM/Facilities"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    83,
-    6,
-    132,
-    TO_CLOB('{"value": "Obra"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    84,
-    7,
-    132,
-    TO_CLOB('{"value": "0030"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    85,
-    8,
-    132,
-    TO_CLOB('{"value": "Aberto"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    86,
-    32,
+    72,
+    43,
     135,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    87,
-    32,
+    73,
+    43,
     136,
     TO_CLOB('{"value": "AR-51"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    88,
-    32,
+    74,
+    43,
     137,
     TO_CLOB('{"value": "AR-52"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    89,
-    39,
+    75,
+    76,
     138,
     TO_CLOB('{"value": "AR-134"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    90,
-    39,
+    76,
+    76,
     139,
     TO_CLOB('{"value": "AR-104"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    91,
-    28,
+    77,
+    33,
     140,
     TO_CLOB('{"value": "AR 17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    92,
-    39,
+    78,
+    76,
     141,
     TO_CLOB('{"value": "AR-101"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    93,
-    40,
+    79,
+    79,
     142,
     TO_CLOB('{"value": "Não identificado"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    94,
-    41,
+    80,
+    80,
     142,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    95,
-    39,
+    81,
+    76,
     144,
     TO_CLOB('{"value": "AR-102"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    96,
-    39,
+    82,
+    76,
     145,
     TO_CLOB('{"value": "AR-100"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    97,
-    39,
+    83,
+    76,
     148,
     TO_CLOB('{"value": "AR-102"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    98,
-    21,
+    84,
+    20,
     149,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    99,
-    22,
+    85,
+    21,
     149,
     TO_CLOB('{"value": "Vidro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    100,
-    32,
+    86,
+    43,
     150,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    101,
-    32,
+    87,
+    43,
     151,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    102,
-    42,
+    88,
+    90,
     155,
     TO_CLOB('{"value": "AR-27"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    103,
-    39,
+    89,
+    76,
     156,
     TO_CLOB('{"value": "AR-26"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    104,
-    30,
+    90,
+    40,
     157,
     TO_CLOB('{"value": "AR-95"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    105,
-    32,
+    91,
+    43,
     158,
     TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    106,
-    39,
+    92,
+    76,
     159,
     TO_CLOB('{"value": "AR-25"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    107,
-    30,
+    93,
+    40,
     160,
     TO_CLOB('{"value": "AR-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    108,
+    94,
     23,
     165,
     TO_CLOB('{"value": "Equipamento elétrico"}')
@@ -867,15 +755,15 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    109,
+    95,
     24,
     165,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    110,
+    96,
     25,
     165,
     TO_CLOB('{"value": "Outro"}')
@@ -883,127 +771,127 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    111,
-    28,
+    97,
+    33,
     167,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    112,
-    36,
+    98,
+    56,
     168,
     TO_CLOB('{"value": "AR-91"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    113,
-    9,
+    99,
+    5,
     173,
     TO_CLOB('{"value": "Mictório"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    114,
-    9,
+    100,
+    5,
     178,
     TO_CLOB('{"value": "Vaso sanitário"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    115,
-    39,
+    101,
+    76,
     180,
     TO_CLOB('{"value": "AR-72"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    116,
-    39,
+    102,
+    76,
     181,
     TO_CLOB('{"value": "AR-73"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    117,
-    43,
+    103,
+    102,
     182,
     TO_CLOB('{"value": "AR-31"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    118,
-    36,
+    104,
+    56,
     183,
     TO_CLOB('{"value": "AR-92"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    119,
-    39,
+    105,
+    76,
     184,
     TO_CLOB('{"value": "AR-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    120,
-    32,
+    106,
+    43,
     185,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    121,
-    32,
+    107,
+    43,
     186,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    122,
-    32,
+    108,
+    43,
     187,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    123,
-    32,
+    109,
+    43,
     188,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    124,
-    32,
+    110,
+    43,
     189,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    125,
-    44,
+    111,
+    115,
     191,
     TO_CLOB('{"value": "FLUXO CONTÍNUO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    126,
+    112,
     12,
     192,
     TO_CLOB('{"value": "VASO SANITARIO"}')
@@ -1011,23 +899,23 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    127,
-    43,
+    113,
+    102,
     194,
     TO_CLOB('{"value": "AR-33"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    128,
-    45,
+    114,
+    123,
     195,
-    TO_CLOB('{"value": "10"}')
+    TO_CLOB('{"value": 10}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    129,
+    115,
     23,
     197,
     TO_CLOB('{"value": "Plug"}')
@@ -1035,15 +923,15 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    130,
+    116,
     24,
     197,
-    TO_CLOB('{"value": "4"}')
+    TO_CLOB('{"value": 4}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    131,
+    117,
     25,
     197,
     TO_CLOB('{"value": "Outro"}')
@@ -1051,39 +939,39 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    132,
-    37,
+    118,
+    73,
     198,
     TO_CLOB('{"value": "CA-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    133,
-    46,
+    119,
+    129,
     201,
     TO_CLOB('{"value": "AR-12"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    134,
-    39,
+    120,
+    76,
     202,
     TO_CLOB('{"value": "AR-68"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    135,
-    39,
+    121,
+    76,
     203,
     TO_CLOB('{"value": "AR-53"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    136,
+    122,
     10,
     204,
     TO_CLOB('{"value": "Sabão"}')
@@ -1091,7 +979,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    137,
+    123,
     11,
     204,
     TO_CLOB('{"value": "Não fixa na parede"}')
@@ -1099,543 +987,543 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    138,
-    38,
+    124,
+    74,
     206,
     TO_CLOB('{"value": "Faixa de pedestre"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    139,
-    38,
+    125,
+    74,
     214,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    140,
-    21,
+    126,
+    20,
     216,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    141,
-    22,
+    127,
+    21,
     216,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    142,
-    38,
+    128,
+    74,
     219,
     TO_CLOB('{"value": "Faixa de pedestre"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    143,
-    30,
+    129,
+    40,
     222,
     TO_CLOB('{"value": "AR-123"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    144,
-    36,
+    130,
+    56,
     223,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    145,
-    36,
+    131,
+    56,
     225,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    146,
-    42,
+    132,
+    90,
     226,
     TO_CLOB('{"value": "AR-47"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    147,
-    32,
+    133,
+    43,
     227,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    148,
-    30,
+    134,
+    40,
     229,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    149,
-    46,
+    135,
+    129,
     230,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    150,
-    28,
+    136,
+    33,
     235,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    151,
-    39,
+    137,
+    76,
     237,
     TO_CLOB('{"value": "AR-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    152,
-    21,
+    138,
+    20,
     238,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    153,
-    22,
+    139,
+    21,
     238,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    154,
-    32,
+    140,
+    43,
     241,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    155,
-    28,
+    141,
+    33,
     242,
     TO_CLOB('{"value": "AR-109"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    156,
-    32,
+    142,
+    43,
     243,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    157,
-    32,
+    143,
+    43,
     246,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    158,
-    32,
+    144,
+    43,
     248,
     TO_CLOB('{"value": "AR-131"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    159,
-    32,
+    145,
+    43,
     249,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    160,
-    32,
+    146,
+    43,
     250,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    161,
-    39,
+    147,
+    76,
     251,
     TO_CLOB('{"value": "AR-115"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    162,
-    39,
+    148,
+    76,
     252,
     TO_CLOB('{"value": "AR-113"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    163,
-    39,
+    149,
+    76,
     255,
     TO_CLOB('{"value": "AR-110"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    164,
-    36,
+    150,
+    56,
     256,
     TO_CLOB('{"value": "AR-106"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    165,
-    33,
+    151,
+    53,
     257,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    166,
-    34,
+    152,
+    54,
     257,
-    TO_CLOB('{"value": "2"}')
+    TO_CLOB('{"value": 2}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    167,
-    35,
+    153,
+    55,
     257,
     TO_CLOB('{"value": "OUTRA"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    168,
-    36,
+    154,
+    56,
     258,
     TO_CLOB('{"value": "AR-132"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    169,
-    39,
+    155,
+    76,
     259,
     TO_CLOB('{"value": "AR-123"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    170,
-    9,
+    156,
+    5,
     262,
     TO_CLOB('{"value": "Mictório"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    171,
-    29,
+    157,
+    38,
     264,
     TO_CLOB('{"value": "AR-117"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    172,
-    29,
+    158,
+    38,
     266,
     TO_CLOB('{"value": "AR-118"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    173,
-    39,
+    159,
+    76,
     267,
     TO_CLOB('{"value": "AR-109"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    174,
-    30,
+    160,
+    40,
     269,
     TO_CLOB('{"value": "AR-107"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    175,
-    39,
+    161,
+    76,
     271,
     TO_CLOB('{"value": "AR-59"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    176,
-    39,
+    162,
+    76,
     274,
     TO_CLOB('{"value": "AR-112"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    177,
-    39,
+    163,
+    76,
     278,
     TO_CLOB('{"value": "AR-97"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    178,
-    27,
+    164,
+    32,
     280,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    179,
-    36,
+    165,
+    56,
     281,
     TO_CLOB('{"value": "AR-79"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    180,
-    36,
+    166,
+    56,
     282,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    181,
-    32,
+    167,
+    43,
     283,
     TO_CLOB('{"value": "AR-88"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    182,
-    32,
+    168,
+    43,
     284,
     TO_CLOB('{"value": "AR-139"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    183,
-    37,
+    169,
+    73,
     285,
     TO_CLOB('{"value": "CA-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    184,
-    28,
+    170,
+    33,
     287,
     TO_CLOB('{"value": "AR-126"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    185,
-    21,
+    171,
+    20,
     291,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    186,
-    22,
+    172,
+    21,
     291,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    187,
-    32,
+    173,
+    43,
     302,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    188,
-    32,
+    174,
+    43,
     306,
     TO_CLOB('{"value": "AR-138"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    189,
-    9,
+    175,
+    5,
     309,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    190,
-    37,
+    176,
+    73,
     310,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    191,
-    39,
+    177,
+    76,
     311,
     TO_CLOB('{"value": "AR-77"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    192,
-    32,
+    178,
+    43,
     312,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    193,
-    37,
+    179,
+    73,
     313,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    194,
-    32,
+    180,
+    43,
     315,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    195,
-    32,
+    181,
+    43,
     317,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    196,
-    29,
+    182,
+    38,
     318,
     TO_CLOB('{"value": "AR-31"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    197,
-    30,
+    183,
+    40,
     320,
     TO_CLOB('{"value": "Ar da Sala da Escola de Operações:  AR-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    198,
-    39,
+    184,
+    76,
     323,
     TO_CLOB('{"value": "AR-62"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    199,
-    39,
+    185,
+    76,
     326,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    200,
-    39,
+    186,
+    76,
     327,
     TO_CLOB('{"value": "AR-12"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    201,
-    39,
+    187,
+    76,
     328,
     TO_CLOB('{"value": "AR-63"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    202,
-    39,
+    188,
+    76,
     329,
     TO_CLOB('{"value": "AR-145"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    203,
-    32,
+    189,
+    43,
     330,
     TO_CLOB('{"value": "AR-128"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    204,
-    39,
+    190,
+    76,
     332,
     TO_CLOB('{"value": "AR-64"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    205,
+    191,
     10,
     333,
     TO_CLOB('{"value": "Sabão"}')
@@ -1643,7 +1531,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    206,
+    192,
     11,
     333,
     TO_CLOB('{"value": "Quebrado"}')
@@ -1651,271 +1539,255 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    207,
-    39,
+    193,
+    76,
     335,
     TO_CLOB('{"value": "AR-147"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    208,
-    21,
+    194,
+    20,
     336,
-    TO_CLOB('{"value": "Não fecha"}')
+    TO_CLOB('{"value": ["Não fecha"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    209,
-    22,
+    195,
+    21,
     336,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    210,
-    39,
+    196,
+    76,
     338,
     TO_CLOB('{"value": "AR-66"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    211,
-    36,
+    197,
+    56,
     339,
     TO_CLOB('{"value": "AR-108"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    212,
-    32,
+    198,
+    43,
     340,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    213,
-    38,
+    199,
+    74,
     346,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    214,
-    43,
+    200,
+    102,
     353,
     TO_CLOB('{"value": "AR-126"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    215,
-    39,
+    201,
+    76,
     356,
     TO_CLOB('{"value": "AR-116"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    216,
-    39,
+    202,
+    76,
     357,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    217,
-    36,
+    203,
+    56,
     359,
     TO_CLOB('{"value": "AR-135"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    218,
-    31,
+    204,
+    42,
     360,
     TO_CLOB('{"value": "AR-55"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    219,
-    27,
+    205,
+    32,
     362,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    220,
-    47,
-    363,
-    TO_CLOB('{"value": "Sim"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    221,
-    48,
-    363,
-    TO_CLOB('{"value": "Não Conforme"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    222,
-    32,
+    206,
+    43,
     373,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    223,
-    32,
+    207,
+    43,
     375,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    224,
-    43,
+    208,
+    102,
     377,
     TO_CLOB('{"value": "AR-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    225,
-    32,
+    209,
+    43,
     379,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    226,
-    32,
+    210,
+    43,
     380,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    227,
-    32,
+    211,
+    43,
     381,
     TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    228,
-    43,
+    212,
+    102,
     382,
     TO_CLOB('{"value": "AR-43"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    229,
-    43,
+    213,
+    102,
     383,
     TO_CLOB('{"value": "AR-122"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    230,
-    32,
+    214,
+    43,
     386,
     TO_CLOB('{"value": "AR-51"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    231,
-    32,
+    215,
+    43,
     387,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    232,
-    32,
+    216,
+    43,
     388,
     TO_CLOB('{"value": "AR-52"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    233,
-    30,
+    217,
+    40,
     389,
     TO_CLOB('{"value": "AR-107"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    234,
-    29,
+    218,
+    38,
     392,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    235,
-    29,
+    219,
+    38,
     393,
     TO_CLOB('{"value": "AR-147"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    236,
-    43,
+    220,
+    102,
     395,
     TO_CLOB('{"value": "AR-134"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    237,
-    44,
+    221,
+    115,
     396,
     TO_CLOB('{"value": "GOTEJAMENTO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    238,
-    39,
+    222,
+    76,
     400,
     TO_CLOB('{"value": "AR-61"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    239,
-    28,
+    223,
+    33,
     401,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    240,
+    224,
     12,
     402,
     TO_CLOB('{"value": "OUTRO"}')
@@ -1923,7 +1795,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    241,
+    225,
     12,
     403,
     TO_CLOB('{"value": "OUTRO"}')
@@ -1931,7 +1803,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    242,
+    226,
     12,
     404,
     TO_CLOB('{"value": "OUTRO"}')
@@ -1939,2215 +1811,2215 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    243,
-    36,
+    227,
+    56,
     407,
     TO_CLOB('{"value": "AR-133"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    244,
-    44,
+    228,
+    115,
     409,
     TO_CLOB('{"value": "FLUXO CONTÍNUO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    245,
-    28,
+    229,
+    33,
     410,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    246,
-    28,
+    230,
+    33,
     411,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    247,
-    21,
+    231,
+    20,
     414,
-    TO_CLOB('{"value": "Desalinhada"}')
+    TO_CLOB('{"value": ["Desalinhada"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    248,
-    22,
+    232,
+    21,
     414,
     TO_CLOB('{"value": "Vidro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    249,
-    43,
+    233,
+    102,
     416,
     TO_CLOB('{"value": "AR-143"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    250,
-    32,
+    234,
+    43,
     418,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    251,
-    32,
+    235,
+    43,
     419,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    252,
-    32,
+    236,
+    43,
     420,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    253,
-    28,
+    237,
+    33,
     421,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    254,
-    43,
+    238,
+    102,
     424,
     TO_CLOB('{"value": "AR-37"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    255,
-    43,
+    239,
+    102,
     432,
     TO_CLOB('{"value": "AR-40"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    256,
-    39,
+    240,
+    76,
     435,
     TO_CLOB('{"value": "AR-60"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    257,
-    36,
+    241,
+    56,
     437,
     TO_CLOB('{"value": "AR-107"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    258,
-    39,
+    242,
+    76,
     438,
     TO_CLOB('{"value": "AR-58"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    259,
-    39,
+    243,
+    76,
     439,
     TO_CLOB('{"value": "AR-57"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    260,
-    27,
+    244,
+    32,
     440,
     TO_CLOB('{"value": "Chave perdida"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    261,
-    39,
+    245,
+    76,
     446,
     TO_CLOB('{"value": "AR-118"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    262,
-    30,
+    246,
+    40,
     447,
     TO_CLOB('{"value": "AR-31"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    263,
-    27,
+    247,
+    32,
     451,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    264,
-    43,
+    248,
+    102,
     454,
     TO_CLOB('{"value": "AR-42"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    265,
-    27,
+    249,
+    32,
     455,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    266,
-    20,
+    250,
+    18,
     456,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    267,
-    20,
+    251,
+    18,
     457,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    268,
-    20,
+    252,
+    18,
     458,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    269,
-    43,
+    253,
+    102,
     473,
     TO_CLOB('{"value": "AR-121"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    270,
-    43,
+    254,
+    102,
     476,
     TO_CLOB('{"value": "AR-120"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    271,
-    43,
+    255,
+    102,
     479,
     TO_CLOB('{"value": "AR-41"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    272,
-    39,
+    256,
+    76,
     484,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    273,
-    39,
+    257,
+    76,
     485,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    274,
-    39,
+    258,
+    76,
     486,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    275,
-    39,
+    259,
+    76,
     487,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    276,
-    39,
+    260,
+    76,
     491,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    277,
-    39,
+    261,
+    76,
     492,
     TO_CLOB('{"value": "AR-59"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    278,
-    39,
+    262,
+    76,
     493,
     TO_CLOB('{"value": "AR-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    279,
-    27,
+    263,
+    32,
     497,
     TO_CLOB('{"value": "Chave perdida"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    280,
-    43,
+    264,
+    102,
     502,
     TO_CLOB('{"value": "AR-13"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    281,
-    37,
+    265,
+    73,
     505,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    282,
-    37,
+    266,
+    73,
     506,
     TO_CLOB('{"value": "CA-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    283,
-    49,
+    267,
+    133,
     506,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    284,
-    37,
+    268,
+    73,
     507,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    285,
-    49,
+    269,
+    133,
     507,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    286,
-    39,
+    270,
+    76,
     512,
     TO_CLOB('{"value": "AR-16"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    287,
-    50,
+    271,
+    134,
     512,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    288,
-    39,
+    272,
+    76,
     513,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    289,
-    50,
+    273,
+    134,
     513,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    290,
-    51,
+    274,
+    135,
     514,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    291,
-    51,
+    275,
+    135,
     515,
     TO_CLOB('{"value": "CA-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    292,
-    39,
+    276,
+    76,
     516,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    293,
-    50,
+    277,
+    134,
     516,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    294,
-    39,
+    278,
+    76,
     518,
     TO_CLOB('{"value": "AR-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    295,
-    50,
+    279,
+    134,
     518,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    296,
-    39,
+    280,
+    76,
     519,
     TO_CLOB('{"value": "AR-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    297,
-    50,
+    281,
+    134,
     519,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    298,
-    39,
+    282,
+    76,
     520,
     TO_CLOB('{"value": "AR-84"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    299,
-    50,
+    283,
+    134,
     520,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    300,
-    51,
+    284,
+    135,
     523,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    301,
-    51,
+    285,
+    135,
     524,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    302,
-    51,
+    286,
+    135,
     525,
     TO_CLOB('{"value": "CA-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    303,
-    39,
+    287,
+    76,
     526,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    304,
-    50,
+    288,
+    134,
     526,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    305,
-    39,
+    289,
+    76,
     528,
     TO_CLOB('{"value": "AR-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    306,
-    50,
+    290,
+    134,
     528,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    307,
-    39,
+    291,
+    76,
     529,
     TO_CLOB('{"value": "AR-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    308,
-    50,
+    292,
+    134,
     529,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    309,
-    30,
+    293,
+    40,
     530,
     TO_CLOB('{"value": "AR 137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    310,
-    39,
+    294,
+    76,
     531,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    311,
-    50,
+    295,
+    134,
     531,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    312,
-    32,
+    296,
+    43,
     535,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    313,
-    52,
+    297,
+    144,
     535,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    314,
-    32,
+    298,
+    43,
     536,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    315,
-    52,
+    299,
+    144,
     536,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    316,
-    39,
+    300,
+    76,
     537,
     TO_CLOB('{"value": "AR-18"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    317,
-    50,
+    301,
+    134,
     537,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    318,
-    39,
+    302,
+    76,
     538,
     TO_CLOB('{"value": "AR-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    319,
-    50,
+    303,
+    134,
     538,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    320,
-    44,
+    304,
+    115,
     540,
     TO_CLOB('{"value": "GOTEJAMENTO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    321,
-    53,
+    305,
+    145,
     541,
     TO_CLOB('{"value": "CONSTANTE"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    322,
-    43,
+    306,
+    102,
     546,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    323,
-    54,
+    307,
+    146,
     546,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    324,
-    43,
+    308,
+    102,
     547,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    325,
-    54,
+    309,
+    146,
     547,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    326,
-    39,
+    310,
+    76,
     548,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    327,
-    50,
+    311,
+    134,
     548,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    328,
-    32,
+    312,
+    43,
     549,
     TO_CLOB('{"value": "AR-88"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    329,
-    52,
+    313,
+    144,
     549,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    330,
-    32,
+    314,
+    43,
     550,
     TO_CLOB('{"value": "AR-129"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    331,
-    52,
+    315,
+    144,
     550,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    332,
-    32,
+    316,
+    43,
     551,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    333,
-    52,
+    317,
+    144,
     551,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    334,
-    55,
+    318,
+    147,
     552,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    335,
-    56,
+    319,
+    148,
     552,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    336,
-    32,
+    320,
+    43,
     553,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    337,
-    52,
+    321,
+    144,
     553,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    338,
-    55,
+    322,
+    147,
     554,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    339,
-    56,
+    323,
+    148,
     554,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    340,
-    57,
+    324,
+    153,
     557,
     TO_CLOB('{"value": "Não Conforme"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    341,
-    39,
+    325,
+    76,
     559,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    342,
-    50,
+    326,
+    134,
     559,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    343,
-    30,
+    327,
+    40,
     560,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    344,
-    32,
+    328,
+    43,
     562,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    345,
-    52,
+    329,
+    144,
     562,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    346,
-    20,
+    330,
+    18,
     563,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    347,
-    46,
+    331,
+    129,
     565,
     TO_CLOB('{"value": "AR-108"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    348,
-    32,
+    332,
+    43,
     568,
     TO_CLOB('{"value": "AR-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    349,
-    52,
+    333,
+    144,
     568,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    350,
-    32,
+    334,
+    43,
     569,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    351,
-    52,
+    335,
+    144,
     569,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    352,
-    32,
+    336,
+    43,
     570,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    353,
-    52,
+    337,
+    144,
     570,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    354,
-    32,
+    338,
+    43,
     571,
     TO_CLOB('{"value": "AR-131"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    355,
-    52,
+    339,
+    144,
     571,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    356,
-    46,
+    340,
+    129,
     575,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    357,
-    32,
+    341,
+    43,
     577,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    358,
-    52,
+    342,
+    144,
     577,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    359,
-    32,
+    343,
+    43,
     578,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    360,
-    52,
+    344,
+    144,
     578,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    361,
-    30,
+    345,
+    40,
     580,
     TO_CLOB('{"value": "AR-106"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    362,
-    32,
+    346,
+    43,
     581,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    363,
-    52,
+    347,
+    144,
     581,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    364,
-    29,
+    348,
+    38,
     588,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    365,
-    36,
+    349,
+    56,
     589,
     TO_CLOB('{"value": "AR-134"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    366,
-    58,
+    350,
+    154,
     589,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    367,
-    32,
+    351,
+    43,
     590,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    368,
-    52,
+    352,
+    144,
     590,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    369,
-    32,
+    353,
+    43,
     592,
     TO_CLOB('{"value": "AR-79"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    370,
-    52,
+    354,
+    144,
     592,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    371,
-    32,
+    355,
+    43,
     594,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    372,
-    52,
+    356,
+    144,
     594,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    373,
-    39,
+    357,
+    76,
     599,
     TO_CLOB('{"value": "AR-96"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    374,
-    50,
+    358,
+    134,
     599,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    375,
-    39,
+    359,
+    76,
     601,
     TO_CLOB('{"value": "AR-95"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    376,
-    50,
+    360,
+    134,
     601,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    377,
-    36,
+    361,
+    56,
     604,
     TO_CLOB('{"value": "AR-100"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    378,
-    58,
+    362,
+    154,
     604,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    379,
-    32,
+    363,
+    43,
     605,
     TO_CLOB('{"value": "AR-139"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    380,
-    52,
+    364,
+    144,
     605,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    381,
-    32,
+    365,
+    43,
     606,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    382,
-    52,
+    366,
+    144,
     606,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    383,
-    32,
+    367,
+    43,
     607,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    384,
-    52,
+    368,
+    144,
     607,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    385,
-    33,
+    369,
+    53,
     609,
     TO_CLOB('{"value": "OUTRO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    386,
-    34,
+    370,
+    54,
     609,
-    TO_CLOB('{"value": "10"}')
+    TO_CLOB('{"value": 10}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    387,
-    35,
+    371,
+    55,
     609,
     TO_CLOB('{"value": "20A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    388,
-    39,
+    372,
+    76,
     611,
     TO_CLOB('{"value": "AR-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    389,
-    50,
+    373,
+    134,
     611,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    390,
-    46,
+    374,
+    129,
     612,
     TO_CLOB('{"value": "AR-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    391,
-    32,
+    375,
+    43,
     613,
     TO_CLOB('{"value": "AR-138"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    392,
-    52,
+    376,
+    144,
     613,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    393,
-    39,
+    377,
+    76,
     615,
     TO_CLOB('{"value": "AR-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    394,
-    50,
+    378,
+    134,
     615,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    395,
-    36,
+    379,
+    56,
     616,
     TO_CLOB('{"value": "AR-102"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    396,
-    58,
+    380,
+    154,
     616,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    397,
-    36,
+    381,
+    56,
     617,
     TO_CLOB('{"value": "AR-101"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    398,
-    58,
+    382,
+    154,
     617,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    399,
-    46,
+    383,
+    129,
     623,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    400,
-    30,
+    384,
+    40,
     624,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    401,
-    39,
+    385,
+    76,
     627,
     TO_CLOB('{"value": "AR-71"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    402,
-    50,
+    386,
+    134,
     627,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    403,
-    39,
+    387,
+    76,
     628,
     TO_CLOB('{"value": "AR-69"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    404,
-    50,
+    388,
+    134,
     628,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    405,
-    39,
+    389,
+    76,
     629,
     TO_CLOB('{"value": "AR-125"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    406,
-    50,
+    390,
+    134,
     629,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    407,
-    39,
+    391,
+    76,
     631,
     TO_CLOB('{"value": "AR-73"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    408,
-    50,
+    392,
+    134,
     631,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    409,
-    39,
+    393,
+    76,
     632,
     TO_CLOB('{"value": "AR-73"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    410,
-    50,
+    394,
+    134,
     632,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    411,
-    39,
+    395,
+    76,
     633,
     TO_CLOB('{"value": "AR-73"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    412,
-    50,
+    396,
+    134,
     633,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    413,
-    39,
+    397,
+    76,
     634,
     TO_CLOB('{"value": "AR-144"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    414,
-    50,
+    398,
+    134,
     634,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    415,
-    39,
+    399,
+    76,
     635,
     TO_CLOB('{"value": "AR-68"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    416,
-    50,
+    400,
+    134,
     635,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    417,
-    39,
+    401,
+    76,
     636,
     TO_CLOB('{"value": "AR-68"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    418,
-    50,
+    402,
+    134,
     636,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    419,
-    39,
+    403,
+    76,
     637,
     TO_CLOB('{"value": "AR-70"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    420,
-    50,
+    404,
+    134,
     637,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    421,
-    39,
+    405,
+    76,
     644,
     TO_CLOB('{"value": "AR-119"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    422,
-    50,
+    406,
+    134,
     644,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    423,
-    39,
+    407,
+    76,
     646,
     TO_CLOB('{"value": "AR-44"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    424,
-    50,
+    408,
+    134,
     646,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    425,
-    39,
+    409,
+    76,
     648,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    426,
-    50,
+    410,
+    134,
     648,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    427,
-    39,
+    411,
+    76,
     649,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    428,
-    50,
+    412,
+    134,
     649,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    429,
-    32,
+    413,
+    43,
     650,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    430,
-    52,
+    414,
+    144,
     650,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    431,
-    37,
+    415,
+    73,
     651,
     TO_CLOB('{"value": "CA-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    432,
-    49,
+    416,
+    133,
     651,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    433,
-    21,
+    417,
+    20,
     652,
-    TO_CLOB('{"value": "Não fecha"}')
+    TO_CLOB('{"value": ["Não fecha"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    434,
-    22,
+    418,
+    21,
     652,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    435,
-    37,
+    419,
+    73,
     656,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    436,
-    49,
+    420,
+    133,
     656,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    437,
-    37,
+    421,
+    73,
     657,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    438,
-    49,
+    422,
+    133,
     657,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    439,
-    39,
+    423,
+    76,
     659,
     TO_CLOB('{"value": "AR-29"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    440,
-    50,
+    424,
+    134,
     659,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    441,
-    37,
+    425,
+    73,
     660,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    442,
-    49,
+    426,
+    133,
     660,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    443,
-    20,
+    427,
+    18,
     661,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    444,
-    39,
+    428,
+    76,
     665,
     TO_CLOB('{"value": "AR-32"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    445,
-    50,
+    429,
+    134,
     665,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    446,
-    39,
+    430,
+    76,
     667,
     TO_CLOB('{"value": "AR-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    447,
-    50,
+    431,
+    134,
     667,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    448,
-    39,
+    432,
+    76,
     670,
     TO_CLOB('{"value": "AR-28"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    449,
-    50,
+    433,
+    134,
     670,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    450,
-    39,
+    434,
+    76,
     671,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    451,
-    50,
+    435,
+    134,
     671,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    452,
-    37,
+    436,
+    73,
     672,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    453,
-    49,
+    437,
+    133,
     672,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    454,
-    39,
+    438,
+    76,
     678,
     TO_CLOB('{"value": "AR-33"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    455,
-    50,
+    439,
+    134,
     678,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    456,
-    57,
+    440,
+    153,
     679,
     TO_CLOB('{"value": "Conforme"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    457,
-    32,
+    441,
+    43,
     680,
     TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    458,
-    52,
+    442,
+    144,
     680,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    459,
-    32,
+    443,
+    43,
     681,
     TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    460,
-    52,
+    444,
+    144,
     681,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    461,
-    37,
+    445,
+    73,
     682,
     TO_CLOB('{"value": "CA-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    462,
-    49,
+    446,
+    133,
     682,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    463,
-    30,
+    447,
+    40,
     683,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    464,
-    29,
+    448,
+    38,
     691,
     TO_CLOB('{"value": "AR-78/AR-114"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    465,
-    21,
+    449,
+    20,
     692,
-    TO_CLOB('{"value": "Desalinhada"}')
+    TO_CLOB('{"value": ["Desalinhada"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    466,
-    22,
+    450,
+    21,
     692,
     TO_CLOB('{"value": "Vidro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    467,
-    21,
+    451,
+    20,
     693,
-    TO_CLOB('{"value": "Desalinhada"}')
+    TO_CLOB('{"value": ["Desalinhada"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    468,
-    22,
+    452,
+    21,
     693,
     TO_CLOB('{"value": "Vidro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    469,
-    43,
+    453,
+    102,
     696,
     TO_CLOB('{"value": "AR-51"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    470,
-    54,
+    454,
+    146,
     696,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    471,
-    43,
+    455,
+    102,
     697,
     TO_CLOB('{"value": "AR-150"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    472,
-    54,
+    456,
+    146,
     697,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    473,
-    43,
+    457,
+    102,
     698,
     TO_CLOB('{"value": "AR-52"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    474,
-    54,
+    458,
+    146,
     698,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    475,
-    37,
+    459,
+    73,
     699,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    476,
-    49,
+    460,
+    133,
     699,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    477,
-    20,
+    461,
+    18,
     702,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    478,
-    43,
+    462,
+    102,
     704,
     TO_CLOB('{"value": "AR-26"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    479,
-    54,
+    463,
+    146,
     704,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    480,
-    43,
+    464,
+    102,
     705,
     TO_CLOB('{"value": "AR-25"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    481,
-    54,
+    465,
+    146,
     705,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    482,
-    21,
+    466,
+    20,
     706,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    483,
-    22,
+    467,
+    21,
     706,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    484,
-    39,
+    468,
+    76,
     708,
     TO_CLOB('{"value": "AR-149"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    485,
-    50,
+    469,
+    134,
     708,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    486,
-    39,
+    470,
+    76,
     710,
     TO_CLOB('{"value": "AR-148"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    487,
-    50,
+    471,
+    134,
     710,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    488,
-    21,
+    472,
+    20,
     711,
-    TO_CLOB('{"value": "Não abre bem,outro"}')
+    TO_CLOB('{"value": ["Não abre bem", "outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    489,
-    22,
+    473,
+    21,
     711,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    490,
-    32,
+    474,
+    43,
     712,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    491,
-    52,
+    475,
+    144,
     712,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    492,
-    32,
+    476,
+    43,
     713,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    493,
-    52,
+    477,
+    144,
     713,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    494,
-    32,
+    478,
+    43,
     715,
     TO_CLOB('{"value": "AR-88"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    495,
-    52,
+    479,
+    144,
     715,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    496,
-    39,
+    480,
+    76,
     716,
     TO_CLOB('{"value": "AR-126"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    497,
-    50,
+    481,
+    134,
     716,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    498,
-    39,
+    482,
+    76,
     717,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    499,
-    50,
+    483,
+    134,
     717,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    500,
-    39,
+    484,
+    76,
     718,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    501,
-    50,
+    485,
+    134,
     718,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    502,
-    43,
+    486,
+    102,
     719,
     TO_CLOB('{"value": "AR-142"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    503,
-    54,
+    487,
+    146,
     719,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    504,
-    39,
+    488,
+    76,
     720,
     TO_CLOB('{"value": "AR-122"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    505,
-    50,
+    489,
+    134,
     720,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    506,
-    21,
+    490,
+    20,
     722,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    507,
-    22,
+    491,
+    21,
     722,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    508,
-    39,
+    492,
+    76,
     727,
     TO_CLOB('{"value": "AR-121"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    509,
-    50,
+    493,
+    134,
     727,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    510,
-    39,
+    494,
+    76,
     728,
     TO_CLOB('{"value": "AR-121"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    511,
-    50,
+    495,
+    134,
     728,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    512,
-    39,
+    496,
+    76,
     729,
     TO_CLOB('{"value": "AR-120"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    513,
-    50,
+    497,
+    134,
     729,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    514,
-    36,
+    498,
+    56,
     730,
     TO_CLOB('{"value": "AR-110"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    515,
-    58,
+    499,
+    154,
     730,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    516,
-    26,
+    500,
+    28,
     733,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    517,
-    43,
+    501,
+    102,
     734,
     TO_CLOB('{"value": "AR-62"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    518,
-    54,
+    502,
+    146,
     734,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    519,
+    503,
     10,
     735,
     TO_CLOB('{"value": "Papel toalha"}')
@@ -4155,7 +4027,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    520,
+    504,
     11,
     735,
     TO_CLOB('{"value": "Quebrado"}')
@@ -4163,951 +4035,951 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    521,
-    39,
+    505,
+    76,
     737,
     TO_CLOB('{"value": "AR-109"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    522,
-    50,
+    506,
+    134,
     737,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    523,
-    32,
+    507,
+    43,
     738,
     TO_CLOB('{"value": "AR-131"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    524,
-    52,
+    508,
+    144,
     738,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    525,
-    36,
+    509,
+    56,
     740,
     TO_CLOB('{"value": "AR-104"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    526,
-    58,
+    510,
+    154,
     740,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    527,
-    32,
+    511,
+    43,
     741,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    528,
-    52,
+    512,
+    144,
     741,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    529,
-    39,
+    513,
+    76,
     742,
     TO_CLOB('{"value": "AR-108"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    530,
-    50,
+    514,
+    134,
     742,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    531,
-    32,
+    515,
+    43,
     743,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    532,
-    52,
+    516,
+    144,
     743,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    533,
-    36,
+    517,
+    56,
     744,
     TO_CLOB('{"value": "AR-115"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    534,
-    58,
+    518,
+    154,
     744,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    535,
-    36,
+    519,
+    56,
     745,
     TO_CLOB('{"value": "AR-113"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    536,
-    58,
+    520,
+    154,
     745,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    537,
-    32,
+    521,
+    43,
     749,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    538,
-    52,
+    522,
+    144,
     749,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    539,
-    32,
+    523,
+    43,
     751,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    540,
-    52,
+    524,
+    144,
     751,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    541,
-    32,
+    525,
+    43,
     754,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    542,
-    52,
+    526,
+    144,
     754,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    543,
-    32,
+    527,
+    43,
     756,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    544,
-    52,
+    528,
+    144,
     756,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    545,
-    32,
+    529,
+    43,
     759,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    546,
-    52,
+    530,
+    144,
     759,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    547,
-    32,
+    531,
+    43,
     760,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    548,
-    52,
+    532,
+    144,
     760,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    549,
-    32,
+    533,
+    43,
     764,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    550,
-    52,
+    534,
+    144,
     764,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    551,
-    27,
+    535,
+    32,
     767,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    552,
-    27,
+    536,
+    32,
     768,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    553,
-    27,
+    537,
+    32,
     771,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    554,
-    30,
+    538,
+    40,
     772,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    555,
-    59,
+    539,
+    155,
     774,
     TO_CLOB('{"value": "Linaldo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    556,
-    59,
+    540,
+    155,
     775,
     TO_CLOB('{"value": "Linaldo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    557,
-    42,
+    541,
+    90,
     783,
     TO_CLOB('{"value": "AR-24"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    558,
-    42,
+    542,
+    90,
     784,
     TO_CLOB('{"value": "AR-30"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    559,
-    42,
+    543,
+    90,
     786,
     TO_CLOB('{"value": "AR-31"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    560,
-    32,
+    544,
+    43,
     801,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    561,
-    52,
+    545,
+    144,
     801,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    562,
-    32,
+    546,
+    43,
     802,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    563,
-    52,
+    547,
+    144,
     802,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    564,
-    36,
+    548,
+    56,
     805,
     TO_CLOB('{"value": "AR-117"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    565,
-    58,
+    549,
+    154,
     805,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    566,
-    39,
+    550,
+    76,
     807,
     TO_CLOB('{"value": "AR-40"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    567,
-    50,
+    551,
+    134,
     807,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    568,
-    39,
+    552,
+    76,
     808,
     TO_CLOB('{"value": "AR-37"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    569,
-    50,
+    553,
+    134,
     808,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    570,
-    28,
+    554,
+    33,
     809,
     TO_CLOB('{"value": "Sala da manutenção"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    571,
-    42,
+    555,
+    90,
     811,
     TO_CLOB('{"value": "AR-91"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    572,
-    36,
+    556,
+    56,
     812,
     TO_CLOB('{"value": "AR-118"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    573,
-    58,
+    557,
+    154,
     812,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    574,
-    36,
+    558,
+    56,
     813,
     TO_CLOB('{"value": "AR-97"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    575,
-    58,
+    559,
+    154,
     813,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    576,
-    39,
+    560,
+    76,
     814,
     TO_CLOB('{"value": "AR-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    577,
-    50,
+    561,
+    134,
     814,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    578,
-    39,
+    562,
+    76,
     815,
     TO_CLOB('{"value": "AR-41"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    579,
-    50,
+    563,
+    134,
     815,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    580,
-    42,
+    564,
+    90,
     816,
     TO_CLOB('{"value": "AR-27"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    581,
-    39,
+    565,
+    76,
     817,
     TO_CLOB('{"value": "AR-43"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    582,
-    50,
+    566,
+    134,
     817,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    583,
-    39,
+    567,
+    76,
     818,
     TO_CLOB('{"value": "AR-42"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    584,
-    50,
+    568,
+    134,
     818,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    585,
-    39,
+    569,
+    76,
     819,
     TO_CLOB('{"value": "AR-135"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    586,
-    50,
+    570,
+    134,
     819,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    587,
-    39,
+    571,
+    76,
     820,
     TO_CLOB('{"value": "AR-143"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    588,
-    50,
+    572,
+    134,
     820,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    589,
-    39,
+    573,
+    76,
     821,
     TO_CLOB('{"value": "AR-133"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    590,
-    50,
+    574,
+    134,
     821,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    591,
-    29,
+    575,
+    38,
     822,
     TO_CLOB('{"value": "AR-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    592,
-    9,
+    576,
+    5,
     823,
     TO_CLOB('{"value": "Vaso sanitário"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    593,
-    39,
+    577,
+    76,
     828,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    594,
-    50,
+    578,
+    134,
     828,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    595,
-    39,
+    579,
+    76,
     829,
     TO_CLOB('{"value": "AR-79"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    596,
-    50,
+    580,
+    134,
     829,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    597,
-    32,
+    581,
+    43,
     833,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    598,
-    52,
+    582,
+    144,
     833,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    599,
-    32,
+    583,
+    43,
     834,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    600,
-    52,
+    584,
+    144,
     834,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    601,
-    32,
+    585,
+    43,
     835,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    602,
-    52,
+    586,
+    144,
     835,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    603,
-    32,
+    587,
+    43,
     836,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    604,
-    52,
+    588,
+    144,
     836,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    605,
-    36,
+    589,
+    56,
     837,
     TO_CLOB('{"value": "AR-116"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    606,
-    58,
+    590,
+    154,
     837,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    607,
-    45,
+    591,
+    123,
     839,
-    TO_CLOB('{"value": "10"}')
+    TO_CLOB('{"value": 10}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    608,
-    43,
+    592,
+    102,
     840,
     TO_CLOB('{"value": "AR-63"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    609,
-    54,
+    593,
+    146,
     840,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    610,
-    43,
+    594,
+    102,
     842,
     TO_CLOB('{"value": "AR-66"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    611,
-    54,
+    595,
+    146,
     842,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    612,
-    39,
+    596,
+    76,
     843,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    613,
-    50,
+    597,
+    134,
     843,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    614,
-    39,
+    598,
+    76,
     844,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    615,
-    50,
+    599,
+    134,
     844,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    616,
-    39,
+    600,
+    76,
     845,
     TO_CLOB('{"value": "AR-106"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    617,
-    50,
+    601,
+    134,
     845,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    618,
-    30,
+    602,
+    40,
     846,
     TO_CLOB('{"value": "Sala da supervisão"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    619,
-    39,
+    603,
+    76,
     848,
     TO_CLOB('{"value": "AR-107"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    620,
-    50,
+    604,
+    134,
     848,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    621,
-    39,
+    605,
+    76,
     855,
     TO_CLOB('{"value": "AR-132"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    622,
-    50,
+    606,
+    134,
     855,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    623,
-    36,
+    607,
+    56,
     856,
     TO_CLOB('{"value": "AR-112"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    624,
-    58,
+    608,
+    154,
     856,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    625,
-    32,
+    609,
+    43,
     857,
     TO_CLOB('{"value": "AR-128"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    626,
-    52,
+    610,
+    144,
     857,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    627,
-    42,
+    611,
+    90,
     858,
     TO_CLOB('{"value": "AR-92"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    628,
-    32,
+    612,
+    43,
     859,
     TO_CLOB('{"value": "AR-138"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    629,
-    52,
+    613,
+    144,
     859,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    630,
-    32,
+    614,
+    43,
     862,
     TO_CLOB('{"value": "AR-139"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    631,
-    52,
+    615,
+    144,
     862,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    632,
-    39,
+    616,
+    76,
     863,
     TO_CLOB('{"value": "AR-77"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    633,
-    50,
+    617,
+    134,
     863,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    634,
-    38,
+    618,
+    74,
     865,
     TO_CLOB('{"value": "Parede"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    635,
-    32,
+    619,
+    43,
     867,
     TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    636,
-    52,
+    620,
+    144,
     867,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    637,
-    38,
+    621,
+    74,
     868,
     TO_CLOB('{"value": "Faixa de pedestre"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    638,
-    38,
+    622,
+    74,
     869,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    639,
+    623,
     10,
     871,
     TO_CLOB('{"value": "Papel higiênico"}')
@@ -5115,7 +4987,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    640,
+    624,
     11,
     871,
     TO_CLOB('{"value": "Não fixa na parede"}')
@@ -5123,1991 +4995,1991 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    641,
-    43,
+    625,
+    102,
     874,
     TO_CLOB('{"value": "AR-60"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    642,
-    54,
+    626,
+    146,
     874,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    643,
-    39,
+    627,
+    76,
     877,
     TO_CLOB('{"value": "AR-105"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    644,
-    50,
+    628,
+    134,
     877,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    645,
-    32,
+    629,
+    43,
     878,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    646,
-    52,
+    630,
+    144,
     878,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    647,
-    22,
+    631,
+    21,
     879,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    648,
-    21,
+    632,
+    20,
     879,
-    TO_CLOB('{"value": "Rangido,Desalinhada,outro,Não fecha,Não abre bem"}')
+    TO_CLOB('{"value": ["Rangido", "Desalinhada", "outro", "Não fecha", "Não abre bem"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    649,
-    43,
+    633,
+    102,
     880,
     TO_CLOB('{"value": "AR-59"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    650,
-    54,
+    634,
+    146,
     880,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    651,
-    43,
+    635,
+    102,
     882,
     TO_CLOB('{"value": "AR-58"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    652,
-    54,
+    636,
+    146,
     882,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    653,
-    43,
+    637,
+    102,
     883,
     TO_CLOB('{"value": "AR-58"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    654,
-    54,
+    638,
+    146,
     883,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    655,
-    22,
+    639,
+    21,
     884,
     TO_CLOB('{"value": "Madeira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    656,
-    21,
+    640,
+    20,
     884,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    657,
-    30,
+    641,
+    40,
     885,
     TO_CLOB('{"value": "Ar condicionado da sala da supervisão"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    658,
-    39,
+    642,
+    76,
     888,
     TO_CLOB('{"value": "AR-145"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    659,
-    50,
+    643,
+    134,
     888,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    660,
-    39,
+    644,
+    76,
     891,
     TO_CLOB('{"value": "AR-12"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    661,
-    50,
+    645,
+    134,
     891,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    662,
-    39,
+    646,
+    76,
     893,
     TO_CLOB('{"value": "AR-12"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    663,
-    50,
+    647,
+    134,
     893,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    664,
-    39,
+    648,
+    76,
     894,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    665,
-    50,
+    649,
+    134,
     894,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    666,
-    37,
+    650,
+    73,
     895,
     TO_CLOB('{"value": "CA-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    667,
-    49,
+    651,
+    133,
     895,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    668,
-    43,
+    652,
+    102,
     896,
     TO_CLOB('{"value": "AR-64"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    669,
-    54,
+    653,
+    146,
     896,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    670,
-    30,
+    654,
+    40,
     898,
     TO_CLOB('{"value": "Ar-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    671,
-    32,
+    655,
+    43,
     899,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    672,
-    52,
+    656,
+    144,
     899,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    673,
-    40,
+    657,
+    79,
     900,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    674,
-    41,
+    658,
+    80,
     900,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    675,
-    32,
+    659,
+    43,
     901,
     TO_CLOB('{"value": "AR-52"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    676,
-    52,
+    660,
+    144,
     901,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    677,
-    32,
-    902,
-    TO_CLOB('{"value": "AR-51"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    678,
-    52,
-    902,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    679,
-    32,
-    903,
-    TO_CLOB('{"value": "AR-51"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    680,
-    52,
-    903,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    681,
+    661,
     43,
+    902,
+    TO_CLOB('{"value": "AR-51"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    662,
+    144,
+    902,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    663,
+    43,
+    903,
+    TO_CLOB('{"value": "AR-51"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    664,
+    144,
+    903,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    665,
+    102,
     907,
     TO_CLOB('{"value": "AR-61"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    682,
-    54,
+    666,
+    146,
     907,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    683,
-    32,
+    667,
+    43,
     908,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    684,
-    52,
+    668,
+    144,
     908,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    685,
-    29,
+    669,
+    38,
     909,
     TO_CLOB('{"value": "AR-119"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    686,
-    22,
+    670,
+    21,
     911,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    687,
-    21,
+    671,
+    20,
     911,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    688,
-    37,
+    672,
+    73,
     913,
     TO_CLOB('{"value": "CA-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    689,
-    49,
+    673,
+    133,
     913,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    690,
-    37,
+    674,
+    73,
     914,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    691,
-    49,
+    675,
+    133,
     914,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    692,
-    37,
+    676,
+    73,
     915,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    693,
-    49,
+    677,
+    133,
     915,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    694,
-    37,
+    678,
+    73,
     918,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    695,
-    49,
+    679,
+    133,
     918,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    696,
-    43,
+    680,
+    102,
     924,
     TO_CLOB('{"value": "AR-57"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    697,
-    54,
+    681,
+    146,
     924,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    698,
-    43,
+    682,
+    102,
     925,
     TO_CLOB('{"value": "AR-57"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    699,
-    54,
+    683,
+    146,
     925,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    700,
-    60,
+    684,
+    158,
     926,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    701,
-    59,
+    685,
+    155,
     927,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    702,
-    43,
+    686,
+    102,
     928,
     TO_CLOB('{"value": "AR-147"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    703,
-    54,
+    687,
+    146,
     928,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    704,
-    32,
+    688,
+    43,
     931,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    705,
-    52,
+    689,
+    144,
     931,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    706,
-    32,
+    690,
+    43,
     933,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    707,
-    52,
+    691,
+    144,
     933,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    708,
-    57,
+    692,
+    153,
     935,
     TO_CLOB('{"value": "Conforme"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    709,
-    37,
+    693,
+    73,
     937,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    710,
-    49,
+    694,
+    133,
     937,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    711,
-    37,
+    695,
+    73,
     938,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    712,
-    49,
+    696,
+    133,
     938,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    713,
-    37,
+    697,
+    73,
     939,
     TO_CLOB('{"value": "CA-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    714,
-    49,
+    698,
+    133,
     939,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    715,
-    55,
+    699,
+    147,
     943,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    716,
-    56,
+    700,
+    148,
     943,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    717,
-    55,
+    701,
+    147,
     944,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    718,
-    56,
+    702,
+    148,
     944,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    719,
-    36,
+    703,
+    56,
     946,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    720,
-    58,
+    704,
+    154,
     946,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    721,
-    37,
+    705,
+    73,
     947,
     TO_CLOB('{"value": "CA-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    722,
-    49,
+    706,
+    133,
     947,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    723,
-    46,
+    707,
+    129,
     948,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    724,
-    27,
+    708,
+    32,
     949,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    725,
-    39,
+    709,
+    76,
     952,
     TO_CLOB('{"value": "AR-18"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    726,
-    50,
+    710,
+    134,
     952,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    727,
-    39,
+    711,
+    76,
     955,
     TO_CLOB('{"value": "AR-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    728,
-    50,
+    712,
+    134,
     955,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    729,
-    26,
+    713,
+    28,
     957,
-    TO_CLOB('{"value": "2"}')
+    TO_CLOB('{"value": 2}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    730,
-    36,
+    714,
+    56,
     959,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    731,
-    58,
+    715,
+    154,
     959,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    732,
-    32,
+    716,
+    43,
     960,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    733,
-    52,
+    717,
+    144,
     960,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    734,
-    32,
+    718,
+    43,
     961,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    735,
-    52,
+    719,
+    144,
     961,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    736,
-    43,
+    720,
+    102,
     971,
     TO_CLOB('{"value": "AR-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    737,
-    54,
+    721,
+    146,
     971,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    738,
-    43,
+    722,
+    102,
     975,
     TO_CLOB('{"value": "AR-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    739,
-    54,
+    723,
+    146,
     975,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    740,
-    32,
+    724,
+    43,
     976,
     TO_CLOB('{"value": "AR-88"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    741,
-    52,
+    725,
+    144,
     976,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    742,
-    22,
+    726,
+    21,
     977,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    743,
-    21,
+    727,
+    20,
     977,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    744,
-    43,
+    728,
+    102,
     980,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    745,
-    54,
+    729,
+    146,
     980,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    746,
-    39,
+    730,
+    76,
     981,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    747,
-    50,
+    731,
+    134,
     981,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    748,
-    30,
+    732,
+    40,
     982,
     TO_CLOB('{"value": "AR137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    749,
-    43,
+    733,
+    102,
     986,
     TO_CLOB('{"value": "AR-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    750,
-    54,
+    734,
+    146,
     986,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    751,
-    43,
+    735,
+    102,
     987,
     TO_CLOB('{"value": "AR-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    752,
-    54,
+    736,
+    146,
     987,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    753,
-    27,
+    737,
+    32,
     989,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    754,
-    39,
+    738,
+    76,
     990,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    755,
-    50,
+    739,
+    134,
     990,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    756,
-    29,
+    740,
+    38,
     992,
     TO_CLOB('{"value": "AR-132"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    757,
-    39,
+    741,
+    76,
     993,
     TO_CLOB('{"value": "AR-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    758,
-    50,
+    742,
+    134,
     993,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    759,
-    38,
+    743,
+    74,
     999,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    760,
-    45,
+    744,
+    123,
     1000,
-    TO_CLOB('{"value": "20"}')
+    TO_CLOB('{"value": 20}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    761,
-    22,
+    745,
+    21,
     1001,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    762,
-    21,
+    746,
+    20,
     1001,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    763,
-    43,
+    747,
+    102,
     1004,
     TO_CLOB('{"value": "AR-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    764,
-    54,
+    748,
+    146,
     1004,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    765,
-    39,
+    749,
+    76,
     1005,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    766,
-    50,
+    750,
+    134,
     1005,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    767,
-    39,
+    751,
+    76,
     1006,
     TO_CLOB('{"value": "AR-13"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    768,
-    50,
+    752,
+    134,
     1006,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    769,
-    22,
+    753,
+    21,
     1010,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    770,
-    21,
+    754,
+    20,
     1010,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    771,
-    61,
+    755,
+    160,
     1011,
     TO_CLOB('{"value": "06/08/2026"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    772,
-    62,
+    756,
+    161,
     1011,
     TO_CLOB('{"value": "08:00h"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    773,
-    63,
+    757,
+    162,
     1011,
     TO_CLOB('{"value": "Água,Biscoito,Café"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    774,
-    64,
+    758,
+    163,
     1011,
     TO_CLOB('{"value": "15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    775,
-    39,
+    759,
+    76,
     1018,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    776,
-    50,
+    760,
+    134,
     1018,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    777,
-    39,
+    761,
+    76,
     1019,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    778,
-    50,
+    762,
+    134,
     1019,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    779,
-    36,
+    763,
+    56,
     1020,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    780,
-    58,
+    764,
+    154,
     1020,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    781,
-    46,
+    765,
+    129,
     1024,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    782,
-    30,
+    766,
+    40,
     1028,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    783,
-    36,
+    767,
+    56,
     1031,
     TO_CLOB('{"value": "AR-16"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    784,
-    58,
+    768,
+    154,
     1031,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    785,
-    36,
+    769,
+    56,
     1032,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    786,
-    58,
+    770,
+    154,
     1032,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    787,
-    28,
+    771,
+    33,
     1033,
     TO_CLOB('{"value": "N/C"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    788,
-    39,
+    772,
+    76,
     1034,
     TO_CLOB('{"value": "AR-84"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    789,
-    50,
+    773,
+    134,
     1034,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    790,
-    32,
+    774,
+    43,
     1035,
     TO_CLOB('{"value": "AR-139"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    791,
-    52,
+    775,
+    144,
     1035,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    792,
-    46,
+    776,
+    129,
     1036,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    793,
-    28,
+    777,
+    33,
     1039,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    794,
-    30,
+    778,
+    40,
     1040,
     TO_CLOB('{"value": "AR-59"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    795,
-    39,
+    779,
+    76,
     1041,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    796,
-    50,
+    780,
+    134,
     1041,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    797,
-    39,
+    781,
+    76,
     1042,
     TO_CLOB('{"value": "AR-101"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    798,
-    50,
+    782,
+    134,
     1042,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    799,
-    39,
+    783,
+    76,
     1043,
     TO_CLOB('{"value": "AR-148"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    800,
-    50,
+    784,
+    134,
     1043,
     TO_CLOB('{"value": "Tiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    801,
-    39,
+    785,
+    76,
     1044,
     TO_CLOB('{"value": "AR-149"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    802,
-    50,
+    786,
+    134,
     1044,
     TO_CLOB('{"value": "Tiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    803,
-    32,
+    787,
+    43,
     1047,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    804,
-    52,
+    788,
+    144,
     1047,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    805,
-    32,
+    789,
+    43,
     1048,
     TO_CLOB('{"value": "AR-20"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    806,
-    52,
+    790,
+    144,
     1048,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    807,
-    32,
+    791,
+    43,
     1049,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    808,
-    52,
+    792,
+    144,
     1049,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    809,
-    39,
+    793,
+    76,
     1050,
     TO_CLOB('{"value": "AR-53"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    810,
-    50,
+    794,
+    134,
     1050,
     TO_CLOB('{"value": "Tiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    811,
-    32,
+    795,
+    43,
     1051,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    812,
-    52,
+    796,
+    144,
     1051,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    813,
-    32,
+    797,
+    43,
     1052,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    814,
-    52,
+    798,
+    144,
     1052,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    815,
-    39,
+    799,
+    76,
     1053,
     TO_CLOB('{"value": "AR-29"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    816,
-    50,
+    800,
+    134,
     1053,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    817,
-    39,
+    801,
+    76,
     1054,
     TO_CLOB('{"value": "AR-28"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    818,
-    50,
+    802,
+    134,
     1054,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    819,
-    39,
+    803,
+    76,
     1055,
     TO_CLOB('{"value": "AR-25"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    820,
-    50,
+    804,
+    134,
     1055,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    821,
-    39,
+    805,
+    76,
     1056,
     TO_CLOB('{"value": "AR-26"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    822,
-    50,
+    806,
+    134,
     1056,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    823,
-    39,
+    807,
+    76,
     1057,
     TO_CLOB('{"value": "AR-33"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    824,
-    50,
+    808,
+    134,
     1057,
     TO_CLOB('{"value": "Tiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    825,
-    39,
+    809,
+    76,
     1058,
     TO_CLOB('{"value": "AR-33"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    826,
-    50,
+    810,
+    134,
     1058,
     TO_CLOB('{"value": "Tiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    827,
-    22,
+    811,
+    21,
     1063,
     TO_CLOB('{"value": "Madeira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    828,
-    21,
+    812,
+    20,
     1063,
-    TO_CLOB('{"value": "outro"}')
+    TO_CLOB('{"value": ["outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    829,
-    36,
+    813,
+    56,
     1073,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    830,
-    58,
+    814,
+    154,
     1073,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    831,
-    36,
+    815,
+    56,
     1074,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    832,
-    58,
+    816,
+    154,
     1074,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    833,
-    31,
+    817,
+    42,
     1082,
     TO_CLOB('{"value": "AR-55"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    834,
-    38,
+    818,
+    74,
     1083,
     TO_CLOB('{"value": "Parede"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    835,
-    28,
+    819,
+    33,
     1086,
     TO_CLOB('{"value": "RTG 015"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    836,
-    32,
+    820,
+    43,
     1087,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    837,
-    52,
+    821,
+    144,
     1087,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    838,
-    32,
+    822,
+    43,
     1088,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    839,
-    52,
+    823,
+    144,
     1088,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    840,
-    32,
+    824,
+    43,
     1089,
     TO_CLOB('{"value": "AR-79"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    841,
-    52,
+    825,
+    144,
     1089,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    842,
-    36,
+    826,
+    56,
     1097,
     TO_CLOB('{"value": "AR-151"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    843,
-    58,
+    827,
+    154,
     1097,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    844,
-    32,
+    828,
+    43,
     1098,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    845,
-    52,
+    829,
+    144,
     1098,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    846,
-    32,
+    830,
+    43,
     1099,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    847,
-    52,
+    831,
+    144,
     1099,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    848,
-    32,
+    832,
+    43,
     1100,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    849,
-    52,
+    833,
+    144,
     1100,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    850,
-    32,
+    834,
+    43,
     1103,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    851,
-    52,
+    835,
+    144,
     1103,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    852,
-    32,
+    836,
+    43,
     1104,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    853,
-    52,
+    837,
+    144,
     1104,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    854,
-    43,
+    838,
+    102,
     1105,
     TO_CLOB('{"value": "AR-73"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    855,
-    54,
+    839,
+    146,
     1105,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    856,
-    43,
+    840,
+    102,
     1106,
     TO_CLOB('{"value": "AR-72"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    857,
-    54,
+    841,
+    146,
     1106,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    858,
-    43,
+    842,
+    102,
     1116,
     TO_CLOB('{"value": "AR-144"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    859,
-    54,
+    843,
+    146,
     1116,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    860,
-    43,
+    844,
+    102,
     1117,
     TO_CLOB('{"value": "AR-144"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    861,
-    54,
+    845,
+    146,
     1117,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    862,
-    32,
+    846,
+    43,
     1118,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    863,
-    52,
+    847,
+    144,
     1118,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    864,
-    43,
+    848,
+    102,
     1119,
     TO_CLOB('{"value": "AR-69"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    865,
-    54,
+    849,
+    146,
     1119,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    866,
-    43,
+    850,
+    102,
     1120,
     TO_CLOB('{"value": "AR-70"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    867,
-    54,
+    851,
+    146,
     1120,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    868,
-    28,
+    852,
+    33,
     1121,
     TO_CLOB('{"value": "N/A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    869,
-    33,
+    853,
+    53,
     1123,
     TO_CLOB('{"value": "QUEBRADA"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    870,
-    34,
+    854,
+    54,
     1123,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    871,
-    35,
+    855,
+    55,
     1123,
     TO_CLOB('{"value": "10A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    872,
-    39,
+    856,
+    76,
     1134,
     TO_CLOB('{"value": "AR-95"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    873,
-    50,
+    857,
+    134,
     1134,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    874,
-    39,
+    858,
+    76,
     1135,
     TO_CLOB('{"value": "AR-96"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    875,
-    50,
+    859,
+    134,
     1135,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    876,
-    27,
+    860,
+    32,
     1141,
     TO_CLOB('{"value": "Chave perdida"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    877,
-    30,
+    861,
+    40,
     1142,
     TO_CLOB('{"value": "AR 137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    878,
-    43,
+    862,
+    102,
     1143,
     TO_CLOB('{"value": "AR-68"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    879,
-    54,
+    863,
+    146,
     1143,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    880,
-    37,
+    864,
+    73,
     1144,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    881,
-    49,
+    865,
+    133,
     1144,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    882,
-    43,
+    866,
+    102,
     1145,
     TO_CLOB('{"value": "AR-125"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    883,
-    54,
+    867,
+    146,
     1145,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    884,
-    43,
+    868,
+    102,
     1147,
     TO_CLOB('{"value": "AR-71"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    885,
-    54,
+    869,
+    146,
     1147,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    886,
-    32,
+    870,
+    43,
     1149,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    887,
-    52,
+    871,
+    144,
     1149,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    888,
-    30,
+    872,
+    40,
     1153,
     TO_CLOB('{"value": "AR-100"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    889,
+    873,
     12,
     1161,
     TO_CLOB('{"value": "VASO SANITARIO"}')
@@ -7115,17 +6987,145 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    890,
-    32,
+    874,
+    43,
     1162,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    891,
-    52,
+    875,
+    144,
     1162,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    876,
+    43,
+    1163,
+    TO_CLOB('{"value": "AR-51"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    877,
+    144,
+    1163,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    878,
+    43,
+    1164,
+    TO_CLOB('{"value": "AR-52"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    879,
+    144,
+    1164,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    880,
+    43,
+    1165,
+    TO_CLOB('{"value": "AR-128"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    881,
+    144,
+    1165,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    882,
+    43,
+    1166,
+    TO_CLOB('{"value": "AR-131"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    883,
+    144,
+    1166,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    884,
+    115,
+    1167,
+    TO_CLOB('{"value": "GOTEJAMENTO"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    885,
+    129,
+    1169,
+    TO_CLOB('{"value": "AR-85"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    886,
+    76,
+    1170,
+    TO_CLOB('{"value": "AR-102"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    887,
+    134,
+    1170,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    888,
+    76,
+    1172,
+    TO_CLOB('{"value": "AR-104"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    889,
+    134,
+    1172,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    890,
+    73,
+    1173,
+    TO_CLOB('{"value": "CA-04"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    891,
+    133,
+    1173,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
@@ -7133,655 +7133,655 @@ INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VAL
 VALUES (
     892,
     32,
-    1163,
-    TO_CLOB('{"value": "AR-51"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    893,
-    52,
-    1163,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    894,
-    32,
-    1164,
-    TO_CLOB('{"value": "AR-52"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    895,
-    52,
-    1164,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    896,
-    32,
-    1165,
-    TO_CLOB('{"value": "AR-128"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    897,
-    52,
-    1165,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    898,
-    32,
-    1166,
-    TO_CLOB('{"value": "AR-131"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    899,
-    52,
-    1166,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    900,
-    44,
-    1167,
-    TO_CLOB('{"value": "GOTEJAMENTO"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    901,
-    46,
-    1169,
-    TO_CLOB('{"value": "AR-85"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    902,
-    39,
-    1170,
-    TO_CLOB('{"value": "AR-102"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    903,
-    50,
-    1170,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    904,
-    39,
-    1172,
-    TO_CLOB('{"value": "AR-104"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    905,
-    50,
-    1172,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    906,
-    37,
-    1173,
-    TO_CLOB('{"value": "CA-04"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    907,
-    49,
-    1173,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    908,
-    27,
     1174,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    909,
-    27,
+    893,
+    32,
     1176,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    910,
-    22,
+    894,
+    21,
     1178,
     TO_CLOB('{"value": "Corta-fogo"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    911,
-    21,
+    895,
+    20,
     1178,
-    TO_CLOB('{"value": "Não abre bem,Desalinhada,Não fecha"}')
+    TO_CLOB('{"value": ["Não abre bem", "Desalinhada", "Não fecha"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    912,
-    39,
+    896,
+    76,
     1179,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    913,
-    50,
+    897,
+    134,
     1179,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    914,
-    39,
+    898,
+    76,
     1191,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    915,
-    50,
+    899,
+    134,
     1191,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    916,
-    39,
+    900,
+    76,
     1192,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    917,
-    50,
+    901,
+    134,
     1192,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    918,
-    39,
+    902,
+    76,
     1193,
     TO_CLOB('{"value": "AR-100"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    919,
-    50,
+    903,
+    134,
     1193,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    920,
-    39,
+    904,
+    76,
     1194,
     TO_CLOB('{"value": "AR-134"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    921,
-    50,
+    905,
+    134,
     1194,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    922,
-    37,
+    906,
+    73,
     1195,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    923,
-    49,
+    907,
+    133,
     1195,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    924,
-    28,
+    908,
+    33,
     1197,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    925,
-    29,
+    909,
+    38,
     1199,
     TO_CLOB('{"value": "AR-33"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    926,
-    38,
+    910,
+    74,
     1201,
     TO_CLOB('{"value": "Parede"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    927,
-    36,
+    911,
+    56,
     1202,
     TO_CLOB('{"value": "AR-138"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    928,
-    58,
+    912,
+    154,
     1202,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    929,
-    33,
+    913,
+    53,
     1203,
     TO_CLOB('{"value": "NÃO FUNCIONA"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    930,
-    34,
+    914,
+    54,
     1203,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    931,
-    35,
+    915,
+    55,
     1203,
     TO_CLOB('{"value": "10A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    932,
-    60,
+    916,
+    158,
     1206,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    933,
-    37,
+    917,
+    73,
     1207,
     TO_CLOB('{"value": "CA-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    934,
-    49,
+    918,
+    133,
     1207,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    935,
-    59,
+    919,
+    155,
     1208,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    936,
-    39,
+    920,
+    76,
     1214,
     TO_CLOB('{"value": "AR-150"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    937,
-    50,
+    921,
+    134,
     1214,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    938,
-    37,
+    922,
+    73,
     1215,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    939,
-    49,
+    923,
+    133,
     1215,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    940,
-    37,
+    924,
+    73,
     1216,
     TO_CLOB('{"value": "CA-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    941,
-    49,
+    925,
+    133,
     1216,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    942,
-    27,
+    926,
+    32,
     1217,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    943,
-    36,
+    927,
+    56,
     1224,
     TO_CLOB('{"value": "AR-119"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    944,
-    58,
+    928,
+    154,
     1224,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    945,
-    36,
+    929,
+    56,
     1225,
     TO_CLOB('{"value": "AR-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    946,
-    58,
+    930,
+    154,
     1225,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    947,
-    33,
+    931,
+    53,
     1226,
     TO_CLOB('{"value": "NÃO FUNCIONA"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    948,
-    34,
+    932,
+    54,
     1226,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    949,
-    35,
+    933,
+    55,
     1226,
     TO_CLOB('{"value": "10A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    950,
-    36,
+    934,
+    56,
     1227,
     TO_CLOB('{"value": "AR-06"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    951,
-    58,
+    935,
+    154,
     1227,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    952,
-    36,
+    936,
+    56,
     1229,
     TO_CLOB('{"value": "AR-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    953,
-    58,
+    937,
+    154,
     1229,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    954,
-    36,
+    938,
+    56,
     1230,
     TO_CLOB('{"value": "AR-44"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    955,
-    58,
+    939,
+    154,
     1230,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    956,
-    36,
+    940,
+    56,
     1231,
     TO_CLOB('{"value": "AR-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    957,
-    58,
+    941,
+    154,
     1231,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    958,
-    36,
+    942,
+    56,
     1233,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    959,
-    58,
+    943,
+    154,
     1233,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    960,
-    30,
+    944,
+    40,
     1234,
     TO_CLOB('{"value": "AR-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    961,
-    37,
+    945,
+    73,
     1236,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    962,
-    49,
+    946,
+    133,
     1236,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    963,
-    37,
+    947,
+    73,
     1237,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    964,
-    49,
+    948,
+    133,
     1237,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    965,
-    37,
+    949,
+    73,
     1238,
     TO_CLOB('{"value": "CA-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    966,
-    49,
+    950,
+    133,
     1238,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    967,
-    22,
+    951,
+    21,
     1243,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    968,
-    21,
+    952,
+    20,
     1243,
-    TO_CLOB('{"value": "Mola solta"}')
+    TO_CLOB('{"value": ["Mola solta"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    969,
-    38,
+    953,
+    74,
     1247,
     TO_CLOB('{"value": "Parede"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    970,
-    32,
+    954,
+    43,
     1255,
     TO_CLOB('{"value": "AR-123"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    971,
-    52,
+    955,
+    144,
     1255,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    972,
-    32,
+    956,
+    43,
     1257,
     TO_CLOB('{"value": "AR-123"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    973,
-    52,
+    957,
+    144,
     1257,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    958,
+    102,
+    1261,
+    TO_CLOB('{"value": "AR-47"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    959,
+    146,
+    1261,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    960,
+    102,
+    1262,
+    TO_CLOB('{"value": "AR-47"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    961,
+    146,
+    1262,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    962,
+    43,
+    1263,
+    TO_CLOB('{"value": "AR-142"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    963,
+    144,
+    1263,
+    TO_CLOB('{"value": "Thiago Andrade"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    964,
+    102,
+    1264,
+    TO_CLOB('{"value": "AR-47"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    965,
+    146,
+    1264,
+    TO_CLOB('{"value": "Rodrigo Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    966,
+    43,
+    1268,
+    TO_CLOB('{"value": "AR-22"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    967,
+    144,
+    1268,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    968,
+    43,
+    1269,
+    TO_CLOB('{"value": "AR-22"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    969,
+    144,
+    1269,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    970,
+    76,
+    1270,
+    TO_CLOB('{"value": "AR-32"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    971,
+    134,
+    1270,
+    TO_CLOB('{"value": "Bruno Silveira"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    972,
+    43,
+    1273,
+    TO_CLOB('{"value": "AR-136"}')
+);
+
+INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
+VALUES (
+    973,
+    144,
+    1273,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
@@ -7789,149 +7789,21 @@ INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VAL
 VALUES (
     974,
     43,
-    1261,
-    TO_CLOB('{"value": "AR-47"}')
+    1274,
+    TO_CLOB('{"value": "AR-136"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     975,
-    54,
-    1261,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
+    144,
+    1274,
+    TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
     976,
-    43,
-    1262,
-    TO_CLOB('{"value": "AR-47"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    977,
-    54,
-    1262,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    978,
-    32,
-    1263,
-    TO_CLOB('{"value": "AR-142"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    979,
-    52,
-    1263,
-    TO_CLOB('{"value": "Thiago Andrade"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    980,
-    43,
-    1264,
-    TO_CLOB('{"value": "AR-47"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    981,
-    54,
-    1264,
-    TO_CLOB('{"value": "Rodrigo Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    982,
-    32,
-    1268,
-    TO_CLOB('{"value": "AR-22"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    983,
-    52,
-    1268,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    984,
-    32,
-    1269,
-    TO_CLOB('{"value": "AR-22"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    985,
-    52,
-    1269,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    986,
-    39,
-    1270,
-    TO_CLOB('{"value": "AR-32"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    987,
-    50,
-    1270,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    988,
-    32,
-    1273,
-    TO_CLOB('{"value": "AR-136"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    989,
-    52,
-    1273,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    990,
-    32,
-    1274,
-    TO_CLOB('{"value": "AR-136"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    991,
-    52,
-    1274,
-    TO_CLOB('{"value": "Bruno Silveira"}')
-);
-
-INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
-VALUES (
-    992,
     23,
     1276,
     TO_CLOB('{"value": "Plug"}')
@@ -7939,15 +7811,15 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    993,
+    977,
     24,
     1276,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    994,
+    978,
     25,
     1276,
     TO_CLOB('{"value": "Outro"}')
@@ -7955,655 +7827,655 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    995,
-    22,
+    979,
+    21,
     1277,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    996,
-    21,
+    980,
+    20,
     1277,
-    TO_CLOB('{"value": "Mola solta"}')
+    TO_CLOB('{"value": ["Mola solta"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    997,
-    60,
+    981,
+    158,
     1284,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    998,
-    60,
+    982,
+    158,
     1285,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    999,
-    59,
+    983,
+    155,
     1286,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1000,
-    59,
+    984,
+    155,
     1288,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1001,
-    59,
+    985,
+    155,
     1295,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1002,
-    22,
+    986,
+    21,
     1302,
     TO_CLOB('{"value": "Madeira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1003,
-    21,
+    987,
+    20,
     1302,
-    TO_CLOB('{"value": "Outro"}')
+    TO_CLOB('{"value": ["Outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1004,
-    39,
+    988,
+    76,
     1304,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1005,
-    50,
+    989,
+    134,
     1304,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1006,
-    39,
+    990,
+    76,
     1305,
     TO_CLOB('{"value": "AR-81"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1007,
-    50,
+    991,
+    134,
     1305,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1008,
-    60,
+    992,
+    158,
     1307,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1009,
-    59,
+    993,
+    155,
     1308,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1010,
-    39,
+    994,
+    76,
     1314,
     TO_CLOB('{"value": "AR-146"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1011,
-    50,
+    995,
+    134,
     1314,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1012,
-    39,
+    996,
+    76,
     1315,
     TO_CLOB('{"value": "AR-78"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1013,
-    50,
+    997,
+    134,
     1315,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1014,
-    32,
+    998,
+    43,
     1318,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1015,
-    52,
+    999,
+    144,
     1318,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1016,
-    32,
+    1000,
+    43,
     1319,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1017,
-    52,
+    1001,
+    144,
     1319,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1018,
-    32,
+    1002,
+    43,
     1320,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1019,
-    52,
+    1003,
+    144,
     1320,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1020,
-    46,
+    1004,
+    129,
     1322,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1021,
-    43,
+    1005,
+    102,
     1354,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1022,
-    54,
+    1006,
+    146,
     1354,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1023,
-    43,
+    1007,
+    102,
     1355,
     TO_CLOB('{"value": "AR-76"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1024,
-    54,
+    1008,
+    146,
     1355,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1025,
-    43,
+    1009,
+    102,
     1356,
     TO_CLOB('{"value": "AR-75"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1026,
-    54,
+    1010,
+    146,
     1356,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1027,
-    27,
+    1011,
+    32,
     1364,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1028,
-    39,
+    1012,
+    76,
     1368,
     TO_CLOB('{"value": "AR-97"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1029,
-    50,
+    1013,
+    134,
     1368,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1030,
-    39,
+    1014,
+    76,
     1369,
     TO_CLOB('{"value": "AR-120"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1031,
-    50,
+    1015,
+    134,
     1369,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1032,
-    39,
+    1016,
+    76,
     1370,
     TO_CLOB('{"value": "AR-121"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1033,
-    50,
+    1017,
+    134,
     1370,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1034,
-    39,
+    1018,
+    76,
     1371,
     TO_CLOB('{"value": "AR-110"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1035,
-    50,
+    1019,
+    134,
     1371,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1036,
-    39,
+    1020,
+    76,
     1372,
     TO_CLOB('{"value": "AR-110"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1037,
-    50,
+    1021,
+    134,
     1372,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1038,
-    28,
+    1022,
+    33,
     1374,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1039,
-    28,
+    1023,
+    33,
     1381,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1040,
-    57,
+    1024,
+    153,
     1382,
     TO_CLOB('{"value": "N/A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1041,
-    57,
+    1025,
+    153,
     1383,
     TO_CLOB('{"value": "N/A"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1042,
-    39,
+    1026,
+    76,
     1385,
     TO_CLOB('{"value": "AR-117"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1043,
-    50,
+    1027,
+    134,
     1385,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1044,
-    32,
+    1028,
+    43,
     1386,
     TO_CLOB('{"value": "AR-140"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1045,
-    52,
+    1029,
+    144,
     1386,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1046,
-    32,
+    1030,
+    43,
     1387,
     TO_CLOB('{"value": "AR-141"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1047,
-    52,
+    1031,
+    144,
     1387,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1048,
-    32,
+    1032,
+    43,
     1388,
     TO_CLOB('{"value": "AR-131"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1049,
-    52,
+    1033,
+    144,
     1388,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1050,
-    36,
+    1034,
+    56,
     1397,
     TO_CLOB('{"value": "AR-12"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1051,
-    58,
+    1035,
+    154,
     1397,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1052,
-    36,
+    1036,
+    56,
     1398,
     TO_CLOB('{"value": "AR-11"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1053,
-    58,
+    1037,
+    154,
     1398,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1054,
-    36,
+    1038,
+    56,
     1399,
     TO_CLOB('{"value": "AR-145"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1055,
-    58,
+    1039,
+    154,
     1399,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1056,
-    39,
+    1040,
+    76,
     1400,
     TO_CLOB('{"value": "AR-115"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1057,
-    50,
+    1041,
+    134,
     1400,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1058,
-    39,
+    1042,
+    76,
     1401,
     TO_CLOB('{"value": "AR-116"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1059,
-    50,
+    1043,
+    134,
     1401,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1060,
-    22,
+    1044,
+    21,
     1402,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1061,
-    21,
+    1045,
+    20,
     1402,
-    TO_CLOB('{"value": "Outro"}')
+    TO_CLOB('{"value": ["Outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1062,
-    29,
+    1046,
+    38,
     1409,
     TO_CLOB('{"value": "AR-91"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1063,
-    39,
+    1047,
+    76,
     1411,
     TO_CLOB('{"value": "AR-118"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1064,
-    50,
+    1048,
+    134,
     1411,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1065,
-    39,
+    1049,
+    76,
     1412,
     TO_CLOB('{"value": "AR-109"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1066,
-    50,
+    1050,
+    134,
     1412,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1067,
-    30,
+    1051,
+    40,
     1414,
     TO_CLOB('{"value": "AR-132"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1068,
-    30,
+    1052,
+    40,
     1415,
     TO_CLOB('{"value": "AR-25"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1069,
-    30,
+    1053,
+    40,
     1418,
     TO_CLOB('{"value": "AR-25"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1070,
-    29,
+    1054,
+    38,
     1419,
     TO_CLOB('{"value": "AR-32"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1071,
-    39,
+    1055,
+    76,
     1421,
     TO_CLOB('{"value": "AR-126"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1072,
-    50,
+    1056,
+    134,
     1421,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1073,
-    29,
+    1057,
+    38,
     1423,
     TO_CLOB('{"value": "AR-64"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1074,
-    36,
+    1058,
+    56,
     1424,
     TO_CLOB('{"value": "AR-14"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1075,
-    58,
+    1059,
+    154,
     1424,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1076,
+    1060,
     10,
     1427,
     TO_CLOB('{"value": "Papel toalha"}')
@@ -8611,7 +8483,7 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1077,
+    1061,
     11,
     1427,
     TO_CLOB('{"value": "Quebrado"}')
@@ -8619,1176 +8491,1176 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1078,
-    38,
+    1062,
+    74,
     1430,
     TO_CLOB('{"value": "Outros"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1079,
-    43,
+    1063,
+    102,
     1440,
     TO_CLOB('{"value": "AR-132"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1080,
-    54,
+    1064,
+    146,
     1440,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1081,
-    22,
+    1065,
+    21,
     1453,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1082,
-    21,
+    1066,
+    20,
     1453,
-    TO_CLOB('{"value": "Outro"}')
+    TO_CLOB('{"value": ["Outro"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1083,
-    27,
+    1067,
+    32,
     1457,
     TO_CLOB('{"value": "Outro"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1084,
-    60,
+    1068,
+    158,
     1459,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1085,
-    59,
+    1069,
+    155,
     1460,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1086,
-    32,
+    1070,
+    43,
     1464,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1087,
-    52,
+    1071,
+    144,
     1464,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1088,
-    32,
+    1072,
+    43,
     1466,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1089,
-    52,
+    1073,
+    144,
     1466,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1090,
-    28,
+    1074,
+    33,
     1469,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1091,
-    44,
+    1075,
+    115,
     1481,
     TO_CLOB('{"value": "FLUXO CONTÍNUO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1092,
-    60,
+    1076,
+    158,
     1488,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1093,
-    59,
+    1077,
+    155,
     1489,
     TO_CLOB('{"value": "Thiago Andrade"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1094,
-    36,
+    1078,
+    56,
     1495,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1095,
-    58,
+    1079,
+    154,
     1495,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1096,
-    36,
+    1080,
+    56,
     1497,
     TO_CLOB('{"value": "AR-137"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1097,
-    58,
+    1081,
+    154,
     1497,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1098,
-    39,
+    1082,
+    76,
     1498,
     TO_CLOB('{"value": "AR-41"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1099,
-    50,
+    1083,
+    134,
     1498,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1100,
-    36,
+    1084,
+    56,
     1499,
     TO_CLOB('{"value": "AR-23"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1101,
-    58,
+    1085,
+    154,
     1499,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1102,
-    36,
+    1086,
+    56,
     1500,
     TO_CLOB('{"value": "AR-22"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1103,
-    58,
+    1087,
+    154,
     1500,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1104,
-    30,
+    1088,
+    40,
     1502,
     TO_CLOB('{"value": "Ajustar setpoint de temperatura dos condicionadores de ar do 1° do refeitório"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1105,
-    22,
+    1089,
+    21,
     1514,
     TO_CLOB('{"value": "Metálica"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1106,
-    21,
+    1090,
+    20,
     1514,
-    TO_CLOB('{"value": "Mola solta"}')
+    TO_CLOB('{"value": ["Mola solta"]}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1107,
-    43,
+    1091,
+    102,
     1515,
     TO_CLOB('{"value": "AR-128"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1108,
-    54,
+    1092,
+    146,
     1515,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1109,
-    39,
+    1093,
+    76,
     1517,
     TO_CLOB('{"value": "AR-135"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1110,
-    50,
+    1094,
+    134,
     1517,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1111,
-    59,
+    1095,
+    155,
     1518,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1112,
-    39,
+    1096,
+    76,
     1524,
     TO_CLOB('{"value": "AR-66"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1113,
-    50,
+    1097,
+    134,
     1524,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1114,
-    39,
+    1098,
+    76,
     1525,
     TO_CLOB('{"value": "AR-147"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1115,
-    50,
+    1099,
+    134,
     1525,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1116,
-    39,
+    1100,
+    76,
     1526,
     TO_CLOB('{"value": "AR-122"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1117,
-    50,
+    1101,
+    134,
     1526,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1118,
-    39,
+    1102,
+    76,
     1529,
     TO_CLOB('{"value": "AR-59"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1119,
-    50,
+    1103,
+    134,
     1529,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1120,
-    39,
+    1104,
+    76,
     1530,
     TO_CLOB('{"value": "AR-57"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1121,
-    50,
+    1105,
+    134,
     1530,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1122,
-    39,
+    1106,
+    76,
     1531,
     TO_CLOB('{"value": "AR-58"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1123,
-    50,
+    1107,
+    134,
     1531,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1124,
-    39,
+    1108,
+    76,
     1532,
     TO_CLOB('{"value": "AR-61"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1125,
-    50,
+    1109,
+    134,
     1532,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1126,
-    39,
+    1110,
+    76,
     1533,
     TO_CLOB('{"value": "AR-143"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1127,
-    50,
+    1111,
+    134,
     1533,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1128,
-    46,
+    1112,
+    129,
     1535,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1129,
-    46,
+    1113,
+    129,
     1536,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1130,
-    46,
+    1114,
+    129,
     1537,
     TO_CLOB('{"value": "AR-85"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1131,
-    46,
+    1115,
+    129,
     1538,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1132,
-    39,
+    1116,
+    76,
     1543,
     TO_CLOB('{"value": "AR-108"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1133,
-    50,
+    1117,
+    134,
     1543,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1134,
-    30,
+    1118,
+    40,
     1544,
     TO_CLOB('{"value": "AR-42"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1135,
-    45,
+    1119,
+    123,
     1545,
-    TO_CLOB('{"value": "30"}')
+    TO_CLOB('{"value": 30}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1136,
-    32,
+    1120,
+    43,
     1546,
     TO_CLOB('{"value": "AR-138"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1137,
-    52,
+    1121,
+    144,
     1546,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1138,
-    32,
+    1122,
+    43,
     1548,
     TO_CLOB('{"value": "AR-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1139,
-    52,
+    1123,
+    144,
     1548,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1140,
-    32,
+    1124,
+    43,
     1553,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1141,
-    52,
+    1125,
+    144,
     1553,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1142,
-    32,
+    1126,
+    43,
     1554,
     TO_CLOB('{"value": "AR-51"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1143,
-    52,
+    1127,
+    144,
     1554,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1144,
-    32,
+    1128,
+    43,
     1555,
     TO_CLOB('{"value": "AR-52"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1145,
-    52,
+    1129,
+    144,
     1555,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1146,
-    42,
+    1130,
+    90,
     1556,
     TO_CLOB('{"value": "AR-47"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1147,
-    65,
+    1131,
+    165,
     1556,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1148,
-    39,
+    1132,
+    76,
     1564,
     TO_CLOB('{"value": "AR-40"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1149,
-    50,
+    1133,
+    134,
     1564,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1150,
-    39,
+    1134,
+    76,
     1567,
     TO_CLOB('{"value": "AR-64"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1151,
-    50,
+    1135,
+    134,
     1567,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1152,
-    39,
+    1136,
+    76,
     1568,
     TO_CLOB('{"value": "AR-36"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1153,
-    50,
+    1137,
+    134,
     1568,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1154,
-    29,
+    1138,
+    38,
     1570,
     TO_CLOB('{"value": "AR-86"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1155,
-    39,
+    1139,
+    76,
     1572,
     TO_CLOB('{"value": "AR-105"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1156,
-    50,
+    1140,
+    134,
     1572,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1157,
-    39,
+    1141,
+    76,
     1573,
     TO_CLOB('{"value": "AR-133"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1158,
-    50,
+    1142,
+    134,
     1573,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1159,
-    39,
+    1143,
+    76,
     1579,
     TO_CLOB('{"value": "AR-62"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1160,
-    50,
+    1144,
+    134,
     1579,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1161,
-    43,
+    1145,
+    102,
     1581,
     TO_CLOB('{"value": "AR-139"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1162,
-    54,
+    1146,
+    146,
     1581,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1163,
-    28,
+    1147,
+    33,
     1585,
     TO_CLOB('{"value": "AR-117"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1164,
-    39,
+    1148,
+    76,
     1586,
     TO_CLOB('{"value": "AR-63"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1165,
-    50,
+    1149,
+    134,
     1586,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1166,
-    39,
+    1150,
+    76,
     1596,
     TO_CLOB('{"value": "AR-106"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1167,
-    50,
+    1151,
+    134,
     1596,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1168,
-    43,
+    1152,
+    102,
     1597,
     TO_CLOB('{"value": "AR-88"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1169,
-    54,
+    1153,
+    146,
     1597,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1170,
-    36,
+    1154,
+    56,
     1598,
     TO_CLOB('{"value": "AR-83"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1171,
-    58,
+    1155,
+    154,
     1598,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1172,
-    39,
+    1156,
+    76,
     1606,
     TO_CLOB('{"value": "AR-43"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1173,
-    50,
+    1157,
+    134,
     1606,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1174,
-    39,
+    1158,
+    76,
     1607,
     TO_CLOB('{"value": "AR-107"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1175,
-    50,
+    1159,
+    134,
     1607,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1176,
-    39,
+    1160,
+    76,
     1608,
     TO_CLOB('{"value": "AR-42"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1177,
-    50,
+    1161,
+    134,
     1608,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1178,
-    44,
+    1162,
+    115,
     1611,
     TO_CLOB('{"value": "GOTEJAMENTO"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1179,
-    26,
+    1163,
+    28,
     1613,
-    TO_CLOB('{"value": "1"}')
+    TO_CLOB('{"value": 1}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1180,
-    39,
+    1164,
+    76,
     1617,
     TO_CLOB('{"value": "AR - 153"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1181,
-    50,
+    1165,
+    134,
     1617,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1182,
-    39,
+    1166,
+    76,
     1618,
     TO_CLOB('{"value": "AR - 152"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1183,
-    50,
+    1167,
+    134,
     1618,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1184,
-    39,
+    1168,
+    76,
     1619,
     TO_CLOB('{"value": "AR - 154"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1185,
-    50,
+    1169,
+    134,
     1619,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1186,
-    43,
+    1170,
+    102,
     1620,
     TO_CLOB('{"value": "AR-77"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1187,
-    54,
+    1171,
+    146,
     1620,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1188,
-    27,
+    1172,
+    32,
     1631,
     TO_CLOB('{"value": "Chave perdida"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1189,
-    28,
+    1173,
+    33,
     1635,
     TO_CLOB('{"value": "AR-89"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1190,
-    46,
+    1174,
+    129,
     1636,
     TO_CLOB('{"value": "AR-17"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1191,
-    46,
+    1175,
+    129,
     1637,
     TO_CLOB('{"value": "AR-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1192,
-    36,
+    1176,
+    56,
     1641,
     TO_CLOB('{"value": "AR-15"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1193,
-    58,
+    1177,
+    154,
     1641,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1194,
-    37,
+    1178,
+    73,
     1642,
     TO_CLOB('{"value": "CA-05"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1195,
-    49,
+    1179,
+    133,
     1642,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1196,
-    37,
+    1180,
+    73,
     1644,
     TO_CLOB('{"value": "CA-04"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1197,
-    49,
+    1181,
+    133,
     1644,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1198,
-    43,
+    1182,
+    102,
     1653,
     TO_CLOB('{"value": "AR-50"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1199,
-    54,
+    1183,
+    146,
     1653,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1200,
-    37,
+    1184,
+    73,
     1655,
     TO_CLOB('{"value": "CA-08"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1201,
-    49,
+    1185,
+    133,
     1655,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1202,
-    39,
+    1186,
+    76,
     1656,
     TO_CLOB('{"value": "AR-60"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1203,
-    50,
+    1187,
+    134,
     1656,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1204,
-    36,
+    1188,
+    56,
     1657,
     TO_CLOB('{"value": "AR-19"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1205,
-    58,
+    1189,
+    154,
     1657,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1206,
-    37,
+    1190,
+    73,
     1658,
     TO_CLOB('{"value": "CA-03"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1207,
-    49,
+    1191,
+    133,
     1658,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1208,
-    36,
+    1192,
+    56,
     1659,
     TO_CLOB('{"value": "AR - 157"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1209,
-    58,
+    1193,
+    154,
     1659,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1210,
-    36,
+    1194,
+    56,
     1666,
     TO_CLOB('{"value": "AR-21"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1211,
-    58,
+    1195,
+    154,
     1666,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1212,
-    37,
+    1196,
+    73,
     1668,
     TO_CLOB('{"value": "CA-01"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1213,
-    49,
+    1197,
+    133,
     1668,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1214,
-    27,
+    1198,
+    32,
     1672,
     TO_CLOB('{"value": "Danificada"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1215,
-    43,
+    1199,
+    102,
     1677,
     TO_CLOB('{"value": "AR-124"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1216,
-    54,
+    1200,
+    146,
     1677,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1217,
-    37,
+    1201,
+    73,
     1684,
     TO_CLOB('{"value": "CA-09"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1218,
-    49,
+    1202,
+    133,
     1684,
     TO_CLOB('{"value": "Rodrigo Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1219,
-    37,
+    1203,
+    73,
     1685,
     TO_CLOB('{"value": "CA-02"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1220,
-    49,
+    1204,
+    133,
     1685,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1221,
-    37,
+    1205,
+    73,
     1686,
     TO_CLOB('{"value": "CA-10"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1222,
-    49,
+    1206,
+    133,
     1686,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1223,
-    37,
+    1207,
+    73,
     1687,
     TO_CLOB('{"value": "CA-07"}')
 );
 
 INSERT INTO OHFC_SERVICE_FIELD_VALUE (ID, ID_SERVICE_FIELD_TYPE, ID_REQUEST, VALUE)
 VALUES (
-    1224,
-    49,
+    1208,
+    133,
     1687,
     TO_CLOB('{"value": "Bruno Silveira"}')
 );

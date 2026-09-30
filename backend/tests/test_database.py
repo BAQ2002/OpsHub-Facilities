@@ -59,7 +59,7 @@ class DatabaseTests(unittest.TestCase):
         types = cursor.setinputsizes.call_args.kwargs
         self.assertEqual(types["value"], oracledb.DB_TYPE_CLOB)
         self.assertEqual(types["content"], oracledb.DB_TYPE_BLOB)
-        self.assertEqual(types["range_start"], oracledb.DB_TYPE_TIMESTAMP)
+        self.assertEqual(types["range_start"], oracledb.DB_TYPE_DATE)
         self.assertEqual(cursor.execute.call_args.args[1]["rented"], 0)
 
     def test_connection_rolls_back_on_request_failure_and_returns_to_pool(self):

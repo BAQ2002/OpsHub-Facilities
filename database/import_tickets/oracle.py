@@ -6,6 +6,7 @@ import re
 from datetime import datetime
 
 from .core import digest, norm, parse_date
+from .media import read_asset, require_media, asset_state
 
 
 class ImportConflict(ValueError):
@@ -43,6 +44,10 @@ class OracleStore:
                 cursor.setinputsizes(VALUE=oracledb.DB_TYPE_CLOB)
             if "PAYLOAD" in values:
                 cursor.setinputsizes(PAYLOAD=oracledb.DB_TYPE_CLOB)
+            if "OPTIONS" in values:
+                cursor.setinputsizes(OPTIONS=oracledb.DB_TYPE_CLOB)
+            if "CONTENT" in values:
+                cursor.setinputsizes(CONTENT=oracledb.DB_TYPE_BLOB)
             cursor.execute(statement, dict(values, new_id=output))
             return int(output.getvalue()[0])
 
@@ -93,7 +98,11 @@ class OracleStore:
         if len(request) != 1:
             raise ImportConflict("Solicitação da correspondência não existe")
         fields = self.rows("SELECT ID_SERVICE_FIELD_TYPE, VALUE FROM OHFC_SERVICE_FIELD_VALUE WHERE ID_REQUEST=:id ORDER BY ID_SERVICE_FIELD_TYPE, ID", id=request_id)
-        return digest({"request": request[0], "fields": fields})
+        state = {"request": request[0], "fields": fields}
+        media = self.rows("SELECT ID_SERVICE_FIELD_TYPE, CONTENT, FILE_NAME, MIME_TYPE, FILE_SIZE FROM OHFC_SERVICE_FIELD_MEDIA WHERE ID_REQUEST=:id ORDER BY ID_SERVICE_FIELD_TYPE, ID", id=request_id)
+        if media:
+            state["media"] = [asset_state(r) for r in media]
+        return digest(state)
 
     def advance_request_identity(self):
         # Advance the actual identity sequence without DDL/implicit commit. Oracle
@@ -123,13 +132,25 @@ class OracleStore:
                 raise ImportConflict(f"Definição de campo ambígua: {field['name']}")
             if matches:
                 definition = matches[0]
+                if field.get("definition") and definition["type"] != field["definition"]["type"]:
+                    raise ImportConflict(f"Tipo existente diverge do catálogo revisado: {field['name']}; concilie a definição antes de importar")
             else:
+                metadata = field.get("definition", {"type": "TEXT", "options": None,
+                                                   "required": 0, "active": 0, "display_order": None})
                 field_id = self.insert("OHFC_SERVICE_FIELD_TYPE", {
-                    "ID_SERVICE_TYPE": service_id, "NAME": field["name"], "TYPE": "TEXT",
-                    "REQUIRED": 0, "ACTIVE": 0, "DISPLAY_ORDER": None,
+                    "ID_SERVICE_TYPE": service_id, "NAME": field["name"], "TYPE": metadata["type"],
+                    "OPTIONS": json.dumps({"value": metadata["options"]}, ensure_ascii=False) if metadata["options"] is not None else None,
+                    "REQUIRED": metadata["required"], "ACTIVE": metadata["active"], "DISPLAY_ORDER": metadata["display_order"],
                 })
-                definition = {"id": field_id, "name": field["name"], "type": "TEXT"}
+                definition = {"id": field_id, "name": field["name"], "type": metadata["type"]}
                 existing.append(definition)
+            if definition["type"] == "MEDIA":
+                if not field.get("import_media_content", True):
+                    continue
+                for url in field["value"]:
+                    self.insert("OHFC_SERVICE_FIELD_MEDIA", {"ID_REQUEST": request_id,
+                        "ID_SERVICE_FIELD_TYPE": definition["id"], **read_asset(url)})
+                continue
             value = convert_field(field["value"], definition["type"])
             previous = self.rows("SELECT ID FROM OHFC_SERVICE_FIELD_VALUE WHERE ID_REQUEST=:request AND ID_SERVICE_FIELD_TYPE=:field", request=request_id, field=definition["id"])
             if previous:
@@ -144,7 +165,7 @@ class OracleStore:
         for table in ("OHFC_IMPORT_TICKET", "OHFC_IMPORT_SNAPSHOT", "OHFC_REQUEST",
                       "OHFC_BUSINESS", "OHFC_REGION", "OHFC_LOCATION", "OHFC_MEMBERSHIP",
                       "OHFC_SERVICE_CATEGORY", "OHFC_SERVICE_TYPE", "OHFC_SERVICE_FIELD_TYPE",
-                      "OHFC_SERVICE_FIELD_VALUE"):
+                      "OHFC_SERVICE_FIELD_VALUE", "OHFC_SERVICE_FIELD_MEDIA"):
             self.execute(f"LOCK TABLE {table} IN EXCLUSIVE MODE NOWAIT")
 
     def check_catalog_ids(self):
@@ -196,6 +217,7 @@ def convert_field(value, field_type):
 
 
 def apply_plan(store, plan, *, update_existing=False, allow_new_in_existing=False):
+    require_media(plan)
     """Apply only ready rows. Any DB error rolls the entire batch back."""
     counts = {"inserted": 0, "updated": 0, "unchanged": 0, "pending": plan["summary"]["pending"]}
     try:
@@ -234,12 +256,15 @@ def apply_plan(store, plan, *, update_existing=False, allow_new_in_existing=Fals
                 store.state_hash(adopted)  # Verify existence before mutation.
                 if store.rows("SELECT ID FROM OHFC_SERVICE_FIELD_VALUE WHERE ID_REQUEST=:id", id=adopted):
                     raise ImportConflict("Adoção com respostas existentes exige conciliação prévia; nenhuma resposta foi excluída")
+                if store.rows("SELECT ID FROM OHFC_SERVICE_FIELD_MEDIA WHERE ID_REQUEST=:id", id=adopted):
+                    raise ImportConflict("Adoção com mídias existentes exige conciliação prévia")
             values = store.request_values(row["request"])
             if previous or adopted:
                 request_id = previous[0]["id_request"] if previous else adopted
                 store.execute("UPDATE OHFC_REQUEST SET " + ",".join(f"{k}=:{k}" for k in REQUEST_COLUMNS) + " WHERE ID=:request_id", **values, request_id=request_id)
                 if previous:
                     store.execute("DELETE FROM OHFC_SERVICE_FIELD_VALUE WHERE ID_REQUEST=:id", id=request_id)
+                    store.execute("DELETE FROM OHFC_SERVICE_FIELD_MEDIA WHERE ID_REQUEST=:id", id=request_id)
                 counts["updated"] += 1
             else:
                 if desired_id is not None:

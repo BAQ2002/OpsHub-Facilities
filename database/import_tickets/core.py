@@ -31,6 +31,9 @@ def load_mapping(path):
     if config.get("version") != 1:
         raise ValueError("Versão de mapeamento não suportada")
     catalog = json.loads((path.parent / config["catalog_file"]).read_text(encoding="utf-8-sig"))
+    if config.get("field_catalog_file"):
+        from .field_catalog import read_catalog
+        config["field_catalog"] = read_catalog(path.parent / config["field_catalog_file"], config)
     for file_key, value_key in (("resolutions_file", "location_resolutions"),
                                 ("summaries_file", "description_summaries"),
                                 ("numbering_file", "request_numbers")):
@@ -333,17 +336,32 @@ def map_row(raw, config, catalog):
             if cell["role"] != "extra" or norm(cell["header"]) in BASE_HEADERS or norm(cell["header"]).startswith("sla "):
                 continue
             if re.search(r"https?://", str(cell["value"]), re.I):
-                warnings.append(f"Mídia/URL preservada na origem, sem download: {cell['header']}")
-                continue
+                from .media import urls
+                links = urls(cell["value"])
+                if not links:
+                    continue
+            else:
+                links = None
             name = field_map.get(norm(cell["header"]), cell["header"].strip().rstrip(":"))
+            if len(name) > 100 and links:
+                candidates = [d["name"] for d in config.get("field_catalog", [])
+                              if norm(d["category"]) == norm(category) and norm(d["service"]) == norm(service)
+                              and len(d["name"]) >= 80 and norm(name).startswith(norm(d["name"]))]
+                if len(set(candidates)) == 1:
+                    name = candidates[0]
             if len(name) > 100:
                 errors.append(f"Campo maior que 100 caracteres; definir field_aliases: {cell['header']}")
-            fields.append({"name": name, "value": cell["value"]})
+            fields.append({"name": name, "value": links if links else cell["value"],
+                           **({"media": True} if links else {})})
         by_name = defaultdict(list)
         for field in fields:
             by_name[norm(field["name"])].append(field)
         if any(len({digest(f["value"]) for f in group}) > 1 for group in by_name.values()):
             errors.append("Respostas conflitantes para o mesmo campo adicional")
+        mapped_fields = [group[0] for group in by_name.values()]
+        if config.get("field_catalog") or any(f.get("media") for f in mapped_fields):
+            from .field_catalog import prepare_fields
+            prepare_fields(mapped_fields, category, service, config, warnings)
         result["request"] = {
             "category": category, "service": service, "subcategory": one(raw, "SubCategoria"),
             "request_type_id": request_type, "status_id": status,
@@ -353,7 +371,7 @@ def map_row(raw, config, catalog):
             "started_date": min(map(parse_date, started)) if started else None,
             "finished_date": parse_date(one(raw, "Data Encerramento")),
             "canceled_date": parse_date(one(raw, "Data Cancelamento")),
-            "fields": [group[0] for group in by_name.values()],
+            "fields": mapped_fields,
             "existing_request_id": config.get("existing_request_ids", {}).get(legacy),
         }
         occurrences = config.get("duplicate_occurrences", {}).get(legacy)
@@ -383,7 +401,19 @@ def map_row(raw, config, catalog):
 def build_plan(raw_rows, config, catalog):
     if not isinstance(config.get("source"), str) or not 0 < len(config["source"]) <= 100:
         raise ValueError("source deve identificar o sistema/tenant de origem em até 100 caracteres")
-    rows = [map_row(raw, config, catalog) for raw in raw_rows]
+    raw_rows = list(raw_rows)
+    excluded_categories = {norm(c) for c in config.get("excluded_categories", [])}
+    category_aliases = aliases(config, "category_aliases")
+    included, excluded = [], []
+    for raw in raw_rows:
+        try:
+            category = one(raw, "Categoria")
+        except ValueError:
+            included.append(raw)  # map_row reports conflicting source cells as pending.
+            continue
+        category = category_aliases.get(norm(category), category)
+        (excluded if norm(category) in excluded_categories else included).append(raw)
+    rows = [map_row(raw, config, catalog) for raw in included]
     groups = defaultdict(list)
     for row in rows:
         if "legacy_id" in row:
@@ -418,8 +448,9 @@ def build_plan(raw_rows, config, catalog):
         if not any(key == tuple(norm(p[k]) for k in ("business", "region", "location")) for p in catalog):
             new_locations.setdefault(key, location)
     return {"version": 1, "source": config["source"], "mapping_hash": digest({"config": config, "catalog": catalog}),
+            "excluded_categories": config.get("excluded_categories", []), "excluded_rows": excluded,
             "new_locations": list(new_locations.values()),
-            "summary": {"rows": len(rows), "ready": len(rows) - pending - duplicates,
+            "summary": {"rows": len(raw_rows), "excluded": len(excluded), "ready": len(rows) - pending - duplicates,
                         "pending": pending, "identical_duplicates": duplicates,
                         "warnings": sum(len(r["warnings"]) for r in rows)},
             "pending_reasons": dict(Counter(e for r in rows for e in r["errors"])), "rows": rows}
@@ -459,6 +490,7 @@ def render_report(plan):
     lines = ["# Prévia da importação", "", f"Origem: {plan['source']}", "",
              f"- Linhas: {summary['rows']}", f"- Resolvidas pelas regras: {summary['ready']}",
              f"- Pendentes: {summary['pending']}",
+             f"- Excluídas por categoria: {summary.get('excluded', 0)}",
              f"- Repetições idênticas: {summary['identical_duplicates']}", "",
              "A prévia não consulta o banco. Cadastros ambíguos, tipos de campos e correspondências existentes são validados na aplicação.",
              "Anexos externos ficam preservados como URLs na origem, sem download para BLOB.", "",

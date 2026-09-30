@@ -22,7 +22,7 @@ class SchemaDefinitionTests(unittest.TestCase):
         self.assertNotRegex(text, r"\b(?:JSONB|BYTEA|BOOLEAN|VARCHAR)\b|ON UPDATE|ON DELETE RESTRICT")
         tables = definitions(text)
         for table, columns in COLUMNS.items():
-            physical = re.findall(r"(?:^|, )([A-Z_]+) (?:NUMBER|VARCHAR2|TIMESTAMP|CLOB|BLOB|INTERVAL)\b", tables[table])
+            physical = re.findall(r"(?:^|, )([A-Z_]+) (?:NUMBER|VARCHAR2|DATE|CLOB|BLOB|INTERVAL)\b", tables[table])
             self.assertEqual(columns, physical, table)
         self.assertEqual(text.count(" IS JSON)"), 4)
 

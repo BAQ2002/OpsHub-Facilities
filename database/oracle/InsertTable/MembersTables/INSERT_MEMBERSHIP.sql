@@ -1,5 +1,5 @@
 -- OHFC_MEMBERSHIP: 99 registros. Gerado pelas regras revisadas da importação.
--- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.
+-- Sem COMMIT individual; executar pelo consolidado correspondente.
 
 INSERT INTO OHFC_MEMBERSHIP (ID, ID_SECTOR, NAME, EMAIL, ACCESS_LEVEL)
 VALUES (

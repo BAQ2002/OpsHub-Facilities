@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .core import digest, norm, one
 from .oracle import REQUEST_COLUMNS
+from .media import read_asset, require_media, asset_state
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -42,7 +43,7 @@ ORDER = OrderedDict([
 ])
 EMPTY_REASONS = {
     "OHFC_SLA": "Prazos não foram definidos na análise. Marcos de SLA preservados nos snapshots; nenhum prazo inventado.",
-    "OHFC_SERVICE_FIELD_MEDIA": "URLs preservadas nos snapshots. Arquivos binários não foram baixados.",
+    "OHFC_SERVICE_FIELD_MEDIA": "Sem binários nesta carga. Com import_media_content=false, campos MEDIA são cadastrados e URLs ficam nos snapshots, sem respostas de mídia.",
     "OHFC_REQUEST_TASK": "Não há execução de tarefas estruturada e conciliada nas fontes.",
     "OHFC_TASK_MEMBER_OCCURRENCE": "Não há atribuições de executores por tarefa conciliadas nas fontes.",
     "OHFC_REQUEST_TASK_MEDIA": "Não há anexos binários de tarefas nas fontes.",
@@ -58,6 +59,7 @@ def build_data(plan, catalog):
     if plan["summary"]["pending"] or any(r["errors"] for r in plan["rows"]):
         raise ValueError("Exportação SQL exige uma prévia sem pendências")
     rows = [r for r in plan["rows"] if not r.get("duplicate_of")]
+    require_media(plan)
     if any(not r.get("request") or not r["request"].get("import_id") for r in rows):
         raise ValueError("Reserve todos os IDs antes de exportar SQL")
     if any(r["request"].get("existing_request_id") for r in rows):
@@ -68,7 +70,7 @@ def build_data(plan, catalog):
 
     def add(table, key, values):
         if key not in indexes[table]:
-            number = len(data[table]) + 1
+            number = max((r["ID"] for r in data[table]), default=0) + 1
             indexes[table][key] = number
             data[table].append(dict(ID=number, **values))
         return indexes[table][key]
@@ -78,8 +80,11 @@ def build_data(plan, catalog):
     categories = re.findall(r"\('([^']+)'\)", (seed / "ServicesTables/INSERT_SERVICE_CATEGORY.sql").read_text(encoding="utf-8-sig"))
     if len(categories) != 10:
         raise ValueError("Formato inesperado no catálogo de categorias de referência")
-    for category in categories:
-        add("OHFC_SERVICE_CATEGORY", norm(category), {"NAME": category})
+    excluded_categories = {norm(c) for c in plan.get("excluded_categories", [])}
+    for number, category in enumerate(categories, 1):
+        if norm(category) not in excluded_categories:
+            indexes["OHFC_SERVICE_CATEGORY"][norm(category)] = number
+            data["OHFC_SERVICE_CATEGORY"].append({"ID": number, "NAME": category})
     sectors = re.findall(r'VALUES\s*\("([^"]+)",\s*(\d+)\)', (seed / "MembersTables/INSERT_SECTOR.sql").read_text(encoding="utf-8-sig"))
     if len(sectors) != 12:
         raise ValueError("Formato inesperado no catálogo de setores de referência")
@@ -117,6 +122,8 @@ def build_data(plan, catalog):
 
     for row in rows:
         request = row["request"]
+        if norm(request["category"]) in excluded_categories:
+            raise ValueError("Categoria excluída ainda presente nas linhas importáveis")
         category = add("OHFC_SERVICE_CATEGORY", norm(request["category"]), {"NAME": request["category"]})
         service = add("OHFC_SERVICE_TYPE", (category, norm(request["service"])), {
             "ID_SERVICE_CATEGORY": category, "NAME": request["service"], "DESCRIPTION": request["subcategory"],
@@ -131,23 +138,41 @@ def build_data(plan, catalog):
             value[field.upper()] = datetime.fromisoformat(request[field]) if request[field] else None
         data["OHFC_REQUEST"].append(value)
         for field in request["fields"]:
+            definition = field.get("definition", {"type": "TEXT", "options": None,
+                                                "required": 0, "active": 0, "display_order": None})
             field_id = add("OHFC_SERVICE_FIELD_TYPE", (service, norm(field["name"])), {
-                "ID_SERVICE_TYPE": service, "NAME": field["name"], "TYPE": "TEXT", "OPTIONS": None,
-                "REQUIRED": 0, "ACTIVE": 0, "DISPLAY_ORDER": None,
+                "ID_SERVICE_TYPE": service, "NAME": field["name"], "TYPE": definition["type"],
+                "OPTIONS": json.dumps({"value": definition["options"]}, ensure_ascii=False) if definition["options"] is not None else None,
+                "REQUIRED": definition["required"], "ACTIVE": definition["active"],
+                "DISPLAY_ORDER": definition["display_order"],
             })
+            if definition["type"] == "MEDIA":
+                if not field.get("import_media_content", True):
+                    continue
+                for url in field["value"]:
+                    data["OHFC_SERVICE_FIELD_MEDIA"].append({
+                        "ID": len(data["OHFC_SERVICE_FIELD_MEDIA"]) + 1,
+                        "ID_SERVICE_FIELD_TYPE": field_id, "ID_REQUEST": number, **read_asset(url),
+                    })
+                continue
             data["OHFC_SERVICE_FIELD_VALUE"].append({
                 "ID": len(data["OHFC_SERVICE_FIELD_VALUE"]) + 1, "ID_SERVICE_FIELD_TYPE": field_id,
-                "ID_REQUEST": number, "VALUE": json.dumps({"value": str(field["value"])}, ensure_ascii=False),
+                "ID_REQUEST": number, "VALUE": json.dumps({"value": field["value"]}, ensure_ascii=False, allow_nan=False),
             })
 
     field_states = defaultdict(list)
     for value in sorted(data["OHFC_SERVICE_FIELD_VALUE"], key=lambda v: (v["ID_SERVICE_FIELD_TYPE"], v["ID"])):
         field_states[value["ID_REQUEST"]].append({"id_service_field_type": value["ID_SERVICE_FIELD_TYPE"], "value": value["VALUE"]})
     requests = {r["ID"]: r for r in data["OHFC_REQUEST"]}
+    media_states = defaultdict(list)
+    for media in sorted(data["OHFC_SERVICE_FIELD_MEDIA"], key=lambda v: (v["ID_SERVICE_FIELD_TYPE"], v["ID"])):
+        media_states[media["ID_REQUEST"]].append(asset_state(media))
     for row in rows:
         number = row["request"]["import_id"]
         state = {"request": {column.lower(): requests[number][column] for column in REQUEST_COLUMNS},
                  "fields": field_states[number]}
+        if media_states[number]:
+            state["media"] = media_states[number]
         data["OHFC_IMPORT_TICKET"].append({"SOURCE_NAME": plan["source"], "LEGACY_ID": row["legacy_id"],
             "ID_REQUEST": number, "CONTENT_HASH": row["content_hash"], "TARGET_HASH": digest(state)})
         data["OHFC_IMPORT_SNAPSHOT"].append({"ID": len(data["OHFC_IMPORT_SNAPSHOT"]) + 1,
@@ -171,7 +196,7 @@ def validate_data(data):
         body = schemas[table]
         columns = {}
         for line in body.splitlines():
-            match = re.match(r"\s*(\w+)\s+(NUMBER\([^)]*\)|VARCHAR2\((\d+) CHAR\)|TIMESTAMP|CLOB|BLOB|INTERVAL[^,]*)(.*)", line)
+            match = re.match(r"\s*(\w+)\s+(NUMBER\([^)]*\)|VARCHAR2\((\d+) CHAR\)|DATE|CLOB|BLOB|INTERVAL[^,]*)(.*)", line)
             if match:
                 columns[match[1]] = (match[2], int(match[3]) if match[3] else None, match[4])
         keys = re.findall(r"(?:PRIMARY KEY|UNIQUE)\s*\(([^)]+)\)", body)
@@ -198,8 +223,10 @@ def validate_data(data):
                         raise ValueError(f"Número inválido: {table}.{name}")
                     if "IN (0, 1)" in rest and value not in (0, 1):
                         raise ValueError(f"Booleano inválido: {table}.{name}")
-                if kind == "TIMESTAMP" and not isinstance(value, datetime):
+                if kind == "DATE" and not isinstance(value, datetime):
                     raise ValueError(f"Data inválida: {table}.{name}")
+                if kind == "BLOB" and (not isinstance(value, bytes) or not value):
+                    raise ValueError(f"Arquivo binário inválido: {table}.{name}")
                 if "IS JSON" in rest:
                     parsed = json.loads(value)
                     if name in ("VALUE", "OPTIONS") and set(parsed) != {"value"}:
@@ -227,7 +254,7 @@ def literal(value, clob=False):
     if value is None:
         return "NULL"
     if isinstance(value, datetime):
-        return "TIMESTAMP '" + value.isoformat(sep=" ", timespec="seconds") + "'"
+        return "TO_DATE('" + value.isoformat(sep=" ", timespec="seconds") + "', 'YYYY-MM-DD HH24:MI:SS')"
     if type(value) is int:
         return str(value)
     if not isinstance(value, str):
@@ -250,6 +277,17 @@ def literal(value, clob=False):
 
 
 def insert_sql(table, row):
+    if isinstance(row.get("CONTENT"), bytes):
+        values = ["EMPTY_BLOB()" if column == "CONTENT" else literal(value)
+                  for column, value in row.items()]
+        lines = ["DECLARE", "    media_blob BLOB;", "BEGIN",
+                 f"    INSERT INTO {table} ({', '.join(row)})",
+                 "    VALUES (" + ", ".join(values) + ") RETURNING CONTENT INTO media_blob;"]
+        for start in range(0, len(row["CONTENT"]), 900):
+            chunk = row["CONTENT"][start:start + 900]
+            lines.append(f"    DBMS_LOB.WRITEAPPEND(media_blob, {len(chunk)}, HEXTORAW('{chunk.hex()}'));")
+        lines.extend(["END;", "/", ""])
+        return "\n".join(lines)
     expressions = [literal(value, column in ("VALUE", "OPTIONS", "PAYLOAD")) for column, value in row.items()]
     return f"INSERT INTO {table} ({', '.join(row)})\nVALUES (\n    " + ",\n    ".join(expressions) + "\n);\n"
 
@@ -302,21 +340,30 @@ def export_sql(plan, catalog, directory):
     validate_data(data)
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
+    main_data = {table: rows for table, rows in data.items() if not table.startswith("OHFC_IMPORT_")}
+    import_data = {table: rows for table, rows in data.items() if table.startswith("OHFC_IMPORT_")}
     scripts = OrderedDict()
-    scripts["00_VALIDATE_EMPTY.sql"] = guard_sql(data)
+    import_scripts = OrderedDict()
+    scripts["00_VALIDATE_EMPTY.sql"] = guard_sql(main_data)
+    import_scripts["ImportTables/00_VALIDATE_EMPTY.sql"] = guard_sql(import_data)
     for table, relative in ORDER.items():
         text = f"-- {table}: {len(data[table])} registros. Gerado pelas regras revisadas da importação.\n"
-        text += "-- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.\n"
+        text += "-- Sem COMMIT individual; executar pelo consolidado correspondente.\n"
         if not data[table]:
             text += "-- " + EMPTY_REASONS.get(table, "Sem dados nas fontes.") + "\n"
         text += "\n" + "\n".join(insert_sql(table, row) for row in data[table])
-        scripts[relative] = text
-    scripts["99_VALIDATE_AND_SYNC_IDENTITIES.sql"] = finalize_sql(data)
-    for relative, text in scripts.items():
+        target = import_scripts if table in import_data else scripts
+        target[relative] = text
+    scripts["99_VALIDATE_AND_SYNC_IDENTITIES.sql"] = finalize_sql(main_data)
+    import_scripts["ImportTables/99_VALIDATE_AND_SYNC_IDENTITIES.sql"] = finalize_sql(import_data)
+    for relative, text in list(scripts.items()) + list(import_scripts.items()):
         path = directory / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
     (directory / "INSERT_ALL_TABLES.sql").write_text(PREAMBLE + "\n" + "\n".join(scripts.values()), encoding="utf-8")
+    (directory / "INSERT_IMPORT_TABLES.sql").write_text(
+        PREAMBLE + "\n-- Executar após a carga principal e a instalação das tabelas de auditoria.\n"
+        + "\n".join(import_scripts.values()), encoding="utf-8")
     (directory / "RUN_SQLPLUS.sql").write_text(PREAMBLE + "\n" + "\n".join(f"@@{path}" for path in scripts) + "\n", encoding="utf-8")
     (directory / "INSTALL_IMPORT_TABLES.sql").write_text(Path(__file__).with_name("install.sql").read_text(encoding="utf-8-sig"), encoding="utf-8")
     counts = {table: len(rows) for table, rows in data.items()}
@@ -329,20 +376,22 @@ def export_sql(plan, catalog, directory):
              "Scripts gerados das planilhas e regras aprovadas. Não foram executados em Oracle.", "",
              "## Execução", "",
              "1. Crie as 23 tabelas com `database/SqlScripts/CreateTables/CREATE_ALL_TABLES.sql`, em uma base vazia.",
-             "2. Execute `INSTALL_IMPORT_TABLES.sql` uma vez, separadamente: DDL das duas tabelas de auditoria.",
-             "3. Execute **INSERT_ALL_TABLES.sql ou RUN_SQLPLUS.sql**, nunca ambos, como script (SQL Developer: F5).",
-             "", "O consolidado contém todos os INSERTs. RUN_SQLPLUS.sql executa os arquivos por domínio na mesma ordem.",
-             "As verificações iniciais exigem todas as tabelas vazias e obtêm locks de escrita NOWAIT.",
-             "Em erro, o cliente encerra com rollback; há um único COMMIT, após conferir totais e avançar as identities.",
+             "2. Execute **INSERT_ALL_TABLES.sql ou RUN_SQLPLUS.sql**, nunca ambos, como script (SQL Developer: F5). Ambos carregam somente as 23 tabelas originais.",
+             "3. Execute `INSTALL_IMPORT_TABLES.sql` uma vez, separadamente: DDL das duas tabelas de auditoria.",
+             "4. Execute `INSERT_IMPORT_TABLES.sql` para carregar OHFC_IMPORT_TICKET e OHFC_IMPORT_SNAPSHOT, após a carga principal.",
+             "", "A carga principal não depende das tabelas de auditoria. RUN_SQLPLUS.sql executa somente os arquivos do domínio principal.",
+             "Cada carga exige suas próprias tabelas de destino vazias e obtém locks de escrita NOWAIT. A auditoria referencia os chamados já carregados.",
+             "Cada consolidado tem seu próprio COMMIT, após conferir totais e avançar as identities. Em erro na auditoria, a carga principal já confirmada permanece.",
              "O usuário da conexão deve ser proprietário das tabelas. Avanços de sequences podem deixar lacunas após rollback.",
              "Use cliente/arquivo UTF-8 e preserve SET DEFINE OFF para não interpretar & dos dados como variáveis.",
              "", "## Conteúdo e limites", "",
              f"- {len(data['OHFC_REQUEST'])} solicitações com IDs reservados; correspondências preservadas em IMPORT_TICKET.",
              "- IDs de categorias de referência e os 46 locais originais preservados; novos cadastros acrescentados.",
              "- Membros deduplicados por e-mail, incluindo papéis de auditoria. Setores do catálogo legado preservados, sem atribuir permissões aos membros.",
-             "- Campos adicionais TEXT, inativos e não obrigatórios, como na importação em uma base sem definições anteriores.",
+             "- Campos correspondentes ao catálogo legado preservam TYPE, OPTIONS, REQUIRED, ACTIVE e DISPLAY_ORDER; respostas têm tipos JSON compatíveis. Campos novos são TEXT, ativos, opcionais e ordenados após os campos legados.",
              "- IMPORT_TICKET e IMPORT_SNAPSHOT preservam correspondência, hashes, originais, URLs e descrições integrais.",
-             "- Tabelas sem fonte suficiente têm arquivos explicativos sem INSERT. Não foram inventados SLAs, tarefas, checklists ou BLOBs.",
+             "- URLs de campos adicionais geram definições MEDIA. Com import_media_content=false, não são geradas respostas em SERVICE_FIELD_MEDIA nem SERVICE_FIELD_VALUE; URLs permanecem nos snapshots. Quando a importação de binários está habilitada, o cache completo é obrigatório. Placeholders not-found-deskbee.jpg são ignorados.",
+             "- Tabelas sem fonte suficiente têm arquivos explicativos sem INSERT. Não foram inventados SLAs, tarefas ou checklists.",
              "- Estes arquivos servem para a carga inicial. Para cargas incrementais, use o importador Python e mantenha request_numbers.json.",
              "", "## Validação local", "",
              "Conferidos tipos, tamanhos, chaves primárias/únicas, FKs e envelopes JSON contra os DDLs locais.",
@@ -350,4 +399,11 @@ def export_sql(plan, catalog, directory):
              "", "| Tabela | Registros |", "| --- | ---: |"]
     lines.extend(f"| {table} | {count} |" for table, count in counts.items())
     (directory / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (directory / "MEDIA_IMPORT_STATUS.md").write_text(
+        "# Situação das mídias na carga gerada\n\n"
+        + f"{sum(f['TYPE'] == 'MEDIA' for f in data['OHFC_SERVICE_FIELD_TYPE'])} definições MEDIA; "
+        + f"{len(data['OHFC_SERVICE_FIELD_MEDIA'])} respostas com binários.\n\n"
+        + "Quando import_media_content=false, os anexos históricos não são importados, conforme configuração. "
+        + "As URLs permanecem nos snapshots. Nenhum BLOB vazio substitui arquivos ausentes.\n\n"
+        + "Scripts regenerados; não executados no Oracle.\n", encoding="utf-8")
     return manifest

@@ -1,5 +1,5 @@
 -- OHFC_REQUEST_STATUS: 5 registros. Gerado pelas regras revisadas da importação.
--- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.
+-- Sem COMMIT individual; executar pelo consolidado correspondente.
 
 INSERT INTO OHFC_REQUEST_STATUS (ID, DESCRIPTION)
 VALUES (

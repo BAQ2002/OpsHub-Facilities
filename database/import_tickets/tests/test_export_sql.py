@@ -55,7 +55,7 @@ class ExportSQLTests(unittest.TestCase):
                 self.assertLess(len(token.encode("utf-8")), 4000)
 
     def test_dates_are_independent_of_nls(self):
-        self.assertEqual(literal(datetime(2026, 6, 17, 11, 33)), "TIMESTAMP '2026-06-17 11:33:00'")
+        self.assertEqual(literal(datetime(2026, 6, 17, 11, 33)), "TO_DATE('2026-06-17 11:33:00', 'YYYY-MM-DD HH24:MI:SS')")
         self.assertEqual(literal(None), "NULL")
 
     def test_schema_validation_and_exact_request_number(self):
@@ -63,7 +63,27 @@ class ExportSQLTests(unittest.TestCase):
         self.assertEqual(self.data["OHFC_REQUEST"][0]["ID"], 665)
         self.assertEqual(self.data["OHFC_IMPORT_TICKET"][0]["LEGACY_ID"], "665#1")
         self.assertEqual(self.data["OHFC_REGION"][0]["NAME"], "Prédio Administrativo")
-        self.assertEqual(len(self.data["OHFC_SERVICE_CATEGORY"]), 10)
+        self.assertEqual(len(self.data["OHFC_SERVICE_CATEGORY"]), 9)
+        categories = {r["NAME"]: r["ID"] for r in self.data["OHFC_SERVICE_CATEGORY"]}
+        self.assertEqual(categories["PINTURA"], 9)
+        self.assertEqual(categories["PMOC"], 10)
+        self.assertNotIn("NOVOS PROJETOS", categories)
+
+    def test_excluded_categories_do_not_generate_dependent_rows(self):
+        config, catalog = load_mapping(Path(__file__).resolve().parents[1] / "mapping.json")
+        raw = copy.deepcopy(self.plan["rows"][0]["raw"])
+        for category in ("Dúvida Aplicativo", "NOVOS PROJETOS"):
+            for cell in raw["cells"]:
+                if cell["header"] == "Categoria":
+                    cell["value"] = category
+            plan = build_plan([raw], config, catalog)
+            self.assertEqual(plan["summary"]["excluded"], 1)
+            self.assertEqual(plan["summary"]["pending"], 0)
+            self.assertEqual(plan["rows"], [])
+            data = build_data(plan, catalog)
+            for table in ("OHFC_REQUEST", "OHFC_SERVICE_TYPE", "OHFC_SERVICE_FIELD_TYPE",
+                          "OHFC_SERVICE_FIELD_VALUE", "OHFC_MEMBERSHIP", "OHFC_IMPORT_TICKET", "OHFC_IMPORT_SNAPSHOT"):
+                self.assertEqual(data[table], [], table)
 
     def test_json_fields_have_envelope_and_snapshot_preserves_raw(self):
         field = self.data["OHFC_SERVICE_FIELD_VALUE"][0]
@@ -97,6 +117,22 @@ class ExportSQLTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sem pendências"):
             build_data(self.plan, self.catalog)
 
+    def test_media_catalog_without_historical_binaries(self):
+        self.plan["rows"][0]["request"]["fields"].append({
+            "name": "Foto", "value": ["https://example.test/expired.jpg?Expires=1"],
+            "import_media_content": False,
+            "definition": {"type": "MEDIA", "options": None, "required": 1,
+                           "active": 1, "display_order": 2},
+        })
+        data = build_data(self.plan, self.catalog)
+        validate_data(data)
+        media_fields = [f for f in data["OHFC_SERVICE_FIELD_TYPE"] if f["TYPE"] == "MEDIA"]
+        self.assertEqual(len(media_fields), 1)
+        self.assertEqual(data["OHFC_SERVICE_FIELD_MEDIA"], [])
+        self.assertFalse(any(v["ID_SERVICE_FIELD_TYPE"] == media_fields[0]["ID"]
+                             for v in data["OHFC_SERVICE_FIELD_VALUE"]))
+        self.assertIn("expired.jpg", data["OHFC_IMPORT_SNAPSHOT"][0]["PAYLOAD"])
+
     def test_output_tree_consolidation_and_manifest(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder)
@@ -107,6 +143,16 @@ class ExportSQLTests(unittest.TestCase):
             self.assertIn("WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK", consolidated)
             self.assertEqual(len(re.findall(r"^COMMIT;", consolidated, re.M)), 1)
             self.assertNotIn("CREATE TABLE", consolidated)
+            self.assertNotIn("OHFC_IMPORT_", consolidated)
+            runner = (path / "RUN_SQLPLUS.sql").read_text(encoding="utf-8")
+            self.assertNotIn("ImportTables/", runner)
+            audit = (path / "INSERT_IMPORT_TABLES.sql").read_text(encoding="utf-8")
+            self.assertEqual(set(re.findall(r"INSERT INTO (\w+)", audit)),
+                             {"OHFC_IMPORT_TICKET", "OHFC_IMPORT_SNAPSHOT"})
+            self.assertNotIn("LOCK TABLE OHFC_REQUEST ", audit)
+            self.assertEqual(len(re.findall(r"^COMMIT;", audit, re.M)), 1)
+            for name in ("INSERT_IMPORT_TICKET.sql", "INSERT_IMPORT_SNAPSHOT.sql"):
+                self.assertIn((path / "ImportTables" / name).read_text(encoding="utf-8"), audit)
             self.assertIn("Sem dados", (path / "ChecklistsTables/INSERT_CHECKLIST_FIELD_TYPE.sql").read_text(encoding="utf-8").replace("Não foram importados", "Sem dados"))
             for relative, expected in manifest["files"].items():
                 self.assertEqual(hashlib.sha256((path / relative).read_bytes()).hexdigest(), expected)

@@ -14,6 +14,7 @@ def main():
     parser.add_argument("--apply", action="store_true", help="Grava no Oracle após gerar a prévia; requer install.sql")
     parser.add_argument("--reserve-numbers", action="store_true", help="Reserva IDs persistentes para novas origens no numbering_file")
     parser.add_argument("--export-sql", type=Path, help="Gera scripts Oracle de carga inicial organizados por domínio, sem acessar o banco")
+    parser.add_argument("--download-media", action="store_true", help="Baixa arquivos de URLs válidas para o cache antes da carga")
     parser.add_argument("--allow-pending", action="store_true", help="Importa somente linhas resolvidas; pendentes ficam no relatório")
     parser.add_argument("--update-existing", action="store_true", help="Atualiza chamados importados e inalterados no destino")
     parser.add_argument("--allow-new-in-existing", action="store_true", help="Permite novos chamados em base com solicitações sem correspondência")
@@ -39,6 +40,12 @@ def main():
     print(json.dumps(plan["summary"], ensure_ascii=False))
     print(f"Prévia e pendências: {args.output.resolve()}")
     print(f"Resumo: {report.resolve()}")
+    from .media import prepare_media, require_media
+    media = prepare_media(plan, download=args.download_media)
+    args.output.with_name("media_manifest.json").write_text(json.dumps(media, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Mídias: {media['references']} referências; {media['missing_references']} sem arquivo")
+    if args.apply or args.export_sql:
+        require_media(plan)
     if args.export_sql:
         from .export_sql import export_sql
         manifest = export_sql(plan, catalog, args.export_sql)

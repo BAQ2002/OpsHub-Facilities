@@ -26,7 +26,7 @@ instalação das tabelas auxiliares e homologação antes de uso no banco.
 
 Use o consolidado **ou** os scripts individuais em uma base sem essas tabelas. O consolidado incorpora as quatro tabelas de checklist e reproduz as definições individuais. Os testes de schema conferem equivalência e ordem de dependências.
 
-Os tipos atuais são `NUMBER(10)` com identity para IDs, `VARCHAR2(n CHAR)` para textos, `NUMBER(1)` com CHECK para booleanos, `CLOB` com `IS JSON` para JSON, `BLOB` para mídia e `TIMESTAMP` para datas. `OHFC_SLA.DEADLINE` usa `INTERVAL DAY(9) TO SECOND(6)`.
+Os tipos atuais são `NUMBER(10)` com identity para IDs, `VARCHAR2(n CHAR)` para textos, `NUMBER(1)` com CHECK para booleanos, `CLOB` com `IS JSON` para JSON, `BLOB` para mídia e `DATE` para datas. `OHFC_SLA.DEADLINE` usa `INTERVAL DAY(9) TO SECOND(6)`.
 
 `OHFC_SECTOR.ACCESS_LEVELS` é obrigatório; `OHFC_REQUEST_TASK_MEDIA.FILE_SIZE` é `NUMBER(10)` anulável, em bytes. As datas das mídias usam `CREATED_DATE`. Não há `ON UPDATE CASCADE` nem `ON DELETE RESTRICT` explícito; `ON DELETE CASCADE` foi mantido onde previsto.
 

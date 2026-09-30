@@ -1,5 +1,5 @@
--- OHFC_SERVICE_CATEGORY: 11 registros. Gerado pelas regras revisadas da importação.
--- Sem COMMIT individual; executar pelo consolidado ou RUN_SQLPLUS.sql.
+-- OHFC_SERVICE_CATEGORY: 9 registros. Gerado pelas regras revisadas da importação.
+-- Sem COMMIT individual; executar pelo consolidado correspondente.
 
 INSERT INTO OHFC_SERVICE_CATEGORY (ID, NAME)
 VALUES (
@@ -45,12 +45,6 @@ VALUES (
 
 INSERT INTO OHFC_SERVICE_CATEGORY (ID, NAME)
 VALUES (
-    8,
-    'NOVOS PROJETOS'
-);
-
-INSERT INTO OHFC_SERVICE_CATEGORY (ID, NAME)
-VALUES (
     9,
     'PINTURA'
 );
@@ -59,10 +53,4 @@ INSERT INTO OHFC_SERVICE_CATEGORY (ID, NAME)
 VALUES (
     10,
     'PMOC'
-);
-
-INSERT INTO OHFC_SERVICE_CATEGORY (ID, NAME)
-VALUES (
-    11,
-    'Dúvida Aplicativo'
 );

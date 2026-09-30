@@ -1,6 +1,8 @@
 {
   "version": 1,
   "source": "deskbee",
+  "excluded_categories": ["Dúvida Aplicativo", "NOVOS PROJETOS"],
+  "import_media_content": false,
   "default_business": null,
   "create_unmapped_locations": true,
   "missing_location": {
@@ -90,11 +92,13 @@
   "row_overrides": {},
   "existing_request_ids": {},
   "field_aliases": {
+    "(editar) qual o nível urgência?": "qual o nível urgência?",
     "Filtro :  verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; limpar o elemento filtrante. substituir caso necessário": "Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas;",
     "Filtro:  verificação e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; limpar o elemento filtrante. substituir caso necessário": "Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas;",
     "Lavagem do gabinete, das bandejas e das serpentinas, sem o uso de produtos desengraxantes e corrosivos": "Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos"
   },
   "catalog_file": "locations.json",
+  "field_catalog_file": "../SqlScripts/InsertTable/ServicesTables/INSERT_SERVICE_FIELD_TYPE.sql",
   "resolutions_file": "location_resolutions.json",
   "summaries_file": "description_summaries.json",
   "numbering_file": "request_numbers.json",

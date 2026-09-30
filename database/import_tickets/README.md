@@ -33,7 +33,7 @@ mapeamento: ainda não comprova a compatibilidade com os cadastros de uma base c
 
 Acrescente `--export-sql database/oracle/InsertTable` ao comando de prévia para gerar
 os scripts por domínio, o consolidado `INSERT_ALL_TABLES.sql` e o executor
-`RUN_SQLPLUS.sql`. Não há conexão com o banco. A exportação exige zero pendências e
+`RUN_SQLPLUS.sql` para as 23 tabelas originais. As duas tabelas de auditoria ficam no consolidado separado `INSERT_IMPORT_TABLES.sql`, executado após a carga principal e a instalação de `INSTALL_IMPORT_TABLES.sql`. Cada carga possui seu próprio COMMIT. Não há conexão com o banco. A exportação exige zero pendências e
 IDs reservados para todas as solicitações. Não combine essa opção com `--apply`.
 
 Os scripts são destinados a uma base vazia, com as 23 tabelas existentes. As duas
@@ -168,15 +168,38 @@ também aparece em `full_description` na prévia e permanece no snapshot. A colu
 - `Data Agendamento` vai para `AGREED_DATE`; não muda o status para Programada.
 - Solicitante é identificado por e-mail, sem conferir permissões nem inventar setor.
   Responder, criador, aprovador e cancelador não são inferidos como equivalentes.
-- Respostas adicionais usam definições existentes compatíveis. Campos novos são `TEXT`,
-  não obrigatórios e **inativos**, evitando publicar automaticamente novos formulários.
+- Respostas adicionais usam TYPE, OPTIONS, REQUIRED, ACTIVE e DISPLAY_ORDER do catálogo
+  configurado em `field_catalog_file`, por categoria + serviço + nome normalizado.
+  O catálogo de referência é o antigo `INSERT_SERVICE_FIELD_TYPE.sql`; ele é lido,
+  nunca executado. Campos sem correspondência são TEXT, ativos, opcionais e ordenados
+  após os campos legados. A carga continua incluindo somente campos com respostas
+  adicionais importadas; localização e descrição mantêm o tratamento anterior.
+  NUMBER e BOOL geram números e booleanos JSON; MULTI_SELECT gera arrays, interpretando
+  a lista separada por vírgulas da exportação; DATE gera texto ISO. OPTIONS usa o
+  envelope JSON `{"value": [...]}`. Respostas fora das opções antigas são preservadas
+  com aviso. Tipos existentes divergentes no Oracle bloqueiam a importação para conciliação.
   Tipos existentes NUMBER, BOOL, DATE, SINGLE_SELECT e MULTI_SELECT são respeitados;
   MULTI_SELECT exige array JSON explícito, sem adivinhar separadores. Tipos incompatíveis
   interrompem a transação. JSON persistido usa `{"value": ...}`.
 - Colunas base sem destino operacional (SLA, histórico, notas, papéis de auditoria etc.)
   são preservadas integralmente no snapshot. `ignore` também mantém o valor original.
-- URLs de fotos/anexos geram avisos e são preservadas no snapshot. Este importador não
-  baixa anexos, não grava BLOB e não cria tarefas, transações ou checklists a partir de
+- URLs de campos adicionais geram definições MEDIA, preservando as outras propriedades
+  do catálogo. Nesta carga, `import_media_content=false`: não são criadas respostas
+  em SERVICE_FIELD_MEDIA nem SERVICE_FIELD_VALUE para esses campos. As URLs são
+  preservadas nos snapshots; arquivos ausentes não bloqueiam a carga e não são baixados.
+  Para importar binários em uma carga futura, habilite `import_media_content=true`.
+  Nesse modo são criadas respostas em SERVICE_FIELD_MEDIA. Use `--download-media` para obter
+  os arquivos antes de `--export-sql` ou `--apply`. A prévia não acessa a rede.
+  `output/media_manifest.json` lista vínculos, URLs e arquivos ausentes. O cache usa
+  `output/media/<SHA256 da URL>.bin` e um `.json` com file_name, mime_type e sha256
+  do conteúdo. Arquivos locais podem ser conciliados nesse formato, sem alterar URLs
+  históricas. Downloads têm limite de 25 MiB por arquivo; URLs expiradas são bloqueadas.
+  O SQL usa EMPTY_BLOB seguido de DBMS_LOB.WRITEAPPEND na mesma transação; exige bytes
+  reais antes de gerar qualquer arquivo. Nenhuma mídia ausente é substituída por BLOB
+  vazio ou pelo texto da URL. Placeholders not-found-deskbee.jpg não são anexos.
+  Cada URL distinta por campo/chamado gera uma resposta; o cache reutiliza downloads.
+  O hash de destino inclui metadados e SHA256 dos binários para proteger alterações.
+  A importação não cria tarefas, transações ou checklists a partir de
   eventos ambíguos. Essas etapas exigem fontes/mapeamentos próprios.
 
 ## Aplicação no Oracle
@@ -217,6 +240,13 @@ Identities de outros cadastros que tenham recebido seeds antigos com IDs explíc
 ainda precisam estar regularizadas. Esse mecanismo requer homologação em Oracle.
 
 ## Verificação
+
+Categorias configuradas em `excluded_categories` não participam da carga: atualmente
+`Dúvida Aplicativo` e `NOVOS PROJETOS`. Seus chamados, serviços, campos, respostas e
+linhas de auditoria não geram INSERTs. As linhas originais excluídas permanecem em
+`excluded_rows` na prévia local, e as reservas de REQUEST.ID são mantidas. Os IDs das
+categorias restantes também são preservados. Essa regra não apaga dados já existentes
+no Oracle; vale para a geração da carga e a seleção de linhas do importador.
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s database/import_tickets/tests -v
