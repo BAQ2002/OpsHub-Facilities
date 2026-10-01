@@ -1,10 +1,9 @@
 from pydantic import BaseModel
+from ..uploads import UploadedFile
 
 
-class BinaryFile(BaseModel):
-    fileName: str
-    mimeType: str
-    contentBase64: str
+class BinaryFile(UploadedFile):
+    pass
 
 
 class VisitPayload(BaseModel):

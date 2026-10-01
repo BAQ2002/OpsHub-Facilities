@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack --hostname 0.0.0.0",
-    "dev:turbopack": "next dev --hostname 0.0.0.0",
+    "dev": "next dev --webpack --hostname 127.0.0.1",
+    "dev:turbopack": "next dev --hostname 127.0.0.1",
     "clean": "node -e \"require('node:fs').rmSync('.next', { recursive: true, force: true })\"",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --hostname 127.0.0.1",
     "lint": "eslint"
   },
   "dependencies": {

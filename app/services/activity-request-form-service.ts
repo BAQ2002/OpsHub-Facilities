@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { CatalogEntities, RequestFormEntities, OrganizationEntities } from "@/app/entities/api/entity-responses";
+import type { CatalogEntities, RequestFormEntities, OrganizationEntities, MemberSummary } from "@/app/entities/api/entity-responses";
 import { mapCatalog, mapOrganization, mapServiceField } from "./mappers/entity-view-models";
 
 import type { ActivityRequestFormPageData } from "@/app/entities/navigation_entities/solicitar_atividade_chamado_viewModels";
@@ -32,9 +32,10 @@ export async function getChamadoRequestFormPageData(params: {
   serviceTypeId: number;
 }): Promise<ActivityRequestFormPageData> {
   const query = new URLSearchParams({ service_type_id: String(params.serviceTypeId) });
-  const [dynamicData, locationHierarchy] = await Promise.all([
+  const [dynamicData, locationHierarchy, requesters] = await Promise.all([
     backendJson<RequestFormEntities>(`/service-catalog/request-form?${query}`),
     backendJson<OrganizationEntities>("/organization/locations"),
+    backendJson<MemberSummary[]>("/memberships/requesters"),
   ]);
 
   return {
@@ -45,6 +46,15 @@ export async function getChamadoRequestFormPageData(params: {
     serviceTypeId: dynamicData.serviceType?.id,
     locationHierarchy: mapOrganization(locationHierarchy),
     fields: [
+      {
+        label: "Solicitante",
+        name: "requester_id",
+        type: "select",
+        placeholder: "Selecione o solicitante",
+        required: true,
+        fullWidth: true,
+        options: requesters.map((member) => ({ label: member.name ?? "Sem nome", value: String(member.id) })),
+      },
       {
         label: "Descrição",
         name: "description",

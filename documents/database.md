@@ -83,7 +83,7 @@ O rollback na saída da dependência trata o trabalho pendente; não desfaz comm
 
 ## Scripts legados e pendências
 
-`InsertTable`, `SqlQueries`, `UpdateTables` e `database/docker-compose.yml` ainda são referências PostgreSQL. O backend não carrega esses arquivos para executar suas consultas. Não os utilize como scripts Oracle.
+`database/SqlScripts/InsertTable`, `SqlQueries` e `UpdateTables` ainda são referências PostgreSQL. O backend não carrega esses arquivos para executar suas consultas. Não os utilize como scripts Oracle.
 
 Sem considerar validação e povoamento real, restam:
 

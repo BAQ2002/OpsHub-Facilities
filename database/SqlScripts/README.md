@@ -10,10 +10,9 @@ Consulte o [guia Oracle](../../documents/database.md), a [arquitetura](../../REA
 |---|---|---|
 | [CreateTables/CREATE_ALL_TABLES.sql](CreateTables/CREATE_ALL_TABLES.sql) | Oracle 19c | Criação das 23 tabelas em ordem de dependências |
 | [CreateTables](CreateTables) — arquivos individuais | Oracle 19c | Mesmas definições do consolidado, organizadas por domínio |
-| [InsertTable](InsertTable) | PostgreSQL legado | Referência das cargas; conversão para Oracle pendente |
+| [InsertTable](InsertTable) | PostgreSQL legado | Referência histórica; carga Oracle em `../oracle/InsertTable` |
 | [SqlQueries](SqlQueries) | PostgreSQL legado | Exemplos históricos; não executados pelo backend |
 | [UpdateTables](UpdateTables) | PostgreSQL legado | Atualizações anteriores; não aplicáveis ao Oracle |
-| [docker-compose.yml](../docker-compose.yml) | PostgreSQL legado | Não provisiona Oracle |
 
 O prefixo `OHFC_` nos scripts históricos não os torna compatíveis com Oracle. Cargas e atualizações não são executadas automaticamente pela aplicação.
 
@@ -45,7 +44,7 @@ Esses arquivos não devem ser executados no Oracle nem misturados com os DDLs at
 ## Trabalho restante nos scripts
 
 - Converter ou retirar de uso exemplos e atualizações legadas, definindo quais ainda são necessários.
-- Converter as cargas para a sintaxe Oracle, incluindo envelopes JSON e booleanos 0/1.
+- Homologar as [cargas Oracle já geradas](../oracle/InsertTable/README.md), incluindo envelopes JSON e booleanos 0/1.
 - Preservar IDs e relações entre registros e preparar o ajuste das identities após a importação de IDs explícitos. A correlação visual das categorias também depende desses IDs.
 - Estabelecer ordenação, versionamento e registro de aplicação das futuras migrations.
 

@@ -286,7 +286,7 @@ function renderField(field: Field, fieldId: string) {
         required={field.required !== false}
       >
         <option value="" disabled>
-          Selecione o registro...
+          {field.placeholder ?? "Selecione o registro..."}
         </option>
         {field.options?.map((option) => (
           <option key={option.value} value={option.value}>

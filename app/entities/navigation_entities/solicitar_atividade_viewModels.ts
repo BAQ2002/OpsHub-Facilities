@@ -58,6 +58,7 @@ export type LocationHierarchy = {
 export type RequestFieldValue = string | File;
 
 export type CreateRequestInput = {
+  requesterId: number;
   businessId: number;
   regionId: number;
   locationId: number;

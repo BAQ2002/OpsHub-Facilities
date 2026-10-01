@@ -10,6 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    api_docs_enabled: bool = False
     oracle_user: str = ""
     oracle_password: SecretStr = SecretStr("")
     oracle_dsn: str = ""

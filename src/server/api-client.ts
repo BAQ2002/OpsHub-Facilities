@@ -10,11 +10,11 @@ export async function backendJson<T>(path: string, init?: RequestInit): Promise<
   const response = await fetch(`${getBackendUrl()}/api/v1${path}`, {
     cache: "no-store",
     ...init,
+    signal: init?.signal ?? AbortSignal.timeout(60_000),
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
   if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Backend Facilities respondeu ${response.status}: ${detail}`);
+    throw new Error(`Não foi possível concluir a operação (HTTP ${response.status}).`);
   }
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
@@ -25,5 +25,8 @@ export function jsonRequest(body: unknown, method: RequestInit["method"] = "POST
 }
 
 export async function serializeFile(file: File) {
+  if (file.size > 10 * 1024 * 1024) {
+    throw new Error("Arquivo excede o limite de 10 MiB.");
+  }
   return { fileName: file.name, mimeType: file.type || "application/octet-stream", contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64") };
 }

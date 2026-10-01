@@ -2,6 +2,34 @@
 
 Aplicação Next.js para indicadores de facilities, acompanhamento de chamados e criação de solicitações. O frontend utiliza o FastAPI como backend; somente o processo Python acessa o Oracle 19c.
 
+## Funcionalidades e páginas
+
+| Página | Rota | Recursos implementados |
+|---|---|---|
+| Home | `/pages/home` | Indicadores, mapa de atividades, filtros de período, status e unidade, e tabela paginada com 30, 60 ou 90 registros por página |
+| Dashboard | `/pages/chamados/dashboard` | Indicadores e gráficos por categoria, status e mês, com filtros de período, unidade, categorias e status |
+| Kanban | `/pages/chamados/kanbanboard` | Busca e filtros de chamados, alteração de status, criação/edição de visitas, executores, fotos, checklists e download de relatório PDF |
+| Minhas solicitações | `/pages/minhas-solicitacoes` | Solicitações abertas e fechadas do membro configurado em `CURRENT_MEMBER_ID` |
+| Catálogo | `/pages/solicitar-atividade` | Busca de serviços agrupados por categoria |
+| Novo chamado | `/pages/solicitar-atividade/chamado?service_type_id=<id>` | Formulário do serviço selecionado, escolha obrigatória do solicitante, localização hierárquica, campos adicionais e anexos |
+
+A rota `/` redireciona para a Home. O relatório PDF é gerado pelo backend com os filtros enviados pelo Kanban e disponibilizado ao navegador por `/api/requests/report`.
+
+A página `/pages/solicitar-atividade/patio` ainda contém opções estáticas e não fornece todos os campos exigidos pela criação atual, como solicitante e região. Esse fluxo precisa ser concluído antes de uso operacional.
+
+## Tecnologias e requisitos
+
+- Frontend: Next.js **16.2.6** com App Router, React **19.2.4**, TypeScript e Tailwind CSS **4**.
+- Backend: Python **3.10+**, FastAPI, Pydantic Settings, Uvicorn e `python-oracledb` em modo Thin; ReportLab e pypdf para relatórios.
+- Ambiente: Node.js **20.9+**, npm e uma instância Oracle **19c** acessível, com tabelas e cadastros preparados. O modo Thin não exige Oracle Instant Client.
+
+As versões JavaScript estão em `package.json` e `package-lock.json`; as faixas de dependências Python estão em `backend/requirements.txt`.
+
+## Implantação na rede corporativa
+
+Leia o [guia de implantação e segurança](docs/deployment.md) antes de liberar acesso.
+A aplicação ainda não possui autenticação individual nem autorização por perfil: `CURRENT_MEMBER_ID` é compartilhado por todos os usuários. O piloto exige controle de acesso externo e participantes autorizados a acessar todos os dados e operações. A rede local, isoladamente, não oferece esse controle.
+
 ## Arquitetura
 
 ```text
@@ -11,9 +39,26 @@ Next.js (`app`, `src/server`)
   -> python-oracledb / Oracle 19c
 ```
 
-As mídias são servidas diretamente pelo FastAPI em URLs de mesma origem sob `/api/v1`. Em desenvolvimento, o Next.js encaminha somente essas rotas ao endereço interno configurado em `BACKEND_API_URL`; em produção, o proxy de borda pode aplicar o mesmo roteamento.
+As mídias são servidas diretamente pelo FastAPI em URLs de mesma origem sob `/api/v1`. O Next.js encaminha somente essas rotas ao endereço interno configurado em `BACKEND_API_URL`; o proxy corporativo deve encaminhar todo o tráfego ao Next.js, mantendo a API inacessível pela rede.
+
+Além das Server Actions, o Next.js possui Route Handlers em `app/api`: `/api/home/activities` consulta a paginação da Home e `/api/requests/report` encaminha o download de PDF. O cliente JSON utiliza `cache: "no-store"` e timeout padrão de 60 segundos.
 
 A API mantém os módulos de domínio diretamente em `backend/app/api` e é organizada em `checklist`, `membership`, `organization`, `request`, `request_task` e `service_catalog`. Os domínios separam regras e persistência (`service.py`) e HTTP (`router.py`); contratos específicos ficam em `schemas.py`, quando necessário, e contratos compartilhados em `entities.py`. Os módulos Python usam `_` onde hífens não são identificadores válidos; as URLs públicas preservam `/request-tasks` e `/service-catalog`.
+
+### Estrutura do repositório
+
+```text
+app/                  Páginas, componentes, Server Actions, serviços e tipos
+src/server/           Cliente HTTP do backend e validações do servidor Next.js
+backend/app/          API FastAPI, serviços de domínio e conexão Oracle
+backend/tests/        Testes Python da API e integração Oracle opcional
+tests/                Testes Node.js de mapeamento, cores e paginação
+database/SqlScripts/  DDL Oracle e scripts históricos identificados nos guias
+database/oracle/      Cargas iniciais convertidas para Oracle
+database/import_tickets/  Importador de relatórios XLSX e seus testes
+docs/                 Implantação e convenções visuais
+documents/            Guia de banco e registro de validação dos serviços
+```
 
 ## Elementos do frontend (`app/`)
 
@@ -121,6 +166,9 @@ O código está adaptado para Oracle 19c (versão informada: 19.0.0.0.0). As tab
 | [Guia Oracle](documents/database.md) | Conexão, pool, tipos, consultas, transações e operação do backend |
 | [Scripts SQL](database/SqlScripts/README.md) | DDLs Oracle e identificação dos scripts PostgreSQL legados |
 | [Entidades e contratos](app/entities/concrete_entity/README.md) | Correspondência entre tabelas, tipos TypeScript e respostas HTTP |
+| [Carga inicial Oracle](database/oracle/InsertTable/README.md) | Ordem de execução, contagens, validação e sincronização de identities |
+| [Importador de chamados](database/import_tickets/README.md) | Prévia de XLSX, exportação SQL e importação recorrente |
+| [Validação dos serviços](documents/validacao-services-oracle.md) | Registro da revisão estática, limites e pendências de homologação |
 
 ### Estado dos seis pontos da migração
 
@@ -129,47 +177,70 @@ O código está adaptado para Oracle 19c (versão informada: 19.0.0.0.0). As tab
 | 1. Estrutura e nomes | Colunas alinhadas, 23 definições equivalentes e ausência de schema proprietário explícito | Conferência da estrutura implantada |
 | 2. Conexão | `python-oracledb` Thin, pool, binds, leitura de LOBs e IDs com `RETURNING INTO` | Configuração e validação na instância Oracle |
 | 3. Consultas | SQL executado pela API adaptado para Oracle 19c | Validação no Oracle; converter ou retirar de uso os exemplos históricos de `SqlQueries` |
-| 4. Tipos e cargas | DDLs com NUMBER, VARCHAR2, CLOB, BLOB e regras Oracle de integridade | Converter as cargas e atualizações históricas; preparar preservação dos IDs e ajuste das identities |
+| 4. Tipos e cargas | DDLs com NUMBER, VARCHAR2, CLOB, BLOB e regras Oracle de integridade | Homologar a carga Oracle e as identities; manter atualizações PostgreSQL fora da implantação |
 | 5. Transações e contratos | Contratos HTTP preservados; visita e checklists sem commit intermediário | Validação real de gravações, rollback, tipos e datas |
-| 6. Ambiente e documentação | Variáveis Oracle, guias, testes locais e teste de integração opcional | Migrations versionadas, revisão do Compose legado e procedimento de implantação/reversão |
+| 6. Ambiente e documentação | Variáveis Oracle, guias, testes locais e teste de integração opcional | Migrations versionadas, homologação do procedimento de implantação/reversão |
 
 A adaptação do código não significa que uma base foi migrada. Nenhum script de criação, carga ou atualização é executado automaticamente. A validação em Oracle real e o povoamento dos dados permanecem etapas separadas. Mesmo sem essas duas etapas, ainda faltam a conversão ou retirada dos scripts legados e a preparação operacional indicada acima.
+
+### Cargas e importação
+
+Os DDLs principais definem 23 tabelas. A carga inicial em `database/oracle/InsertTable` foi gerada para tabelas vazias; as duas tabelas auxiliares de auditoria da importação têm instalação e carga separadas. Siga a ordem do guia dessa pasta e não reaplique a carga inicial sobre uma base povoada.
+
+O importador `database.import_tickets` interpreta relatórios XLSX. Por padrão, gera apenas uma prévia, sem conexão com o banco; a exportação SQL e a aplicação no Oracle são operações explícitas descritas no seu guia. Suas dependências adicionais estão em `database/import_tickets/requirements.txt`.
 
 ## Configuração
 
 Copie [`.env.example`](.env.example) para `.env.local` somente se esse arquivo ainda não existir; caso já exista, atualize os campos necessários. Configure:
 
 - `ORACLE_USER`, `ORACLE_PASSWORD`, `ORACLE_DSN`: credenciais e serviço Oracle usados apenas pelo FastAPI;
-- `ORACLE_POOL_MIN`, `ORACLE_POOL_MAX`, `ORACLE_CALL_TIMEOUT_MS`: dimensionamento do pool e timeout de chamada;
-- `BACKEND_API_URL`: endereço interno da API usado pelo servidor Next.js;
-- `CURRENT_MEMBER_ID`: identidade temporária enquanto a autenticação corporativa não estiver integrada.
+- `ORACLE_POOL_MIN`, `ORACLE_POOL_MAX`, `ORACLE_CALL_TIMEOUT_MS`: dimensionamento do pool e timeout de chamada; padrões de 1, 5 e 30000 ms, respectivamente;
+- `BACKEND_API_URL`: endereço interno da API usado pelo servidor Next.js, com padrão `http://127.0.0.1:8000`; configure antes do build e mantenha no runtime, pois os rewrites de mídia são definidos no build;
+- `API_DOCS_ENABLED`: habilita `/docs`, `/redoc` e `/openapi.json` no FastAPI; padrão `false`;
+- `ALLOWED_DEV_ORIGINS`: hosts explícitos de desenvolvimento, sem protocolo, separados por vírgula; não altera as origens de Server Actions em produção;
+- `CURRENT_MEMBER_ID`: membro usado no filtro de Minhas solicitações. Novos chamados exigem a escolha do solicitante no formulário, sem valor padrão; a seleção não constitui autenticação.
 
 `DATABASE_URL` não é mais utilizada. A inicialização do FastAPI exige configuração Oracle válida. O Next.js não possui driver de banco nem fallback local para os dados.
+
+O backend lê `.env` e `.env.local` a partir do diretório de trabalho; execute os comandos na raiz do repositório. As credenciais Oracle pertencem ao backend e não devem ser expostas em variáveis `NEXT_PUBLIC_*`.
+
+Uploads aceitam até **10 MiB por arquivo**, com validação de base64 e formato do MIME na API. As Server Actions têm limite de corpo de **30 MB**; considere também a expansão de base64 e o limite agregado do proxy descrito no guia de implantação.
 
 A correlação visual das categorias na Home e no Dashboard está documentada em [Cores das categorias](docs/category-colors.md). A migração dos dados deve preservar os IDs usados nessa correlação.
 
 ## Execução
 
-Prepare a instância e as tabelas conforme [o guia Oracle](documents/database.md). O [Compose existente](database/docker-compose.yml) é legado PostgreSQL e não provisiona Oracle.
+Prepare a instância e as tabelas conforme [o guia Oracle](documents/database.md). O Compose legado PostgreSQL foi removido; o Oracle é provisionado separadamente.
 
 Na raiz do projeto, em PowerShell:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
-.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload
+.\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Em outro terminal:
 
 ```powershell
-npm install
+npm ci
 npm run dev
 ```
 
-Em Linux/macOS, o executável do ambiente virtual fica em `.venv/bin/python`. O frontend fica em `http://localhost:3000`; a documentação OpenAPI fica em `http://localhost:8000/docs`.
+Em Linux/macOS, o executável do ambiente virtual fica em `.venv/bin/python`. O frontend fica em `http://localhost:3000`; a documentação OpenAPI pode ser habilitada localmente com `API_DOCS_ENABLED=true` em `http://localhost:8000/docs`. Por padrão está desabilitada.
 
 O desenvolvimento usa Webpack. Para testar Turbopack, execute `npm run dev:turbopack`. Se houver artefatos de uma árvore anterior de rotas, execute `npm run clean` antes de reiniciar o servidor.
+
+| Comando npm | Finalidade |
+|---|---|
+| `npm run dev` | Desenvolvimento com Webpack, em `127.0.0.1` |
+| `npm run dev:turbopack` | Desenvolvimento com Turbopack, em `127.0.0.1` |
+| `npm run clean` | Remove a pasta gerada `.next` |
+| `npm run lint` | Executa ESLint |
+| `npm run build` | Gera o build de produção |
+| `npm start` | Inicia o build de produção, em `127.0.0.1` |
+
+Para o piloto corporativo, siga o [guia de implantação](docs/deployment.md): API sem `--reload`, frontend com build e `npm start`, e acesso por proxy HTTPS autenticado.
 
 ## Verificações
 
@@ -177,17 +248,27 @@ Na raiz do projeto:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s backend/tests -v
-node --test tests/entity-view-models.test.mjs tests/category-colors.test.mjs
+node --test tests/*.test.mjs
+npm run lint
+npm run build
 node node_modules/typescript/bin/tsc --noEmit --incremental false
 ```
 
 Os testes locais cobrem a camada de acesso, contratos, consultas geradas e equivalência dos DDLs. O teste de integração é ignorado quando as variáveis `ORACLE_TEST_*` não estão definidas no ambiente do processo; sua configuração e limites estão no [guia Oracle](documents/database.md#teste-de-integração-opcional). `/health` retorna o estado do processo e não executa uma consulta de conectividade.
 
+Há também testes de relatórios PDF, uploads, alteração de status e paginação. Para validar o importador após instalar suas dependências:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s database/import_tickets/tests -v
+```
+
+Esses comandos são instruções de verificação, não evidência de homologação em Oracle. O registro de validação dos serviços documenta pendências de precisão do timestamp final de visitas e de configuração do fuso da sessão.
+
 ## Fluxos atendidos pela API
 
 - `checklist`: definições e checklists vinculados a visitas;
-- `membership`: opções de executores;
+- `membership`: opções de executores e solicitantes;
 - `organization`: hierarquia de business, region e location;
-- `request`: home, dashboard, kanban, listagem e criação de solicitações;
+- `request`: home, dashboard, kanban, paginação, listagem/criação de solicitações, alteração de status e relatório PDF;
 - `request-task`: criação/edição de visitas e mídia;
 - `service-catalog`: catálogo, formulário dinâmico e mídia de solicitações.

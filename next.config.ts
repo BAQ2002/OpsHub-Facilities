@@ -1,24 +1,22 @@
 import type { NextConfig } from "next";
-import { hostname, networkInterfaces } from "node:os";
 
 const backendUrl = (process.env.BACKEND_API_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
 const configuredDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
-const localNetworkOrigins = Object.values(networkInterfaces())
-  .flatMap((interfaces) => interfaces ?? [])
-  .filter((networkInterface) => networkInterface.family === "IPv4")
-  .map((networkInterface) => networkInterface.address);
-const allowedDevOrigins = [
-  "localhost",
-  hostname(),
-  ...localNetworkOrigins,
-  ...configuredDevOrigins,
-].filter((origin, index, origins) => origins.indexOf(origin) === index);
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins,
+  allowedDevOrigins: configuredDevOrigins,
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: "/:path*", headers: [
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "Referrer-Policy", value: "same-origin" },
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+    ] }];
+  },
   async redirects() {
     return [
       { source: "/", destination: "/pages/home", permanent: true },
@@ -49,7 +47,6 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: "30mb",
-      allowedOrigins: configuredDevOrigins,
     },
   },
 };

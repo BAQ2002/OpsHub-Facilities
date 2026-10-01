@@ -15,8 +15,8 @@ Na raiz do repositório, instale as dependências no ambiente Python do projeto:
 .\.venv\Scripts\python.exe -m pip install -r database/import_tickets/requirements.txt
 
 .\.venv\Scripts\python.exe -m database.import_tickets `
-  "C:\Users\anton\OneDrive\Desktop\report-tickets-01.01.2026 - 30.06.2026.xlsx" `
-  "C:\Users\anton\OneDrive\Desktop\report-tickets-01.07.2026 - 31.12.2026.xlsx"
+  "C:\importacao\report-tickets-01.01.2026 - 30.06.2026.xlsx" `
+  "C:\importacao\report-tickets-01.07.2026 - 31.12.2026.xlsx"
 ```
 
 Saídas em `output/`, ignoradas pelo Git:
@@ -256,3 +256,7 @@ Os testes cobrem interpretação, conflitos, duplicidades, preservação de dado
 idempotência, proteção contra alterações no destino e rollback simulado.
 A prévia foi exercitada com os dois relatórios de 2026. Persistência e locks ainda
 precisam ser homologados em Oracle; os testes não substituem essa homologação.
+
+## Implantação
+
+Ferramenta administrativa: não é necessária no servidor web. Execute em ambiente restrito, com backup e credenciais separadas das usadas pela aplicação. Consulte o [guia de implantação](../../docs/deployment.md).

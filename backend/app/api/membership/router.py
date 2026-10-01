@@ -7,5 +7,6 @@ router = APIRouter()
 
 
 @router.get("/executors", response_model=list[MemberSummary])
+@router.get("/requesters", response_model=list[MemberSummary])
 def list_executors(connection: DatabaseConnection = Depends(get_connection)):
     return get_executor_options(connection)

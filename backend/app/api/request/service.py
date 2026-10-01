@@ -1,6 +1,6 @@
 import base64
 from datetime import date, datetime, time, timedelta
-from ...database import DatabaseConnection, settings, sql, encode_json
+from ...database import DatabaseConnection, sql, encode_json
 from .schemas import CreateRequest
 from ..entities import BoardEntities, BoardRequestEntities, RequestContext, RequestStatusEntity
 
@@ -82,7 +82,12 @@ def create_request(connection: DatabaseConnection, data: CreateRequest) -> int:
     WHERE DESCRIPTION IN ('Em aberto','Aberto')
     ORDER BY ID
     FETCH FIRST 1 ROW ONLY""")).scalar_one_or_none() or 1
-    requester = settings.current_member_id
+    requester = connection.execute(
+        sql("SELECT ID FROM OHFC_MEMBERSHIP WHERE ID=:member"),
+        {"member": data.requesterId},
+    ).scalar_one_or_none()
+    if requester is None:
+        raise ValueError("Solicitante não encontrado.")
     request_id = connection.insert_id(
         sql("""INSERT INTO OHFC_REQUEST (
     ID_REQUEST_TYPE,

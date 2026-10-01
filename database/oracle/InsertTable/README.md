@@ -58,3 +58,7 @@ Teste de execução no Oracle continua necessário. O manifest informa contagens
 | OHFC_CHECKLIST_FIELD_VALUE | 0 |
 | OHFC_IMPORT_TICKET | 1675 |
 | OHFC_IMPORT_SNAPSHOT | 1675 |
+
+## Proteção dos dados
+
+Estas cargas contêm dados operacionais e pessoais; mantenha o repositório e os backups restritos. Não inclua esta pasta no diretório público do servidor web. A remoção de arquivos da versão atual não apaga cópias do histórico Git. Consulte o [guia de implantação](../../../docs/deployment.md).

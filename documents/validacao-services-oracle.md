@@ -39,7 +39,7 @@ Uso de `python-oracledb` Thin e pool; binds nomeados; conversão de bool para in
 
 ## Arquivo de referência fora da API ativa
 
-`backend/modeloexistente/service.py` também foi inspecionado. Ele contém SQL Oracle de outro domínio, usa `app.db.fetch_all_dicts` e tabelas externas ADMSCOL/ADMN4, e não é registrado pelo router ativo. Não deve ser confundido com os seis serviços Facilities. Seu uso exigiria validar dependências externas; contém também listas IN montadas por interpolação e filtros BETWEEN cujo limite final à meia-noite não cobre o último dia inteiro quando a coluna possui hora. Não foi homologado.
+O exemplo `backend/modeloexistente/service.py` foi removido na preparação de produção. Registro histórico da inspeção: Ele contém SQL Oracle de outro domínio, usa `app.db.fetch_all_dicts` e tabelas externas ADMSCOL/ADMN4, e não é registrado pelo router ativo. Não deve ser confundido com os seis serviços Facilities. Seu uso exigiria validar dependências externas; contém também listas IN montadas por interpolação e filtros BETWEEN cujo limite final à meia-noite não cobre o último dia inteiro quando a coluna possui hora. Não foi homologado.
 
 ## Testes e limites
 

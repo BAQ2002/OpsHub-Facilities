@@ -1,5 +1,6 @@
 import os
 import unittest
+from pydantic import ValidationError
 
 
 
@@ -21,15 +22,35 @@ class WriteConnection(RecordingConnection):
 
 class PersistenceColumnTests(unittest.TestCase):
     def test_create_request_uses_membership_column(self):
-        connection = WriteConnection([[{"id_business": 1}], [{"id": 1}], [{"id": 42}]])
+        connection = WriteConnection([[{"id_business": 1}], [{"id": 1}], [{"id": 7}], [{"id": 42}]])
         result = create_request(connection, CreateRequest(
             businessId=1, regionId=2, locationId=3, serviceTypeId=4,
-            description="Teste", additionalFields=[],
+            requesterId=7, description="Teste", additionalFields=[],
         ))
         self.assertEqual(result, 42)
-        self.assertIn("ID_MEMBERSHIP_REQUESTER", connection.statements[2])
-        self.assertNotIn("ID_MEMBER_REQUESTER", connection.statements[2])
+        self.assertIn("ID_MEMBERSHIP_REQUESTER", connection.statements[3])
+        self.assertNotIn("ID_MEMBER_REQUESTER", connection.statements[3])
+        self.assertEqual(connection.parameters[2], {"member": 7})
+        self.assertEqual(connection.parameters[3]["member"], 7)
         self.assertTrue(connection.committed)
+
+    def test_requester_is_required_and_must_be_a_positive_integer(self):
+        fields = dict(businessId=1, regionId=2, locationId=3, serviceTypeId=4,
+                      description="Teste", additionalFields=[])
+        for extra in ({}, {"requesterId": 0}, {"requesterId": -1},
+                      {"requesterId": "7"}, {"requesterId": True}):
+            with self.subTest(extra=extra), self.assertRaises(ValidationError):
+                CreateRequest(**fields, **extra)
+
+    def test_unknown_requester_does_not_insert_or_commit(self):
+        connection = WriteConnection([[{"id_business": 1}], [{"id": 1}], []])
+        with self.assertRaisesRegex(ValueError, "Solicitante não encontrado"):
+            create_request(connection, CreateRequest(
+                businessId=1, regionId=2, locationId=3, serviceTypeId=4,
+                requesterId=999, description="Teste", additionalFields=[],
+            ))
+        self.assertFalse(connection.committed)
+        self.assertFalse(any("INSERT" in statement for statement in connection.statements))
 
     def test_create_and_update_visit_use_physical_dates_and_relationship(self):
         data = VisitPayload(requestId=42, description="Visita",

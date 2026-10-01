@@ -1,15 +1,14 @@
 from pydantic import BaseModel, Field
 from ..entities import RequestContext
+from ..uploads import UploadedFile
 
 
 class UpdateRequestStatus(BaseModel):
     statusId: int = Field(gt=0, strict=True)
 
 
-class FileValue(BaseModel):
-    fileName: str
-    mimeType: str
-    contentBase64: str
+class FileValue(UploadedFile):
+    pass
 
 
 class AdditionalValue(BaseModel):
@@ -18,6 +17,7 @@ class AdditionalValue(BaseModel):
 
 
 class CreateRequest(BaseModel):
+    requesterId: int = Field(gt=0, strict=True)
     businessId: int
     regionId: int
     locationId: int

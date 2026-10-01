@@ -82,6 +82,7 @@ function parseCreateRequestInput(formData: FormData): CreateRequestInput {
   }
 
   return {
+    requesterId: getPositiveInteger(formData, "requester_id"),
     businessId: getPositiveInteger(formData, "business_id"),
     regionId: getPositiveInteger(formData, "region_id"),
     locationId: getPositiveInteger(formData, "location_id"),
