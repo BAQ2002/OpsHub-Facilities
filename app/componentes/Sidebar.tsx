@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import wsLogo from "@/app/assets/WS_logo.png";
 import styles from "./Sidebar.module.css";
 
 const facilitiesSubItems = [
@@ -32,6 +34,7 @@ export default function Sidebar() {
   return (
     <aside data-ui="sidebar" className={styles.sidebar}>
       <div data-ui="sidebar-header" className={styles.sidebarHeader}>
+        <Image src={wsLogo} alt="Wilson Sons" className={styles.logo} sizes="176px" />
         <button className={styles.collapseButton} type="button" aria-label="Recolher menu">
           <svg
             width="18"

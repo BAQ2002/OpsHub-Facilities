@@ -300,7 +300,7 @@ export default function FacilitiesMap({
           <div
             data-ui="facilities-map-markers"
             className="pointer-events-none absolute inset-0"
-            aria-label="Localização das requests programadas"
+            aria-label="Localização das solicitações programadas"
           >
             {markers.map((marker) => (
               <span

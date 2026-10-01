@@ -134,6 +134,7 @@ export type RequestBoardPageViewModel = {
 };
 
 export type RequestBoardWorkspaceData = {
+  filterOptions: { businesses: MembershipOption[]; serviceCategories: MembershipOption[] };
   initialData: RequestBoardPageViewModel;
   executors: MembershipOption[];
   checklistDefinitions: ChecklistDefinition[];

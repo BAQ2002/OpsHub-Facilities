@@ -12,12 +12,20 @@
   height: 142px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 12px;
   padding: 0 14px;
   border-bottom: 1px solid #e3e8ef;
 }
 
+.logo {
+  width: 176px;
+  height: auto;
+  object-fit: contain;
+}
+
 .collapseButton {
+  flex-shrink: 0;
   width: 36px;
   height: 36px;
   border: 1px solid #dbe3ee;

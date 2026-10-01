@@ -48,7 +48,7 @@ export default function ActivityRequestForm({
           <Link
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl leading-none text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
             href="/pages/solicitar-atividade"
-            aria-label="Voltar para nova request"
+            aria-label="Voltar para nova solicitação"
           >
             ‹
           </Link>
@@ -96,7 +96,7 @@ export default function ActivityRequestForm({
               type="submit"
             >
               <SaveIcon />
-              Salvar request
+              Salvar solicitação
             </button>
           </div>
         </form>

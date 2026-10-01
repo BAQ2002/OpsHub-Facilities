@@ -38,6 +38,7 @@ export type ActivityTrackingData = {
   filterOptions: {
     businesses: { id: number; name: string }[];
     serviceCategories: { id: number; name: string }[];
+    statuses: { id: number; name: string }[];
   };
 };
 
@@ -45,7 +46,8 @@ export type ActivityTrackingFilters = {
   startDate: string;
   endDate: string;
   businessId?: number;
-  serviceCategoryId?: number;
+  serviceCategoryIds?: number[];
+  statusIds?: number[];
 };
 
 export type ActivityTrackingPageViewModel = ActivityTrackingData & {

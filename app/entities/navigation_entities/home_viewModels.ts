@@ -85,7 +85,6 @@ export type HomePageViewModel = {
   activityMarkers: ActivityMarkerViewModel[];
   plannedRequestFilterOptions: PlannedRequestFilterViewModel[];
   averageHandlingTimeClock: HandlingTimeClockViewModel;
-  activityRecords: ActivityRecord[];
   categoryStyleMap: Record<string, ActivityCategoryStyle>;
 };
 
@@ -98,4 +97,20 @@ export type HomeMetrics = {
     completed: number;
   }>;
   handlingMinutes: number[];
+};
+
+export type ActivityMapRecord = {
+  id: string;
+  categoryId: number | null;
+  category: string;
+  location: string;
+  x: number;
+  y: number;
+};
+
+export type ActivityPage = {
+  items: ActivityRecord[];
+  total: number;
+  page: number;
+  pageSize: number;
 };

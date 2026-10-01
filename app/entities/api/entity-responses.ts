@@ -76,5 +76,5 @@ export type BoardEntities = {
 
 export type ActivityTrackingResponse = Omit<ActivityTrackingData, "filterOptions" | "categoryData"> & {
   categoryData: { categoryId: number; label: string; value: number }[];
-  filterOptions: { businesses: BusinessEntity[]; serviceCategories: ServiceCategoryEntity[] };
+  filterOptions: { businesses: BusinessEntity[]; serviceCategories: ServiceCategoryEntity[]; statuses: { id: number; name: string }[] };
 };

@@ -1,4 +1,9 @@
 from pydantic import BaseModel, Field
+from ..entities import RequestContext
+
+
+class UpdateRequestStatus(BaseModel):
+    statusId: int = Field(gt=0, strict=True)
 
 
 class FileValue(BaseModel):
@@ -32,3 +37,24 @@ class EquipmentCount(BaseModel):
 class HomeMetrics(BaseModel):
     equipment: list[EquipmentCount]
     handlingMinutes: list[float]
+
+
+class ActivityPage(BaseModel):
+    items: list[RequestContext]
+    total: int
+    page: int
+    pageSize: int
+
+
+class ActivityMapRecord(BaseModel):
+    id: str
+    categoryId: int | None
+    category: str
+    location: str
+    x: float
+    y: float
+
+
+class ActivityBusinessCount(BaseModel):
+    name: str
+    count: int

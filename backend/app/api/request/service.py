@@ -9,6 +9,25 @@ from ..projections import projection
 CLOSED = ("Concluída", "Concluida", "Cancelada")
 
 
+def update_request_status(connection: DatabaseConnection, request_id: int, status_id: int):
+    try:
+        current = connection.execute(sql("""SELECT ID_REQUEST_STATUS FROM OHFC_REQUEST
+            WHERE ID=:request_id FOR UPDATE"""), {"request_id": request_id}).scalar_one_or_none()
+        if current is None:
+            raise LookupError("Solicitação não encontrada.")
+        target = connection.execute(sql("SELECT ID FROM OHFC_REQUEST_STATUS WHERE ID=:status_id"),
+                                    {"status_id": status_id}).scalar_one_or_none()
+        if target is None:
+            raise ValueError("Status da solicitação inválido.")
+        if current != status_id:
+            connection.execute(sql("""UPDATE OHFC_REQUEST SET ID_REQUEST_STATUS=:status_id
+                WHERE ID=:request_id"""), {"request_id": request_id, "status_id": status_id})
+        connection.commit()
+    except Exception:
+        connection.rollback()
+        raise
+
+
 # Full records remain distinct from page view models. Keep optional joins nullable.
 REQUEST_SELECT = "SELECT " + ", ".join([
     projection("OHFC_REQUEST", "R", "request"),
@@ -155,6 +174,12 @@ def get_activities(
     statuses: list[str],
     businesses: list[int],
 ) -> list[RequestContext]:
+    where, params = activity_filters(start, end, statuses, businesses)
+    query = REQUEST_SELECT + where + f" ORDER BY ({STATUS_DATE}),R.ID"
+    return [RequestContext.model_validate(row) for row in connection.execute(query, params).mappings()]
+
+
+def activity_filters(start: date, end: date, statuses: list[str], businesses: list[int]):
     params = {"range_start": datetime.combine(start, time.min),
               "range_end": datetime.combine(end + timedelta(days=1), time.min)}
     filters = [f"({STATUS_DATE}) >= :range_start AND ({STATUS_DATE}) < :range_end"]
@@ -170,9 +195,58 @@ def get_activities(
                     keys.append(":" + key)
                 groups.append(column + " IN (" + ",".join(keys) + ")")
             filters.append("(" + " OR ".join(groups) + ")")
-    query = REQUEST_SELECT + "WHERE " + " AND ".join(filters) + f" ORDER BY ({STATUS_DATE}),R.ID"
-    return [RequestContext.model_validate(row) for row in connection.execute(query, params).mappings()]
+    return "WHERE " + " AND ".join(filters), params
 
+
+# Only joins required by date/status and business filters; no full entity projection.
+ACTIVITY_FROM = """
+    FROM OHFC_REQUEST R
+    JOIN OHFC_REQUEST_STATUS RS ON RS.ID=R.ID_REQUEST_STATUS
+    LEFT JOIN OHFC_LOCATION L ON L.ID=R.ID_LOCATION
+    LEFT JOIN OHFC_REGION RG ON RG.ID=L.ID_REGION
+    LEFT JOIN OHFC_BUSINESS B ON B.ID=RG.ID_BUSINESS
+"""
+
+
+def get_activity_page(connection: DatabaseConnection, start: date, end: date,
+                      statuses: list[str], business_name: str | None, page: int, page_size: int):
+    where, params = activity_filters(start, end, statuses, [])
+    if business_name is not None:
+        where += " AND COALESCE(B.NAME,'Não informado')=:business_name"
+        params["business_name"] = business_name
+    total = int(connection.execute("SELECT COUNT(*) TOTAL " + ACTIVITY_FROM + where, params).scalar_one())
+    page = min(max(1, page), max(1, (total + page_size - 1) // page_size))
+    items = []
+    if total:
+        page_params = {**params, "page_offset": (page - 1) * page_size, "page_size": page_size}
+        query = (REQUEST_SELECT + where + f" ORDER BY ({STATUS_DATE}),R.ID"
+                 + " OFFSET :page_offset ROWS FETCH NEXT :page_size ROWS ONLY")
+        items = [RequestContext.model_validate(row) for row in connection.execute(query, page_params).mappings()]
+    return {"items": items, "total": total, "page": page, "pageSize": page_size}
+
+
+def get_activity_map(connection: DatabaseConnection, start: date, end: date, statuses: list[str]):
+    where, params = activity_filters(start, end, statuses, [])
+    query = """SELECT R.ID, SC.ID CATEGORY_ID, SC.NAME CATEGORY, L.NAME LOCATION,
+        L.LOCATION_X X, L.LOCATION_Y Y
+        FROM OHFC_REQUEST R
+        JOIN OHFC_REQUEST_STATUS RS ON RS.ID=R.ID_REQUEST_STATUS
+        LEFT JOIN OHFC_LOCATION L ON L.ID=R.ID_LOCATION
+        LEFT JOIN OHFC_SERVICE_TYPE ST ON ST.ID=R.ID_SERVICE_TYPE
+        LEFT JOIN OHFC_SERVICE_CATEGORY SC ON SC.ID=ST.ID_SERVICE_CATEGORY
+    """ + where + " ORDER BY R.ID"
+    return [{"id": str(row["id"]), "categoryId": row["category_id"],
+             "category": row["category"] or "Não informado", "location": row["location"] or "Não informado",
+             "x": row["x"] or 0, "y": row["y"] or 0}
+            for row in connection.execute(query, params).mappings()]
+
+
+def get_activity_business_counts(connection: DatabaseConnection, start: date, end: date, statuses: list[str]):
+    where, params = activity_filters(start, end, statuses, [])
+    query = ("SELECT COALESCE(B.NAME,'Não informado') NAME, COUNT(*) TOTAL " + ACTIVITY_FROM + where
+             + " GROUP BY COALESCE(B.NAME,'Não informado') ORDER BY NAME")
+    return [{"name": row["name"], "count": row["total"]}
+            for row in connection.execute(query, params).mappings()]
 
 
 def get_home_metrics(connection: DatabaseConnection, start: date, end: date):
@@ -214,12 +288,34 @@ def get_home_metrics(connection: DatabaseConnection, start: date, end: date):
     }
 
 
+def selection_filter(column, prefix, values, params):
+    groups = []
+    values = list(dict.fromkeys(values or []))
+    for offset in range(0, len(values), 1000):
+        keys = []
+        for index, value in enumerate(values[offset:offset + 1000], offset):
+            key = f"{prefix}_{index}"
+            params[key] = value
+            keys.append(":" + key)
+        groups.append(column + " IN (" + ",".join(keys) + ")")
+    return " AND (" + " OR ".join(groups) + ")" if groups else ""
+
+
+def get_filter_options(connection: DatabaseConnection):
+    return {
+        "businesses": [dict(row) for row in connection.execute(sql("SELECT ID, COALESCE(NAME,'Não informado') NAME FROM OHFC_BUSINESS ORDER BY NAME")).mappings()],
+        "serviceCategories": [dict(row) for row in connection.execute(sql("SELECT ID, COALESCE(NAME,'Não informado') NAME FROM OHFC_SERVICE_CATEGORY ORDER BY NAME")).mappings()],
+    }
+
+
 def get_tracking(
     connection: DatabaseConnection,
     start: date,
     end: date,
     business: int | None,
     category: int | None,
+    category_ids: list[int] | None = None,
+    status_ids: list[int] | None = None,
 ):
     p = {
         "range_start": datetime.combine(start, time.min),
@@ -228,6 +324,8 @@ def get_tracking(
         "category": category,
         "closed_0": CLOSED[0], "closed_1": CLOSED[1], "closed_2": CLOSED[2],
     }
+    selected = selection_filter("ST.ID_SERVICE_CATEGORY", "category_id", category_ids, p)
+    selected += selection_filter("R.ID_REQUEST_STATUS", "status_id", status_ids, p)
     joins = """    FROM OHFC_REQUEST R
         JOIN OHFC_REQUEST_STATUS RS
             ON RS.ID=R.ID_REQUEST_STATUS
@@ -239,7 +337,7 @@ def get_tracking(
             ON L.ID=R.ID_LOCATION
         LEFT JOIN OHFC_REGION RG
             ON RG.ID=L.ID_REGION"""
-    where = """    WHERE R.CREATED_DATE>=:range_start AND R.CREATED_DATE<:range_end AND (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business) AND (CAST(:category AS INTEGER) IS NULL OR SC.ID=:category)"""
+    where = """    WHERE R.CREATED_DATE>=:range_start AND R.CREATED_DATE<:range_end AND (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business) AND (CAST(:category AS INTEGER) IS NULL OR SC.ID=:category)""" + selected
     summary = (
         connection.execute(
             sql(
@@ -334,7 +432,7 @@ def get_tracking(
     WHERE (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business)
         AND (CAST(:category AS INTEGER) IS NULL OR ST.ID_SERVICE_CATEGORY=:category)
         AND ((R.FINISHED_DATE>=:range_start AND R.FINISHED_DATE<:range_end)
-            OR (R.STARTED_DATE>=:range_start AND R.STARTED_DATE<:range_end))"""), p).mappings().one()
+            OR (R.STARTED_DATE>=:range_start AND R.STARTED_DATE<:range_end))""" + selected), p).mappings().one()
     return {
         "averageHandlingMinutes": timing["handling_minutes"],
         "averageStartMinutes": timing["start_minutes"],
@@ -387,16 +485,20 @@ def get_tracking(
         "filterOptions": {
             "businesses": [dict(r) for r in businesses],
             "serviceCategories": [dict(r) for r in categories],
+            "statuses": [dict(r) for r in connection.execute(sql("SELECT ID, COALESCE(DESCRIPTION,'Não informado') NAME FROM OHFC_REQUEST_STATUS ORDER BY ID")).mappings()],
         },
     }
 
 
 def get_board(
     connection: DatabaseConnection, start: date, end: date, search: str | None = None,
+    business_id: int | None = None, category_ids: list[int] | None = None,
 ) -> BoardEntities:
     statuses = [RequestStatusEntity.model_validate(row) for row in connection.execute(
         "SELECT ID, DESCRIPTION FROM OHFC_REQUEST_STATUS ORDER BY ID"
     ).mappings()]
+    params = {"business": business_id}
+    selected = selection_filter("ST.ID_SERVICE_CATEGORY", "category_id", category_ids, params)
     rows = connection.execute(sql(REQUEST_SELECT + """WHERE
         R.CREATED_DATE>=:range_start AND R.CREATED_DATE<:range_end
         AND (CAST(:search AS VARCHAR2(4000)) IS NULL
@@ -405,7 +507,9 @@ def get_board(
             OR UPPER(M.NAME) LIKE UPPER(:search_pattern)
             OR UPPER(L.NAME) LIKE UPPER(:search_pattern)
             OR UPPER(R.DESCRIPTION) LIKE UPPER(:search_pattern))
-        ORDER BY R.CREATED_DATE,R.ID"""), {
+        AND (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business)
+        """ + selected + " ORDER BY R.CREATED_DATE,R.ID"), {
+        **params,
         "range_start": datetime.combine(start, time.min), "range_end": datetime.combine(end + timedelta(days=1), time.min),
         "search": search.strip() if search and search.strip() else None,
         "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,

@@ -3,7 +3,7 @@ import ActivityRequestForm from "@/app/componentes/ActivityRequestForm";
 
 const patioFields = [
   {
-    label: "Business",
+    label: "Unidade de negócio",
     name: "business_id",
     type: "select" as const,
     options: ["Unidade 1", "Unidade 2", "Unidade 3"].map((value) => ({ label: value, value })),
@@ -45,7 +45,7 @@ const patioFields = [
     fullWidth: true,
   },
   {
-    label: "Request attachment",
+    label: "Anexo da solicitação",
     name: "request_attachment",
     type: "file" as const,
     fullWidth: true,
@@ -62,9 +62,9 @@ const patioFields = [
 export default function PatioRequestPage() {
   return (
     <ActivityRequestForm
-      title="Nova request: Atividade de Pátio"
-      subtitle="request_type Atividade de Pátio"
-      sectionTitle="Dados da request"
+      title="Nova solicitação: Atividade de Pátio"
+      subtitle="Tipo de solicitação: Atividade de Pátio"
+      sectionTitle="Dados da solicitação"
       fields={patioFields}
       action={createActivityRequestAction}
     />

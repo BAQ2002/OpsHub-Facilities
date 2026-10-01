@@ -1,5 +1,6 @@
 "use client";
 
+import { MultiSelectFilter, SelectField } from "../../_components/TrackingFilters";
 import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ActivityTrackingFilters, ChartItem, ActivityTrackingPageViewModel } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
@@ -30,10 +31,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
               Administração
             </p>
             <h1 className="mt-2 text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
-              Acompanhamento de requests
+              Acompanhamento de solicitações
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-              Monitore registros da tabela request por status, service_category e evolução mensal.
+              Monitore solicitações por status, categoria de serviço e evolução mensal.
             </p>
           </div>
 
@@ -50,13 +51,14 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <TrackingTabs active="dashboard" />
         </div>
 
-        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
+        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de solicitações">
           <div data-ui="activity-dashboard-filter-fields" className="flex flex-wrap items-center gap-2">
             <div className="flex flex-wrap items-center gap-2">
               <DateRange commitOnBlur {...filters} onChange={(range: DateRangeValue) => update({ ...filters, ...range })} />
             </div>
-            <SelectField label="Business" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
-            <SelectField label="Service category" name="serviceCategoryId" value={filters.serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} onChange={(serviceCategoryId) => update({ ...filters, serviceCategoryId })} />
+            <SelectField label="Unidade de negócio" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
+            <MultiSelectFilter label="Categorias de serviço" placeholder="Todas as categorias" options={filterOptions.serviceCategories} value={filters.serviceCategoryIds ?? []} onChange={(serviceCategoryIds) => update({ ...filters, serviceCategoryIds })} />
+            <MultiSelectFilter label="Status" placeholder="Todos os status" options={filterOptions.statuses} value={filters.statusIds ?? []} onChange={(statusIds) => update({ ...filters, statusIds })} />
 
             <span role="status" className="text-xs text-slate-500">{isPending ? "Atualizando..." : ""}</span>
             {error && <p role="alert" className="w-full text-xs text-red-600">{error}</p>}
@@ -88,10 +90,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
         </div>
 
         <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
-          <ChartCard title="Requests por service_category">
+          <ChartCard title="Solicitações por categorias de serviços">
             <DonutChart data={categoryData} />
           </ChartCard>
-          <ChartCard title="Requests por request_status">
+          <ChartCard title="Solicitações por status">
             <DonutChart data={statusData} />
           </ChartCard>
         </section>
@@ -100,7 +102,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
-                Requests por mês
+                Solicitações por mês
               </h2>
               <p className="mt-1 text-xs text-slate-500">Comparativo mensal no período selecionado.</p>
             </div>
@@ -125,34 +127,6 @@ function TimeCard({ title, minutes, detail }: { title: string; minutes: number; 
       <HandlingTimeDisplay title={title} displayValue={`${String(hours).padStart(2, "0")}:${remainder}`} caption={`${hours}h ${remainder}min`} />
       <p className="mt-2 min-h-8 text-center text-xs text-slate-500">{detail}</p>
     </article>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o componente SelectField com os dados recebidos.
- * Durante o fluxo, aciona {@link toString}, {@link map}.
- *
- * @param props Dados necessários para executar esta função.
- * @returns O elemento React que representa esta interface.
- */
-
-function SelectField({ label, name, value, placeholder, options, onChange }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[]; onChange?: (value?: number) => void }) {
-  return (
-    <label className="block w-full min-w-0 sm:w-[190px]">
-      <span className="sr-only">{label}</span>
-      <select
-        className="h-[30px] w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-950 shadow-sm outline-none transition focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
-        name={name}
-        value={value?.toString() ?? ""}
-        onChange={(event) => onChange?.(event.target.value ? Number(event.target.value) : undefined)}
-        aria-label={label}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
-      </select>
-    </label>
   );
 }
 
@@ -209,7 +183,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   return (
     <div data-ui="donut-chart" className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
       <div className="relative mx-auto h-[210px] w-[210px]">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} requests`}>
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} solicitações`}>
           <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#eef2f7" strokeWidth="6" />
           {segments.map((item) => (
             <circle
@@ -228,7 +202,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
           <strong className="text-3xl font-bold text-slate-950">{total}</strong>
-          <span className="mt-1 text-xs font-medium text-slate-500">requests</span>
+          <span className="mt-1 text-xs font-medium text-slate-500">solicitações</span>
         </div>
       </div>
 
@@ -286,12 +260,12 @@ function MonthlyBarChart({
                   <span
                     className="w-4 rounded-t-md bg-orange-500"
                     style={{ height: `${(item.open / maxMonthlyValue) * 100}%` }}
-                    title={`${item.open} requests abertos`}
+                    title={`${item.open} solicitações abertas`}
                   />
                   <span
                     className="w-4 rounded-t-md bg-lime-500"
                     style={{ height: `${(item.closed / maxMonthlyValue) * 100}%` }}
-                    title={`${item.closed} requests fechados`}
+                    title={`${item.closed} solicitações fechadas`}
                   />
                 </div>
                 <span className="text-center text-xs font-medium text-slate-500">{item.month}</span>

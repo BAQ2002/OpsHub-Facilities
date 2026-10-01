@@ -4,6 +4,10 @@ import { useActionState, useEffect, useId, useMemo, useRef, useState, useTransit
 import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
+import { MultiSelectFilter, SelectField } from "../../_components/TrackingFilters";
+import type { RequestBoardFilters } from "@/app/services/request-board-service";
+import type { RequestBoardWorkspaceData } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
+import { RequestStatusSelect } from "./RequestStatusSelect";
 import type { ChecklistDefinition, ChecklistSubmission, RequestBoardCardViewModel, RequestBoardColumnViewModel, RequestBoardPageViewModel } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 
 import {
@@ -17,8 +21,11 @@ import {
 
 type Executor = { id: number; name: string };
 
-export function MinhasSolicitacoes({ initialData, initialRange, executors, checklistDefinitions }: { initialData: RequestBoardPageViewModel; initialRange: DateRangeValue; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
-  const { data, filters, update, apply, isPending, error } = useAutomaticFilters({ ...initialRange, search: "" }, initialData, filterRequestBoard);
+export function MinhasSolicitacoes({ initialData, initialRange, executors, checklistDefinitions, filterOptions }: { filterOptions: RequestBoardWorkspaceData["filterOptions"]; initialData: RequestBoardPageViewModel; initialRange: DateRangeValue; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
+  const { data, filters, appliedFilters, update, apply, refresh, isPending, error } = useAutomaticFilters<RequestBoardFilters, RequestBoardPageViewModel>({ ...initialRange, search: "" }, initialData, filterRequestBoard);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState("");
+  const downloadLock = useRef(false);
   const [selectedStatusIds, setSelectedStatusIds] = useState<number[]>([]);
   const [showStatusFilters, setShowStatusFilters] = useState(false);
 
@@ -26,19 +33,57 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
     ? data.columns.filter((column) => selectedStatusIds.includes(column.id))
     : data.columns;
 
+  async function downloadReport() {
+    if (downloadLock.current) return;
+    downloadLock.current = true;
+    setIsDownloading(true);
+    setDownloadError("");
+    const params = new URLSearchParams({ start_date: appliedFilters.startDate, end_date: appliedFilters.endDate });
+    if (appliedFilters.businessId) params.set("business_id", String(appliedFilters.businessId));
+    if (appliedFilters.search?.trim()) params.set("search", appliedFilters.search.trim());
+    appliedFilters.serviceCategoryIds?.forEach((id) => params.append("service_category_ids", String(id)));
+    selectedStatusIds.forEach((id) => params.append("status_ids", String(id)));
+    try {
+      const response = await fetch(`/api/requests/report?${params}`, { cache: "no-store" });
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        throw new Error(typeof error?.error === "string" ? error.error : "Não foi possível gerar o relatório. Tente novamente.");
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `relatorio_chamados_${appliedFilters.startDate}_a_${appliedFilters.endDate}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch (error) {
+      setDownloadError(error instanceof Error ? error.message : "Não foi possível baixar o relatório.");
+    } finally {
+      downloadLock.current = false;
+      setIsDownloading(false);
+    }
+  }
+
   return (
     <section data-ui="requests-workspace-page" className="min-h-screen bg-white p-4 text-slate-700 md:p-6">
       <div data-ui="requests-workspace-content" className="mx-auto max-w-[1800px]">
         <div data-ui="requests-workspace-header" className="flex items-start justify-between border-b border-slate-300/70">
           <TrackingTabs active="requests" />
           <div className="flex overflow-hidden rounded-lg border border-blue-500 bg-white text-blue-600">
-            <IconButton label="Baixar chamados"><DownloadIcon /></IconButton>
+            <button type="button" onClick={downloadReport} disabled={isDownloading || isPending || JSON.stringify(filters) !== JSON.stringify(appliedFilters)} aria-busy={isDownloading} className="flex min-h-9 items-center justify-center gap-2 px-3 text-xs font-medium disabled:cursor-wait disabled:opacity-50"><DownloadIcon /><span>{isDownloading ? "Gerando relatório..." : "Baixar relatório"}</span></button>
             <IconButton label="Configurações" divider><SettingsIcon /></IconButton>
           </div>
         </div>
 
+        {downloadError && <p role="alert" className="mt-3 text-sm text-red-600">{downloadError}</p>}
+        <span role="status" className="sr-only">{isDownloading ? "Gerando relatório PDF. Aguarde o download." : ""}</span>
+
         <section data-ui="requests-workspace-filters" className="relative mt-5 flex flex-wrap items-center gap-2 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Busca de chamados">
           <DateRange commitOnBlur {...filters} onChange={(range) => update({ ...filters, ...range })} />
+          <SelectField label="Unidade de negócio" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
+          <MultiSelectFilter label="Categorias de serviço" placeholder="Todas as categorias" options={filterOptions.serviceCategories} value={filters.serviceCategoryIds ?? []} onChange={(serviceCategoryIds) => update({ ...filters, serviceCategoryIds })} />
           <label className="min-w-0 basis-full sm:basis-48 flex-1 text-xs font-medium text-slate-500">
             <span className="sr-only">Buscar chamado</span>
             <input className="h-[30px] w-full rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-950 shadow-sm outline-none focus:ring-2 focus:ring-teal-100" name="search" type="search" value={filters.search} onChange={(event) => update({ ...filters, search: event.target.value }, event.target.value ? 400 : 0)} onBlur={apply} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); apply(); } }} placeholder="BUSCAR CHAMADO" />
@@ -54,15 +99,11 @@ export function MinhasSolicitacoes({ initialData, initialRange, executors, check
           ) : null}
         </section>
 
-        <div data-ui="requests-workspace-view-options" className="my-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex overflow-hidden rounded border border-slate-300">
-            <button className="bg-blue-100 px-5 py-2 text-blue-600" type="button" aria-label="Visualização em quadro"><BoardIcon /></button>
-            <button className="border-l border-slate-300 bg-white px-5 py-2 text-slate-500" type="button" aria-label="Visualização em lista"><ListIcon /></button>
-          </div>
+        <div data-ui="requests-workspace-view-options" className="my-4 flex flex-wrap items-center justify-end gap-3">
           <label className="flex items-center gap-6 text-sm text-slate-500">Ordenar por:<select className="min-w-48 border-b border-slate-300 bg-transparent px-2 py-2 outline-none" defaultValue="recent"><option value="recent">Últimos Chamados</option></select></label>
         </div>
 
-        {visibleColumns.length > 0 ? <RequestBoard columns={visibleColumns} executors={executors} checklistDefinitions={checklistDefinitions} /> : <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">Nenhum chamado encontrado para os filtros informados.</p>}
+        {visibleColumns.length > 0 ? <RequestBoard columns={data.columns} visibleColumns={visibleColumns} onStatusChanged={refresh} executors={executors} checklistDefinitions={checklistDefinitions} /> : <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">Nenhum chamado encontrado para os filtros informados.</p>}
       </div>
     </section>
   );
@@ -73,8 +114,6 @@ const icon = "h-[18px] w-[18px]";
 function DownloadIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3" /></svg>; }
 function SettingsIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 13.5v-3l-2-.7-.7-1.7.9-1.9-2.1-2.1-1.9.9-1.7-.7-.7-2h-3l-.7 2-1.7.7-1.9-.9-2.1 2.1.9 1.9-.7 1.7-2 .7v3l2 .7.7 1.7-.9 1.9 2.1 2.1 1.9-.9 1.7.7.7 2h3l.7-2 1.7-.7 1.9.9 2.1-2.1-.9-1.9.7-1.7z"/></svg>; }
 function FilterIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg>; }
-function BoardIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><path d="M9 3v18m6-18v18"/></svg>; }
-function ListIcon() { return <svg className={icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18M3 14h18M9 4v16"/></svg>; }
 
 type Visit = RequestBoardCardViewModel["visits"][number];
 
@@ -87,19 +126,19 @@ type Visit = RequestBoardCardViewModel["visits"][number];
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
-export function RequestBoard({ columns, executors, checklistDefinitions }: { columns: RequestBoardColumnViewModel[]; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
+export function RequestBoard({ columns, visibleColumns = columns, onStatusChanged, executors, checklistDefinitions }: { columns: RequestBoardColumnViewModel[]; visibleColumns?: RequestBoardColumnViewModel[]; onStatusChanged: () => void; executors: Executor[]; checklistDefinitions: ChecklistDefinition[] }) {
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(null);
   const selectedRequest = columns.flatMap((column) => column.requests).find((request) => request.id === selectedRequestId) ?? null;
 
   return (
     <>
       <section data-ui="request-board" className="flex items-start gap-3 overflow-x-auto pb-6" aria-label="Quadro de chamados">
-        {columns.map((column) => (
+        {visibleColumns.map((column) => (
           <RequestColumn key={column.id} column={column} onOpen={(request) => setSelectedRequestId(request.id)} />
         ))}
       </section>
       {selectedRequest ? (
-        <RequestDetailsModal request={selectedRequest} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedRequestId(null)} />
+        <RequestDetailsModal request={selectedRequest} statuses={columns} statusId={columns.find((column) => column.requests.some((request) => request.id === selectedRequestId))!.id} onStatusChanged={onStatusChanged} executors={executors} checklistDefinitions={checklistDefinitions} onClose={() => setSelectedRequestId(null)} />
       ) : null}
     </>
   );
@@ -125,7 +164,7 @@ function RequestColumn({
     <section data-ui="request-board-column" className="min-w-[280px] flex-1 rounded-xl border border-slate-300 bg-[#f1f2f4] p-2 shadow-sm">
       <header data-ui="request-board-column-header" className="flex items-center justify-between gap-3 px-2 pb-2 pt-1">
         <h2 className="min-w-0 truncate text-sm font-semibold text-slate-800" title={column.title}>{column.title}</h2>
-        <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} requests`}>{column.requests.length}</span>
+        <span className="text-sm tabular-nums text-slate-500" aria-label={`${column.requests.length} solicitações`}>{column.requests.length}</span>
       </header>
       <div data-ui="request-board-column-list" className="max-h-[620px] space-y-2 overflow-y-auto">
         {column.requests.map((request) => (
@@ -137,7 +176,7 @@ function RequestColumn({
               <button
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-xl font-bold leading-none text-slate-500 transition hover:bg-slate-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 type="button"
-                aria-label={`Ver detalhes da request #${request.id}`}
+                aria-label={`Ver detalhes da solicitação #${request.id}`}
                 onClick={() => onOpen(request)}
               >
                 <span aria-hidden="true">•••</span>
@@ -163,7 +202,7 @@ function RequestColumn({
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
-function RequestDetailsModal({ request, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
+function RequestDetailsModal({ request, statuses, statusId, onStatusChanged, executors, checklistDefinitions, onClose }: { request: RequestBoardCardViewModel; statuses: RequestBoardColumnViewModel[]; statusId: number; onStatusChanged: () => void; executors: Executor[]; checklistDefinitions: ChecklistDefinition[]; onClose: () => void }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [showVisit, setShowVisit] = useState(false);
   const [showVisits, setShowVisits] = useState(false);
@@ -225,7 +264,7 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
         <div className="max-h-[90vh] overflow-y-auto">
         <header data-ui="request-details-header" className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da request</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Detalhes da solicitação</p>
             <h2 className="mt-1 text-xl font-bold text-slate-900" id="request-modal-title">
               #{request.id} - {request.serviceTypeName}
             </h2>
@@ -234,14 +273,15 @@ function RequestDetailsModal({ request, executors, checklistDefinitions, onClose
             ref={closeButtonRef}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
             type="button"
-            aria-label="Fechar detalhes da request"
+            aria-label="Fechar detalhes da solicitação"
             onClick={onClose}
           >
             ×
           </button>
         </header>
 
-        <div className="flex flex-wrap justify-end gap-3 border-b border-slate-200 px-5 py-3 sm:px-7">
+        <div className="flex flex-wrap items-center justify-end gap-3 border-b border-slate-200 px-5 py-5 sm:px-7">
+          <RequestStatusSelect key={`${request.id}:${statusId}`} requestId={request.id} statusId={statusId} statuses={statuses} onSaved={onStatusChanged} />
           <button
             className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
             type="button"
@@ -363,7 +403,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
         <div className="max-h-[90vh] overflow-y-auto">
         <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 sm:px-7">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{request.id}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Solicitação #{request.id}</p>
             <h2 className="mt-1 text-xl font-bold text-slate-900" id="visits-modal-title">Visitas vinculadas</h2>
           </div>
           <button
@@ -395,7 +435,7 @@ function VisitsModal({ request, executors, checklistDefinitions, onClose }: { re
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
               <p className="text-sm font-semibold text-slate-700">Nenhuma visita vinculada</p>
-              <p className="mt-1 text-sm text-slate-500">Esta request ainda não possui registros de visita.</p>
+              <p className="mt-1 text-sm text-slate-500">Esta solicitação ainda não possui registros de visita.</p>
             </div>
           )}
         </div>
@@ -578,7 +618,7 @@ function AddVisitModal({ requestId, executors, checklistDefinitions, onClose }: 
       <section className="max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="visit-modal-title">
         <div className="max-h-[92vh] overflow-y-auto">
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Request #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
+          <div><p className="text-xs font-semibold uppercase tracking-wider text-blue-600">Solicitação #{requestId}</p><h2 id="visit-modal-title" className="mt-1 text-xl font-bold text-slate-900">Adicionar visita</h2></div>
           <button type="button" className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-2xl text-slate-500 hover:bg-slate-100" aria-label="Fechar formulário de visita" onClick={onClose}>×</button>
         </header>
         <form action={formAction} className="space-y-5 p-6">

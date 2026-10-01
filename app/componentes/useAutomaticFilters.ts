@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 /** Debounces text edits and ignores results for superseded filters. */
 export function useAutomaticFilters<F, D>(initialFilters: F, initialData: D, query: (filters: F) => Promise<D>) {
   const [filters, setFilters] = useState(initialFilters);
+  const [appliedFilters, setAppliedFilters] = useState(initialFilters);
   const [data, setData] = useState(initialData);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -26,7 +27,10 @@ export function useAutomaticFilters<F, D>(initialFilters: F, initialData: D, que
     startTransition(async () => {
       try {
         const result = await query(next);
-        if (request === revision.current) setData(result);
+        if (request === revision.current) {
+          setData(result);
+          setAppliedFilters(next);
+        }
       } catch {
         if (request === revision.current) {
           submitted.current = "";
@@ -49,5 +53,11 @@ export function useAutomaticFilters<F, D>(initialFilters: F, initialData: D, que
     else apply();
   }
 
-  return { filters, data, error, isPending, update, apply };
+  function refresh() {
+    revision.current++;
+    submitted.current = "";
+    apply();
+  }
+
+  return { filters, appliedFilters, data, error, isPending, update, apply, refresh };
 }

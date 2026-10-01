@@ -76,7 +76,7 @@ class RequestServiceTests(unittest.TestCase):
                 [],
                 [],
                 [],
-                [{"handling_minutes": 0, "start_minutes": 0}],
+                [{"handling_minutes": 0, "start_minutes": 0}], [],
             ]
         )
 
@@ -103,20 +103,20 @@ class RequestServiceTests(unittest.TestCase):
         connection = RecordingConnection([
             [{"total": 12, "completed": 5, "open": 3, "in_progress": 2, "canceled": 2}],
             [], [], [], [], [],
-            [{"handling_minutes": 125, "start_minutes": 6001}],
+            [{"handling_minutes": 125, "start_minutes": 6001}], [],
         ])
         result = get_tracking(connection, date(2026, 9, 1), date(2026, 9, 30), 2, 3)
         self.assertEqual([card["value"] for card in result["summaryCards"]], ["12", "5", "3", "2", "2"])
         self.assertEqual(result["averageHandlingMinutes"], 125)
         self.assertEqual(result["averageStartMinutes"], 6001)
-        clocks = connection.statements[-1]
+        clocks = connection.statements[-2]
         self.assertNotIn("R.CREATED_DATE>=", clocks)
         self.assertIn("R.FINISHED_DATE>R.STARTED_DATE", clocks)
         self.assertIn("R.STARTED_DATE>=R.CREATED_DATE", clocks)
         self.assertIn("RG.ID_BUSINESS=:business", clocks)
         self.assertIn("ST.ID_SERVICE_CATEGORY=:category", clocks)
-        self.assertEqual(connection.parameters[-1]["business"], 2)
-        self.assertEqual(connection.parameters[-1]["category"], 3)
+        self.assertEqual(connection.parameters[-2]["business"], 2)
+        self.assertEqual(connection.parameters[-2]["category"], 3)
 
     def test_tracking_returns_category_identity_without_presentation_colors(self):
         connection = RecordingConnection([
@@ -126,7 +126,7 @@ class RequestServiceTests(unittest.TestCase):
                 {"category_id": 2, "label": "Refrigeração", "value": 2},
             ],
             [], [], [], [],
-            [{"handling_minutes": 0, "start_minutes": 0}],
+            [{"handling_minutes": 0, "start_minutes": 0}], [],
         ])
 
         result = get_tracking(connection, date(2026, 1, 1), date(2026, 9, 22), None, None)
@@ -136,6 +136,39 @@ class RequestServiceTests(unittest.TestCase):
             {"categoryId": 10, "label": "PMOC", "value": 3},
             {"categoryId": 2, "label": "Refrigeração", "value": 2},
         ])
+
+    def test_tracking_combines_multiple_categories_statuses_and_business_for_all_metrics(self):
+        connection = RecordingConnection([
+            [{"total": 0, "in_progress": 0, "completed": 0, "open": 0, "canceled": 0}],
+            [], [], [], [], [], [{"handling_minutes": 0, "start_minutes": 0}],
+            [{"id": 1, "name": "Em aberto"}, {"id": 2, "name": "Em andamento"}],
+        ])
+        result = get_tracking(connection, date(2026, 9, 1), date(2026, 9, 30), 7, None, [2, 10], [1, 2])
+        for index in [0, 1, 2, 3, 6]:
+            statement, params = connection.statements[index], connection.parameters[index]
+            self.assertIn("ST.ID_SERVICE_CATEGORY IN (:category_id_0,:category_id_1)", statement)
+            self.assertIn("R.ID_REQUEST_STATUS IN (:status_id_0,:status_id_1)", statement)
+            self.assertEqual([params["category_id_0"], params["category_id_1"]], [2, 10])
+            self.assertEqual([params["status_id_0"], params["status_id_1"]], [1, 2])
+            self.assertEqual(params["business"], 7)
+        self.assertEqual(len(result["filterOptions"]["statuses"]), 2)
+        self.assertNotIn("category_id_0", connection.statements[5])
+        self.assertNotIn("status_id_0", connection.statements[7])
+
+    def test_board_combines_business_categories_search_and_dates(self):
+        connection = RecordingConnection([[], []])
+        get_board(connection, date(2026, 9, 1), date(2026, 9, 30), "bomba", 7, [2, 10])
+        self.assertIn("RG.ID_BUSINESS=:business", connection.statements[1])
+        self.assertIn("ST.ID_SERVICE_CATEGORY IN (:category_id_0,:category_id_1)", connection.statements[1])
+        self.assertEqual(connection.parameters[1]["business"], 7)
+        self.assertEqual(connection.parameters[1]["category_id_1"], 10)
+        self.assertEqual(connection.parameters[1]["search_pattern"], "%bomba%")
+        self.assertEqual(connection.parameters[1]["range_end"].date(), date(2026, 10, 1))
+
+    def test_empty_category_selection_does_not_restrict_board(self):
+        connection = RecordingConnection([[], []])
+        get_board(connection, date(2026, 9, 1), date(2026, 9, 30), category_ids=[])
+        self.assertNotIn("ST.ID_SERVICE_CATEGORY IN", connection.statements[1])
 
     def test_board_applies_search_to_request_fields(self):
         connection = RecordingConnection([[], []])
