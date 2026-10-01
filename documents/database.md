@@ -6,7 +6,7 @@ Consulte também a [arquitetura da aplicação](../README.md), o [inventário do
 
 ## Configuração da conexão
 
-As configurações estão em [backend/app/database.py](../backend/app/database.py). Os arquivos `.env` e `.env.local` são lidos a partir do diretório de execução; inicie a aplicação na raiz do projeto. `.env.local` sobrepõe `.env`, e as variáveis do ambiente do processo têm precedência sobre ambos. Use [`.env.example`](../.env.example) como referência sem sobrescrever configurações locais existentes.
+As configurações estão em [backend/app/database.py](../backend/app/database.py). O arquivo `backend/.env` é localizado a partir do código, independentemente do diretório de execução. As variáveis do ambiente do processo têm precedência sobre o arquivo. Use [`backend/.env.example`](../backend/.env.example) como referência sem sobrescrever configurações locais existentes.
 
 | Variável | Padrão no código | Finalidade |
 |---|---|---|
@@ -106,7 +106,7 @@ Os testes de unidade verificam resultados, binds, mapeamentos, tipos, filtros, t
 
 ## Teste de integração opcional
 
-[O teste de integração](../backend/tests/test_oracle_integration.py) lê as variáveis abaixo diretamente do ambiente do processo. Apenas colocá-las em `.env.local` não habilita esse teste.
+[O teste de integração](../backend/tests/test_oracle_integration.py) lê as variáveis abaixo diretamente do ambiente do processo. Apenas colocá-las em `backend/.env` não habilita esse teste.
 
 | Variável | Finalidade / padrão |
 |---|---|

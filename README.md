@@ -191,7 +191,9 @@ O importador `database.import_tickets` interpreta relatórios XLSX. Por padrão,
 
 ## Configuração
 
-Copie [`.env.example`](.env.example) para `.env.local` somente se esse arquivo ainda não existir; caso já exista, atualize os campos necessários. Configure:
+Para Next.js e Python em máquinas diferentes, use os exemplos separados [`app/.env.example`](app/.env.example) e [`backend/.env.example`](backend/.env.example), seguindo o [procedimento para servidores separados](docs/deployment.md#nextjs-e-python-em-máquinas-diferentes). O endereço remoto é configurado por `BACKEND_API_URL` no servidor Next.js; não é necessário alterar as chamadas dos serviços.
+
+Copie `app/.env.example` para `app/.env` e `backend/.env.example` para `backend/.env` somente se os destinos ainda não existirem; caso já existam, atualize os campos necessários. Configure:
 
 - `ORACLE_USER`, `ORACLE_PASSWORD`, `ORACLE_DSN`: credenciais e serviço Oracle usados apenas pelo FastAPI;
 - `ORACLE_POOL_MIN`, `ORACLE_POOL_MAX`, `ORACLE_CALL_TIMEOUT_MS`: dimensionamento do pool e timeout de chamada; padrões de 1, 5 e 30000 ms, respectivamente;
@@ -202,13 +204,15 @@ Copie [`.env.example`](.env.example) para `.env.local` somente se esse arquivo a
 
 `DATABASE_URL` não é mais utilizada. A inicialização do FastAPI exige configuração Oracle válida. O Next.js não possui driver de banco nem fallback local para os dados.
 
-O backend lê `.env` e `.env.local` a partir do diretório de trabalho; execute os comandos na raiz do repositório. As credenciais Oracle pertencem ao backend e não devem ser expostas em variáveis `NEXT_PUBLIC_*`.
+O backend lê `backend/.env` usando um caminho absoluto baseado no código. O Next.js carrega `app/.env` explicitamente em `next.config.ts`, antes de definir os rewrites. Variáveis do processo têm precedência sobre os arquivos. Execute os comandos documentados na raiz do repositório. As credenciais Oracle pertencem ao backend e não devem ser expostas em variáveis `NEXT_PUBLIC_*`.
 
 Uploads aceitam até **10 MiB por arquivo**, com validação de base64 e formato do MIME na API. As Server Actions têm limite de corpo de **30 MB**; considere também a expansão de base64 e o limite agregado do proxy descrito no guia de implantação.
 
 A correlação visual das categorias na Home e no Dashboard está documentada em [Cores das categorias](docs/category-colors.md). A migração dos dados deve preservar os IDs usados nessa correlação.
 
 ## Execução
+
+Para executar somente o backend em Docker, configure `backend/.env` e rode `docker compose up -d --build backend` na raiz. O Compose publica a API na porta 8000 do servidor Docker, usando o Oracle externo. Veja [Backend Python em Docker](docs/deployment.md#backend-python-em-docker) para configuração de rede, logs e verificação.
 
 Prepare a instância e as tabelas conforme [o guia Oracle](documents/database.md). O Compose legado PostgreSQL foi removido; o Oracle é provisionado separadamente.
 
@@ -227,7 +231,7 @@ npm ci
 npm run dev
 ```
 
-Em Linux/macOS, o executável do ambiente virtual fica em `.venv/bin/python`. O frontend fica em `http://localhost:3000`; a documentação OpenAPI pode ser habilitada localmente com `API_DOCS_ENABLED=true` em `http://localhost:8000/docs`. Por padrão está desabilitada.
+Em Linux/macOS, o executável do ambiente virtual fica em `.venv/bin/python`. O frontend fica em `http://localhost:3000`; a documentação OpenAPI pode ser habilitada localmente com `API_DOCS_ENABLED=true` em `backend/.env`, em `http://localhost:8000/docs`. Por padrão está desabilitada.
 
 O desenvolvimento usa Webpack. Para testar Turbopack, execute `npm run dev:turbopack`. Se houver artefatos de uma árvore anterior de rotas, execute `npm run clean` antes de reiniciar o servidor.
 

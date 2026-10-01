@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      # Restrict access to this port to the Next.js server in the host firewall.
+      - "8000:8000"
+    volumes:
+      # Read by Pydantic at runtime; never copied into the image.
+      - type: bind
+        source: ./backend/.env
+        target: /app/backend/.env
+        read_only: true
+        bind:
+          create_host_path: false
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,8 @@
+# Only the application and its dependencies belong in the build context.
+**
+!requirements.txt
+!app/
+!app/**
+**/.env*
+**/__pycache__
+**/*.py[cod]

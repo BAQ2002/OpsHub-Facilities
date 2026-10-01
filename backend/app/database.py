@@ -1,5 +1,6 @@
 """Oracle 19c connections and application result contract."""
 import json
+from pathlib import Path
 from collections.abc import Generator, Iterator, Mapping
 from decimal import Decimal
 from typing import Any
@@ -18,7 +19,11 @@ class Settings(BaseSettings):
     oracle_pool_max: PositiveInt = 5
     oracle_call_timeout_ms: PositiveInt = 30000
     current_member_id: PositiveInt = 1
-    model_config = SettingsConfigDict(env_file=(".env", ".env.local"), extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parents[1] / ".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     @model_validator(mode="after")
     def pool_limits(self):
