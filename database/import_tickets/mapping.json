@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "source": "deskbee",
+  "excluded_categories": ["Dúvida Aplicativo", "NOVOS PROJETOS"],
+  "import_media_content": false,
+  "default_business": null,
+  "create_unmapped_locations": true,
+  "missing_location": {
+    "business": "TECON Salvador",
+    "region": "Prédio Administrativo",
+    "region_id": 1,
+    "location": "Local exato não especificado"
+  },
+  "description_separator": "\n",
+  "header_roles": {
+    "business": [
+      "unidade",
+      "unidade de negocio",
+      "centro logistico",
+      "empresa"
+    ],
+    "region": [
+      "predio",
+      "regiao",
+      "edificio"
+    ],
+    "location": [
+      "local",
+      "localizacao",
+      "ambiente",
+      "andar",
+      "pavimento",
+      "onde sera realizado"
+    ],
+    "description": [
+      "descricao",
+      "observacoes",
+      "observacoes adicionais",
+      "observacoes da ocorrencia",
+      "qual o seu problema",
+      "descreva a situacao",
+      "o que sera realizado",
+      "motivo da solicitacao",
+      "se necessario forneca uma descricao sobre a operacao",
+      "se necessario forneca uma descricao sobre a solicitacao"
+    ]
+  },
+  "header_patterns": {
+    "location": [
+      "^local (?:do|da|de) ",
+      "^localizacao (?:do|da|de) "
+    ],
+    "description": [
+      "^descricao(?: |$)",
+      "^observacoes(?: |$)",
+      "^descreva(?: |$)"
+    ]
+  },
+  "header_overrides": {},
+  "business_aliases": {
+    "TECON": "TECON Salvador",
+    "Tecon Salvador": "TECON Salvador",
+    "CLS": "Centro Logístico Salvador",
+    "Centro logístico": "Centro Logístico Salvador"
+  },
+  "region_aliases": {
+    "Prédio ADM": "Prédio Administrativo",
+    "ADM": "Prédio Administrativo",
+    "Armazem": "Armazém",
+    "Pátio": "Pàtio Operacional",
+    "Pátio Operacional": "Pàtio Operacional"
+  },
+  "location_aliases": {
+    "Estante Riffer": "Estante Riffer",
+    "Gate de entrada": "GATE IN",
+    "Gate de saída": "GATE OUT",
+    "Fundo do refeitório.": "Fundo do refeitório"
+  },
+  "category_aliases": {
+    "PINTURA DE SINALIZAÇÃO DE SEGURANÇA/OPERACIONAL/PREDIAL/METÁLICA": "PINTURA"
+  },
+  "status_map": {
+    "Aberto": 1,
+    "Andamento": 3,
+    "Fechado": 4,
+    "Cancelado": 5
+  },
+  "request_type_map": {
+    "Administrativo": 1
+  },
+  "service_rules": [],
+  "row_overrides": {},
+  "existing_request_ids": {},
+  "field_aliases": {
+    "(editar) qual o nível urgência?": "qual o nível urgência?",
+    "Filtro :  verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; limpar o elemento filtrante. substituir caso necessário": "Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas;",
+    "Filtro:  verificação e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas; limpar o elemento filtrante. substituir caso necessário": "Filtro verificar e eliminar sujeira, danos e presença de corrosão, verificar e eliminar as frestas;",
+    "Lavagem do gabinete, das bandejas e das serpentinas, sem o uso de produtos desengraxantes e corrosivos": "Lavar o gabinete, as bandejas e as serpentinas, sem o uso de produtos desengraxantes e corrosivos"
+  },
+  "catalog_file": "locations.json",
+  "field_catalog_file": "../SqlScripts/InsertTable/ServicesTables/INSERT_SERVICE_FIELD_TYPE.sql",
+  "resolutions_file": "location_resolutions.json",
+  "summaries_file": "description_summaries.json",
+  "numbering_file": "request_numbers.json",
+  "duplicate_occurrences": {
+    "665": [
+      {
+        "occurrence": 1,
+        "match": {
+          "category": "PMOC",
+          "service": "PMOC BIMESTRAL",
+          "created_date": "2026-06-17T11:33:00"
+        }
+      },
+      {
+        "occurrence": 2,
+        "match": {
+          "category": "INSTALAÇÕES HIDRÁULICAS",
+          "service": "Outros",
+          "created_date": "2026-06-17T11:33:00"
+        }
+      }
+    ],
+    "1261": [
+      {
+        "occurrence": 1,
+        "match": {
+          "category": "PMOC",
+          "service": "PMOC ANUAL",
+          "created_date": "2026-08-21T17:11:00"
+        }
+      },
+      {
+        "occurrence": 2,
+        "match": {
+          "category": "PMOC",
+          "service": "PMOC ANUAL",
+          "created_date": "2026-08-21T17:12:00"
+        }
+      }
+    ],
+    "1466": [
+      {
+        "occurrence": 1,
+        "match": {
+          "category": "PMOC",
+          "service": "PMOC MENSAL",
+          "created_date": "2026-09-08T16:43:00"
+        }
+      },
+      {
+        "occurrence": 2,
+        "match": {
+          "category": "INSTALAÇÕES HIDRÁULICAS",
+          "service": "Outros",
+          "created_date": "2026-09-08T16:43:00"
+        }
+      }
+    ]
+  }
+}

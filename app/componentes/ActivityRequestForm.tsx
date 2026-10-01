@@ -32,7 +32,7 @@ export default function ActivityRequestForm({
   action,
 }: ActivityRequestFormProps) {
   return (
-    <section data-ui="activity-request-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="activity-request-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="activity-request-content" className="mx-auto max-w-[1620px]">
         <div data-ui="activity-request-toolbar" className="mb-4 flex justify-end">
           <button
@@ -48,7 +48,7 @@ export default function ActivityRequestForm({
           <Link
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-2xl leading-none text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
             href="/pages/solicitar-atividade"
-            aria-label="Voltar para nova request"
+            aria-label="Voltar para nova solicitação"
           >
             ‹
           </Link>
@@ -96,7 +96,7 @@ export default function ActivityRequestForm({
               type="submit"
             >
               <SaveIcon />
-              Salvar request
+              Salvar solicitação
             </button>
           </div>
         </form>

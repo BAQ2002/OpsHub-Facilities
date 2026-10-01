@@ -1,6 +1,6 @@
 BEGIN;
 
-UPDATE SERVICE_FIELD_TYPE
+UPDATE OHFC_SERVICE_FIELD_TYPE
 SET TYPE = 'MEDIA',
     OPTIONS = '{"multiple": true, "accept": ["image/*", "video/*"]}'::JSONB,
     REQUIRED = TRUE

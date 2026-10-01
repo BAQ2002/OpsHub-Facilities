@@ -1,13 +1,14 @@
-from ...database import DatabaseConnection, sql
+from ..projections import projection
+from ...database import DatabaseConnection, sql, encode_json
 from .schemas import ChecklistSubmission
 from ..entities import ChecklistEntities
 
 
 def get_active_definitions(connection: DatabaseConnection) -> list[ChecklistEntities]:
-    rows = connection.execute("""SELECT to_jsonb(CT) AS checklist, to_jsonb(CF) AS field
-        FROM CHECKLIST_TYPE CT
-        LEFT JOIN CHECKLIST_FIELD_TYPE CF ON CF.ID_CHECKLIST_TYPE=CT.ID AND CF.ACTIVE IS TRUE
-        WHERE CT.ACTIVE IS TRUE ORDER BY CT.ID,CF.DISPLAY_ORDER NULLS LAST,CF.ID""").mappings()
+    rows = connection.execute(f"""SELECT {projection("OHFC_CHECKLIST_TYPE", "CT", "checklist")}, {projection("OHFC_CHECKLIST_FIELD_TYPE", "CF", "field")}
+        FROM OHFC_CHECKLIST_TYPE CT
+        LEFT JOIN OHFC_CHECKLIST_FIELD_TYPE CF ON CF.ID_CHECKLIST_TYPE=CT.ID AND CF.ACTIVE = 1
+        WHERE CT.ACTIVE = 1 ORDER BY CT.ID,CF.DISPLAY_ORDER NULLS LAST,CF.ID""").mappings()
     result = {}
     for row in rows:
         item = result.setdefault(row["checklist"]["id"], {"checklist": row["checklist"], "fields": []})
@@ -19,8 +20,8 @@ def get_active_definitions(connection: DatabaseConnection) -> list[ChecklistEnti
 def add_to_visit(
     connection: DatabaseConnection, visit_id: int, data: ChecklistSubmission
 ) -> None:
-    row = connection.execute(
-        sql("""INSERT INTO REQUEST_TASK_CHECKLIST (
+    row = connection.insert_id(
+        sql("""INSERT INTO OHFC_REQUEST_TASK_CHECKLIST (
     ID_REQUEST_TASK,
     ID_CHECKLIST_TYPE,
     CORPORATION,
@@ -42,7 +43,7 @@ VALUES (
     :serial,
     :pt
 )
-RETURNING ID"""),
+RETURNING ID INTO :new_id"""),
         {
             "visit": visit_id,
             "type": data.checklistTypeId,
@@ -54,10 +55,10 @@ RETURNING ID"""),
             "serial": data.serialNumber,
             "pt": data.ptNumber,
         },
-    ).scalar_one()
+    )
     for value in data.values:
         connection.execute(
-            sql("""INSERT INTO CHECKLIST_FIELD_VALUE (
+            sql("""INSERT INTO OHFC_CHECKLIST_FIELD_VALUE (
     ID_REQUEST_TASK_CHECKLIST,
     ID_CHECKLIST_FIELD_TYPE,
     VALUE
@@ -65,27 +66,26 @@ RETURNING ID"""),
 VALUES (
     :checklist,
     :field,
-    CAST(:value AS JSONB)
+    :value
 )"""),
             {
                 "checklist": row,
                 "field": value.fieldId,
-                "value": __import__("json").dumps(value.value),
+                "value": encode_json(value.value),
             },
         )
-    connection.commit()
 
 
 def delete_from_visit(connection: DatabaseConnection, checklist_id: int) -> None:
     connection.execute(
         sql("""DELETE
-    FROM CHECKLIST_FIELD_VALUE
+    FROM OHFC_CHECKLIST_FIELD_VALUE
     WHERE ID_REQUEST_TASK_CHECKLIST=:id"""),
         {"id": checklist_id},
     )
     connection.execute(
         sql("""DELETE
-    FROM REQUEST_TASK_CHECKLIST
+    FROM OHFC_REQUEST_TASK_CHECKLIST
     WHERE ID=:id"""),
         {"id": checklist_id},
     )

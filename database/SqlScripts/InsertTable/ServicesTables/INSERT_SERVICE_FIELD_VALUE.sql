@@ -15,14 +15,14 @@
 -- Registros preparados: 4166
 -- Solicitações com pelo menos um campo preenchido: 797
 -- ================================================================
-CREATE TEMP TABLE TMP_SERVICE_FIELD_VALUE_IMPORT (
+CREATE TEMP TABLE OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT (
     IMPORT_ROW_ID BIGINT NOT NULL,
     FIELD_NAME TEXT NOT NULL,
     FIELD_TYPE TEXT NOT NULL,
     VALUE JSONB NOT NULL
 ) ON COMMIT DROP;
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (302, 'Referência', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/8d798772-86f8-4c7e-af77-1e35e212dc06.jpeg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165868&Signature=fXLDGTGIKJGRY8xtbSntd72cX%2FATfehVUSK3grW1WpjYBOe1OKAX0G6ug4X%2FrvtgcFd%2FQyo%2BD71ykrthWgkxKooKBsHjojQLXfQWL9xoY6gLnBuTSz8YCq2HOjGjvsBeUBmPCkkfqRASUiHyL%2B2988kKkHbgES%2FdTAsphJdN4SflrZWxCyyE1kjUZJLTz%2ByoTqxNDIDxpknVATp9QWWa0w7Y7oNcgwCKA9N9mjezL3bVAIaArMRJqTXFruZxHo6gfvomXZJiC1iJ3Kq26vOMS4BBOMiP9Hk8N0m%2BjcTTo3F7MfycAkQ%2Fl8cAqjapM7e8oCoUrhuxQ2xSRVFGiBSVjA%3D%3D"'::JSONB),
@@ -526,7 +526,7 @@ VALUES
     (452, 'Anexo da ocorrência', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/802ab34c-7ca8-4a0a-ac0f-3915f2a2ca2c.png?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165878&Signature=foUjBijfwnsGmCGDfLLEI3UB%2BJmRjmF9lKTe8869EVocx9mFe3tt4G%2FoSkYeaWvNQGLoBlz%2FVOsc%2BtJeC9vGNPWQdZTTNcYSp0mivSjgUUSf7nTUbF8JyHuXhyN4zcCt7iEKIkpClm%2F5%2F4ILxiMR7o%2F5KXHaBAcQ44iOie4%2B2SY2lFH3kuI1kkwHOkf%2F1dDRHeeWUvHOm3Cz3KHlrtfL2DzVCwISFDXo0UUXVtiUV%2FE8gPNtjIjgMCvTBVBVMLMwD86hueId072Y3Rt5OrbrGZ0GEOw9RYrGiXlcSW2HWU%2BCqFzGZQCMQTBsX7FpQP9eNm3pbRt1IcZP6Qbmf0pxvA%3D%3D"'::JSONB),
     (557, 'Anexo da ocorrência', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/012e809b-f781-4b97-9a06-938591de4310.png?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165886&Signature=pMmLWmnxNmxs30baCNsnx6wTz2cSVKnBw6XkOtXiw23bjw3iUEd%2FCcZA1aD03vpZqKJpzbCWJU2kxj%2BNxPYcuXBPJyTy9yP6udYusEMvryjYiYX%2FFMRpPa4nVVGxJwJlc2ZesmQYs26IuORhgxLDTc3gF5nEwgwi0MHxo1IzIdAek2lNIZbaYDXWG%2FgJQ%2BQsPjsZ10U18h8yhae4CC%2BjCSQT1Mr5i9u0vHW4lHorv4NXRABAXnWjECteHrpUscB%2BUjNlO0DpdciYRrZSlSx25R5ULngOq%2FNMJnXfAw45w87QAyY4NsGGb3qApkbvLt%2FS5LmOf6VIX7PVVn8yURkJFA%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (655, 'Anexo da ocorrência', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/71903a52-ea65-4367-b362-891d39ae95cb.jpeg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165893&Signature=WqWe81y5YA1xr0MADY5OB%2BFRLTV56K%2FSDXCmI1cvk392n6OzZqJMdZHHtmCrkcf4Fi2IC%2B5YCEWC7wyT3DJBEFeXwbwL9wj2Hl50CDv6Qt4hXOwQdsRQ5JrUSKYskyauFXRebQUL8unqjPVtaVw1ozuz87PNiza4I1K3ZuUYen1GCj9uceoEOTLkXGPHDVauJFGxT1VfdXBqHuXaqNAEXr9kwSS%2B5t5FMRZ95E7laH5Dzh8%2FPrDqRVgDpSjUYMBDVV3wG3EWfvgumub3I5qyF4yTJL2g6MtdvBFpzi0O4tUIt0HAlIQESavK08ffub%2BhEC48bdrghL%2FVJAIRyGksDg%3D%3D"'::JSONB),
@@ -1030,7 +1030,7 @@ VALUES
     (418, 'Hidrojateamento geral do equipamento', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/3bacfc78-9ec4-4d27-8067-d8e4f9d1de07.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165877&Signature=GEaQ82K0grfuQknDqv0smHgpuS7cFFH5S3dMnRjaxiU3Cf%2FOZXKE8ZQ%2FPajGyZepXeBEo4dxO%2Be11fi%2FFld%2FEDphEHjCSFaK4msePx0iWo8EKXx81X3hK3QVtdbAQ0AhDkzNZRZSiJBSWKBwlxYwNj7qFzcRS3EoJJS7L5Af9qQRG1wAmPVYulW%2F56ch1F9T7GYwLbbql5xYj3ZHbJZ%2F21goIbt9OmfxG1G0UiMgO77oIGztrUze6dJe0QcUkFbMDKdrkHpjdjjkWHikB6y%2FV6KbewxJxpPX5MrBeF3G%2BznaacPRh4M%2Fu0InwzPC8DplJ3mE8yrpHtSWdfj2wndoHg%3D%3D"'::JSONB),
     (426, 'Hidrojateamento geral do equipamento', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/e75e2fe9-dddb-47ac-94d7-523e85a6aa34.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165877&Signature=WNbgrlNtvt%2FAgFP0iaVc0jb5QpuKrkCxKj4zkmrf5bWtV3Uip2sJIZXk8oCLiTKEAKIA8yCqvLuNvrP08B59LwVGNjhisIDqdCdFq38aA8Tiqm1%2FcMBVUcCEyxY4EYnQPWV69vmPmqLOwv4Z%2FcjrC712rboS1592Kb0Ft%2Bm0woib1KR6vN9GCy4KuaoBK75Te%2FC79%2BHaFzU8Drn0hTXJ90VOZzMCn6BZjWkXzChtl1I4oaD9pajFvRpNfsAf82mnlhof1de0Q0UNwAbLcuPkPQMST5cMWTTghZQNoRZrMBZOPlSqGrjBtV6AI5rapep7PFMx5W78u4%2BTEKuqunUmtA%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (448, 'Hidrojateamento geral do equipamento', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/d82fd732-0bb2-4ead-9e80-f053856c2f14.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165878&Signature=BJcKEU1vDynW4KmbClablNggfbW73GXIwfxR2yNfcBm4nTeaWSVLh81Zd5%2FJsJXEYkMlbP%2B3n%2BC%2Bvcg7BODW%2FGeV4WOdRlw7AU4SqmBp4E3jJY9zszu%2FxuuS3Dk9WQrX9EAkrS5vbAoAgPUGRxPl7kz050ramMQoUphJv6kJFKYXYOPctpM5j8w74rmC0eOpzJMXqA%2Fxf47nvV3WTk2iqZn27bIBMZltqOnLcnKBA6GNheREUj5tc1YjVxsPpEDwi7mJeAXleOt4zKhiDMyH1quZCOwZ%2Fe0PQ46DJ%2BMMxHVBm9Z0bwDKdgDgbHb4cL6hBYeo2VFyQYB6GPWqSvpyaA%3D%3D"'::JSONB),
@@ -1534,7 +1534,7 @@ VALUES
     (643, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/10ab7a55-b53d-4932-ae1c-ac0e889fb559.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165892&Signature=ISm4bAYH7WGSEF%2FkonrmLMqKpW715KMvXnnYgmL1ynHQhIFPs0CXwEBoUkGdswN1vcACcDLIu8NElz50en0gDCP9sMcretrVNwTOTG8anTpEb6m5OXJkYKFWbD4cWvsq3Lax4xTWxHtQ1DX60AAUtRsxPnHOqrZMF2sxQQcQ80NVwGP0swDZiY%2BkRN7bwbx82frtLR4WpImvBk%2B3UgDciwMqK0YHwjVIz0Yd5F7PJ8%2ByhGQ8M%2BMoB02pluj%2FaVQ0mSOXyScXlXTMWK2HH7ByPadEaFcIihI04yNcIu%2FJoZkTmU6oi2XItw2bYTTrtbnqFzNpnTsITllVCH8LulYH5w%3D%3D"'::JSONB),
     (653, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/4528c4ca-0f75-4d20-9872-116fbb9c0e89.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165893&Signature=YZEpmM2JT7v2xCkLTAfLhxPUNVecxsx%2FZrhtXd4noiITjqDLHhErKTNUnP9ed4nsHeWXm6%2B%2B4jLVTgYHInMDW3s7%2FieXmcAT09rskK2RyJR7bEJGvfFQyTYjU6EX4Dyo%2BgwzWGmHptilXP5micWvIjqf9IlObbaNQU160pgkVZiF7%2FczGtS0StxMyxe5PVt3X7l%2BESum2y%2B5VcU2YzRKCOvcGjEaIGblVi%2BRZbsLOXkwPlJr%2FLmUBRBns9iFB%2FZgrAgyEbSVwsztRt2Ko8mUQtqA3PHUR1Tm3CMYic16H00Bam6vW1Po66ZN2utZFys0TRw4dbNtxRJa2ov5Ktv%2B%2FA%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (659, 'Verificação de temperaturas c° de insuflamento, ambiente interno.ref (8 - 14c°)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/d659d5db-55a4-4bb9-bdea-2b5229e78725.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165893&Signature=jKRx%2Bk7ZqJq13NOOAmtc%2BlMNHSguzvDNR%2F1n6j%2By614R0oqOsuyx9xvY9GsnmK1xwcvj0ofW5KMAe7hHxZVfvgp01wUsQwX3AcUERKjUU2DnScVke9XOro7ajTLv4SC1kTsYb9ZebdwUZ9nW%2BeQJgjRLvfoUoYeqlI%2FNGXyyCpmSct4MamVPElgjX47pp38LjRAadhPFOqOHe2%2Fw%2Bx8tWUiEZ1WbLc5cSMm0ZvCLQVyDgO6Femdi1PPbx1cMtgg3ExQYc2uy6TdgyKct8El8ynGxdiIIgsu0Cm0p3d%2FoXOUKJXErJWC5FcxBVHVvEODp3jdgyYf3s8TJfzUlb0V7Zg%3D%3D"'::JSONB),
@@ -2038,7 +2038,7 @@ VALUES
     (702, 'Limpeza dos ventiladores (carcaça e rotor)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/6425d65b-d5bc-4e78-90b6-cd14b0762347.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165896&Signature=RT8NgTCL69Ss96kgvOJ1p3jirCkPwYGX%2FGXbUKwRs24%2FDRxVpjaNlnZU4hPY0Lhc6Ezh%2BzucN7Q7RNU%2BwJS6S9EkNiuWDXvhRJ%2FcTX515YMuttqNTL50LHLV7TAHkMnoyTiOf%2Febji1ipHzGP3ZFTQWwzwvzbuuCSVylhomoKClNMsQpzyjedIZ7ZLJi3M64NyXj5Hfxv9QZv5qDX12SFwDR8GzvuLdfvngMTAk8BegeflMaedRBgz5y0p8OqxqchO%2BKFJuj0IRqBcQisZRdAXTRRVJLNNaLnmJZ8NGVMQqxspDQotIQPu1YebNHMNqrbhnOgRzA071bhqSL6qPIwg%3D%3D"'::JSONB),
     (704, 'Limpeza dos ventiladores (carcaça e rotor)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/70414c3b-f3f4-4481-993a-9a2cc4713f38.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165896&Signature=O31jR7deltDlzw1xOZ7J8MuVRz%2B28nhbkW5m%2BDEHiKO8eJAe4zKxQzmC%2BzdAjAdxdvcWdrXVicE0Xti78ciNI4YO4zFyK%2B%2FANhsghXIAxiB1CbusqbqDhMIuCphZhiLt1yQBHG%2FVS1IsNVd1BC6oWjbASiyyxQ7D7GKvdFRUn64UANnjZ3WVpC2NW9CU%2Bh5lebr8n0rcX0j0Qy1udTw79lZ8udgPedX0dS4eXtcl%2FYYs%2F4M2t2F9y8u2fNuNhKqAaJv%2BjWUfJpxkafS0f85b0vLLV4ptb4iOVBjcG9%2FiTl6%2Fem4r2%2BY1XBou4T0LzTv5E6xOXWxIou%2F3ME3nN5tKiw%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (710, 'Limpeza dos ventiladores (carcaça e rotor)', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/86f5168f-64f2-4de2-b550-f1aa1ca78437.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165897&Signature=U7SeIWvPUVv1f3EqMqlb%2FS5RPNXUQHbSLPab3ehUOs0Rkc9HbSFNtYVH%2BkwmaHaVFJ%2BqIAQB%2FdjIqaVfBUlJP3GrvTdutbLIPkFBdnvq3Wbube4hmQ5QQJA7avB5b2e4KA6ImV4CdfZ8BDQ9cRw5GtfRmQJwwEU1adOTJfl%2BEoWzhLqxOW5xTeg4Mns%2F5QfzjXdHwzwhmHPN9vNUZ%2FKaGQv8gLsN9OqJ0ItZvN1Q5dJBLv1lHy3bg%2FgDXH6GvabQE4MvWhc2W2YX97dk38QIDvn7Q8IW8p0tI77DwvpJ%2FMfMFRiNJygXKCVw4dK0cJUr2KSZsUOFApqvkdx%2FyaJjrg%3D%3D"'::JSONB),
@@ -2542,7 +2542,7 @@ VALUES
     (375, 'Tag do equipamento', 'TEXT', '"AR-136"'::JSONB),
     (380, 'Tag do equipamento', 'TEXT', '"AR-51"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (381, 'Tag do equipamento', 'TEXT', '"AR-50"'::JSONB),
@@ -3046,7 +3046,7 @@ VALUES
     (369, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/1f6d5c18-1cc7-46d4-b894-b50ccb0a5f78.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165873&Signature=FMomvg0DpDKcTZ1XziyqisKkQIKlVjO1vSFdt%2FeF7EGrSowtDCxi7grFvgxGc3e9FaKgLfkrFYJ8Sv8y07swVYbYkYBRtLhvPyU7tLuBlqPqoIljknhust%2FsE5zOhwbFpxWXpu8JG7np0rllBX49rcHOpIg9wAIfa5xAKEJ%2Be0uqhMBYeK7Vd5qmEm3c1dXB%2FMp5fN%2FjYxgpNhh2pew5GN8r6ZUEubSoPyyBsxYPg09uFh8Dd3qITq5UgNE7%2BFDobg1Qia9fuQ7CaECek6bD5%2BIyuCfK9aPeIch4KgKAIFKWDcerDJqCYl5Av57KMNPJsZkUVqZWNhsMJR5P%2BuxznA%3D%3D"'::JSONB),
     (373, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/a83cc743-3746-4889-9346-e9c43fe7acd6.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165873&Signature=ZgwddCAnKUkFZ6qKIJ2bBnInnd6d3QjtqaFxJIT17s04fzbRVrH%2B4keifeKUkFg4bVcBvWMDCA6gnl%2BT4Z8Pow0QD7JxcWl3W6QlRjqKWnZ34B2F81tHJyvC51er%2FLYKgRSB3ncKD9dBO0vBVF5fM4BXJXrKgMP4vYOIZrxYX3FAsLyW5On81mTjwKK5KWL%2FZElyZQbwn%2BORrng%2FK4K0YIZmqYKPDm%2F2y3kOxxaVXyIqgho%2FkVDBIncMq7NSExzpq8P%2FgqKfzeiHNr5RjxTzC%2BjmTuck%2B9qCXwAnmTWg1OGUGZny7XPHCsbe77pelMskT3oXFO2fB%2FqkjY%2B75Sv2Iw%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (375, 'Verificar presença de ruídos e/ou vibrações anormais', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/eb19ef56-4783-44c2-a93c-cc1f70f3dfcf.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165873&Signature=Ykc%2FIFzQZ%2BtZpclMnJWjTxswyB6wSi3Rf5keRnF3V7ZCXQlc1W3gr8PzelA4T0570AZPlt4u%2F2rHbvLkpF4IEY2wkCxgyBDBOE%2FnhGZHWWgnqsSuj185IRxJUiiTy0okBSEG9I6G5Tvcph1FiPShhGYRFjsmhCUNrAM8nfoyRXMeWvue4KqV3BS1fL9Fj%2Bo5yJaN2eIgG4SICoojssgY1cGdOvWitSrtpMBcVM113iQUwPbiJr9LmMd6Hh81ot%2BwuoHtM2%2FK9kFx065mmZq88bzu%2FletK%2Bg7B1a8RAjWLFdNsenE0yEdnHJE0vkrSUMVjZp6zLYNQmgGbUFDItRJ6w%3D%3D"'::JSONB),
@@ -3550,7 +3550,7 @@ VALUES
     (501, 'Verificação e limpeza do direcionamento de ar', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/f5dd1b53-639c-4a77-a7bf-5f8288c39068.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165881&Signature=gqnc34DMw%2FqFQPhluZNUYoXcUePtR%2FaTs9FA1BSQEN1EMfWroOT7%2Fls9%2FVepha3VKBO1cYo1r1Dn5k0bjLxna5kBZRrvoqiUykOl4K7AsI%2BAYc%2FBVmx3Y8y8d8RdAUZCxB4KZnMja6PUskqm5BP2b3HN5GObpsP4AgJ5y2uXXXx4PuQyEV3zCQj4XxM1RWmGd477unkLNxL0DxB%2FDERJ7jI5SVKSoKqH9YaKKX2tr4UrSKC6b6UMx%2Fngw%2FjbNRqyM5l04ZZGOoe%2BKAfXwco29hYDA874aYbxb9O%2BvxdVZNzQ1jp5UsUVLiYpvrniIvdc26o3fEz6m7g7eitmSRB90Q%3D%3D"'::JSONB),
     (645, 'Verificação e limpeza do direcionamento de ar', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/0a8169a0-fb83-475b-9bd5-bbf1b2c94132.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165893&Signature=pXpjwUj9xW8FPUsf2nkZSn%2FgMimFQZaZjZlFRd%2BGhAaQcB79kdt4VJ9jkCfnm4IE%2FrH458vsQWIgk3SoEcu38%2FogzYq7jhtPx3Vtu2WaLio7ca3IiZSqBGBqLzcayfGAB9dZ9kwOqRG%2BUALxs6E824Kqx54SrXZmS1zXLTm9dORCPGgEdRztDdRslcVD5yhigfsI7AU9aBmANyubIsRPMCRO2YsuNn6ly%2BdUl8n5v1BR3wMQE09tNkgySgS6bVA67BWeq%2BS%2FqEk6tQxzY%2BkqCgjf%2BbUxtPFVkcpjsVuA%2FkzZFxHmswFERSDKrB74Cp5%2FxLOEgpnKUEvMcHOdEaxF9g%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (650, 'Verificação e limpeza do direcionamento de ar', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/6661aca6-fa19-4a3e-b5f5-21bef7547de1.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165893&Signature=QCZwDER1HILd3vcKEyr3YyQuR1asJito7bydEqTF%2F2p0Mx70U4r%2FznAiTnknjHNkpsl5B2Y8q%2FY7v6Pu9dUyF6%2Fa7x9tzrTa4X2IjhB9Qe%2Fjs9z8Mdx1dcDdQIyRM4zXFfP7OiLr2%2BwuD4icPzMaoj%2F%2FzKZHJ0Z5p6IqYHxVlsh5YUki5lUxnGiXsVVTs3omfCtk1p65lBw4dzfgDnihOojKpzaE7J3F8t9j1AIsDuUArPUqnvOiYHNP%2Fihn0sq0kgd7KjgN5FruGwqqPKKd%2Bu2T3bUs%2B%2FRQiaAmReyLZH7fJ71vWemV1i4TodPmk7xiCoXgcwfz822RT5x7n6Te1w%3D%3D"'::JSONB),
@@ -4054,7 +4054,7 @@ VALUES
     (163, 'Reaperto de conexões', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/8603b64c-b8ea-4bba-8555-4f41d4895e5c.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165860&Signature=Qtbowfm44uMHJpBRdoxx4kc33CFq888XBivd7c8oI7t7YluILl25zfAbjGBLfA1vrAEID0iF%2BFBsiUj6jPo8MY1a85X6sWL1NPR6GfrfK35nsEYSX6Kktt%2FaJetmxUvMnWNtgl0Y4PRdHhzE7ZElYLp2rl1QCR39bbkQB924F7NWG%2BAx%2F8%2FsIFYfaQ1pQ01gDHtGUmMCGW8lilKbP8PtVVPR9WIWjzrSawPA1977rDbrQCFZXbRfA%2BOirGa%2Bs0e1Fw5SkipDKa%2B3SngvDntG%2Be9C5dzSe4auNkBMooeuNXBVugJPIqyJyF4MKiHKCJsuds7LecCJCFtX1FTdDkIl6A%3D%3D"'::JSONB),
     (178, 'Reaperto de conexões', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/4899f9c2-a7c5-4619-8727-2d3b91c16e1d.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165861&Signature=Jx4wSpNPssVwa3ffDzZrbwH7aE0GGJEGh0yTk86e9yP4wY0Lx%2B52XsAZXlTuyh7rLcy7HGGFoZNciwSHV3IuddJM5odEyj%2BgYI%2B93z5bZ308l2xVKtvHUp2uKDAW3ak%2FEHDx7Sqcj6P9gHc6IHmFWkVdOFqhn6a9WvyIyEEUN7xLspEKVei31je6DIt%2BB6BcbF6kTJCJ54wX1KuNxEDcUpgR4CtuJUasEOcJG7eHwNQOgbReB4Tgwhu%2BatzhpsuBw9ucaCgQvWIiPvDjr4HcCigjhWYQ2wZX78bXMNl%2Bo92O3fUUuNM6bMxpE%2FAMibcDjoVkn9fjtelzPp6hj7xq4A%3D%3D"'::JSONB);
 
-INSERT INTO TMP_SERVICE_FIELD_VALUE_IMPORT
+INSERT INTO OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT
     (IMPORT_ROW_ID, FIELD_NAME, FIELD_TYPE, VALUE)
 VALUES
     (217, 'Reaperto de conexões', 'TEXT', '"https://storage.deskbee.io/storage/8c90b7e8-dfe7-4c08-85fb-499bdd9ae361/f56cfe91-7985-4342-bf4e-f22e779ac901.jpg?GoogleAccessId=storage-sa-prd%40inventsys-fms.iam.gserviceaccount.com&Expires=1784165863&Signature=vlY7t%2FqPF5T%2F4wBIQsvwS5MTKflrT0gnsK7o06nuReid5ebbpxrIFI1pmOJDiolRprrgTD%2BlqGAOtMYuPf6S%2Fv0F2KtdXF4PfV%2FmOjxjb0mM2Pvs1nAvu3byFL8sLETA0tiW2bhpgHlKW5%2BL%2BSoHl8NPewnodaSQz3GI9cZLJOjE0nnGxjE6ToX6qzsaQ3btsqWktHObYCVgg8r6gBSxyUNARVmEBV5Nw2OGRcjdAz3eVksBnXKSOb4c5HANUA4ZQhqesXjJedn5J%2FSHLiaYELcSLwHSHaPS8If8ioLIab9W%2FaiCrazWv7WZj6KEcznri%2F1y%2BVAq6R2AlizmdBBEUA%3D%3D"'::JSONB),
@@ -4231,10 +4231,10 @@ DECLARE
 BEGIN
     SELECT COUNT(*)
       INTO V_ERROR_COUNT
-      FROM TMP_SERVICE_FIELD_VALUE_IMPORT V
+      FROM OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT V
      WHERE NOT EXISTS (
          SELECT 1
-         FROM TMP_REQUEST_IMPORT T
+         FROM OHFC_TMP_REQUEST_IMPORT T
          WHERE T.IMPORT_ROW_ID = V.IMPORT_ROW_ID
      );
     IF V_ERROR_COUNT > 0 THEN
@@ -4243,15 +4243,15 @@ BEGIN
 
     SELECT COUNT(*)
       INTO V_ERROR_COUNT
-      FROM TMP_SERVICE_FIELD_VALUE_IMPORT V
-      JOIN TMP_REQUEST_IMPORT T
+      FROM OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT V
+      JOIN OHFC_TMP_REQUEST_IMPORT T
         ON T.IMPORT_ROW_ID = V.IMPORT_ROW_ID
      WHERE (
          SELECT COUNT(*)
-         FROM SERVICE_CATEGORY SC
-         JOIN SERVICE_TYPE ST
+         FROM OHFC_SERVICE_CATEGORY SC
+         JOIN OHFC_SERVICE_TYPE ST
            ON ST.ID_SERVICE_CATEGORY = SC.ID
-         JOIN SERVICE_FIELD_TYPE SFT
+         JOIN OHFC_SERVICE_FIELD_TYPE SFT
            ON SFT.ID_SERVICE_TYPE = ST.ID
          WHERE UPPER(BTRIM(SC.NAME)) = UPPER(BTRIM(T.CATEGORY_NAME))
            AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(T.SERVICE_TYPE_NAME))
@@ -4264,12 +4264,12 @@ BEGIN
 
     SELECT COUNT(*)
       INTO V_ERROR_COUNT
-      FROM TMP_SERVICE_FIELD_VALUE_IMPORT V
-      JOIN TMP_REQUEST_IMPORT T
+      FROM OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT V
+      JOIN OHFC_TMP_REQUEST_IMPORT T
         ON T.IMPORT_ROW_ID = V.IMPORT_ROW_ID
      WHERE NOT EXISTS (
          SELECT 1
-         FROM REQUEST R
+         FROM OHFC_REQUEST R
          WHERE R.ID = T.ID_REQUEST
      );
     IF V_ERROR_COUNT > 0 THEN
@@ -4279,7 +4279,7 @@ END;
 $$;
 
 WITH INSERTED_SERVICE_FIELD_VALUES AS (
-    INSERT INTO SERVICE_FIELD_VALUE (
+    INSERT INTO OHFC_SERVICE_FIELD_VALUE (
         ID_SERVICE_FIELD_TYPE,
         ID_REQUEST,
         VALUE
@@ -4288,15 +4288,15 @@ WITH INSERTED_SERVICE_FIELD_VALUES AS (
         SFT.ID AS ID_SERVICE_FIELD_TYPE,
         T.ID_REQUEST AS ID_REQUEST,
         V.VALUE
-    FROM TMP_SERVICE_FIELD_VALUE_IMPORT V
-    JOIN TMP_REQUEST_IMPORT T
+    FROM OHFC_TMP_SERVICE_FIELD_VALUE_IMPORT V
+    JOIN OHFC_TMP_REQUEST_IMPORT T
       ON T.IMPORT_ROW_ID = V.IMPORT_ROW_ID
-    JOIN SERVICE_CATEGORY SC
+    JOIN OHFC_SERVICE_CATEGORY SC
       ON UPPER(BTRIM(SC.NAME)) = UPPER(BTRIM(T.CATEGORY_NAME))
-    JOIN SERVICE_TYPE ST
+    JOIN OHFC_SERVICE_TYPE ST
       ON ST.ID_SERVICE_CATEGORY = SC.ID
      AND UPPER(BTRIM(ST.NAME)) = UPPER(BTRIM(T.SERVICE_TYPE_NAME))
-    JOIN SERVICE_FIELD_TYPE SFT
+    JOIN OHFC_SERVICE_FIELD_TYPE SFT
       ON SFT.ID_SERVICE_TYPE = ST.ID
      AND UPPER(BTRIM(SFT.NAME)) = UPPER(BTRIM(V.FIELD_NAME))
      AND UPPER(BTRIM(SFT.TYPE::TEXT)) = UPPER(BTRIM(V.FIELD_TYPE))
@@ -4308,10 +4308,10 @@ FROM INSERTED_SERVICE_FIELD_VALUES;
 COMMIT;
 
 -- Recomendação de schema para futuras importações:
--- ALTER TABLE REQUEST ADD COLUMN LEGACY_REQUEST_NUMBER INTEGER;
+-- ALTER TABLE OHFC_REQUEST ADD COLUMN LEGACY_REQUEST_NUMBER INTEGER;
 -- CREATE UNIQUE INDEX UQ_REQUESTS_LEGACY_NUMBER
---     ON REQUEST (LEGACY_REQUEST_NUMBER);
+--     ON OHFC_REQUEST (LEGACY_REQUEST_NUMBER);
 --
 -- Recomendação para garantir a regra de um MEMBERSHIP por e-mail:
 -- CREATE UNIQUE INDEX UQ_MEMBERSHIP_EMAIL_CI
---     ON MEMBERSHIP (LOWER(BTRIM(EMAIL)));
+--     ON OHFC_MEMBERSHIP (LOWER(BTRIM(EMAIL)));

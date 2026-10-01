@@ -33,7 +33,7 @@ export default async function ChamadoRequestPage({ searchParams }: ChamadoReques
     <ActivityRequestForm
       title={formData.title}
       subtitle={formData.subtitle}
-      sectionTitle="Dados da request"
+      sectionTitle="Dados da solicitação"
       fields={formData.fields}
       locationHierarchy={formData.locationHierarchy}
       action={createRequest}

@@ -1,12 +1,13 @@
 import copy
 import json
 import os
+import re
 import unittest
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
+
 
 from pydantic import ValidationError
 from backend.app.api.entities import RequestContext, LocationEntity
@@ -19,13 +20,31 @@ from backend.tests.test_request_service import RecordingConnection
 FIXTURE = json.loads((Path(__file__).resolve().parents[2] / "tests/fixtures/entity-data.json").read_text(encoding="utf-8"))
 
 
+def database_record(record, renamed=None):
+    """Simulate driver rows, using physical column names instead of API fixtures."""
+    renamed = renamed or {}
+    return {
+        renamed.get(key, re.sub(r"(?<!^)(?=[A-Z])", "_", key).lower()): value
+        for key, value in record.items()
+    }
+
+
+def request_database_context():
+    context = copy.deepcopy(FIXTURE["context"])
+    context["request"] = database_record(context["request"], {
+        "idMemberRequester": "id_membership_requester",
+        "idMemberResponder": "id_membership_responder",
+    })
+    return context
+
+
 class EntityContractTests(unittest.TestCase):
     def test_request_response_matches_frontend_contract_and_keeps_original_dates(self):
-        connection = RecordingConnection([[FIXTURE["context"]]])
+        connection = RecordingConnection([[request_database_context()]])
         result = get_my_requests(connection, 7)[0].model_dump(mode="json", by_alias=True)
         self.assertEqual(result, FIXTURE["context"])
         self.assertEqual(result["request"]["createdDate"], "2026-09-20T00:30:00")
-        self.assertIn("WHERE R.ID_MEMBER_REQUESTER=%(member)s", connection.statements[0])
+        self.assertIn("WHERE R.ID_MEMBERSHIP_REQUESTER=:member", connection.statements[0])
 
     def test_incomplete_records_are_rejected_instead_of_cast_as_entities(self):
         data = copy.deepcopy(FIXTURE["context"])
@@ -34,21 +53,28 @@ class EntityContractTests(unittest.TestCase):
             RequestContext.model_validate(data)
 
     def test_activity_filters_are_preserved_with_typed_empty_arrays(self):
-        connection = RecordingConnection([[FIXTURE["context"]]])
+        connection = RecordingConnection([[request_database_context()]])
         result = get_activities(connection, date(2026, 9, 1), date(2026, 9, 22), [], [])
         self.assertEqual(result[0].request.id, 42)
-        self.assertIn("CAST(%(statuses)s AS TEXT[])", connection.statements[0])
-        self.assertIn("CAST(%(businesses)s AS INTEGER[])", connection.statements[0])
-        self.assertTrue(connection.parameters[0]["all_status"])
-        self.assertTrue(connection.parameters[0]["all_business"])
+        self.assertNotIn(":status_", connection.statements[0])
+        self.assertNotIn(":business_", connection.statements[0])
+        self.assertEqual(set(connection.parameters[0]), {"range_start", "range_end"})
+        self.assertEqual(connection.parameters[0]["range_end"].date(), date(2026, 9, 23))
+
 
     def test_board_serializes_entities_and_media_metadata_without_binary_content(self):
         board = FIXTURE["board"]
         row = board["requests"][0]
         visit = row["visits"][0]
         checklist = visit["checklists"][0]
+        task = database_record(visit["task"], {
+            "startDatetime": "started_date", "stopDatetime": "finished_date",
+        })
+        executors = [dict(item, occurrence=database_record(item["occurrence"], {
+            "idTask": "id_request_task",
+        })) for item in visit["executors"]]
         connection = RecordingConnection([
-            board["statuses"], [FIXTURE["context"]], [visit["task"]], visit["executors"],
+            board["statuses"], [request_database_context()], [task], executors,
             visit["photos"], [{"checklist": checklist["checklist"], "definition": checklist["definition"]}],
             checklist["values"], row["values"], row["media"],
         ])

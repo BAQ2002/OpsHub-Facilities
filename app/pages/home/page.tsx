@@ -1,36 +1,12 @@
+import { HandlingTimeDisplay } from "@/app/componentes/HandlingTimeDisplay";
 import Link from "next/link";
 import FacilitiesMap from "./_components/FacilitiesMap";
 import { cookies } from "next/headers";
+import ActivityTable from "./_components/ActivityTable";
 import HomeDateRange from "./_components/HomeDateRange";
 
 import { getHomePageData } from "@/app/services/home-service";
 import { activityStatuses } from "@/app/entities/navigation_entities/home_viewModels";
-
-const sevenSegmentPaths = [
-  { id: "a", x: 5, y: 0, width: 18, height: 4 },
-  { id: "b", x: 24, y: 4, width: 4, height: 19 },
-  { id: "c", x: 24, y: 27, width: 4, height: 19 },
-  { id: "d", x: 5, y: 46, width: 18, height: 4 },
-  { id: "e", x: 0, y: 27, width: 4, height: 19 },
-  { id: "f", x: 0, y: 4, width: 4, height: 19 },
-  { id: "g", x: 5, y: 23, width: 18, height: 4 },
-] as const;
-
-const sevenSegmentMap: Record<
-  string,
-  (typeof sevenSegmentPaths)[number]["id"][]
-> = {
-  "0": ["a", "b", "c", "d", "e", "f"],
-  "1": ["b", "c"],
-  "2": ["a", "b", "d", "e", "g"],
-  "3": ["a", "b", "c", "d", "g"],
-  "4": ["b", "c", "f", "g"],
-  "5": ["a", "c", "d", "f", "g"],
-  "6": ["a", "c", "d", "e", "f", "g"],
-  "7": ["a", "b", "c"],
-  "8": ["a", "b", "c", "d", "e", "f", "g"],
-  "9": ["a", "b", "c", "d", "f", "g"],
-};
 
 type HomeSearchParams = {
   startDate?: string;
@@ -74,15 +50,11 @@ export default async function Home({
     activityMarkers,
     plannedRequestFilterOptions,
     averageHandlingTimeClock,
-    activityRecords,
-    categoryColorMap,
+    categoryStyleMap,
   } = await getHomePageData(dateRange, selectedBusiness);
-  const filteredActivityRecords = selectedBusiness === "all"
-    ? activityRecords
-    : activityRecords.filter((record) => record.businessUnit === selectedBusiness);
 
   return (
-    <section data-ui="facilities-home-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="facilities-home-page" className="min-h-screen bg-white px-5 pb-8 pt-6 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="facilities-home-content" className="mx-auto max-w-[1620px]">
         <header data-ui="facilities-home-header" className="mb-[18px] grid grid-cols-[1fr_auto] items-start gap-4 pt-2">
           <h1 className="mt-[57px] text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
@@ -164,26 +136,30 @@ export default async function Home({
                 />
                 <ActionCard
                   href="/pages/minhas-solicitacoes"
-                  label="Minhas requests"
+                  label="Minhas solicitações"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        <section data-ui="equipment-summary" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9">
+        <section data-ui="equipment-summary" className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-2">
           {equipmentCards.map((card) => (
             <article
               data-ui="equipment-card"
               key={card.title}
-              className="min-h-[132px] rounded-2xl border border-slate-200 bg-white px-2.5 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
+              className="min-h-[132px] min-w-0 rounded-2xl border border-slate-200 bg-white px-2.5 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
             >
               <div className="flex items-center justify-start gap-2">
                 <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.iconBg}`}
-                ></div>
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+                  style={{ backgroundColor: card.categoryStyle.backgroundColor }}
+                  aria-hidden="true"
+                >
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: card.categoryStyle.color }} />
+                </div>
 
-                <h3 className="min-w-0 whitespace-nowrap text-[13px] font-bold leading-tight text-slate-950">
+                <h3 title={card.title} className="min-w-0 truncate text-[13px] font-bold leading-tight text-slate-950">
                   {card.title}
                 </h3>
               </div>
@@ -193,7 +169,7 @@ export default async function Home({
                   <Metric
                     label="Programadas"
                     value={card.Planned}
-                    valueClass="text-emerald-600"
+                    valueClass="text-blue-500"
                   />
                   <Metric
                     label="Em andamento"
@@ -203,7 +179,7 @@ export default async function Home({
                   <Metric
                     label="Concluídas"
                     value={card.Completed}
-                    valueClass="text-blue-500"
+                    valueClass="text-emerald-600"
                   />
                 </dl>
               </div>
@@ -228,7 +204,7 @@ export default async function Home({
           <div
             data-ui="activity-record-filters"
             className="mt-4 flex flex-wrap items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-3 shadow-[0_1px_4px_rgba(15,23,42,0.12)]"
-            aria-label="Filtros de business das requests planejadas"
+            aria-label="Filtros de unidades de negócio das solicitações planejadas"
           >
             <span className="mr-1 text-xs font-medium text-slate-500">
               Mostrar:
@@ -280,103 +256,19 @@ export default async function Home({
             </div>
           </div>
           
-          <div data-ui="activity-records" className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
             <form id="activity-filters" method="get">
               {selectedBusiness !== "all" && (
                 <input type="hidden" name="business" value={selectedBusiness} />
               )}
             </form>
-            <div
-              id="minhas-solicitacoes"
-              className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3"
-            >
-              <div>
-                <h3 className="text-sm font-bold leading-tight text-slate-950">
-                  Atividades
-                </h3>
-                <p className="mt-1 text-xs text-slate-500">
-                  Filtre pelo período, status da atividade e unidade de negócio
-                </p>
-              </div>
-              <span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700">
-                {filteredActivityRecords.length} requests
-              </span>
-            </div>
-
-            <div data-ui="activity-records-table" className="overflow-x-auto">
-              <table className="min-w-[900px] w-full border-collapse text-left text-xs">
-                <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.02em] text-slate-500">
-                  <tr>
-                    <th className="px-4 py-3">ID</th>
-                    <th className="px-4 py-3">Request type</th>
-                    <th className="px-4 py-3">Unidade</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Service category</th>
-                    <th className="px-4 py-3">Service type</th>
-                    <th className="px-4 py-3">Location</th>
-                    <th className="px-4 py-3">Data do status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 text-slate-700">
-                  {filteredActivityRecords.map((record) => (
-                    <tr
-                      key={record.id}
-                      className={
-                        record.activityType === "Atividade no Pátio"
-                          ? "bg-teal-50/30"
-                          : "bg-white"
-                      }
-                    >
-                      <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-950">
-                        {record.id}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
-                        <span
-                          className={
-                            record.activityType === "Atividade no Pátio"
-                              ? "rounded-full bg-emerald-100 px-2 py-1 text-[11px] font-semibold text-emerald-700"
-                              : "rounded-full bg-blue-100 px-2 py-1 text-[11px] font-semibold text-blue-700"
-                          }
-                        >
-                          {record.activityType}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {record.businessUnit}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
-                        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
-                          {record.status}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 ring-1 ring-slate-200">
-                          <span
-                            className="h-2 w-2 rounded-full"
-                            style={{
-                              backgroundColor:
-                                categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
-                            }}
-                            aria-hidden="true"
-                          />
-                          {record.category}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3">
-                        {record.serviceType}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-950">
-                        {record.location}
-                      </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-slate-500">
-                        {record.statusDate}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <ActivityTable
+            key={JSON.stringify([dateRange.startDate, dateRange.endDate, effectiveStatuses, selectedBusiness])}
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            statuses={effectiveStatuses}
+            selectedBusiness={selectedBusiness}
+            categoryStyleMap={categoryStyleMap}
+          />
         </section>
       </div>
     </section>
@@ -435,117 +327,6 @@ function normalizeStatuses(value: string | string[] | undefined) {
   const values = normalizeParam(value);
 
   return activityStatuses.filter((status) => values.includes(status));
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o componente HandlingTimeDisplay com os dados recebidos.
- * Durante o fluxo, aciona {@link split}.
- *
- * @param props Dados necessários para executar esta função.
- * @returns O elemento React que representa esta interface.
- */
-function HandlingTimeDisplay({
-  displayValue,
-  caption,
-}: {
-  displayValue: string;
-  caption: string;
-}) {
-  const [hours, minutes] = displayValue.split(":");
-
-  return (
-    <section
-      className="flex min-h-[118px] flex-col items-center justify-center rounded-xl bg-white px-3 py-2 text-center"
-      aria-labelledby="handling-time-display-title"
-    >
-      <h2
-        id="handling-time-display-title"
-        className="mb-2 text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#45628a]"
-      >
-        Tempo médio de atendimento
-      </h2>
-
-      <div
-        className="flex h-[70px] w-[178px] items-center justify-center rounded-[15px] bg-[#070d14] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
-        aria-label={`Tempo médio de atendimento ${caption}`}
-        role="img"
-      >
-        <div className="flex items-center gap-[4.5px]">
-          <SevenSegmentDigit value={hours[0]} />
-          <SevenSegmentDigit value={hours[1]} />
-        </div>
-        <BlinkingColon />
-        <div className="flex items-center gap-[4.5px]">
-          <SevenSegmentDigit value={minutes[0]} />
-          <SevenSegmentDigit value={minutes[1]} />
-        </div>
-      </div>
-
-      <p className="mt-2 text-sm font-semibold leading-none text-[#45628a]">
-        {caption}
-      </p>
-    </section>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o componente BlinkingColon com os dados recebidos.
- *
- * @returns O elemento React que representa esta interface.
- */
-function BlinkingColon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="mx-[9px] h-[45px] w-[9px] shrink-0 animate-[handling-time-caret-blink_1s_steps(1,end)_infinite] text-[#08c6e8]"
-      fill="currentColor"
-      viewBox="0 0 10 50"
-    >
-      <circle cx="5" cy="16" r="3" />
-      <circle cx="5" cy="30" r="3" />
-    </svg>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o componente SevenSegmentDigit com os dados recebidos.
- * Durante o fluxo, aciona {@link map}, {@link includes}.
- *
- * @param props Dados necessários para executar esta função.
- * @returns O elemento React que representa esta interface.
- */
-function SevenSegmentDigit({ value }: { value: string }) {
-  const activeSegments = sevenSegmentMap[value] ?? sevenSegmentMap["0"];
-
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-[45px] w-[25.5px] shrink-0"
-      viewBox="0 0 28 50"
-    >
-      {sevenSegmentPaths.map((segment) => (
-        <rect
-          key={segment.id}
-          x={segment.x}
-          y={segment.y}
-          width={segment.width}
-          height={segment.height}
-          rx="1"
-          className={
-            activeSegments.includes(segment.id)
-              ? "fill-[#08c6e8]"
-              : "fill-[#0b2938] opacity-80"
-          }
-        />
-      ))}
-    </svg>
-  );
 }
 
 /**

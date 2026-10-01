@@ -1,4 +1,4 @@
-/** Entidade CHECKLIST_TYPE. Fonte: database/SqlScripts/CreateTables/ChecklistsTables/CREATE_CHECKLIST_TYPE.sql */
+/** Entidade OHFC_CHECKLIST_TYPE. Fonte: database/SqlScripts/CreateTables/ChecklistsTables/CREATE_CHECKLIST_TYPE.sql */
 export type ChecklistTypeEntity = {
   id: number;
   name: string;

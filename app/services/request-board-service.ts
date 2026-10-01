@@ -5,9 +5,16 @@ import { mapBoardCard, mapChecklistDefinition } from "./mappers/entity-view-mode
 
 import type { RequestBoardPageViewModel, RequestBoardWorkspaceData } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 
-import { backendJson } from "@/src/server/api-client";
+import { backendJson, jsonRequest } from "@/src/server/api-client";
 
-export type RequestBoardFilters = { startDate: string; endDate: string; search?: string };
+export async function updateRequestStatus(requestId: number, statusId: number): Promise<void> {
+  if (!Number.isSafeInteger(requestId) || requestId <= 0 || !Number.isSafeInteger(statusId) || statusId <= 0) {
+    throw new Error("Solicitação ou status inválido.");
+  }
+  await backendJson<void>(`/requests/${requestId}/status`, jsonRequest({ statusId }, "PATCH"));
+}
+
+export type RequestBoardFilters = { startDate: string; endDate: string; search?: string; businessId?: number; serviceCategoryIds?: number[] };
 
 /**
  * Obtém em paralelo o quadro, os executores e as definições de checklist necessários à página.
@@ -16,14 +23,16 @@ export type RequestBoardFilters = { startDate: string; endDate: string; search?:
  * @returns Os dados necessários para renderizar o workspace de chamados.
  */
 export async function getRequestBoardWorkspaceData(filters: RequestBoardFilters): Promise<RequestBoardWorkspaceData> {
-  const [initialData, executors, checklistDefinitions] = await Promise.all([
+  const [initialData, executors, checklistDefinitions, filterOptions] = await Promise.all([
     getRequestBoardPageData(filters),
     backendJson<MemberSummary[]>("/memberships/executors"),
     backendJson<ChecklistEntities[]>("/checklists"),
+    backendJson<RequestBoardWorkspaceData["filterOptions"]>("/requests/filter-options"),
   ]);
 
   return {
     initialData,
+    filterOptions,
     executors: executors.map((member) => ({ id: member.id, name: member.name || "Não informado" })),
     checklistDefinitions: checklistDefinitions.map(mapChecklistDefinition),
   };
@@ -42,6 +51,8 @@ export async function getRequestBoardPageData(filters: RequestBoardFilters): Pro
     start_date: filters.startDate,
     end_date: filters.endDate,
   });
+  if (filters.businessId) query.set("business_id", String(filters.businessId));
+  filters.serviceCategoryIds?.forEach((id) => query.append("service_category_ids", String(id)));
   const search = filters.search?.trim();
   if (search) query.set("search", search);
   const data = await backendJson<BoardEntities>(`/requests/board?${query}`);

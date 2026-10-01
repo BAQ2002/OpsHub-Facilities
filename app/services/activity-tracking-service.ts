@@ -3,6 +3,7 @@ import "server-only";
 import type { ActivityTrackingResponse } from "@/app/entities/api/entity-responses";
 
 import type { ActivityTrackingPageViewModel, ActivityTrackingFilters } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
+import { mapCategoryChartItem } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
 
 import { backendJson } from "@/src/server/api-client";
 
@@ -21,7 +22,8 @@ export async function getActivityTrackingPageData(filters: ActivityTrackingFilte
     end_date: filters.endDate,
   });
   if (filters.businessId) query.set("business_id", String(filters.businessId));
-  if (filters.serviceCategoryId) query.set("service_category_id", String(filters.serviceCategoryId));
+  filters.serviceCategoryIds?.forEach((id) => query.append("service_category_ids", String(id)));
+  filters.statusIds?.forEach((id) => query.append("status_ids", String(id)));
 
   const data = await backendJson<ActivityTrackingResponse>(`/requests/activity-tracking?${query}`);
   return mapActivityTrackingResponseToViewModel(data);
@@ -32,7 +34,9 @@ function mapActivityTrackingResponseToViewModel(
 ): ActivityTrackingPageViewModel {
   return {
     ...data,
+    categoryData: data.categoryData.map(mapCategoryChartItem),
     filterOptions: {
+      statuses: data.filterOptions.statuses,
       businesses: data.filterOptions.businesses.map((item) => ({ id: item.id, name: item.name || "Não informado" })),
       serviceCategories: data.filterOptions.serviceCategories.map((item) => ({ id: item.id, name: item.name || "Não informado" })),
     },

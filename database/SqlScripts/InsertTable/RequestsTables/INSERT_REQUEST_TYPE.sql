@@ -1,5 +1,5 @@
 
-INSERT INTO REQUEST_TYPE (ID, name) VALUES
+INSERT INTO OHFC_REQUEST_TYPE (ID, name) VALUES
     (1, 'Chamado'),
     (2, 'Atividade de Pátio')
 ON CONFLICT (ID) DO NOTHING;

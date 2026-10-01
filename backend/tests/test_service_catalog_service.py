@@ -2,7 +2,7 @@ import os
 import unittest
 from typing import Any
 
-os.environ.setdefault("DATABASE_URL", "postgresql://test:test@localhost/test")
+
 
 from backend.app.api.service_catalog.service import get_request_form
 from backend.app.database import QueryResult
@@ -55,7 +55,7 @@ class ServiceCatalogServiceTests(unittest.TestCase):
         result = get_request_form(connection, 2)
 
         self.assertEqual(result.service_type.id, 2)
-        self.assertIn("WHERE ST.ID=%(service_type_id)s", connection.executions[0][0])
+        self.assertIn("WHERE ST.ID=:service_type_id", connection.executions[0][0])
         self.assertEqual(connection.executions[0][1], {"service_type_id": 2})
         self.assertEqual(result.fields[0].type, "MEDIA")
         self.assertEqual(

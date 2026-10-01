@@ -1,4 +1,4 @@
-INSERT INTO REQUEST_STATUS (ID, description) VALUES
+INSERT INTO OHFC_REQUEST_STATUS (ID, description) VALUES
     (1,'Em aberto'),
     (2,'Programada'),
     (3,'Em andamento'),

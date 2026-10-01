@@ -4,15 +4,27 @@ import { revalidatePath } from "next/cache";
 import type { ChecklistSubmission } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 import { validateDateRange } from "@/src/server/validation/date-range";
 import type { RequestBoardFilters } from "@/app/services/request-board-service";
-import { getRequestBoardPageData } from "@/app/services/request-board-service";
+import { getRequestBoardPageData, updateRequestStatus } from "@/app/services/request-board-service";
 import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/app/services/request-task-service";
 
 export async function filterRequestBoard(filters: RequestBoardFilters) {
-  return getRequestBoardPageData({ ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) });
+  return getRequestBoardPageData({ ...filters, ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) });
 }
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
 export type UpdateVisitState = AddVisitState;
+
+export async function changeRequestStatus(requestId: number, statusId: number): Promise<AddVisitState> {
+  try {
+    await updateRequestStatus(requestId, statusId);
+    for (const path of ["/pages/chamados/kanbanboard", "/pages/chamados/dashboard", "/pages/home", "/pages/minhas-solicitacoes"]) {
+      revalidatePath(path);
+    }
+    return { status: "success", message: "Status atualizado com sucesso." };
+  } catch {
+    return { status: "error", message: "Não foi possível alterar o status. Tente novamente." };
+  }
+}
 
 /**
  * Acionada como Server Action pelo formulário ou controle de interface associado.

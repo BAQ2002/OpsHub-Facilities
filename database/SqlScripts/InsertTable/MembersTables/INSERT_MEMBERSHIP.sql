@@ -1,4 +1,4 @@
-INSERT INTO MEMBERSHIP (NAME, EMAIL)
+INSERT INTO OHFC_MEMBERSHIP (NAME, EMAIL)
 VALUES
     (E'Ademilson Alves Dos Santos', E'ademilson.santos@wilsonsons.com.br'),
     (E'Alan Cunha', E'alan.cunha@wilsonsons.com.br'),

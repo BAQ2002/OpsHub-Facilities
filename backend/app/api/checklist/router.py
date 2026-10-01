@@ -19,6 +19,7 @@ def add(
     connection: DatabaseConnection = Depends(get_connection),
 ):
     add_to_visit(connection, visit_id, data)
+    connection.commit()
     return Response(status_code=204)
 
 

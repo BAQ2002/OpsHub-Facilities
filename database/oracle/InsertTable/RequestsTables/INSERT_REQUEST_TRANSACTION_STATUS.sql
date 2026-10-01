@@ -1,0 +1,26 @@
+-- OHFC_REQUEST_TRANSACTION_STATUS: 4 registros. Gerado pelas regras revisadas da importação.
+-- Sem COMMIT individual; executar pelo consolidado correspondente.
+
+INSERT INTO OHFC_REQUEST_TRANSACTION_STATUS (ID, DESCRIPTION)
+VALUES (
+    1,
+    'Solicitada'
+);
+
+INSERT INTO OHFC_REQUEST_TRANSACTION_STATUS (ID, DESCRIPTION)
+VALUES (
+    2,
+    'Aprovada'
+);
+
+INSERT INTO OHFC_REQUEST_TRANSACTION_STATUS (ID, DESCRIPTION)
+VALUES (
+    3,
+    'Retornada'
+);
+
+INSERT INTO OHFC_REQUEST_TRANSACTION_STATUS (ID, DESCRIPTION)
+VALUES (
+    4,
+    'Cancelada'
+);

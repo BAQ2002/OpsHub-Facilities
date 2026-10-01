@@ -1,3 +1,4 @@
+import AutomaticSearchForm from "@/app/componentes/AutomaticSearchForm";
 import type { RequestCardViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
 import { getMyRequestsPageData } from "@/app/services/request-service";
 
@@ -28,7 +29,7 @@ export default async function MyRequestsPage({
   const filteredClosedRequests = status === "open" ? [] : closedRequests.filter(matchesSearch);
 
   return (
-    <section data-ui="my-requests-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
+    <section data-ui="my-requests-page" className="min-h-screen bg-white px-5 pb-10 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="my-requests-content" className="mx-auto w-full max-w-[980px]">
         <header data-ui="my-requests-header" className="mb-9 flex items-center gap-4 pt-1">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
@@ -39,45 +40,44 @@ export default async function MyRequestsPage({
               Acompanhamento
             </p>
             <h1 className="mt-1 text-[30px] font-bold leading-none tracking-[-0.03em] text-slate-950 md:text-[34px]">
-              Minhas requests
+              Minhas solicitações
             </h1>
           </div>
         </header>
 
-        <form
+        <AutomaticSearchForm
           action="/pages/minhas-solicitacoes"
           method="get"
           data-ui="my-requests-filters"
-          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto_auto]"
-          aria-label="Busca e filtros das minhas requests"
+          className="mb-10 grid gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] md:grid-cols-[1fr_auto]"
+          aria-label="Busca e filtros das minhas solicitações"
         >
           <label className="relative block">
-            <span className="sr-only">Buscar por request</span>
+            <span className="sr-only">Buscar por solicitação</span>
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
               <SearchIcon />
             </span>
             <input
-              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-12 pr-4 text-sm font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
+              className="h-[30px] w-full rounded-lg border border-slate-200 bg-white pl-12 pr-4 text-xs font-medium text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
               type="search"
               name="busca"
               defaultValue={search}
-              placeholder="Buscar por request"
+              placeholder="Buscar por solicitação"
             />
           </label>
 
-          <label className="flex h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700">
-            <span className="sr-only">Filtrar por request status</span>
+          <label className="flex h-[30px] items-center rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700">
+            <span className="sr-only">Filtrar por status da solicitação</span>
             <select className="cursor-pointer bg-transparent outline-none" name="status" defaultValue={status}>
               <option className="text-slate-900" value="">Todos os status</option>
-              <option className="text-slate-900" value="open">Requests abertas</option>
-              <option className="text-slate-900" value="closed">Requests fechadas</option>
+              <option className="text-slate-900" value="open">Solicitações abertas</option>
+              <option className="text-slate-900" value="closed">Solicitações fechadas</option>
             </select>
           </label>
-          <button className="inline-flex h-11 items-center justify-center gap-3 rounded-xl bg-teal-600 px-7 text-sm font-bold uppercase text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" type="submit"><FilterIcon /> Filtrar</button>
-        </form>
+        </AutomaticSearchForm>
 
-        <RequestGroup title="Requests abertas" requests={filteredOpenRequests} />
-        <RequestGroup title="Requests fechadas" requests={filteredClosedRequests} className="mt-10" />
+        <RequestGroup title="Solicitações abertas" requests={filteredOpenRequests} />
+        <RequestGroup title="Solicitações fechadas" requests={filteredClosedRequests} className="mt-10" />
       </div>
     </section>
   );
@@ -116,7 +116,7 @@ function RequestGroup({
           {title}
         </h2>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
-          {requests.length} requests
+          {requests.length} solicitações
         </span>
       </div>
 
@@ -126,7 +126,7 @@ function RequestGroup({
         ))}
         {requests.length === 0 ? (
           <p className="rounded-[16px] border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
-            Nenhuma request encontrada com os filtros informados.
+            Nenhuma solicitação encontrada com os filtros informados.
           </p>
         ) : null}
       </div>
@@ -161,7 +161,7 @@ function RequestCard({ request }: { request: RequestCardViewModel }) {
           <button
             className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-950 transition hover:bg-slate-100"
             type="button"
-            aria-label={`Abrir ações da request ${request.id}`}
+            aria-label={`Abrir ações da solicitação ${request.id}`}
           >
             <MoreIcon />
           </button>
@@ -247,27 +247,6 @@ function SearchIcon() {
     >
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-4.1-4.1" />
-    </svg>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o ícone visual de filter.
- *
- * @returns O elemento React que representa esta interface.
- */
-function FilterIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M4 5a1 1 0 0 1 .9-.55h14.2a1 1 0 0 1 .78 1.63L14 13.42V19a1 1 0 0 1-.45.84l-3 2A1 1 0 0 1 9 21v-7.58L4.12 6.08A1 1 0 0 1 4 5Z" />
     </svg>
   );
 }

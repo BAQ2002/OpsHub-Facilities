@@ -1,9 +1,7 @@
 import "server-only";
 
-import type { RequestContext } from "@/app/entities/api/entity-responses";
-import { mapActivity } from "./mappers/entity-view-models";
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { HomeMetrics, ActivityRecord, EquipmentCard, ActivityMarkerViewModel, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/entities/navigation_entities/home_viewModels";
+import type { HomeMetrics, ActivityMapRecord, EquipmentCard, ActivityMarkerViewModel, ActivityCategoryStyle, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/entities/navigation_entities/home_viewModels";
 
 import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/entities/navigation_entities/home_viewModels";
 import { backendJson } from "@/src/server/api-client";
@@ -29,14 +27,15 @@ export async function getHomePageData(
   dateRange: HomeDateRange,
   selectedBusiness = "all",
 ): Promise<HomePageViewModel> {
-  const [metrics, activityRecords] = await Promise.all([
+  const [metrics, mapRecords, businessCounts] = await Promise.all([
     getHomeMetrics(dateRange),
-    getActivityRecords(dateRange),
+    backendJson<ActivityMapRecord[]>(`/requests/activities/map?${homeDateRangeQuery(dateRange)}`),
+    backendJson<{ name: string; count: number }[]>(`/requests/activities/business-counts?${homeDateRangeQuery(dateRange)}`),
   ]);
   const equipmentCards = mapMetricsToEquipmentCards(metrics);
-  const categoryColorMap = Object.fromEntries([
-    ...Object.entries(activityCategoryStylesById).map(([id, style]) => [id, style.color]),
-    ["default", defaultActivityCategoryStyle.color],
+  const categoryStyleMap = Object.fromEntries([
+    ...Object.entries(activityCategoryStylesById),
+    ["default", defaultActivityCategoryStyle],
   ]);
   const mapImage = {
     src: process.env.FACILITIES_MAP_SRC ?? facilitiesMap.src,
@@ -49,11 +48,10 @@ export async function getHomePageData(
     equipmentCards,
     totals: mapEquipmentCardsToTotals(equipmentCards),
     mapImage,
-    activityMarkers: activityRecords.map((record) => mapActivityRecordToMarker(record, categoryColorMap)),
-    plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(activityRecords, selectedBusiness),
+    activityMarkers: mapRecords.map((record) => mapActivityRecordToMarker(record, categoryStyleMap)),
+    plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(businessCounts, selectedBusiness),
     averageHandlingTimeClock: mapHandlingTimeSamplesToClock(metrics.handlingMinutes),
-    activityRecords,
-    categoryColorMap,
+    categoryStyleMap,
   };
 }
 
@@ -62,11 +60,6 @@ function homeDateRangeQuery(dateRange: HomeDateRange): URLSearchParams {
   dateRange.statuses?.forEach((status) => query.append("status", status));
   dateRange.businessUnits?.forEach((businessUnit) => query.append("business_unit", String(businessUnit)));
   return query;
-}
-
-async function getActivityRecords(dateRange: HomeDateRange): Promise<ActivityRecord[]> {
-  const records = await backendJson<RequestContext[]>(`/requests/activities?${homeDateRangeQuery(dateRange)}`);
-  return records.map(mapActivity);
 }
 
 function getHomeMetrics(dateRange: HomeDateRange): Promise<HomeMetrics> {
@@ -79,8 +72,7 @@ function mapMetricsToEquipmentCards(metrics: HomeMetrics): EquipmentCard[] {
     const style = getActivityCategoryStyle(equipment.categoryId);
     return {
       title: equipment.categoryName,
-      accent: style.accent,
-      iconBg: style.iconBg,
+      categoryStyle: style,
       Planned: equipment.planned,
       InProgress: equipment.inProgress,
       Completed: equipment.completed,
@@ -90,35 +82,29 @@ function mapMetricsToEquipmentCards(metrics: HomeMetrics): EquipmentCard[] {
 }
 
 function mapActivityRecordToMarker(
-  record: ActivityRecord,
-  categoryColorMap: Record<string, string>,
+  record: ActivityMapRecord,
+  categoryStyleMap: Record<string, ActivityCategoryStyle>,
 ): ActivityMarkerViewModel {
   return {
     id: record.id,
     label: `${record.id} · ${record.category} · ${record.location}`,
-    color: categoryColorMap[String(record.categoryId)] ?? categoryColorMap.default,
-    x: record.mapPosition.x,
-    y: record.mapPosition.y,
+    color: (categoryStyleMap[String(record.categoryId)] ?? categoryStyleMap.default).color,
+    x: record.x,
+    y: record.y,
   };
 }
 
 function mapActivitiesToBusinessUnitFilters(
-  records: ActivityRecord[],
+  counts: { name: string; count: number }[],
   selectedBusiness = "all",
 ): PlannedRequestFilterViewModel[] {
-  const businessUnits = Array.from(new Set(records.map((record) => record.businessUnit)));
-
   return [
-    ...businessUnits.map((businessUnit) => ({
-      value: businessUnit,
-      label: businessUnit,
-      count: records.filter((record) => record.businessUnit === businessUnit).length,
-      isActive: selectedBusiness === businessUnit,
+    ...counts.map(({ name, count }) => ({
+      value: name, label: name, count, isActive: selectedBusiness === name,
     })),
     {
-      value: "all",
-      label: "Todos",
-      count: records.length,
+      value: "all", label: "Todos",
+      count: counts.reduce((sum, item) => sum + item.count, 0),
       isActive: selectedBusiness === "all",
     },
   ];

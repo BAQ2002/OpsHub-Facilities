@@ -1,0 +1,382 @@
+{
+  "a1f9e2f92340569e35aefd463382ab49c9042d9c35872c9c3f59c8d9f1edf2fa": {
+    "reason": "Grupo 538: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Prédio ADM",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "dbfa704991132d4a1b07e7260023c93864d442262eaa74259692cdf3c12282dc": {
+    "reason": "Grupo 538: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local do vaso",
+        "value": "Prédio adm",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "6ff49e5586c7e3537e16e3af3342f22f6ae32105ad1f115d4235d1a2bcabe68a": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local da tomada",
+        "value": "ETE- Estação de Tratamento de Efluente (Ao lado da Manutenção)",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Manutenção",
+      "location": "ETE- Estação de Tratamento de Efluente (Ao lado da Manutenção)"
+    }
+  },
+  "c9fc7d2e539daf160f623ffcfc54779deee69eba6f98fd28888073045b3741f5": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local da tomada",
+        "value": "2° prédio ADM",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "c1c0d7ef941693891ffbbb337b20c9b9eddca026c44b62fbc6a1c32e90e86afd": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Vivência Feminina Climatizada",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "61923e366a3b4046f630afd68795cc8b4eef731a1e2774d0bd297b8108b70896": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Prédio ADM térreo",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "227a53e45f6d4b9d192b0a1507e7a2a93820c207ec4b2fbc497cbea1fbdb3019": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Pré Gate",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "c576d6a2f6bd16f682fad690dffc5186d4759077a4c7aeb2d789688c365cc25a": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Pátio Operacional",
+        "role": "location"
+      },
+      {
+        "header": "Unidade de negócio",
+        "value": "Centro logístico",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Pàtio Operacional",
+      "location": "Local exato não especificado"
+    }
+  },
+  "81f61586e22d207ea31da82a5bf69405bd2a6095c3835ba3d5274bbfc33b1e85": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Vivência Feminina Climatizada",
+        "role": "location"
+      },
+      {
+        "header": "Unidade de negócio",
+        "value": "Tecon Salvador",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "6ee0864994d22de3bbb426d34ae253459bec8cae0304779683958fcf945f5926": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Pátio Operacional",
+        "role": "location"
+      },
+      {
+        "header": "Centro logístico",
+        "value": "CLS",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Pàtio Operacional",
+      "location": "Local exato não especificado"
+    }
+  },
+  "835718d78978c8fdbcea39da4dc81f853bce0ae5cb1cc4a31707e1a3211baab1": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Armazem",
+        "role": "location"
+      },
+      {
+        "header": "Centro logístico",
+        "value": "CLS",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Armazém",
+      "location": "Local exato não especificado"
+    }
+  },
+  "9324c689d609ce7df4b7200db0f36eebc8b9b33f2d69751b70aa34a4cfe47042": {
+    "reason": "Grupo 538: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Centro logístico",
+        "value": "TECON",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "5da70ec6b534016ab3a67b20935795141b5ebd9870dc2d9623bc297271bfb242": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Manutenção",
+        "role": "location"
+      },
+      {
+        "header": "Unidade de negócio",
+        "value": "Centro logístico",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Manutenção",
+      "location": "Local exato não especificado"
+    }
+  },
+  "8ba35508294659061654d978cb16afba47682cb32b167f7e6afd62d7600d7d6c": {
+    "reason": "Grupo 538: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Unidade de negócio",
+        "value": "Tecon Salvador",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "b53fde3a4ff8618ae48258ffe5ed4e87327993970f5f521e21de58fe0e29c1b2": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Conteiner area 23",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "890bd66f9ebdbdd25dc32100c2b88616cb89b037cd845c93d2b5fcf3b7e96876": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Container Área 23",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "5d35c0805b445c87c1dff1c77efb0261a1d828a26696614cd288a858e86da2d0": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Prédio ADM 1º andar",
+        "role": "location"
+      },
+      {
+        "header": "Unidade de negócio",
+        "value": "Centro logístico",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Prédio Administrativo",
+      "location": "Prédio ADM 1º andar"
+    }
+  },
+  "1076b65726b15939dfbce0c4536ba6c5c057a7358da37522e94605716c1bbf32": {
+    "reason": "Grupo 47: vinculação ao CLS autorizada; região/local preservados",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Manutenção",
+        "role": "location"
+      },
+      {
+        "header": "Centro logístico",
+        "value": "CLS",
+        "role": "business"
+      }
+    ],
+    "location": {
+      "business": "Centro Logístico Salvador",
+      "region": "Manutenção",
+      "location": "Local exato não especificado"
+    }
+  },
+  "15a35891fde252c6f202db2d2165b5839dac2192d8f7d037ecdf39c5968c02b7": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Predio ADM. Sala de reunião SMS",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "497f67695af9a7d285d6ef9d5604d06b754348b6a71f6116a8876e8144ea2948": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Reunião QSMSP",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "e598d16f93a033ec6230e59ff5c5cdbcccc3dfbc741d8e910b60e60aa186eea8": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "instalação de novo condicionador de ar na sala do QSMSP",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  },
+  "3a9b9ce80a75899834e75ef58b0b3ce1206fef59117b4c13ddfc91781d696a5e": {
+    "reason": "Grupo 34: TECON / Prédio Administrativo / Local exato não especificado",
+    "evidence": [
+      {
+        "header": "Local",
+        "value": "Prédio ADM/Setor médico/Sala da enfermeira",
+        "role": "location"
+      }
+    ],
+    "location": {
+      "business": "TECON Salvador",
+      "region": "Prédio Administrativo",
+      "region_id": 1,
+      "location": "Local exato não especificado"
+    }
+  }
+}

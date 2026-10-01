@@ -1,6 +1,6 @@
 import type { SectorEntity } from "./sector";
 
-/** Entidade MEMBERSHIP. Fonte: database/SqlScripts/CreateTables/MembersTables/CREATE_MEMBERSHIP.sql */
+/** Entidade OHFC_MEMBERSHIP. Fonte: database/SqlScripts/CreateTables/MembersTables/CREATE_MEMBERSHIP.sql */
 export type MembershipEntity = {
   id: number;
   idSector: SectorEntity["id"] | null;

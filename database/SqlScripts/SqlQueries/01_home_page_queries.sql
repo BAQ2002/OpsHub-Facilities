@@ -16,14 +16,14 @@ SELECT
     COUNT(*) FILTER (WHERE rs.description = 'Programada') AS planned,
     COUNT(*) FILTER (WHERE rs.description = 'Em andamento') AS in_progress,
     COUNT(r.id) AS total
-FROM service_category sc
-LEFT JOIN service_type st
+FROM OHFC_SERVICE_CATEGORY sc
+LEFT JOIN OHFC_SERVICE_TYPE st
     ON st.id_service_category = sc.id
-LEFT JOIN request r
+LEFT JOIN OHFC_REQUEST r
     ON r.id_service_type = st.id
     AND r.agreed_date >= :period_start
     AND r.agreed_date < :period_end
-LEFT JOIN request_status rs
+LEFT JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
 GROUP BY sc.id, sc.name
 ORDER BY sc.name;
@@ -33,8 +33,8 @@ ORDER BY sc.name;
 SELECT
     COUNT(*) FILTER (WHERE rs.description = 'Programada') AS planned,
     COUNT(*) FILTER (WHERE rs.description = 'Em andamento') AS in_progress
-FROM request r
-JOIN request_status rs
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
 WHERE r.agreed_date >= :period_start
   AND r.agreed_date < :period_end;
@@ -44,7 +44,7 @@ WHERE r.agreed_date >= :period_start
 -- Mapeia para averageSlaClock.
 SELECT
     ROUND(AVG(EXTRACT(EPOCH FROM (r.agreed_date - r.created_date)) / 60))::INTEGER AS average_sla_minutes
-FROM request r
+FROM OHFC_REQUEST r
 WHERE r.created_date IS NOT NULL
   AND r.agreed_date IS NOT NULL
   AND r.agreed_date >= :period_start
@@ -64,20 +64,20 @@ SELECT
     l.location_x AS map_x,
     l.location_y AS map_y,
     rs.description AS status
-FROM request r
-JOIN request_type rt
+FROM OHFC_REQUEST r
+JOIN OHFC_REQUEST_TYPE rt
     ON rt.id = r.id_request_type
-JOIN service_type st
+JOIN OHFC_SERVICE_TYPE st
     ON st.id = r.id_service_type
-JOIN service_category sc
+JOIN OHFC_SERVICE_CATEGORY sc
     ON sc.id = st.id_service_category
-JOIN location l
+JOIN OHFC_LOCATION l
     ON l.id = r.id_location
-JOIN region rg
+JOIN OHFC_REGION rg
     ON rg.id = l.id_region
-JOIN business b
+JOIN OHFC_BUSINESS b
     ON b.id = rg.id_business
-JOIN request_status rs
+JOIN OHFC_REQUEST_STATUS rs
     ON rs.id = r.id_request_status
 WHERE r.agreed_date >= :period_start
   AND r.agreed_date < :period_end
@@ -89,12 +89,12 @@ SELECT
     b.id AS business_id,
     b.name AS label,
     COUNT(r.id) AS count
-FROM business b
-LEFT JOIN region rg
+FROM OHFC_BUSINESS b
+LEFT JOIN OHFC_REGION rg
     ON rg.id_business = b.id
-LEFT JOIN location l
+LEFT JOIN OHFC_LOCATION l
     ON l.id_region = rg.id
-LEFT JOIN request r
+LEFT JOIN OHFC_REQUEST r
     ON r.id_location = l.id
     AND r.agreed_date >= :period_start
     AND r.agreed_date < :period_end

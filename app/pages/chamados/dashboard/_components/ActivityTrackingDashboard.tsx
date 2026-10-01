@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { MultiSelectFilter, SelectField } from "../../_components/TrackingFilters";
+import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
 import type { ActivityTrackingFilters, ChartItem, ActivityTrackingPageViewModel } from "@/app/entities/navigation_entities/chamados_dashboard_viewModels";
 
 import { filterActivityTracking } from "../actions";
 import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
+import { HandlingTimeDisplay } from "@/app/componentes/HandlingTimeDisplay";
 
 /**
  * Acionada pelo Next.js durante a renderização da rota correspondente.
@@ -17,28 +19,22 @@ import { TrackingTabs } from "@/app/pages/chamados/_components/TrackingTabs";
  * @returns O elemento React que representa esta interface.
  */
 export function ActivityTrackingDashboard({ initialData, initialFilters }: { initialData: ActivityTrackingPageViewModel; initialFilters: ActivityTrackingFilters }) {
-  const [data, setData] = useState(initialData);
-  const [filters, setFilters] = useState(initialFilters);
-  const [isPending, startTransition] = useTransition();
+  const { data, filters, update, isPending, error } = useAutomaticFilters(initialFilters, initialData, filterActivityTracking);
   const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue, filterOptions } = data;
 
-  function applyFilters() {
-    startTransition(async () => setData(await filterActivityTracking(filters)));
-  }
-
   return (
-    <section data-ui="activity-dashboard-page" className="min-h-screen bg-[#fbfcfe] px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
-      <div data-ui="activity-dashboard-content" className="mx-auto max-w-[1620px]">
+    <section data-ui="activity-dashboard-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
+      <div data-ui="activity-dashboard-content" className="@container mx-auto max-w-[1620px]">
         <header data-ui="activity-dashboard-header" className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-teal-600">
               Administração
             </p>
             <h1 className="mt-2 text-[26px] font-bold leading-none tracking-[-0.03em] text-slate-950">
-              Acompanhamento de requests
+              Acompanhamento de solicitações
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-              Monitore registros da tabela request por status, service_category e evolução mensal.
+              Monitore solicitações por status, categoria de serviço e evolução mensal.
             </p>
           </div>
 
@@ -55,46 +51,49 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <TrackingTabs active="dashboard" />
         </div>
 
-        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de requests">
-          <div data-ui="activity-dashboard-filter-fields" className="grid gap-3 lg:grid-cols-[170px_170px_1fr_1fr_auto]">
-            <div className="flex flex-wrap items-center gap-2 lg:col-span-2">
-              <DateRange {...filters} disabled={isPending} onChange={(range: DateRangeValue) => setFilters((current) => ({ ...current, ...range }))} />
+        <section data-ui="activity-dashboard-filters" className="mb-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]" aria-label="Filtros de solicitações">
+          <div data-ui="activity-dashboard-filter-fields" className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <DateRange commitOnBlur {...filters} onChange={(range: DateRangeValue) => update({ ...filters, ...range })} />
             </div>
-            <SelectField label="Business" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => setFilters((current) => ({ ...current, businessId }))} />
-            <SelectField label="Service category" name="serviceCategoryId" value={filters.serviceCategoryId} placeholder="Todas as categorias" options={filterOptions.serviceCategories} onChange={(serviceCategoryId) => setFilters((current) => ({ ...current, serviceCategoryId }))} />
+            <SelectField label="Unidade de negócio" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
+            <MultiSelectFilter label="Categorias de serviço" placeholder="Todas as categorias" options={filterOptions.serviceCategories} value={filters.serviceCategoryIds ?? []} onChange={(serviceCategoryIds) => update({ ...filters, serviceCategoryIds })} />
+            <MultiSelectFilter label="Status" placeholder="Todos os status" options={filterOptions.statuses} value={filters.statusIds ?? []} onChange={(statusIds) => update({ ...filters, statusIds })} />
 
-            <button
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700"
-              type="button" disabled={isPending} onClick={applyFilters}
-            >
-              <SearchIcon />
-              {isPending ? "Buscando..." : "Buscar"}
-            </button>
+            <span role="status" className="text-xs text-slate-500">{isPending ? "Atualizando..." : ""}</span>
+            {error && <p role="alert" className="w-full text-xs text-red-600">{error}</p>}
           </div>
         </section>
 
-        <section data-ui="activity-dashboard-summary" className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do período">
-          {summaryCards.map((card) => (
-            <article
-              data-ui="summary-card"
-              key={card.label}
-              className="rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)]"
-            >
-              <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${card.bg}`}>
-                <ActivityIcon className={card.color} />
-              </div>
-              <p className={`text-[25px] font-bold leading-none ${card.color}`}>{card.value}</p>
-              <h2 className="mt-2 text-sm font-bold text-slate-950">{card.label}</h2>
-              <p className="mt-1 text-xs text-slate-500">{card.detail}</p>
-            </article>
-          ))}
-        </section>
+        <div data-ui="activity-dashboard-indicators" className="mb-4 grid items-stretch gap-3 @[1080px]:grid-cols-[minmax(0,3fr)_minmax(420px,2fr)]">
+          <section data-ui="activity-dashboard-summary" className="grid gap-3 sm:grid-cols-6" aria-label="Resumo do período">
+            {summaryCards.map((card, index) => (
+              <article
+                data-ui="summary-card"
+                key={card.label}
+                className={`rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] ${index < 2 ? "sm:col-span-3" : "sm:col-span-2"}`}
+              >
+                <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${card.bg}`}>
+                  <ActivityIcon className={card.color} />
+                </div>
+                <p className={`text-[25px] font-bold leading-none ${card.color}`}>{card.value}</p>
+                <h2 className="mt-2 text-sm font-bold text-slate-950">{card.label}</h2>
+                <p className="mt-1 text-xs text-slate-500">{card.detail}</p>
+              </article>
+            ))}
+          </section>
+
+          <section data-ui="activity-dashboard-times" className="grid items-center gap-4 rounded-[20px] border border-slate-200 bg-white p-4 shadow-[0_1px_4px_rgba(15,23,42,0.08)] sm:grid-cols-2" aria-label="Tempos médios de atendimento">
+            <TimeCard title="Tempo médio de duração do atendimento" minutes={data.averageHandlingMinutes} detail="Do início à finalização · Finalizados no período" />
+            <TimeCard title="Tempo médio de início do atendimento" minutes={data.averageStartMinutes} detail="Da abertura ao início · Iniciados no período" />
+          </section>
+        </div>
 
         <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
-          <ChartCard title="Requests por service_category">
+          <ChartCard title="Solicitações por categorias de serviços">
             <DonutChart data={categoryData} />
           </ChartCard>
-          <ChartCard title="Requests por request_status">
+          <ChartCard title="Solicitações por status">
             <DonutChart data={statusData} />
           </ChartCard>
         </section>
@@ -103,7 +102,7 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 id="monthly-chart-title" className="text-base font-bold leading-tight text-slate-950">
-                Requests por mês
+                Solicitações por mês
               </h2>
               <p className="mt-1 text-xs text-slate-500">Comparativo mensal no período selecionado.</p>
             </div>
@@ -120,30 +119,14 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
   );
 }
 
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o componente SelectField com os dados recebidos.
- * Durante o fluxo, aciona {@link toString}, {@link map}.
- *
- * @param props Dados necessários para executar esta função.
- * @returns O elemento React que representa esta interface.
- */
-function SelectField({ label, name, value, placeholder, options, onChange }: { label: string; name: string; value?: number; placeholder: string; options: { id: number; name: string }[]; onChange?: (value?: number) => void }) {
+function TimeCard({ title, minutes, detail }: { title: string; minutes: number; detail: string }) {
+  const hours = Math.floor(minutes / 60);
+  const remainder = String(minutes % 60).padStart(2, "0");
   return (
-    <label className="block">
-      <span className="sr-only">{label}</span>
-      <select
-        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-600 outline-none transition focus:border-teal-500 focus:bg-white focus:ring-2 focus:ring-teal-100"
-        name={name}
-        value={value?.toString() ?? ""}
-        onChange={(event) => onChange?.(event.target.value ? Number(event.target.value) : undefined)}
-        aria-label={label}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
-      </select>
-    </label>
+    <article className="min-w-0 [&_h2]:min-h-[22px]">
+      <HandlingTimeDisplay title={title} displayValue={`${String(hours).padStart(2, "0")}:${remainder}`} caption={`${hours}h ${remainder}min`} />
+      <p className="mt-2 min-h-8 text-center text-xs text-slate-500">{detail}</p>
+    </article>
   );
 }
 
@@ -200,7 +183,7 @@ function DonutChart({ data }: { data: ChartItem[] }) {
   return (
     <div data-ui="donut-chart" className="grid items-center gap-6 md:grid-cols-[210px_1fr]">
       <div className="relative mx-auto h-[210px] w-[210px]">
-        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} requests`}>
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 42 42" role="img" aria-label={`Total de ${total} solicitações`}>
           <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#eef2f7" strokeWidth="6" />
           {segments.map((item) => (
             <circle
@@ -219,13 +202,13 @@ function DonutChart({ data }: { data: ChartItem[] }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
           <strong className="text-3xl font-bold text-slate-950">{total}</strong>
-          <span className="mt-1 text-xs font-medium text-slate-500">requests</span>
+          <span className="mt-1 text-xs font-medium text-slate-500">solicitações</span>
         </div>
       </div>
 
       <div className="space-y-3">
         {data.map((item) => (
-          <div key={item.label} className="flex items-center justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+          <div key={item.label} className="flex items-center justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2" style={{ backgroundColor: item.backgroundColor }}>
             <LegendItem color={item.color} label={item.label} />
             <span className="text-sm font-bold text-slate-950">{item.value}</span>
           </div>
@@ -277,12 +260,12 @@ function MonthlyBarChart({
                   <span
                     className="w-4 rounded-t-md bg-orange-500"
                     style={{ height: `${(item.open / maxMonthlyValue) * 100}%` }}
-                    title={`${item.open} requests abertos`}
+                    title={`${item.open} solicitações abertas`}
                   />
                   <span
                     className="w-4 rounded-t-md bg-lime-500"
                     style={{ height: `${(item.closed / maxMonthlyValue) * 100}%` }}
-                    title={`${item.closed} requests fechados`}
+                    title={`${item.closed} solicitações fechadas`}
                   />
                 </div>
                 <span className="text-center text-xs font-medium text-slate-500">{item.month}</span>
@@ -337,22 +320,6 @@ function ActivityIcon({ className }: { className: string }) {
     <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M9 11l3 3L22 4" />
       <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-    </svg>
-  );
-}
-
-/**
- * Acionada pelo React quando o componente é incluído na árvore de renderização do componente pai.
- *
- * Renderiza o ícone visual de search.
- *
- * @returns O elemento React que representa esta interface.
- */
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }

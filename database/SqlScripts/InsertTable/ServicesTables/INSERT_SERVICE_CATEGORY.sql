@@ -1,7 +1,7 @@
 -- ================================================================
 -- SERVICE_CATEGORY
 -- ================================================================
-INSERT INTO SERVICE_CATEGORY (NAME) VALUES
+INSERT INTO OHFC_SERVICE_CATEGORY (NAME) VALUES
 ('ARTÍFICE'),
 ('CLIMATIZAÇÃO E REFRIGERAÇÃO'),
 ('COPA'),

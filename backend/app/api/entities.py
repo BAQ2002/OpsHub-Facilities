@@ -1,7 +1,7 @@
 """Persisted entities and read envelopes. UI formatting belongs to Next.js."""
 from datetime import datetime
 from decimal import Decimal
-from pydantic import BaseModel, ConfigDict, JsonValue
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, JsonValue
 from pydantic.alias_generators import to_camel
 
 
@@ -31,8 +31,9 @@ class LocationEntity(EntityModel):
 class RequestEntity(EntityModel):
     id: int
     id_request_type: int
-    id_member_requester: int
-    id_member_responder: int | None
+    # Accept physical SQL column names while preserving the public JSON contract.
+    id_member_requester: int = Field(validation_alias=AliasChoices("id_membership_requester", "idMemberRequester"))
+    id_member_responder: int | None = Field(validation_alias=AliasChoices("id_membership_responder", "idMemberResponder"))
     id_location: int
     id_service_type: int
     id_request_status: int
@@ -87,14 +88,14 @@ class ServiceFieldValueEntity(EntityModel):
 class RequestTaskEntity(EntityModel):
     id: int
     id_request: int
-    start_datetime: datetime | None
-    stop_datetime: datetime | None
+    start_datetime: datetime | None = Field(validation_alias=AliasChoices("started_date", "startDatetime"))
+    stop_datetime: datetime | None = Field(validation_alias=AliasChoices("finished_date", "stopDatetime"))
     description: str | None
 
 
 class TaskMemberOccurrenceEntity(EntityModel):
     id: int
-    id_task: int
+    id_task: int = Field(validation_alias=AliasChoices("id_request_task", "idTask"))
     id_membership: int
 
 
