@@ -24,13 +24,13 @@ npm ci
 npm run dev
 ```
 
-Use `app/.env.example` como modelo de `app/.env`, preservando arquivos existentes. Para uma API local, configure `BACKEND_API_URL=http://127.0.0.1:8000`, que tambem e o padrao sem configuracao. O carregamento de `app/.env` foi preservado; variaveis do processo tem precedencia.
+Use `.env.example` como modelo de `.env` na raiz do frontend, preservando arquivos existentes. Para uma API local, configure `BACKEND_API_URL=http://127.0.0.1:8000`, que tambem e o padrao sem configuracao. O Next.js carrega esse arquivo automaticamente; variaveis do processo tem precedencia.
 
 Acesse http://localhost:3000; a raiz redireciona para `/pages/home`. O desenvolvimento usa Webpack; `npm run dev:turbopack` permite testar Turbopack. `ALLOWED_DEV_ORIGINS` recebe hosts de desenvolvimento sem protocolo, separados por virgulas.
 
 ## Docker
 
-Prepare `.env` nesta raiz usando `.env.example`. Ele configura Compose; `app/.env` nao entra na imagem.
+Prepare `.env` nesta raiz usando `.env.example`. O mesmo arquivo configura o Compose, que fornece `BACKEND_API_URL` ao build e ao container; nenhum arquivo `.env` entra na imagem.
 
 ```powershell
 docker network create opshub-facilities

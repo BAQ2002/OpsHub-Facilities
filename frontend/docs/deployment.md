@@ -10,7 +10,7 @@ Execute os comandos na raiz do repositorio frontend. O contexto Docker e somente
 4. Execute `docker compose config --quiet` e `docker compose up -d --build`.
 5. Verifique `docker compose ps`, `docker compose logs --tail 100 frontend` e `http://localhost:3000/api/health`.
 
-A mesma URL e fornecida ao build e runtime. Mudancas exigem rebuild por causa dos rewrites de midia. Arquivos de ambiente nao entram na imagem. `app/.env` e usado na execucao local fora do Docker.
+A mesma URL e fornecida ao build e runtime. Mudancas exigem rebuild por causa dos rewrites de midia. Arquivos de ambiente nao entram na imagem. Na execucao local fora do Docker, o Next.js carrega automaticamente `.env` da raiz do frontend.
 
 O build nao exige API ou Oracle disponiveis. Paginas com dados exigem API ativa. O healthcheck confirma somente o processo; homologue uma listagem, midia, PDF e Server Actions para verificar a integracao.
 
