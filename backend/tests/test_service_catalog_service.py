@@ -4,8 +4,8 @@ from typing import Any
 
 
 
-from backend.app.api.service_catalog.service import get_request_form
-from backend.app.database import QueryResult
+from app.api.service_catalog.service import get_request_form
+from app.database import QueryResult
 
 
 class FakeCursor:

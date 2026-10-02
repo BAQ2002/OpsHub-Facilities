@@ -2,9 +2,9 @@ import unittest
 
 from fastapi import HTTPException
 
-from backend.app.api.media_response import media_response
-from backend.app.api.request_task.router import media as request_task_media
-from backend.app.api.service_catalog.router import request_media
+from app.api.media_response import media_response
+from app.api.request_task.router import media as request_task_media
+from app.api.service_catalog.router import request_media
 
 
 class MediaResponseTests(unittest.TestCase):

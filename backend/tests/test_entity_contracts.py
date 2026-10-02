@@ -10,14 +10,14 @@ from pathlib import Path
 
 
 from pydantic import ValidationError
-from backend.app.api.entities import RequestContext, LocationEntity
-from backend.app.api.request.service import get_activities, get_board, get_my_requests
-from backend.app.api.service_catalog.service import get_catalog, get_request_form
-from backend.app.api.organization.service import get_location_hierarchy
-from backend.app.api.checklist.service import get_active_definitions
-from backend.tests.test_request_service import RecordingConnection
+from app.api.entities import RequestContext, LocationEntity
+from app.api.request.service import get_activities, get_board, get_my_requests
+from app.api.service_catalog.service import get_catalog, get_request_form
+from app.api.organization.service import get_location_hierarchy
+from app.api.checklist.service import get_active_definitions
+from tests.test_request_service import RecordingConnection
 
-FIXTURE = json.loads((Path(__file__).resolve().parents[2] / "tests/fixtures/entity-data.json").read_text(encoding="utf-8"))
+FIXTURE = json.loads((Path(__file__).resolve().parent / "fixtures/entity-data.json").read_text(encoding="utf-8"))
 
 
 def database_record(record, renamed=None):

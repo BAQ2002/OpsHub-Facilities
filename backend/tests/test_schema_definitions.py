@@ -2,10 +2,10 @@
 import re
 import unittest
 from pathlib import Path
-from backend.app.api.projections import COLUMNS
+from app.api.projections import COLUMNS
 
 
-ROOT = Path(__file__).resolve().parents[2] / "database/SqlScripts/CreateTables"
+ROOT = Path(__file__).resolve().parents[1] / "database/SqlScripts/CreateTables"
 
 
 def definitions(text):

@@ -1,7 +1,7 @@
 import base64
 import unittest
 from pydantic import ValidationError
-from backend.app.api.uploads import UploadedFile, MAX_FILE_BYTES
+from app.api.uploads import UploadedFile, MAX_FILE_BYTES
 
 
 class UploadTests(unittest.TestCase):

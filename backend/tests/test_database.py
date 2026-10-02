@@ -4,8 +4,8 @@ from decimal import Decimal
 from unittest.mock import MagicMock, patch
 import oracledb
 from pydantic import ValidationError
-from backend.app import database
-from backend.app.database import DatabaseConnection, QueryResult, Settings, decode_row, encode_json, sql
+from app import database
+from app.database import DatabaseConnection, QueryResult, Settings, decode_row, encode_json, sql
 
 
 class DatabaseTests(unittest.TestCase):

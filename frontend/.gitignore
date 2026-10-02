@@ -52,4 +52,3 @@ __pycache__/
 .venv/
 
 # Relatórios de importação contêm dados reais e URLs de anexos.
-/backend/database/import_tickets/output/

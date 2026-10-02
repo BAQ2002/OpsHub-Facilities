@@ -1,10 +1,10 @@
 import unittest
 from datetime import date
 
-from backend.app.api.request.service import get_activity_page, get_activity_map, get_activity_business_counts
-from backend.app.api.request.schemas import ActivityPage, ActivityMapRecord
-from backend.tests.test_request_service import RecordingConnection
-from backend.tests.test_entity_contracts import request_database_context
+from app.api.request.service import get_activity_page, get_activity_map, get_activity_business_counts
+from app.api.request.schemas import ActivityPage, ActivityMapRecord
+from tests.test_request_service import RecordingConnection
+from tests.test_entity_contracts import request_database_context
 
 
 class ActivityPaginationTests(unittest.TestCase):

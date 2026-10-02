@@ -1,0 +1,10 @@
+.env*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+/database/import_tickets/output/
+/tmp/
+/artifacts/
+.DS_Store

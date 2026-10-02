@@ -1,0 +1,31 @@
+name: opshub-backend
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # Restrict access to this port to the Next.js server in the host firewall.
+      - "${BACKEND_BIND_IP:-127.0.0.1}:${BACKEND_PORT:-8000}:8000"
+    volumes:
+      # Read by Pydantic at runtime; never copied into the image.
+      - type: bind
+        source: ./.env
+        target: /app/.env
+        read_only: true
+        bind:
+          create_host_path: false
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
+    name: ${OPSHUB_NETWORK:-opshub-facilities}
+    external: true

@@ -4,12 +4,12 @@ import unittest
 from datetime import date
 
 import oracledb
-from backend.app.database import DatabaseConnection, encode_json, _initialize_session
-from backend.app.api.request.service import get_activities, get_board, get_home_metrics, get_my_requests, get_tracking
-from backend.app.api.service_catalog.service import get_catalog, get_request_form, get_request_media
-from backend.app.api.organization.service import get_location_hierarchy
-from backend.app.api.checklist.service import get_active_definitions
-from backend.app.api.membership.service import get_executor_options
+from app.database import DatabaseConnection, encode_json, _initialize_session
+from app.api.request.service import get_activities, get_board, get_home_metrics, get_my_requests, get_tracking
+from app.api.service_catalog.service import get_catalog, get_request_form, get_request_media
+from app.api.organization.service import get_location_hierarchy
+from app.api.checklist.service import get_active_definitions
+from app.api.membership.service import get_executor_options
 
 
 @unittest.skipUnless(all(os.getenv(key) for key in (

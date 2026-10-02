@@ -5,8 +5,8 @@ from typing import Any
 
 
 
-from backend.app.database import QueryResult
-from backend.app.api.request.service import get_activities, get_board, get_my_requests, get_tracking
+from app.database import QueryResult
+from app.api.request.service import get_activities, get_board, get_my_requests, get_tracking
 
 
 class FakeCursor:

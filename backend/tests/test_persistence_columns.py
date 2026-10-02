@@ -4,11 +4,11 @@ from pydantic import ValidationError
 
 
 
-from backend.app.api.request.schemas import CreateRequest
-from backend.app.api.request.service import create_request
-from backend.app.api.request_task.schemas import VisitPayload
-from backend.app.api.request_task.service import save_visit
-from backend.tests.test_request_service import RecordingConnection
+from app.api.request.schemas import CreateRequest
+from app.api.request.service import create_request
+from app.api.request_task.schemas import VisitPayload
+from app.api.request_task.service import save_visit
+from tests.test_request_service import RecordingConnection
 
 
 class WriteConnection(RecordingConnection):

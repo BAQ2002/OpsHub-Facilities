@@ -4,10 +4,10 @@ from unittest.mock import Mock
 from fastapi import HTTPException
 from pydantic import ValidationError
 
-from backend.app.api.request.router import change_status
-from backend.app.api.request.schemas import UpdateRequestStatus
-from backend.app.api.request.service import update_request_status
-from backend.tests.test_request_service import RecordingConnection
+from app.api.request.router import change_status
+from app.api.request.schemas import UpdateRequestStatus
+from app.api.request.service import update_request_status
+from tests.test_request_service import RecordingConnection
 
 
 class RequestStatusTests(unittest.TestCase):

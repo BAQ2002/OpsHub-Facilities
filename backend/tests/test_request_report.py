@@ -6,10 +6,10 @@ from unittest.mock import Mock, patch
 from fastapi import HTTPException
 from pypdf import PdfReader
 
-from backend.app.api.request.report import build_report
-from backend.app.api.request.report_data import collect_report
-from backend.app.api.request.router import report
-from backend.tests.test_request_service import RecordingConnection
+from app.api.request.report import build_report
+from app.api.request.report_data import collect_report
+from app.api.request.router import report
+from tests.test_request_service import RecordingConnection
 
 
 def sample_data():
@@ -63,7 +63,7 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(len(pdf.outline), 7)
 
     def test_download_response_and_all_filters_forwarded(self):
-        with patch("backend.app.api.request.report_data.collect_report", return_value=sample_data()) as collect:
+        with patch("app.api.request.report_data.collect_report", return_value=sample_data()) as collect:
             response = report(date(2026, 9, 1), date(2026, 9, 30), "Iluminação", 7, [2, 4], [1], Mock())
         self.assertEqual(collect.call_args.args[1:], (date(2026, 9, 1), date(2026, 9, 30), "Iluminação", 7, [2, 4], [1]))
         self.assertEqual(response.media_type, "application/pdf")

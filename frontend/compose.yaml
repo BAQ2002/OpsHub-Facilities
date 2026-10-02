@@ -1,0 +1,25 @@
+name: opshub-frontend
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        BACKEND_API_URL: ${BACKEND_API_URL:-http://backend:8000}
+    environment:
+      BACKEND_API_URL: ${BACKEND_API_URL:-http://backend:8000}
+    ports:
+      - "${FRONTEND_BIND_IP:-127.0.0.1}:${FRONTEND_PORT:-3000}:3000"
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
+    name: ${OPSHUB_NETWORK:-opshub-facilities}
+    external: true
