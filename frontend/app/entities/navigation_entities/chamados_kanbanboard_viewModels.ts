@@ -101,32 +101,24 @@ export type RequestBoardCardViewModel = {
   serviceTypeName: string;
   requesterName: string;
   locationName: string;
-  details: { id: string; label: string; value: string }[];
-  media: {
-    id: number;
-    fieldLabel: string;
-    fileName: string;
-    mimeType: string;
-    fileSize?: number;
-    url: string;
-  }[];
-  visits: {
-    id: number;
-    startDate: string;
-    endDate: string;
-    startDatetime: string;
-    endDatetime: string;
-    description: string;
-    executors: { id: number; name: string }[];
-    photos: { id: number; fileName: string; mimeType: string; url: string }[];
-    checklists: VisitChecklist[];
-  }[];
 };
+
+export type RequestVisitSummary = Pick<RequestBoardVisit, "id" | "startDate" | "endDate" | "description">;
+export type RequestDetailsViewModel = RequestBoardCardViewModel & {
+  details: RequestBoardDetail[];
+  media: RequestBoardMedia[];
+  visits: RequestVisitSummary[];
+};
+
+export type VisitCatalogs = { executors: MembershipOption[]; checklistDefinitions: ChecklistDefinition[] };
 
 export type RequestBoardColumnViewModel = {
   id: number;
   title: string;
   requests: RequestBoardCardViewModel[];
+  total: number;
+  offset: number;
+  pageSize: number;
 };
 
 export type RequestBoardPageViewModel = {

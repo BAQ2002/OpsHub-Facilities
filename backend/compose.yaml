@@ -24,8 +24,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
-networks:
-  default:
-    name: ${OPSHUB_NETWORK:-opshub-facilities}
-    external: true

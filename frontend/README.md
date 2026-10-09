@@ -65,3 +65,11 @@ Para producao fora do Docker, apos o build copie `.next/static` para `.next/stan
 Uploads aceitam ate 10 MiB por arquivo; Server Actions aceitam corpos de ate 30 MB. O proxy precisa considerar a expansao base64. Login individual e autorizacao por registro ainda nao foram implementados. A pagina `/pages/solicitar-atividade/patio` permanece incompleta.
 
 Consulte [arquitetura e fluxos](docs/architecture.md), [implantacao](docs/deployment.md), [entidades](app/entities/concrete_entity/README.md) e [cores](docs/category-colors.md).
+
+## Indisponibilidade da API
+
+As paginas mantem navegacao e estrutura quando o backend falha. Cada area afetada mostra o codigo HTTP recebido ou uma mensagem de conexao/timeout quando nao houve resposta. Na Home, o erro das atividades ocupa uma linha da tabela; metricas, marcadores e filtros possuem resultados independentes. O Kanban preserva consultas bem-sucedidas e limita visitas se executores ou checklists estiverem indisponiveis.
+
+`BACKEND_READ_TIMEOUT_MS` configura o prazo das consultas (padrao 10000 ms). Escritas e relatorios usam 60000 ms. O cancelamento externo nao remove o timeout. Nenhuma escrita e repetida automaticamente. Formularios preservam os campos apos falhas; consulte as solicitacoes antes de reenviar uma operacao cuja confirmacao foi perdida.
+
+O botao "Tentar novamente" repete a consulta ou atualiza a rota. Filtros e paginacao continuam associados a consulta. `/api/health` verifica somente o frontend, portanto permanece disponivel durante uma falha do backend. Nao ha cache persistente nem fila offline.

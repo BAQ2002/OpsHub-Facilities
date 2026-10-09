@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import wsLogo from "@/app/assets/WS_logo.png";
 import styles from "./Sidebar.module.css";
 
@@ -29,13 +30,21 @@ const facilitiesSubItems = [
  */
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const isFacilitiesHome = pathname === "/pages/home";
 
   return (
-    <aside data-ui="sidebar" className={styles.sidebar}>
+    <aside data-ui="sidebar" className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}>
       <div data-ui="sidebar-header" className={styles.sidebarHeader}>
         <Image src={wsLogo} alt="Wilson Sons" className={styles.logo} sizes="176px" />
-        <button className={styles.collapseButton} type="button" aria-label="Recolher menu">
+        <button
+          className={styles.collapseButton}
+          type="button"
+          aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
+          aria-expanded={!isCollapsed}
+          aria-controls="sidebar-navigation"
+          onClick={() => setIsCollapsed((collapsed) => !collapsed)}
+        >
           <svg
             width="18"
             height="18"
@@ -46,15 +55,17 @@ export default function Sidebar() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path d="M15 18l-6-6 6-6" />
+            <path d={isCollapsed ? "M9 18l6-6-6-6" : "M15 18l-6-6 6-6"} />
           </svg>
         </button>
       </div>
 
-      <nav data-ui="sidebar-navigation" className={styles.nav} aria-label="Menu principal">
+      <nav id="sidebar-navigation" data-ui="sidebar-navigation" className={styles.nav} aria-label="Menu principal">
         <section data-ui="sidebar-module" className={styles.moduleGroup} aria-label="Módulo Facilities">
           <Link
             href="/pages/home"
+            aria-label="Facilities"
+            title={isCollapsed ? "Facilities" : undefined}
             className={`${styles.moduleHeader} ${isFacilitiesHome ? styles.moduleHeaderActive : ""}`}
             aria-current={isFacilitiesHome ? "page" : undefined}
           >
@@ -78,6 +89,8 @@ export default function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-label={item.label}
+                  title={isCollapsed ? item.label : undefined}
                   className={`${styles.subNavItem} ${isActive ? styles.subNavItemActive : ""}`}
                   aria-current={isActive ? "page" : undefined}
                 >

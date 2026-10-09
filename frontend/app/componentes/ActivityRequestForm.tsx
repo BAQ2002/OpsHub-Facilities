@@ -1,5 +1,9 @@
 "use client";
 
+import type { ApiFailure, ApiResult } from "@/app/entities/api/api-result";
+import { connectionFailure } from "@/app/entities/api/api-result";
+import { DataUnavailable } from "./DataUnavailable";
+import { AvailabilityNotice } from "./AvailabilityNotice";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -11,7 +15,8 @@ type ActivityRequestFormProps = {
   sectionTitle: string;
   fields: Field[];
   locationHierarchy?: LocationHierarchy;
-  action?: (formData: FormData) => Promise<void>;
+  action?: (formData: FormData) => Promise<ApiResult<void>>;
+  loadError?: ApiFailure;
 };
 
 /**
@@ -30,7 +35,12 @@ export default function ActivityRequestForm({
   fields,
   locationHierarchy,
   action,
+  loadError,
 }: ActivityRequestFormProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const submitLock = useRef(false);
   return (
     <section data-ui="activity-request-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
       <div data-ui="activity-request-content" className="mx-auto max-w-[1620px]">
@@ -70,13 +80,35 @@ export default function ActivityRequestForm({
 
         <form
           data-ui="activity-request-form"
-          action={action}
+          onSubmit={async (event) => {
+            event.preventDefault();
+            if (!action || loadError || submitLock.current) return;
+            const formData = new FormData(event.currentTarget);
+            submitLock.current = true;
+            setSubmitting(true);
+            setSubmitError(null);
+            setSaved(false);
+            try {
+              const result = await action(formData);
+              if (result.ok) setSaved(true);
+              else setSubmitError(result.error.message);
+            } catch {
+              setSubmitError(connectionFailure.message);
+            } finally {
+              submitLock.current = false;
+              setSubmitting(false);
+            }
+          }}
           className="rounded-[20px] border border-slate-200 bg-white px-5 py-5 shadow-[0_1px_5px_rgba(15,23,42,0.10)]"
         >
           <h2 className="mb-6 text-base font-bold leading-tight text-slate-950">
             {sectionTitle}
           </h2>
 
+          {loadError && <><AvailabilityNotice /><DataUnavailable error={loadError} /></>}
+          {submitError && <p role="alert" className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-950">{submitError} Seus campos foram preservados. Se o envio foi interrompido, consulte suas solicitações antes de reenviar.</p>}
+          {saved && <p role="status">Solicitação salva com sucesso.</p>}
+          <fieldset disabled={submitting || !!loadError || saved} className="contents">
           <div data-ui="activity-request-fields" className="grid gap-x-4 gap-y-5 md:grid-cols-2">
             {locationHierarchy ? <LocationFields hierarchy={locationHierarchy} /> : null}
             {fields.map((field) => (
@@ -84,6 +116,7 @@ export default function ActivityRequestForm({
             ))}
           </div>
 
+          </fieldset>
           <div data-ui="activity-request-actions" className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <Link
               className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-950 shadow-[0_1px_1px_rgba(15,23,42,0.04)]"
@@ -94,9 +127,11 @@ export default function ActivityRequestForm({
             <button
               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-sm font-bold text-white shadow-[0_2px_4px_rgba(15,23,42,0.18)] transition hover:bg-teal-700"
               type="submit"
+              disabled={submitting || !!loadError || !action || saved}
+              aria-busy={submitting}
             >
               <SaveIcon />
-              Salvar solicitação
+              {submitting ? "Salvando..." : "Salvar solicitação"}
             </button>
           </div>
         </form>

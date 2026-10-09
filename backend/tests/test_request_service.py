@@ -156,7 +156,7 @@ class RequestServiceTests(unittest.TestCase):
         self.assertNotIn("status_id_0", connection.statements[7])
 
     def test_board_combines_business_categories_search_and_dates(self):
-        connection = RecordingConnection([[], []])
+        connection = RecordingConnection([[], [], []])
         get_board(connection, date(2026, 9, 1), date(2026, 9, 30), "bomba", 7, [2, 10])
         self.assertIn("RG.ID_BUSINESS=:business", connection.statements[1])
         self.assertIn("ST.ID_SERVICE_CATEGORY IN (:category_id_0,:category_id_1)", connection.statements[1])
@@ -166,12 +166,12 @@ class RequestServiceTests(unittest.TestCase):
         self.assertEqual(connection.parameters[1]["range_end"].date(), date(2026, 10, 1))
 
     def test_empty_category_selection_does_not_restrict_board(self):
-        connection = RecordingConnection([[], []])
+        connection = RecordingConnection([[], [], []])
         get_board(connection, date(2026, 9, 1), date(2026, 9, 30), category_ids=[])
         self.assertNotIn("ST.ID_SERVICE_CATEGORY IN", connection.statements[1])
 
     def test_board_applies_search_to_request_fields(self):
-        connection = RecordingConnection([[], []])
+        connection = RecordingConnection([[], [], []])
 
         result = get_board(
             connection,
@@ -180,7 +180,7 @@ class RequestServiceTests(unittest.TestCase):
             "  bomba  ",
         )
 
-        self.assertEqual(result.model_dump(by_alias=True), {"statuses": [], "requests": []})
+        self.assertEqual(result.model_dump(by_alias=True), {"statuses": [], "requests": [], "counts": {}, "pageSize": 10})
         self.assertIn("TO_CHAR(R.ID) LIKE :search_pattern", connection.statements[1])
         self.assertIn("UPPER(ST.NAME) LIKE UPPER(:search_pattern)", connection.statements[1])
         self.assertEqual(connection.parameters[1]["search"], "bomba")

@@ -1,15 +1,19 @@
 .sidebar {
   width: 264px;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-self: stretch;
   background: #ffffff;
   border-right: 1px solid #e3e8ef;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  transition: width 220ms ease;
 }
 
 .sidebarHeader {
   height: 142px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -147,4 +151,68 @@
 
 .subNavText {
   white-space: nowrap;
+}
+
+.collapsed {
+  width: 79px;
+}
+
+.collapsed .sidebarHeader {
+  height: 65px;
+  gap: 8px;
+  padding: 0 9px;
+}
+
+.collapsed .logo {
+  width: 13px;
+}
+
+.collapsed .moduleText,
+.collapsed .moduleChevron,
+.collapsed .subNavText {
+  display: none;
+}
+
+.collapsed .moduleHeader,
+.collapsed .subNavItem {
+  min-height: 39px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 14px;
+}
+
+.collapsed .moduleHeader {
+  background: transparent;
+}
+
+.collapsed .moduleHeader:hover {
+  background: #eef8fb;
+}
+
+.collapsed .moduleHeaderActive {
+  background: #10b7d1;
+  color: #06151a;
+}
+
+.collapsed .subNav {
+  margin-left: 0;
+  padding: 5px 0 0;
+  gap: 2px;
+}
+
+.collapsed .subNav::before {
+  display: none;
+}
+
+.collapseButton:focus-visible,
+.moduleHeader:focus-visible,
+.subNavItem:focus-visible {
+  outline: 2px solid #0891b2;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
 }

@@ -1,3 +1,4 @@
+import { InputError } from "@/app/entities/api/api-result";
 import "server-only";
 
 import type { MyRequestsPageViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
@@ -104,7 +105,7 @@ function parseCreateRequestInput(formData: FormData): CreateRequestInput {
  */
 function getPositiveInteger(formData: FormData, name: string): number {
   const value = Number(getRequiredString(formData, name));
-  if (!Number.isInteger(value) || value <= 0) throw new Error(`O campo ${name} é inválido.`);
+  if (!Number.isInteger(value) || value <= 0) throw new InputError(`O campo ${name} é inválido.`);
   return value;
 }
 
@@ -120,6 +121,6 @@ function getPositiveInteger(formData: FormData, name: string): number {
  */
 function getRequiredString(formData: FormData, name: string): string {
   const value = formData.get(name);
-  if (typeof value !== "string") throw new Error(`O campo ${name} é obrigatório.`);
+  if (typeof value !== "string") throw new InputError(`O campo ${name} é obrigatório.`);
   return value;
 }

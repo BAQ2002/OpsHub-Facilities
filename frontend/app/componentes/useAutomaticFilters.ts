@@ -1,13 +1,22 @@
 "use client";
 
+import { connectionFailure, type ApiResult, type ApiFailure } from "@/app/entities/api/api-result";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 /** Debounces text edits and ignores results for superseded filters. */
-export function useAutomaticFilters<F, D>(initialFilters: F, initialData: D, query: (filters: F) => Promise<D>) {
+export function useAutomaticFilters<F, D>(initialFilters: F, initialData: ApiResult<D>, query: (filters: F) => Promise<ApiResult<D>>) {
   const [filters, setFilters] = useState(initialFilters);
   const [appliedFilters, setAppliedFilters] = useState(initialFilters);
-  const [data, setData] = useState(initialData);
-  const [error, setError] = useState("");
+  const [data, setData] = useState<D | null>(initialData.ok ? initialData.data : null);
+  const [error, setError] = useState<ApiFailure | null>(initialData.ok ? null : initialData.error);
+  const [previousInitial, setPreviousInitial] = useState(initialData);
+  if (previousInitial !== initialData) {
+    setPreviousInitial(initialData);
+    if (JSON.stringify(filters) === JSON.stringify(initialFilters)) {
+      setData(initialData.ok ? initialData.data : null);
+      setError(initialData.ok ? null : initialData.error);
+    }
+  }
   const [isPending, startTransition] = useTransition();
   const current = useRef(initialFilters);
   const revision = useRef(0);
@@ -23,18 +32,23 @@ export function useAutomaticFilters<F, D>(initialFilters: F, initialData: D, que
     if (key === submitted.current) return;
     submitted.current = key;
     const request = revision.current;
-    setError("");
     startTransition(async () => {
       try {
         const result = await query(next);
         if (request === revision.current) {
-          setData(result);
-          setAppliedFilters(next);
+          if (result.ok) {
+            setError(null);
+            setData(result.data);
+            setAppliedFilters(next);
+          } else {
+            submitted.current = "";
+            setError(result.error);
+          }
         }
       } catch {
         if (request === revision.current) {
           submitted.current = "";
-          setError("Não foi possível atualizar os resultados. Tente novamente.");
+          setError(connectionFailure);
         }
       }
     });

@@ -1,14 +1,14 @@
 import type { JsonValue, ServiceFieldTypeEntity } from "@/app/entities/concrete_entity";
 import type {
   CatalogEntities, OrganizationEntities, RequestContext, ChecklistEntities,
-  VisitChecklistEntities, BoardRequestEntities, VisitEntities,
+  VisitChecklistEntities, BoardRequestEntities, VisitEntities, RequestDetailsEntities,
 } from "@/app/entities/api/entity-responses";
 import type {
   ActivityRequestField, ActivityRequestFieldType, LocationHierarchy, ServiceCatalogCategory,
 } from "@/app/entities/navigation_entities/solicitar_atividade_viewModels";
 import type { RequestCardViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
 import type {
-  ChecklistDefinition, ChecklistFieldType, VisitChecklist, RequestBoardCardViewModel, RequestBoardVisit,
+  ChecklistDefinition, ChecklistFieldType, VisitChecklist, RequestDetailsViewModel, RequestBoardVisit,
 } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 import type { ActivityRecord, ActivityStatus } from "@/app/entities/navigation_entities/home_viewModels";
 
@@ -111,7 +111,7 @@ export function mapVisit(data: VisitEntities): RequestBoardVisit {
   };
 }
 
-export function mapBoardCard(data: BoardRequestEntities): RequestBoardCardViewModel {
+export function mapBoardCard(data: BoardRequestEntities): RequestDetailsViewModel & { visits: RequestBoardVisit[] } {
   const details = data.values.map(({ value, field }) => ({
     id: String(value.id), label: field.name || "Campo adicional",
     value: Array.isArray(value.value) ? value.value.map(fieldText).join(", ") : fieldText(value.value),
@@ -143,4 +143,17 @@ export function mapActivity(data: RequestContext): ActivityRecord {
     statusDate: formatted(dates[status ?? ""]), plannedAt: formatted(data.request.agreedDate),
     mapPosition: { x: Number(data.location?.locationX ?? 0), y: Number(data.location?.locationY ?? 0) },
   };
+}
+
+export function mapRequestDetails(data: RequestDetailsEntities): RequestDetailsViewModel {
+  const card = mapBoardCard({ ...data, visits: [] });
+  const context = [
+    { id: "business", label: "Unidade de negócio", value: fallbackName(data.business?.name) },
+    { id: "region", label: "Região", value: fallbackName(data.region?.name) },
+    { id: "location", label: "Localização", value: fallbackName(data.location?.name) },
+    { id: "created-at", label: "Data de abertura", value: calendarDate(data.request.createdDate) },
+  ];
+  return { ...card, details: [...context, ...card.details], visits: data.visits.map((task) => ({
+    id: task.id, startDate: calendarDate(task.startDatetime), endDate: calendarDate(task.stopDatetime), description: task.description ?? "",
+  })) };
 }

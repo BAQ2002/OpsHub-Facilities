@@ -1,5 +1,6 @@
 "use server";
 
+import { apiResult } from "@/app/entities/api/api-result";
 import { createActivityRequest, createChamadoRequest } from "@/app/services/request-service";
 import { redirect } from "next/navigation";
 
@@ -13,7 +14,7 @@ import { redirect } from "next/navigation";
  * @returns Não retorna valor.
  */
 export async function createActivityRequestAction(formData: FormData) {
-  await createActivityRequest(formData);
+  return apiResult(async () => { await createActivityRequest(formData); });
 }
 
 /**
@@ -28,6 +29,7 @@ export async function createActivityRequestAction(formData: FormData) {
  */
 export async function createChamadoRequestAction(serviceTypeId: number, formData: FormData) {
   formData.set("service_type_id", serviceTypeId.toString());
-  await createChamadoRequest(formData);
+  const result = await apiResult(async () => { await createChamadoRequest(formData); });
+  if (!result.ok) return result;
   redirect("/pages/minhas-solicitacoes");
 }

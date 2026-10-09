@@ -1,7 +1,8 @@
 import "server-only";
+import { apiResult } from "@/app/entities/api/api-result";
 
 import facilitiesMap from "@/app/assets/facilities-map.png";
-import type { HomeMetrics, ActivityMapRecord, EquipmentCard, ActivityMarkerViewModel, ActivityCategoryStyle, HandlingTimeClockViewModel, HomePageViewModel, PlannedRequestFilterViewModel } from "@/app/entities/navigation_entities/home_viewModels";
+import type { HomeMetrics, ActivityMapRecord, EquipmentCard, ActivityMarkerViewModel, ActivityCategoryStyle, HandlingTimeClockViewModel, PlannedRequestFilterViewModel } from "@/app/entities/navigation_entities/home_viewModels";
 
 import { activityCategoryStylesById, defaultActivityCategoryStyle, getActivityCategoryStyle } from "@/app/entities/navigation_entities/home_viewModels";
 import { backendJson } from "@/app/services/api-client";
@@ -26,13 +27,13 @@ type HomeDateRange = {
 export async function getHomePageData(
   dateRange: HomeDateRange,
   selectedBusiness = "all",
-): Promise<HomePageViewModel> {
+) {
   const [metrics, mapRecords, businessCounts] = await Promise.all([
-    getHomeMetrics(dateRange),
-    backendJson<ActivityMapRecord[]>(`/requests/activities/map?${homeDateRangeQuery(dateRange)}`),
-    backendJson<{ name: string; count: number }[]>(`/requests/activities/business-counts?${homeDateRangeQuery(dateRange)}`),
+    apiResult(() => getHomeMetrics(dateRange)),
+    apiResult(() => backendJson<ActivityMapRecord[]>(`/requests/activities/map?${homeDateRangeQuery(dateRange)}`)),
+    apiResult(() => backendJson<{ name: string; count: number }[]>(`/requests/activities/business-counts?${homeDateRangeQuery(dateRange)}`)),
   ]);
-  const equipmentCards = mapMetricsToEquipmentCards(metrics);
+  const equipmentCards = metrics.ok ? mapMetricsToEquipmentCards(metrics.data) : [];
   const categoryStyleMap = Object.fromEntries([
     ...Object.entries(activityCategoryStylesById),
     ["default", defaultActivityCategoryStyle],
@@ -45,12 +46,14 @@ export async function getHomePageData(
   };
 
   return {
-    equipmentCards,
-    totals: mapEquipmentCardsToTotals(equipmentCards),
+    metrics: metrics.ok ? { ok: true as const, data: {
+      equipmentCards,
+      totals: mapEquipmentCardsToTotals(equipmentCards),
+      averageHandlingTimeClock: mapHandlingTimeSamplesToClock(metrics.data.handlingMinutes),
+    } } : metrics,
     mapImage,
-    activityMarkers: mapRecords.map((record) => mapActivityRecordToMarker(record, categoryStyleMap)),
-    plannedRequestFilterOptions: mapActivitiesToBusinessUnitFilters(businessCounts, selectedBusiness),
-    averageHandlingTimeClock: mapHandlingTimeSamplesToClock(metrics.handlingMinutes),
+    activityMarkers: mapRecords.ok ? { ok: true as const, data: mapRecords.data.map((record) => mapActivityRecordToMarker(record, categoryStyleMap)) } : mapRecords,
+    plannedRequestFilterOptions: businessCounts.ok ? { ok: true as const, data: mapActivitiesToBusinessUnitFilters(businessCounts.data, selectedBusiness) } : businessCounts,
     categoryStyleMap,
   };
 }

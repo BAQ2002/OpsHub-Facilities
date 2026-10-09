@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
 
-const source = readFileSync(new URL("../app/pages/home/_components/activity-pagination.ts", import.meta.url), "utf8");
+const source = readFileSync(new URL("../app/pages/home/_lib/activity-pagination.ts", import.meta.url), "utf8");
 const { outputText } = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext } });
 const { readActivityPagination, saveActivityPagination } = await import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
 

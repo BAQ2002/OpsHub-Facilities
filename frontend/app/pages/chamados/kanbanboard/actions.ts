@@ -1,14 +1,24 @@
 "use server";
 
+import { apiResult, BackendError, InputError } from "@/app/entities/api/api-result";
 import { revalidatePath } from "next/cache";
 import type { ChecklistSubmission } from "@/app/entities/navigation_entities/chamados_kanbanboard_viewModels";
 import { validateDateRange } from "@/app/validation/date-range";
 import type { RequestBoardFilters } from "@/app/services/request-board-service";
-import { getRequestBoardPageData, updateRequestStatus } from "@/app/services/request-board-service";
-import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit } from "@/app/services/request-task-service";
+import { getRequestBoardPageData, getRequestBoardColumnData, updateRequestStatus, getRequestDetails } from "@/app/services/request-board-service";
+import { addChecklistToVisit, createVisit, deleteChecklistFromVisit, updateVisit, getVisitDetails, getVisitCatalogs } from "@/app/services/request-task-service";
 
 export async function filterRequestBoard(filters: RequestBoardFilters) {
-  return getRequestBoardPageData({ ...filters, ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) });
+  return apiResult(() => getRequestBoardPageData({ ...filters, ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) }));
+}
+
+export async function loadRequestBoardColumn(filters: RequestBoardFilters, statusId: number, offset: number) {
+  return apiResult(() => {
+    validateId(statusId);
+    if (!Number.isSafeInteger(offset) || offset < 0) throw new InputError("Posição de rolagem inválida.");
+    if (filters.sort && filters.sort !== "recent") throw new InputError("Ordenação inválida.");
+    return getRequestBoardColumnData({ ...filters, ...validateDateRange(filters), search: filters.search?.trim().slice(0, 200) }, statusId, offset);
+  });
 }
 
 export type AddVisitState = { status: "idle" | "success" | "error"; message: string };
@@ -21,8 +31,8 @@ export async function changeRequestStatus(requestId: number, statusId: number): 
       revalidatePath(path);
     }
     return { status: "success", message: "Status atualizado com sucesso." };
-  } catch {
-    return { status: "error", message: "Não foi possível alterar o status. Tente novamente." };
+  } catch (error) {
+    return { status: "error", message: error instanceof BackendError ? error.message : "Não foi possível alterar o status. Tente novamente." };
   }
 }
 
@@ -54,7 +64,6 @@ export async function InsertRequestTask(
       photos,
       checklists: parseChecklistSubmissions(formData.get("checklists_json")),
     });
-    revalidatePath("/pages/chamados/kanbanboard");
     return { status: "success", message: "Visita adicionada com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível adicionar a visita." };
@@ -83,7 +92,6 @@ export async function UpdateRequestTask(visitId: number, _previousState: UpdateV
       photos: formData.getAll("photos").filter((value): value is File => value instanceof File && value.size > 0),
       checklists: [],
     });
-    revalidatePath("/pages/chamados/kanbanboard");
     return { status: "success", message: "Visita atualizada com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível atualizar a visita." };
@@ -106,7 +114,6 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
     const submissions = parseChecklistSubmissions(formData.get("checklists_json"));
     if (submissions.length !== 1) throw new Error("Selecione um checklist para adicionar.");
     await addChecklistToVisit(visitId, submissions[0]);
-    revalidatePath("/pages/chamados/kanbanboard");
     return { status: "success", message: "Checklist adicionado com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível adicionar o checklist." };
@@ -125,7 +132,6 @@ export async function InsertRequestTaskChecklist(visitId: number, _previousState
 export async function DeleteRequestTaskChecklist(checklistId: number): Promise<AddVisitState> {
   try {
     await deleteChecklistFromVisit(checklistId);
-    revalidatePath("/pages/chamados/kanbanboard");
     return { status: "success", message: "Checklist excluído com sucesso." };
   } catch (error) {
     return { status: "error", message: error instanceof Error ? error.message : "Não foi possível excluir o checklist." };
@@ -201,4 +207,22 @@ function optionalBoolean(item: object, property: string, label: string): boolean
   if (value == null || value === "") return null;
   if (typeof value !== "boolean") throw new Error(`O campo ${label} é inválido.`);
   return value;
+}
+
+function validateId(id: number) {
+  if (!Number.isSafeInteger(id) || id <= 0) throw new InputError("Identificador inválido.");
+  return id;
+}
+
+export async function loadRequestDetails(requestId: number, filters?: RequestBoardFilters) {
+  return apiResult(() => getRequestDetails(validateId(requestId), filters ? { ...filters, ...validateDateRange(filters) } : undefined));
+}
+
+export async function loadVisitDetails(visitId: number, requestId?: number, filters?: RequestBoardFilters) {
+  return apiResult(() => getVisitDetails(validateId(visitId), requestId === undefined ? undefined : validateId(requestId),
+    filters ? { ...filters, ...validateDateRange(filters) } : undefined));
+}
+
+export async function loadVisitCatalogs() {
+  return apiResult(getVisitCatalogs);
 }

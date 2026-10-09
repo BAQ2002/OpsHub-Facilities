@@ -71,6 +71,22 @@ export type BoardRequestEntities = RequestContext & {
 
 export type BoardEntities = {
   statuses: RequestStatusEntity[];
+  requests: { id: number; statusId: number; serviceTypeName: string | null; requesterName: string | null; locationName: string | null }[];
+  counts?: Record<string, number>;
+  pageSize?: number;
+};
+
+export type BoardColumnEntities = {
+  statusId: number;
+  requests: BoardEntities["requests"];
+  total: number;
+  offset: number;
+  pageSize: number;
+};
+
+/** Transitional response from backends that still return full request entities. */
+export type LegacyBoardEntities = {
+  statuses: RequestStatusEntity[];
   requests: BoardRequestEntities[];
 };
 
@@ -78,3 +94,5 @@ export type ActivityTrackingResponse = Omit<ActivityTrackingData, "filterOptions
   categoryData: { categoryId: number; label: string; value: number }[];
   filterOptions: { businesses: BusinessEntity[]; serviceCategories: ServiceCategoryEntity[]; statuses: { id: number; name: string }[] };
 };
+
+export type RequestDetailsEntities = Omit<BoardRequestEntities, "visits"> & { visits: RequestTaskEntity[] };

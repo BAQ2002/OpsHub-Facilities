@@ -1,8 +1,9 @@
 from datetime import date
+from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from ...database import DatabaseConnection, get_connection, settings
 from .schemas import CreateRequest, ActivityPage, ActivityMapRecord, ActivityBusinessCount, UpdateRequestStatus
-from ..entities import BoardEntities, RequestContext
+from ..entities import BoardEntities, RequestContext, RequestDetailsEntities, BoardColumnEntities
 from .service import (create_request, get_activities, get_my_requests,
                       get_activity_page, get_activity_map, get_activity_business_counts)
 
@@ -118,17 +119,29 @@ def activity_tracking(
 
 
 @router.get("/board", response_model=BoardEntities)
-def board(
-    start_date: date,
-    end_date: date,
-    search: str | None = Query(default=None, max_length=200),
-    business_id: int | None = None,
-    service_category_ids: list[int] = Query(default=[]),
-    connection: DatabaseConnection = Depends(get_connection),
-):
+def board(start_date: date, end_date: date,
+          search: str | None = Query(default=None, max_length=200), business_id: int | None = None,
+          service_category_ids: list[int] = Query(default=[]),
+          page_size: int = Query(default=10, ge=1, le=50), sort: Literal["recent"] = "recent",
+          connection: DatabaseConnection = Depends(get_connection)):
     from .service import get_board
+    if end_date < start_date:
+        raise HTTPException(422, "Intervalo inválido.")
+    return get_board(connection, start_date, end_date, search, business_id, service_category_ids, page_size, sort)
 
-    return get_board(connection, start_date, end_date, search, business_id, service_category_ids)
+
+@router.get("/board/columns/{status_id}", response_model=BoardColumnEntities)
+def board_column(status_id: int, start_date: date, end_date: date,
+                 search: str | None = Query(default=None, max_length=200), business_id: int | None = None,
+                 service_category_ids: list[int] = Query(default=[]),
+                 offset: int = Query(default=0, ge=0, le=2147483647),
+                 page_size: int = Query(default=10, ge=1, le=50), sort: Literal["recent"] = "recent",
+                 connection: DatabaseConnection = Depends(get_connection)):
+    from .service import get_board_column
+    if status_id <= 0 or end_date < start_date:
+        raise HTTPException(422, "Status ou intervalo inválido.")
+    return get_board_column(connection, status_id, start_date, end_date, search, business_id,
+                            service_category_ids, offset, page_size, sort)
 
 
 @router.get("/activities/page", response_model=ActivityPage)
@@ -164,3 +177,14 @@ def activity_business_counts(
     connection: DatabaseConnection = Depends(get_connection),
 ):
     return get_activity_business_counts(connection, start_date, end_date, status)
+
+
+@router.get("/{request_id}/details", response_model=RequestDetailsEntities)
+def request_details(request_id: int, connection: DatabaseConnection = Depends(get_connection)):
+    from .service import get_request_details
+    if request_id <= 0:
+        raise HTTPException(400, "Identificador de solicitação inválido.")
+    result = get_request_details(connection, request_id)
+    if result is None:
+        raise HTTPException(404, "Solicitação não encontrada.")
+    return result

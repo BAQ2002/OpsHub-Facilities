@@ -223,6 +223,30 @@ class BoardRequestEntities(RequestContext):
     visits: list[VisitEntities]
 
 
+class BoardCardEntity(EntityModel):
+    id: int
+    status_id: int
+    service_type_name: str | None
+    requester_name: str | None
+    location_name: str | None
+
+
+class RequestDetailsEntities(RequestContext):
+    values: list[ServiceValueEntities]
+    media: list[RequestMediaReference]
+    visits: list[RequestTaskEntity]
+
+
 class BoardEntities(EntityModel):
     statuses: list[RequestStatusEntity]
-    requests: list[BoardRequestEntities]
+    requests: list[BoardCardEntity]
+    counts: dict[int, int]
+    page_size: int
+
+
+class BoardColumnEntities(EntityModel):
+    status_id: int
+    requests: list[BoardCardEntity]
+    total: int
+    offset: int
+    page_size: int

@@ -1,3 +1,6 @@
+import { apiResult } from "@/app/entities/api/api-result";
+import { DataUnavailable } from "@/app/componentes/DataUnavailable";
+import { AvailabilityNotice } from "@/app/componentes/AvailabilityNotice";
 import AutomaticSearchForm from "@/app/componentes/AutomaticSearchForm";
 import type { RequestCardViewModel } from "@/app/entities/navigation_entities/minhas_solicitacoes_viewModels";
 import { getMyRequestsPageData } from "@/app/services/request-service";
@@ -17,7 +20,8 @@ export default async function MyRequestsPage({
 }: {
   searchParams?: Promise<{ busca?: string | string[]; status?: string | string[] }>;
 }) {
-  const { openRequests, closedRequests } = await getMyRequestsPageData();
+  const result = await apiResult(() => getMyRequestsPageData());
+  const { openRequests, closedRequests } = result.ok ? result.data : { openRequests: [], closedRequests: [] };
   const params = await searchParams;
   const search = singleParam(params?.busca).trim();
   const status = singleParam(params?.status);
@@ -76,8 +80,10 @@ export default async function MyRequestsPage({
           </label>
         </AutomaticSearchForm>
 
-        <RequestGroup title="Solicitações abertas" requests={filteredOpenRequests} />
-        <RequestGroup title="Solicitações fechadas" requests={filteredClosedRequests} className="mt-10" />
+        {result.ok ? <>
+          <RequestGroup title="Solicitações abertas" requests={filteredOpenRequests} />
+          <RequestGroup title="Solicitações fechadas" requests={filteredClosedRequests} className="mt-10" />
+        </> : <><AvailabilityNotice /><DataUnavailable error={result.error} /></>}
       </div>
     </section>
   );

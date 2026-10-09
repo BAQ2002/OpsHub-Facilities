@@ -1,5 +1,8 @@
 "use client";
 
+import type { ApiResult } from "@/app/entities/api/api-result";
+import { DataUnavailable } from "@/app/componentes/DataUnavailable";
+import { AvailabilityNotice } from "@/app/componentes/AvailabilityNotice";
 import { MultiSelectFilter, SelectField } from "../../_components/TrackingFilters";
 import { useAutomaticFilters } from "@/app/componentes/useAutomaticFilters";
 import DateRange, { type DateRangeValue } from "@/app/componentes/DateRange";
@@ -18,9 +21,9 @@ import { HandlingTimeDisplay } from "@/app/componentes/HandlingTimeDisplay";
  * @param props Dados necessários para executar esta função.
  * @returns O elemento React que representa esta interface.
  */
-export function ActivityTrackingDashboard({ initialData, initialFilters }: { initialData: ActivityTrackingPageViewModel; initialFilters: ActivityTrackingFilters }) {
-  const { data, filters, update, isPending, error } = useAutomaticFilters(initialFilters, initialData, filterActivityTracking);
-  const { categoryData, statusData, monthlyData, summaryCards, maxMonthlyValue, filterOptions } = data;
+export function ActivityTrackingDashboard({ initialData, initialFilters }: { initialData: ApiResult<ActivityTrackingPageViewModel>; initialFilters: ActivityTrackingFilters }) {
+  const { data, filters, update, isPending, error, refresh } = useAutomaticFilters(initialFilters, initialData, filterActivityTracking);
+  const filterOptions = data?.filterOptions;
 
   return (
     <section data-ui="activity-dashboard-page" className="min-h-screen bg-white px-5 pb-8 pt-8 text-slate-950 md:px-8 lg:px-9">
@@ -56,18 +59,20 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
             <div className="flex flex-wrap items-center gap-2">
               <DateRange commitOnBlur {...filters} onChange={(range: DateRangeValue) => update({ ...filters, ...range })} />
             </div>
-            <SelectField label="Unidade de negócio" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions.businesses} onChange={(businessId) => update({ ...filters, businessId })} />
-            <MultiSelectFilter label="Categorias de serviço" placeholder="Todas as categorias" options={filterOptions.serviceCategories} value={filters.serviceCategoryIds ?? []} onChange={(serviceCategoryIds) => update({ ...filters, serviceCategoryIds })} />
-            <MultiSelectFilter label="Status" placeholder="Todos os status" options={filterOptions.statuses} value={filters.statusIds ?? []} onChange={(statusIds) => update({ ...filters, statusIds })} />
+            <fieldset disabled={!data} className="contents"><SelectField label="Unidade de negócio" name="businessId" value={filters.businessId} placeholder="Todas unidades de negócio" options={filterOptions?.businesses ?? []} onChange={(businessId) => update({ ...filters, businessId })} />
+            <MultiSelectFilter label="Categorias de serviço" placeholder="Todas as categorias" options={filterOptions?.serviceCategories ?? []} value={filters.serviceCategoryIds ?? []} onChange={(serviceCategoryIds) => update({ ...filters, serviceCategoryIds })} />
+            <MultiSelectFilter label="Status" placeholder="Todos os status" options={filterOptions?.statuses ?? []} value={filters.statusIds ?? []} onChange={(statusIds) => update({ ...filters, statusIds })} /></fieldset>
 
             <span role="status" className="text-xs text-slate-500">{isPending ? "Atualizando..." : ""}</span>
-            {error && <p role="alert" className="w-full text-xs text-red-600">{error}</p>}
+            {error && <AvailabilityNotice />}
           </div>
         </section>
 
+        {error && <DataUnavailable error={error} retry={refresh} pending={isPending} />}
+        {data && !error && <>
         <div data-ui="activity-dashboard-indicators" className="mb-4 grid items-stretch gap-3 @[1080px]:grid-cols-[minmax(0,3fr)_minmax(420px,2fr)]">
           <section data-ui="activity-dashboard-summary" className="grid gap-3 sm:grid-cols-6" aria-label="Resumo do período">
-            {summaryCards.map((card, index) => (
+            {data.summaryCards.map((card, index) => (
               <article
                 data-ui="summary-card"
                 key={card.label}
@@ -91,10 +96,10 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
 
         <section data-ui="activity-dashboard-charts" id="dashboard" className="grid gap-4 xl:grid-cols-2">
           <ChartCard title="Solicitações por categorias de serviços">
-            <DonutChart data={categoryData} />
+            <DonutChart data={data.categoryData} />
           </ChartCard>
           <ChartCard title="Solicitações por status">
-            <DonutChart data={statusData} />
+            <DonutChart data={data.statusData} />
           </ChartCard>
         </section>
 
@@ -112,8 +117,9 @@ export function ActivityTrackingDashboard({ initialData, initialFilters }: { ini
             </div>
           </div>
 
-          <MonthlyBarChart data={monthlyData} maxMonthlyValue={maxMonthlyValue} />
+          <MonthlyBarChart data={data.monthlyData} maxMonthlyValue={data.maxMonthlyValue} />
         </section>
+        </>}
       </div>
     </section>
   );

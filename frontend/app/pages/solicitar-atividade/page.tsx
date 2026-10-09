@@ -1,3 +1,6 @@
+import { apiResult } from "@/app/entities/api/api-result";
+import { DataUnavailable } from "@/app/componentes/DataUnavailable";
+import { AvailabilityNotice } from "@/app/componentes/AvailabilityNotice";
 import AutomaticSearchForm from "@/app/componentes/AutomaticSearchForm";
 import Link from "next/link";
 import { getServiceCatalogPageData } from "@/app/services/activity-request-form-service";
@@ -17,7 +20,8 @@ export default async function SolicitarAtividadePage({
 }: {
   searchParams?: Promise<{ busca?: string | string[] }>;
 }) {
-  const serviceCategories = await getServiceCatalogPageData();
+  const result = await apiResult(() => getServiceCatalogPageData());
+  const serviceCategories = result.ok ? result.data : [];
   const params = await searchParams;
   const search = (Array.isArray(params?.busca) ? params.busca[0] : params?.busca)?.trim() ?? "";
   const normalizedSearch = normalizeSearch(search);
@@ -69,6 +73,7 @@ export default async function SolicitarAtividadePage({
         </header>
 
         <div data-ui="service-category-list" className="space-y-6">
+          {!result.ok && <><AvailabilityNotice /><DataUnavailable error={result.error} /></>}
           {filteredCategories.map((category) => (
             <section
               data-ui="service-category"
@@ -104,7 +109,7 @@ export default async function SolicitarAtividadePage({
               </div>
             </section>
           ))}
-          {filteredCategories.length === 0 ? (
+          {result.ok && filteredCategories.length === 0 ? (
             <p className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
               Nenhum serviço ou categoria encontrado para “{search}”.
             </p>

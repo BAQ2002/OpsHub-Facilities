@@ -11,7 +11,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 from app.api.entities import RequestContext, LocationEntity
-from app.api.request.service import get_activities, get_board, get_my_requests
+from app.api.request.service import get_activities, get_board, get_my_requests, get_request_details
 from app.api.service_catalog.service import get_catalog, get_request_form
 from app.api.organization.service import get_location_hierarchy
 from app.api.checklist.service import get_active_definitions
@@ -38,6 +38,9 @@ def request_database_context():
     return context
 
 
+from app.api.request_task.service import get_visit_details
+
+
 class EntityContractTests(unittest.TestCase):
     def test_request_response_matches_frontend_contract_and_keeps_original_dates(self):
         connection = RecordingConnection([[request_database_context()]])
@@ -62,10 +65,37 @@ class EntityContractTests(unittest.TestCase):
         self.assertEqual(connection.parameters[0]["range_end"].date(), date(2026, 9, 23))
 
 
-    def test_board_serializes_entities_and_media_metadata_without_binary_content(self):
-        board = FIXTURE["board"]
-        row = board["requests"][0]
-        visit = row["visits"][0]
+    def test_board_uses_three_queries_and_limits_cards_per_status(self):
+        rows = [{"id": 42 + i, "status_id": 4, "service_type_name": "Serviço",
+                 "requester_name": None, "location_name": None} for i in range(10)]
+        connection = RecordingConnection([FIXTURE["board"]["statuses"], [{"status_id": 4, "total": 2000}], rows])
+        result = get_board(connection, date(2026, 9, 1), date(2026, 9, 22))
+        data = result.model_dump(mode="json", by_alias=True)
+        self.assertEqual(len(data["requests"]), 10)
+        self.assertEqual(data["counts"], {"4": 2000})
+        self.assertEqual(set(data["requests"][0]), {"id", "statusId", "serviceTypeName", "requesterName", "locationName"})
+        self.assertEqual(len(connection.statements), 3)
+        self.assertNotIn("OHFC_REQUEST_TASK", "\n".join(connection.statements))
+        self.assertIn("PARTITION BY R.ID_REQUEST_STATUS", connection.statements[2])
+        self.assertIn("WHERE BOARD_POSITION<=:page_size", connection.statements[2])
+        self.assertEqual(connection.parameters[2]["page_size"], 10)
+
+    def test_request_details_include_visit_summaries_without_visit_queries(self):
+        request = FIXTURE["board"]["requests"][0]
+        task = database_record(request["visits"][0]["task"], {
+            "startDatetime": "started_date", "stopDatetime": "finished_date",
+        })
+        connection = RecordingConnection([[request_database_context()], request["values"], request["media"], [task]])
+        result = get_request_details(connection, 42).model_dump(mode="json", by_alias=True)
+        self.assertEqual(result["visits"], [request["visits"][0]["task"]])
+        self.assertEqual(result["values"], request["values"])
+        self.assertEqual(result["media"], request["media"])
+        self.assertEqual(len(connection.statements), 4)
+        self.assertNotIn("OHFC_REQUEST_TASK_CHECKLIST", "\n".join(connection.statements))
+        self.assertTrue(all(params["id"] == 42 for params in connection.parameters))
+
+    def test_visit_details_keep_executors_checklists_and_media_metadata(self):
+        visit = FIXTURE["board"]["requests"][0]["visits"][0]
         checklist = visit["checklists"][0]
         task = database_record(visit["task"], {
             "startDatetime": "started_date", "stopDatetime": "finished_date",
@@ -73,14 +103,17 @@ class EntityContractTests(unittest.TestCase):
         executors = [dict(item, occurrence=database_record(item["occurrence"], {
             "idTask": "id_request_task",
         })) for item in visit["executors"]]
-        connection = RecordingConnection([
-            board["statuses"], [request_database_context()], [task], executors,
-            visit["photos"], [{"checklist": checklist["checklist"], "definition": checklist["definition"]}],
-            checklist["values"], row["values"], row["media"],
-        ])
-        result = get_board(connection, date(2026, 9, 1), date(2026, 9, 22))
-        self.assertEqual(result.model_dump(mode="json", by_alias=True), board)
+        connection = RecordingConnection([[task], executors, visit["photos"],
+            [{"checklist": checklist["checklist"], "definition": checklist["definition"]}], checklist["values"]])
+        result = get_visit_details(connection, task["id"]).model_dump(mode="json", by_alias=True)
+        self.assertEqual(result, visit)
         self.assertNotIn("CONTENT", "\n".join(connection.statements))
+
+    def test_missing_details_do_not_query_related_records(self):
+        for lookup in (get_request_details, get_visit_details):
+            connection = RecordingConnection([[]])
+            self.assertIsNone(lookup(connection, 999))
+            self.assertEqual(len(connection.statements), 1)
 
     def test_organization_preserves_nullable_relationships_and_decimal_precision(self):
         data = FIXTURE["organization"]

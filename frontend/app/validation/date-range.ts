@@ -1,13 +1,14 @@
+import { InputError } from "@/app/entities/api/api-result";
 export type DateRange = { startDate: string; endDate: string };
 
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 export function validateDateRange(range: DateRange): DateRange {
   if (!isValidDate(range.startDate) || !isValidDate(range.endDate)) {
-    throw new Error("Informe um intervalo de datas válido.");
+    throw new InputError("Informe um intervalo de datas válido.");
   }
   if (range.startDate > range.endDate) {
-    throw new Error("A data inicial não pode ser posterior à data final.");
+    throw new InputError("A data inicial não pode ser posterior à data final.");
   }
   return range;
 }

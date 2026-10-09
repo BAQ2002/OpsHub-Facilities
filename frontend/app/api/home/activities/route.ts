@@ -1,3 +1,4 @@
+import { BackendError } from "@/app/entities/api/api-result";
 import { backendJson } from "@/app/services/api-client";
 import type { RequestContext } from "@/app/entities/api/entity-responses";
 import { mapActivity } from "@/app/services/mappers/entity-view-models";
@@ -13,7 +14,8 @@ export async function GET(request: Request) {
   try {
     const page = await backendJson<BackendPage>(`/requests/activities/page?${params}`, { signal: request.signal });
     return Response.json({ ...page, items: page.items.map(mapActivity) }, { headers: { "Cache-Control": "no-store" } });
-  } catch {
-    return Response.json({ error: "Não foi possível carregar as atividades." }, { status: 502 });
+  } catch (error) {
+    if (!(error instanceof BackendError)) throw error;
+    return Response.json({ error: error.failure }, { status: error.failure.status ?? (error.failure.kind === "timeout" ? 504 : 502), headers: { "Cache-Control": "no-store" } });
   }
 }

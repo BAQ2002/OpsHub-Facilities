@@ -2,7 +2,7 @@ import base64
 from datetime import date, datetime, time, timedelta
 from ...database import DatabaseConnection, sql, encode_json
 from .schemas import CreateRequest
-from ..entities import BoardEntities, BoardRequestEntities, RequestContext, RequestStatusEntity
+from ..entities import BoardEntities, BoardCardEntity, RequestDetailsEntities, RequestContext, RequestStatusEntity
 
 from ..projections import projection
 
@@ -495,16 +495,28 @@ def get_tracking(
     }
 
 
-def get_board(
-    connection: DatabaseConnection, start: date, end: date, search: str | None = None,
-    business_id: int | None = None, category_ids: list[int] | None = None,
-) -> BoardEntities:
-    statuses = [RequestStatusEntity.model_validate(row) for row in connection.execute(
-        "SELECT ID, DESCRIPTION FROM OHFC_REQUEST_STATUS ORDER BY ID"
-    ).mappings()]
-    params = {"business": business_id}
-    selected = selection_filter("ST.ID_SERVICE_CATEGORY", "category_id", category_ids, params)
-    rows = connection.execute(sql(REQUEST_SELECT + """WHERE
+# Only registered orders can be interpolated into SQL. ID is the deterministic tie-breaker.
+BOARD_ORDERS = {"recent": "R.CREATED_DATE DESC NULLS LAST, R.ID DESC"}
+BOARD_FROM = """ FROM OHFC_REQUEST R
+    LEFT JOIN OHFC_SERVICE_TYPE ST ON ST.ID=R.ID_SERVICE_TYPE
+    LEFT JOIN OHFC_LOCATION L ON L.ID=R.ID_LOCATION
+    LEFT JOIN OHFC_REGION RG ON RG.ID=L.ID_REGION
+    LEFT JOIN OHFC_MEMBERSHIP M ON M.ID=R.ID_MEMBERSHIP_REQUESTER """
+BOARD_FIELDS = """R.ID, R.ID_REQUEST_STATUS STATUS_ID, ST.NAME SERVICE_TYPE_NAME,
+    M.NAME REQUESTER_NAME, L.NAME LOCATION_NAME"""
+
+
+def board_filters(start, end, search, business_id, category_ids):
+    if end < start:
+        raise ValueError("Intervalo inválido.")
+    params = {
+        "business": business_id,
+        "range_start": datetime.combine(start, time.min),
+        "range_end": datetime.combine(end + timedelta(days=1), time.min),
+        "search": search.strip() if search and search.strip() else None,
+        "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,
+    }
+    where = """ WHERE
         R.CREATED_DATE>=:range_start AND R.CREATED_DATE<:range_end
         AND (CAST(:search AS VARCHAR2(4000)) IS NULL
             OR TO_CHAR(R.ID) LIKE :search_pattern
@@ -513,44 +525,68 @@ def get_board(
             OR UPPER(L.NAME) LIKE UPPER(:search_pattern)
             OR UPPER(R.DESCRIPTION) LIKE UPPER(:search_pattern))
         AND (CAST(:business AS INTEGER) IS NULL OR RG.ID_BUSINESS=:business)
-        """ + selected + " ORDER BY R.CREATED_DATE,R.ID"), {
-        **params,
-        "range_start": datetime.combine(start, time.min), "range_end": datetime.combine(end + timedelta(days=1), time.min),
-        "search": search.strip() if search and search.strip() else None,
-        "search_pattern": f"%{search.strip()}%" if search and search.strip() else None,
-    }).mappings()
+        """ + selection_filter("ST.ID_SERVICE_CATEGORY", "category_id", category_ids, params)
+    return where, params
+
+
+def get_board(connection: DatabaseConnection, start: date, end: date, search: str | None = None,
+              business_id: int | None = None, category_ids: list[int] | None = None,
+              page_size: int = 10, sort: str = "recent") -> BoardEntities:
+    if sort not in BOARD_ORDERS or not 1 <= page_size <= 50:
+        raise ValueError("Ordenação ou tamanho de página inválido.")
+    statuses = [RequestStatusEntity.model_validate(row) for row in connection.execute(
+        "SELECT ID, DESCRIPTION FROM OHFC_REQUEST_STATUS ORDER BY ID").mappings()]
+    where, params = board_filters(start, end, search, business_id, category_ids)
+    counts = {row["status_id"]: int(row["total"]) for row in connection.execute(sql(
+        "SELECT R.ID_REQUEST_STATUS STATUS_ID, COUNT(*) TOTAL" + BOARD_FROM + where
+        + " GROUP BY R.ID_REQUEST_STATUS"), params).mappings()}
+    # Limit in Oracle, per status, before materializing or serializing any cards.
+    query = ("SELECT ID, STATUS_ID, SERVICE_TYPE_NAME, REQUESTER_NAME, LOCATION_NAME FROM (SELECT "
+             + BOARD_FIELDS + ", ROW_NUMBER() OVER (PARTITION BY R.ID_REQUEST_STATUS ORDER BY "
+             + BOARD_ORDERS[sort] + ") BOARD_POSITION" + BOARD_FROM + where
+             + ") WHERE BOARD_POSITION<=:page_size ORDER BY STATUS_ID,BOARD_POSITION")
+    requests = [BoardCardEntity.model_validate(row) for row in connection.execute(sql(query),
+                {**params, "page_size": page_size}).mappings()]
+    return BoardEntities(statuses=statuses, requests=requests, counts=counts, page_size=page_size)
+
+
+def get_board_column(connection: DatabaseConnection, status_id: int, start: date, end: date,
+                     search: str | None = None, business_id: int | None = None,
+                     category_ids: list[int] | None = None, offset: int = 0,
+                     page_size: int = 10, sort: str = "recent"):
+    from ..entities import BoardColumnEntities
+    if sort not in BOARD_ORDERS or not 1 <= page_size <= 50 or offset < 0 or status_id <= 0:
+        raise ValueError("Parâmetros de paginação inválidos.")
+    where, params = board_filters(start, end, search, business_id, category_ids)
+    where += " AND R.ID_REQUEST_STATUS=:status_id"
+    params["status_id"] = status_id
+    total = int(connection.execute(sql("SELECT COUNT(*) TOTAL" + BOARD_FROM + where), params).scalar_one())
+    offset = min(offset, max(0, total - page_size))
     requests = []
-    for row in rows:
-        request_id = row["request"]["id"]
-        visits = []
-        tasks = connection.execute(sql("""SELECT * FROM OHFC_REQUEST_TASK
-            WHERE ID_REQUEST=:id ORDER BY STARTED_DATE,ID"""), {"id": request_id}).mappings()
-        for task in tasks:
-            task_params = {"id": task["id"]}
-            executors = list(connection.execute(sql(f"""{"SELECT " + projection("OHFC_TASK_MEMBER_OCCURRENCE", "O", "occurrence") + ', M.ID AS "member__id", M.NAME AS "member__name"'}
-                FROM OHFC_TASK_MEMBER_OCCURRENCE O JOIN OHFC_MEMBERSHIP M ON M.ID=O.ID_MEMBERSHIP
-                WHERE O.ID_REQUEST_TASK=:id ORDER BY M.NAME"""), task_params).mappings())
-            photos = [dict(photo, url=f'/api/v1/request-tasks/media/{photo["id"]}')
-                for photo in connection.execute(sql("""SELECT ID, FILE_NAME, MIME_TYPE
-                    FROM OHFC_REQUEST_TASK_MEDIA WHERE ID_REQUEST_TASK=:id"""), task_params).mappings()]
-            checklists = []
-            for checklist in connection.execute(sql(f"""{"SELECT " + projection("OHFC_REQUEST_TASK_CHECKLIST", "RTC", "checklist") + ", " + projection("OHFC_CHECKLIST_TYPE", "CT", "definition")} FROM OHFC_REQUEST_TASK_CHECKLIST RTC
-                JOIN OHFC_CHECKLIST_TYPE CT ON CT.ID=RTC.ID_CHECKLIST_TYPE
-                WHERE RTC.ID_REQUEST_TASK=:id ORDER BY RTC.ID"""), task_params).mappings():
-                values = list(connection.execute(sql(f"""{"SELECT " + projection("OHFC_CHECKLIST_FIELD_VALUE", "CFV", "value") + ", " + projection("OHFC_CHECKLIST_FIELD_TYPE", "CFT", "field")} FROM OHFC_CHECKLIST_FIELD_VALUE CFV
-                    JOIN OHFC_CHECKLIST_FIELD_TYPE CFT ON CFT.ID=CFV.ID_CHECKLIST_FIELD_TYPE
-                    WHERE CFV.ID_REQUEST_TASK_CHECKLIST=:id ORDER BY CFT.DISPLAY_ORDER,CFT.ID"""),
-                    {"id": checklist["checklist"]["id"]}).mappings())
-                checklists.append(dict(checklist, values=values))
-            visits.append({"task": task, "executors": executors, "photos": photos, "checklists": checklists})
-        values = list(connection.execute(sql(f"""{"SELECT " + projection("OHFC_SERVICE_FIELD_VALUE", "SFV", "value") + ", " + projection("OHFC_SERVICE_FIELD_TYPE", "SFT", "field")} FROM OHFC_SERVICE_FIELD_VALUE SFV
-            JOIN OHFC_SERVICE_FIELD_TYPE SFT ON SFT.ID=SFV.ID_SERVICE_FIELD_TYPE
-            WHERE SFV.ID_REQUEST=:id ORDER BY SFT.DISPLAY_ORDER NULLS LAST,SFV.ID"""),
-            {"id": request_id}).mappings())
-        media = [dict(item, url=f'/api/v1/service-catalog/media/{item["id"]}')
-            for item in connection.execute(sql("""SELECT M.ID, SFT.NAME AS field_label,
-                M.FILE_NAME, M.MIME_TYPE, M.FILE_SIZE FROM OHFC_SERVICE_FIELD_MEDIA M
-                JOIN OHFC_SERVICE_FIELD_TYPE SFT ON SFT.ID=M.ID_SERVICE_FIELD_TYPE
-                WHERE M.ID_REQUEST=:id"""), {"id": request_id}).mappings()]
-        requests.append(BoardRequestEntities.model_validate(dict(row, values=values, media=media, visits=visits)))
-    return BoardEntities(statuses=statuses, requests=requests)
+    if total:
+        query = ("SELECT " + BOARD_FIELDS + BOARD_FROM + where + " ORDER BY " + BOARD_ORDERS[sort]
+                 + " OFFSET :page_offset ROWS FETCH NEXT :page_size ROWS ONLY")
+        requests = [BoardCardEntity.model_validate(row) for row in connection.execute(sql(query),
+                    {**params, "page_offset": offset, "page_size": page_size}).mappings()]
+    return BoardColumnEntities(status_id=status_id, requests=requests, total=total,
+                               offset=offset, page_size=page_size)
+
+
+def get_request_details(connection: DatabaseConnection, request_id: int):
+    row = connection.execute(sql(REQUEST_SELECT + " WHERE R.ID=:id"),
+                             {"id": request_id}).mappings().one_or_none()
+    if row is None:
+        return None
+    values = list(connection.execute(sql(f"""{"SELECT " + projection("OHFC_SERVICE_FIELD_VALUE", "SFV", "value") + ", " + projection("OHFC_SERVICE_FIELD_TYPE", "SFT", "field")} FROM OHFC_SERVICE_FIELD_VALUE SFV
+        JOIN OHFC_SERVICE_FIELD_TYPE SFT ON SFT.ID=SFV.ID_SERVICE_FIELD_TYPE
+        WHERE SFV.ID_REQUEST=:id ORDER BY SFT.DISPLAY_ORDER NULLS LAST,SFV.ID"""),
+        {"id": request_id}).mappings())
+    media = [dict(item, url=f'/api/v1/service-catalog/media/{item["id"]}')
+        for item in connection.execute(sql("""SELECT M.ID, SFT.NAME AS field_label,
+            M.FILE_NAME, M.MIME_TYPE, M.FILE_SIZE FROM OHFC_SERVICE_FIELD_MEDIA M
+            JOIN OHFC_SERVICE_FIELD_TYPE SFT ON SFT.ID=M.ID_SERVICE_FIELD_TYPE
+            WHERE M.ID_REQUEST=:id"""), {"id": request_id}).mappings()]
+
+    visits = list(connection.execute(sql("SELECT * FROM OHFC_REQUEST_TASK WHERE ID_REQUEST=:id ORDER BY STARTED_DATE,ID"),
+                                     {"id": request_id}).mappings())
+    return RequestDetailsEntities.model_validate(dict(row, values=values, media=media, visits=visits))

@@ -1,61 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { ActivityCategoryStyle, ActivityPage } from "@/app/entities/navigation_entities/home_viewModels";
-import { readActivityPagination, saveActivityPagination } from "./activity-pagination";
+import { DataUnavailable } from "@/app/componentes/DataUnavailable";
+import { AvailabilityNotice } from "@/app/componentes/AvailabilityNotice";
+import type { ActivityCategoryStyle } from "@/app/entities/navigation_entities/home_viewModels";
+import { useActivityTable, type ActivityTableFilters } from "../_hooks/useActivityTable";
 
-type Pagination = { page: number; pageSize: number };
-type Props = {
-  startDate: string;
-  endDate: string;
-  statuses: string[];
-  selectedBusiness: string;
+type Props = ActivityTableFilters & {
   categoryStyleMap: Record<string, ActivityCategoryStyle>;
 };
 
 export default function ActivityTable({ startDate, endDate, statuses, selectedBusiness, categoryStyleMap }: Props) {
-  const filterKey = JSON.stringify([startDate, endDate, statuses, selectedBusiness]);
-  const [query, setQuery] = useState<Pagination | null>(null);
-  const [retry, setRetry] = useState(0);
-  const [result, setResult] = useState<{ key: string; data?: ActivityPage; error?: boolean } | null>(null);
-  const requestKey = JSON.stringify([filterKey, query, retry]);
-  const current = result?.key === requestKey ? result : null;
-  const data = current?.data;
-  const error = current?.error;
-  const loading = !current;
-
-  useEffect(() => {
-    let active = true;
-    // Restore only after hydration; restricted/corrupt storage falls back to page 1.
-    Promise.resolve().then(() => {
-      if (active) setQuery(readActivityPagination(filterKey));
-    });
-    return () => { active = false; };
-  }, [filterKey]);
-
-  useEffect(() => {
-    if (!query) return;
-    const controller = new AbortController();
-    const params = new URLSearchParams({ start_date: startDate, end_date: endDate, page: String(query.page), page_size: String(query.pageSize) });
-    statuses.forEach((status) => params.append("status", status));
-    if (selectedBusiness !== "all") params.set("business_name", selectedBusiness);
-    saveActivityPagination(filterKey, query);
-    async function load() {
-      try {
-        const response = await fetch(`/api/home/activities?${params}`, { signal: controller.signal, cache: "no-store" });
-        if (!response.ok) throw new Error("Falha ao carregar atividades");
-        const page: ActivityPage = await response.json();
-        if (!controller.signal.aborted) {
-          saveActivityPagination(filterKey, { page: page.page, pageSize: page.pageSize });
-          setResult({ key: requestKey, data: page });
-        }
-      } catch {
-        if (!controller.signal.aborted) setResult({ key: requestKey, error: true });
-      }
-    }
-    void load();
-    return () => controller.abort();
-  }, [startDate, endDate, statuses, selectedBusiness, filterKey, query, requestKey]);
+  const { data, error, loading, query, setQuery, retry } = useActivityTable({ startDate, endDate, statuses, selectedBusiness });
 
   return (
     <div aria-busy={loading} data-ui="activity-records" className="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -77,9 +32,7 @@ export default function ActivityTable({ startDate, endDate, statuses, selectedBu
         </span>
       </div>
 
-      {error && <div role="alert" className="px-4 py-3 text-sm text-red-700">
-        Não foi possível carregar as atividades. <button type="button" className="underline" onClick={() => setRetry((value) => value + 1)}>Tentar novamente</button>
-      </div>}
+      {error && <AvailabilityNotice />}
       <p role="status" className="px-4 pt-2 text-xs text-slate-500">{loading ? "Carregando atividades..." : ""}</p>
       <div data-ui="activity-records-table" className="overflow-x-auto">
         <table className="min-w-[900px] w-full border-collapse text-left text-xs">
@@ -96,6 +49,7 @@ export default function ActivityTable({ startDate, endDate, statuses, selectedBu
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 text-slate-700">
+            {error && <tr><td colSpan={8} className="p-4"><DataUnavailable error={error} retry={retry} pending={loading} /></td></tr>}
             {(data?.items ?? []).map((record) => (
               <tr
                 key={record.id}

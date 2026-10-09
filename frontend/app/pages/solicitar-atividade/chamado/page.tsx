@@ -1,3 +1,4 @@
+import { apiResult } from "@/app/entities/api/api-result";
 import { createChamadoRequestAction } from "../actions";
 import ActivityRequestForm from "@/app/componentes/ActivityRequestForm";
 import { getChamadoRequestFormPageData } from "@/app/services/activity-request-form-service";
@@ -23,7 +24,9 @@ export default async function ChamadoRequestPage({ searchParams }: ChamadoReques
   const serviceTypeId = Number(params.service_type_id);
   if (!Number.isInteger(serviceTypeId) || serviceTypeId <= 0) notFound();
 
-  const formData = await getChamadoRequestFormPageData({ serviceTypeId });
+  const result = await apiResult(() => getChamadoRequestFormPageData({ serviceTypeId }));
+  if (!result.ok) return <ActivityRequestForm title="Nova solicitação: Chamado" subtitle="Não foi possível carregar os dados do formulário." sectionTitle="Dados da solicitação" fields={[]} loadError={result.error} />;
+  const formData = result.data;
 
   if (!formData.serviceTypeId) notFound();
 
