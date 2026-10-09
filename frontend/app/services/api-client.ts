@@ -8,8 +8,8 @@ export function getBackendUrl(): string {
 }
 
 export async function backendFetch(path: string, init?: RequestInit, timeoutMs?: number): Promise<Response> {
-  const configuredTimeout = Number(process.env.BACKEND_READ_TIMEOUT_MS ?? 10_000);
-  const readTimeout = Number.isFinite(configuredTimeout) && configuredTimeout > 0 ? configuredTimeout : 10_000;
+  const configuredTimeout = Number(process.env.BACKEND_READ_TIMEOUT_MS ?? 30_000);
+  const readTimeout = Number.isFinite(configuredTimeout) && configuredTimeout > 0 ? configuredTimeout : 30_000;
   const timeout = AbortSignal.timeout(timeoutMs ?? (init?.method && init.method !== "GET" ? 60_000 : readTimeout));
   const signal = init?.signal ? AbortSignal.any([init.signal, timeout]) : timeout;
   let response: Response;
