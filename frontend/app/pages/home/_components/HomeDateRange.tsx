@@ -23,5 +23,10 @@ export default function HomeDateRange({ startDate, endDate }: DateRangeValue & {
     });
   }
 
-  return <div><DateRange {...range} disabled={isPending} onChange={applyRange} />{error && <p role="alert" className="text-xs text-red-700">{error}</p>}</div>;
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <DateRange {...range} disabled={isPending} onChange={applyRange} />
+      {error && <p role="alert" className="w-full text-xs text-red-700">{error}</p>}
+    </div>
+  );
 }
